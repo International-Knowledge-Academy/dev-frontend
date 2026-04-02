@@ -1,0 +1,11 @@
+src/routes.tsx
+src/variables/
+src/views/admin/
+src/components/home/CheckTable.tsx
+src/components/home/ComplexTable.tsx
+src/components/home/DailyTraffic.tsx
+src/components/home/PieChartCard.tsx
+src/components/home/TaskCard.tsx
+src/components/home/TotalSpent.tsx
+src/components/home/WeeklyRevenue.tsx
+src/components/home/Widget.tsx

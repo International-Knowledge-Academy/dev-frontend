@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(while read:*)",
+      "Bash(do mv:*)",
+      "Bash(done)",
+      "Bash(ls c:/Users/User/Desktop/dev-frontend/src/index*)",
+      "Bash(ls c:/Users/User/Desktop/dev-frontend/src/App*)",
+      "Bash(npx tsc:*)"
+    ]
+  }
+}
