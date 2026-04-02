@@ -7,8 +7,26 @@ import Links from "./components/Links";
 import useAuth from "hooks/auth/useAuth";
 import routes from "routes";
 
+const roleLayout: Record<string, string> = {
+  admin:           "/admin",
+  account_manager: "/account-manager",
+};
+
+const roleLabel: Record<string, string> = {
+  admin:           "Admin",
+  account_manager: "Account Manager",
+};
+
+const rolePanel: Record<string, string> = {
+  admin:           "Admin Panel",
+  account_manager: "Account Manager Panel",
+};
+
 const Sidebar = ({ open, onClose }) => {
   const { logout, user } = useAuth();
+  const layout = roleLayout[user?.role] ?? "/admin";
+  const label  = roleLabel[user?.role]  ?? "";
+  const panel  = rolePanel[user?.role]  ?? "Panel";
 
   return (
     <>
@@ -41,7 +59,7 @@ const Sidebar = ({ open, onClose }) => {
           />
           <div>
             <p className="text-sm font-bold text-navy-800 leading-tight">IKA</p>
-            <p className="text-[10px] text-gray-400 leading-tight">Admin Panel</p>
+            <p className="text-[10px] text-gray-400 leading-tight">{panel}</p>
           </div>
         </div>
 
@@ -57,7 +75,7 @@ const Sidebar = ({ open, onClose }) => {
               {user?.name ?? "Loading..."}
             </p>
             <p className="text-[10px] font-bold tracking-widest uppercase text-gold-500 leading-tight mt-0.5">
-              {user?.role ?? ""}
+              {label}
             </p>
           </div>
         </div>
@@ -67,7 +85,7 @@ const Sidebar = ({ open, onClose }) => {
         </p>
 
         <div className="flex-1 overflow-y-auto px-3">
-          <Links routes={routes} />
+          <Links routes={routes} layout={layout} />
         </div>
 
         <div className="border-t border-gray-100 px-3 py-3">

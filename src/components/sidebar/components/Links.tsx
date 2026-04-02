@@ -4,14 +4,14 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import DashIcon from "components/icons/DashIcon";
 
-export function SidebarLinks({ routes }) {
+export function SidebarLinks({ routes, layout = "/admin" }) {
   const { pathname } = useLocation();
   const isActive = (routePath) => pathname.includes(routePath);
 
   return (
     <nav className="flex flex-col gap-0.5">
       {routes.map((route, index) => {
-        if (route.layout !== "/admin") return null;
+        if (route.layout !== layout) return null;
         const active = isActive(route.path);
 
         return (

@@ -15,7 +15,7 @@ interface ProtectedRouteProps {
  *
  * Usage:
  * <ProtectedRoute allowedRoles={["admin"]}>
- * <ProtectedRoute allowedRoles={["admin", "manager"]}>
+ * <ProtectedRoute allowedRoles={["admin", "account_manager"]}>
  */
 const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   const { user, role, loading } = useAuth();

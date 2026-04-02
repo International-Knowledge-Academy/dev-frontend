@@ -7,8 +7,9 @@ import NFTMarketplace from "views/admin/marketplace";
 import Profile from "views/admin/profile";
 import DataTables from "views/admin/tables";
 
-// Auth Imports
-import SignIn from "views/auth/SignIn";
+// Account Manager Imports
+import ManagerDashboard from "views/manager/dashboard";
+import ManagerProfile from "views/manager/profile";
 
 // Icon Imports
 import {
@@ -16,10 +17,11 @@ import {
   MdOutlineShoppingCart,
   MdBarChart,
   MdPerson,
-  MdLock,
+  MdDashboard,
 } from "react-icons/md";
 
 const routes = [
+  // Admin routes
   {
     name: "Main Dashboard",
     layout: "/admin",
@@ -49,12 +51,22 @@ const routes = [
     icon: <MdPerson className="h-6 w-6" />,
     component: <Profile />,
   },
+
+  // Account Manager routes
   {
-    name: "Sign In",
-    layout: "/auth",
-    path: "sign-in",
-    icon: <MdLock className="h-6 w-6" />,
-    component: <SignIn />,
+    name: "Dashboard",
+    layout: "/account-manager",
+    path: "dashboard",
+    icon: <MdDashboard className="h-6 w-6" />,
+    component: <ManagerDashboard />,
+  },
+  {
+    name: "Profile",
+    layout: "/account-manager",
+    path: "profile",
+    icon: <MdPerson className="h-6 w-6" />,
+    component: <ManagerProfile />,
   },
 ];
+
 export default routes;

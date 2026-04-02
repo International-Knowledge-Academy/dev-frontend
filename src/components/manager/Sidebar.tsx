@@ -3,8 +3,8 @@ import { MdDashboard, MdPerson, MdLogout } from "react-icons/md";
 import useAuth from "hooks/auth/useAuth";
 
 const links = [
-  { label: "Dashboard", to: "/manager/dashboard", icon: <MdDashboard size={20} /> },
-  { label: "Profile",   to: "/manager/profile",   icon: <MdPerson size={20} /> },
+  { label: "Dashboard", to: "/account-manager/dashboard", icon: <MdDashboard size={20} /> },
+  { label: "Profile",   to: "/account-manager/profile",   icon: <MdPerson size={20} /> },
 ];
 
 interface SidebarProps {

@@ -30,7 +30,11 @@ const useLogin = (): UseLoginReturn => {
       const { data: me } = await authApi.getMe();
       setUserFromData(me);
 
-      navigate("/admin");
+      const roleRedirect: Record<string, string> = {
+        admin:           "/admin",
+        account_manager: "/account-manager",
+      };
+      navigate(roleRedirect[me.role] ?? "/");
     } catch (err: unknown) {
       console.error("❌ Login failed:", err);
       const message =
