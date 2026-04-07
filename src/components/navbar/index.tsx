@@ -34,7 +34,7 @@ const Navbar = (props) => {
         button={
           <button className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-navy-50 dark:hover:bg-navy-700 transition-all group">
             <div className="relative">
-              <div className="w-9 h-9 rounded-xl bg-navy-800 border-2 border-gold-400 flex items-center justify-center text-white font-bold text-sm">
+              <div className="w-9 h-9 rounded-full bg-navy-500 border-1 flex items-center justify-center text-white font-bold text-sm">
                 {user?.name?.[0]?.toUpperCase() ?? "?"}
               </div>
               <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-400 border-2 border-white dark:border-navy-800" />

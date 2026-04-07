@@ -65,7 +65,7 @@ const Sidebar = ({ open, onClose }) => {
 
         <div className="flex items-center gap-3 px-4 py-3 mx-3 mt-4 rounded-xl bg-navy-50 border border-navy-100">
           <div className="relative flex-shrink-0">
-            <div className="w-9 h-9 rounded-lg bg-navy-800 flex items-center justify-center text-white font-bold text-sm border-2 border-gold-400">
+            <div className="w-9 h-9 rounded-full bg-navy-500 flex items-center justify-center text-white font-bold text-sm">
               {user?.name?.[0]?.toUpperCase() ?? "?"}
             </div>
             <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-400 border-2 border-white" />

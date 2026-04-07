@@ -25,7 +25,7 @@ const ToggleInput = ({
         className={`group relative flex cursor-pointer items-center justify-between rounded-md border px-4 py-4 transition-all
         ${
           selected
-            ? "border-blue-600 bg-blue-50 shadow-sm"
+            ? "border-navy-600 bg-navy-50 shadow-sm"
             : "border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm"
         }
       `}
@@ -46,12 +46,12 @@ const ToggleInput = ({
             onChange={toggle}
             className="peer sr-only"
           />
-          <div className="h-6 w-11 rounded-full bg-slate-300 transition-colors peer-checked:bg-blue-600" />
+          <div className="h-6 w-11 rounded-full bg-slate-300 transition-colors peer-checked:bg-navy-600" />
           <div className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5" />
         </div>
 
         {selected && (
-          <span className="absolute right-3 top-3 h-2 w-2 rounded-full bg-blue-600" />
+          <span className="absolute right-3 top-3 h-2 w-2 rounded-full bg-navy-600" />
         )}
       </label>
 

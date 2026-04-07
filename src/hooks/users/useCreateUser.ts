@@ -36,7 +36,7 @@ const useCreateUser = (): UseCreateUserReturn => {
     setFieldErrors({});
 
     try {
-      const { data } = await axiosInstance.post<User>("/auth/users/", payload);
+      const { data } = await axiosInstance.post<User>("/auth/users", payload);
       return data;
     } catch (err: unknown) {
       const responseData = (
