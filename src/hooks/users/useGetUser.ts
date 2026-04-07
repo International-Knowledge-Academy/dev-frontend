@@ -20,7 +20,7 @@ const useGetUser = (id: string | number): UseGetUserReturn => {
     setError(null);
 
     try {
-      const { data } = await axiosInstance.get<User>(`/auth/users/${id}/`);
+      const { data } = await axiosInstance.get<User>(`/auth/users/${id}`);
       setUser(data);
     } catch (err: unknown) {
       const message =

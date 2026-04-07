@@ -9,13 +9,14 @@ const getNestedValue = (obj, path) => {
     .reduce((acc, key) => (acc ? acc[key] : undefined), obj);
 };
 
-const InputField = ({ label, field, type = "text", required = true, placeholder = "", formData, errors, updateFormData }) => {
+const InputField = ({ label, field, type = "text", required = true, placeholder = "", hint, formData, errors, updateFormData }) => {
   const value = getNestedValue(formData, field) ?? "";
 
   return (
     <div className="mb-4">
       <label className="block text-p2 font-medium text-navy-900">
         {label} {required && <span className="text-red-600">*</span>}
+        {hint && <span className="ml-1 text-xs font-normal text-gray-400">({hint})</span>}
       </label>
 
       <input

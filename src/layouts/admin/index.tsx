@@ -5,6 +5,9 @@ import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
 import routes from "routes";
+import UserCreatePage from "views/admin/users/UserCreatePage";
+import UserEditPage from "views/admin/users/UserEditPage";
+import UserProfilePage from "views/admin/users/UserProfilePage";
 
 export default function Admin(props) {
   const { ...rest } = props;
@@ -79,6 +82,9 @@ export default function Admin(props) {
             <div className="pt-6 mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
               <Routes>
                 {getRoutes(routes)}
+                <Route path="/users/create"    element={<UserCreatePage />} />
+                <Route path="/users/:id/edit"  element={<UserEditPage />} />
+                <Route path="/users/:id"       element={<UserProfilePage />} />
 
                 <Route
                   path="/"

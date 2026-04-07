@@ -34,6 +34,7 @@ export interface UsersParams {
   page?: number;
   search?: string;
   ordering?: string;
+  role?: string;
 }
 
 export interface LoginResponse {

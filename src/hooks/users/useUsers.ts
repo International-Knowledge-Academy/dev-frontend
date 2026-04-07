@@ -28,11 +28,12 @@ const useUsers = (initialParams: UsersParams = {}): UseUsersReturn => {
     setError(null);
 
     try {
-      const { data } = await axiosInstance.get<PaginatedUsers>("/auth/users/", {
+      const { data } = await axiosInstance.get<PaginatedUsers>("/auth/users", {
         params: {
           ...(params.page     && { page:     params.page }),
           ...(params.search   && { search:   params.search }),
           ...(params.ordering && { ordering: params.ordering }),
+          ...(params.role     && { role:     params.role }),
         },
       });
 
@@ -62,7 +63,7 @@ const useUsers = (initialParams: UsersParams = {}): UseUsersReturn => {
       ...prev,
       ...updates,
       // Reset to page 1 when search or ordering changes
-      page: updates.search !== undefined || updates.ordering !== undefined
+      page: updates.search !== undefined || updates.ordering !== undefined || updates.role !== undefined
         ? 1
         : (updates.page ?? prev.page),
     }));

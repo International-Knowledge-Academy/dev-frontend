@@ -16,7 +16,7 @@ const useDeleteUser = (): UseDeleteUserReturn => {
     setError(null);
 
     try {
-      await axiosInstance.delete(`/auth/users/${id}/`);
+      await axiosInstance.delete(`/auth/users/${id}`);
       return true;
     } catch (err: unknown) {
       const message =

@@ -1,11 +1,15 @@
 // @ts-nocheck
 import React from "react";
 
+// Auth Imports
+import SignIn from "views/auth/SignIn";
+
 // Admin Imports
 import MainDashboard from "views/admin/default";
 import NFTMarketplace from "views/admin/marketplace";
 import Profile from "views/admin/profile";
 import DataTables from "views/admin/tables";
+import UsersPage from "views/admin/users";
 
 // Account Manager Imports
 import ManagerDashboard from "views/manager/dashboard";
@@ -18,9 +22,18 @@ import {
   MdBarChart,
   MdPerson,
   MdDashboard,
+  MdPeople,
 } from "react-icons/md";
 
 const routes = [
+  // Auth routes
+  {
+    name: "Sign In",
+    layout: "/auth",
+    path: "sign-in",
+    component: <SignIn />,
+  },
+
   // Admin routes
   {
     name: "Main Dashboard",
@@ -50,6 +63,13 @@ const routes = [
     path: "profile",
     icon: <MdPerson className="h-6 w-6" />,
     component: <Profile />,
+  },
+  {
+    name: "Users",
+    layout: "/admin",
+    path: "users",
+    icon: <MdPeople className="h-6 w-6" />,
+    component: <UsersPage />,
   },
 
   // Account Manager routes

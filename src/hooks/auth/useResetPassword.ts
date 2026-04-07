@@ -22,7 +22,7 @@ const useResetPassword = (): UseResetPasswordReturn => {
 
     try {
       const { data } = await axiosInstance.post<ResetPasswordResponse>(
-        "/auth/reset-password/",
+        "/auth/reset-password",
         payload
       );
       setSuccess(data.message ?? "Password reset successfully.");
