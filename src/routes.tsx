@@ -10,6 +10,7 @@ import NFTMarketplace from "views/admin/marketplace";
 import Profile from "views/admin/profile";
 import DataTables from "views/admin/tables";
 import UsersPage from "views/admin/users";
+import LocationsPage from "views/admin/locations";
 
 // Account Manager Imports
 import ManagerDashboard from "views/manager/dashboard";
@@ -23,6 +24,7 @@ import {
   MdPerson,
   MdDashboard,
   MdPeople,
+  MdLocationOn,
 } from "react-icons/md";
 
 const routes = [
@@ -70,6 +72,13 @@ const routes = [
     path: "users",
     icon: <MdPeople className="h-6 w-6" />,
     component: <UsersPage />,
+  },
+  {
+    name: "Locations",
+    layout: "/admin",
+    path: "locations",
+    icon: <MdLocationOn className="h-6 w-6" />,
+    component: <LocationsPage />,
   },
 
   // Account Manager routes

@@ -108,7 +108,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl rounded-xl mt-3 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-1/2 -translate-x-1/2 w-[calc(100%-40px)] max-w-6xl rounded-xl mt-3 z-50 transition-all duration-300 ${
         scrolled ? "shadow-md shadow-navy-900/10 bg-white" : "bg-white"
       }`}
     >
