@@ -8,7 +8,7 @@ import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import SelectField from "components/form/SelectField";
 import ToggleInput from "components/form/toggle/ToggleInput";
-
+import PasswordField from "components/form/PasswordField"
 import Button from "components/ui/buttons/Button"
 
 const ROLES = [
@@ -91,11 +91,8 @@ const UserCreatePage = () => {
             updateFormData={updateFormData}
           />
 
-          <InputField
-            label="Password"
-            field="password"
-            type="password"
-            placeholder="••••••••"
+          <PasswordField
+            placeholder="Min. 8 characters"
             formData={form}
             errors={fieldErrors}
             updateFormData={updateFormData}

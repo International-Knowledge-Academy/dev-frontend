@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { useState } from "react";
 import InputField from "components/form/InputField";
+import PasswordField from "components/form/PasswordField";
 import Checkbox from "components/checkbox";
 import useLogin from "hooks/auth/useLogin";
 
@@ -45,10 +46,7 @@ export default function SignIn() {
             updateFormData={updateFormData}
           />
 
-          <InputField
-            label="Password"
-            field="password"
-            type="password"
+          <PasswordField
             placeholder="Min. 8 characters"
             formData={formData}
             errors={errors}

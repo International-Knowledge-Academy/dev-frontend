@@ -8,6 +8,16 @@ import routes from "routes";
 import UserCreatePage from "views/admin/users/UserCreatePage";
 import UserEditPage from "views/admin/users/UserEditPage";
 import UserProfilePage from "views/admin/users/UserProfilePage";
+import LocationCreatePage from "views/admin/locations/LocationCreatePage";
+import CategoryCreatePage from "views/admin/categories/CategoryCreatePage";
+import CategoryEditPage from "views/admin/categories/CategoryEditPage";
+import CourseCreatePage from "views/admin/courses/CourseCreatePage";
+import CourseEditPage from "views/admin/courses/CourseEditPage";
+import CourseDetailPage from "views/admin/courses/CourseDetailPage";
+import ProgramsPage from "views/admin/programs";
+import ProgramCreatePage from "views/admin/programs/ProgramCreatePage";
+import ProgramEditPage from "views/admin/programs/ProgramEditPage";
+import ProgramDetailPage from "views/admin/programs/ProgramDetailPage";
 
 export default function Admin(props) {
   const { ...rest } = props;
@@ -82,9 +92,19 @@ export default function Admin(props) {
             <div className="pt-6 mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
               <Routes>
                 {getRoutes(routes)}
-                <Route path="/users/create"    element={<UserCreatePage />} />
-                <Route path="/users/:id/edit"  element={<UserEditPage />} />
-                <Route path="/users/:id"       element={<UserProfilePage />} />
+                <Route path="/users/create"        element={<UserCreatePage />} />
+                <Route path="/users/:id/edit"      element={<UserEditPage />} />
+                <Route path="/users/:id"           element={<UserProfilePage />} />
+                <Route path="/locations/create"    element={<LocationCreatePage />} />
+                <Route path="/categories/create"   element={<CategoryCreatePage />} />
+                <Route path="/categories/:uid/edit" element={<CategoryEditPage />} />
+                <Route path="/courses/:uid"         element={<CourseDetailPage />} />
+                <Route path="/courses/create"       element={<CourseCreatePage />} />
+                <Route path="/courses/:uid/edit"    element={<CourseEditPage />} />
+                <Route path="/programs"             element={<ProgramsPage />} />
+                <Route path="/programs/:uid"        element={<ProgramDetailPage />} />
+                <Route path="/programs/create"      element={<ProgramCreatePage />} />
+                <Route path="/programs/:uid/edit"   element={<ProgramEditPage />} />
 
                 <Route
                   path="/"

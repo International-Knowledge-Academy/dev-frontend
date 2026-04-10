@@ -11,6 +11,9 @@ import Profile from "views/admin/profile";
 import DataTables from "views/admin/tables";
 import UsersPage from "views/admin/users";
 import LocationsPage from "views/admin/locations";
+import CategoriesPage from "views/admin/categories";
+import CoursesPage from "views/admin/courses";
+import ProgramsPage from "views/admin/programs";
 
 // Account Manager Imports
 import ManagerDashboard from "views/manager/dashboard";
@@ -25,6 +28,9 @@ import {
   MdDashboard,
   MdPeople,
   MdLocationOn,
+  MdCategory,
+  MdSchool,
+  MdWorkspacePremium,
 } from "react-icons/md";
 
 const routes = [
@@ -43,21 +49,6 @@ const routes = [
     path: "default",
     icon: <MdHome className="h-6 w-6" />,
     component: <MainDashboard />,
-  },
-  {
-    name: "NFT Marketplace",
-    layout: "/admin",
-    path: "nft-marketplace",
-    icon: <MdOutlineShoppingCart className="h-6 w-6" />,
-    component: <NFTMarketplace />,
-    secondary: true,
-  },
-  {
-    name: "Data Tables",
-    layout: "/admin",
-    icon: <MdBarChart className="h-6 w-6" />,
-    path: "data-tables",
-    component: <DataTables />,
   },
   {
     name: "Profile",
@@ -79,6 +70,27 @@ const routes = [
     path: "locations",
     icon: <MdLocationOn className="h-6 w-6" />,
     component: <LocationsPage />,
+  },
+  {
+    name: "Categories",
+    layout: "/admin",
+    path: "categories",
+    icon: <MdCategory className="h-6 w-6" />,
+    component: <CategoriesPage />,
+  },
+  {
+    name: "Courses",
+    layout: "/admin",
+    path: "courses",
+    icon: <MdSchool className="h-6 w-6" />,
+    component: <CoursesPage />,
+  },
+  {
+    name: "Programs",
+    layout: "/admin",
+    path: "programs",
+    icon: <MdWorkspacePremium className="h-6 w-6" />,
+    component: <ProgramsPage />,
   },
 
   // Account Manager routes
