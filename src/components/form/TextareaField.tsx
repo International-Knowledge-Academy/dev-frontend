@@ -9,20 +9,21 @@ const getNestedValue = (obj, path) => {
     .reduce((acc, key) => (acc ? acc[key] : undefined), obj);
 };
 
-const TextareaField = ({ label, field, required = true, placeholder = "", formData, errors, updateFormData }) => {
+const TextareaField = ({ label, field, required = true, placeholder = "", rows = 4, formData, errors, updateFormData }) => {
   const value = getNestedValue(formData, field) ?? "";
 
   return (
     <div className="mb-4">
-      <label className="block text-p2 font-medium text-slate-900">
+      <label className="block text-p2 font-medium text-navy-900">
         {label} {required && <span className="text-red-600">*</span>}
       </label>
 
       <textarea
         value={value}
+        rows={rows}
         onChange={(e) => updateFormData(field, e.target.value)}
         placeholder={placeholder}
-        className={`mt-2 flex h-12 w-full items-center justify-start rounded-md border p-3 px-3 py-2 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1  focus:ring-blue-500 ${
+        className={`mt-2 flex w-full items-center justify-start bg-gray-50 rounded-md border px-3 py-2 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-navy-500 resize-none ${
           getNestedValue(errors, field) ? "border-red-500" : "border-default"
         }`}
       />

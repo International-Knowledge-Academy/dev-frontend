@@ -5,15 +5,8 @@ import { MdMenu, MdClose, MdKeyboardArrowDown } from "react-icons/md";
 
 const navLinks = [
   { label: "Home", to: "/" },
-  {
-    label: "About",
-    to: "/about",
-    children: [
-      { label: "Our Mission", to: "/about#mission" },
-      { label: "Our Team", to: "/about#team" },
-    ],
-  },
-  { label: "Programs", to: "/programs" },
+  { label: "About",to: "/about"},
+  { label: "Programs", to: "/training" },
   { label: "Instructors", to: "/instructors" },
   { label: "Reviews", to: "/reviews" },
   { label: "Contact", to: "/contact" },
