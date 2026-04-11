@@ -9,6 +9,12 @@ import ManagerLayout from "layouts/manager";
 
 import HomePage from "views/home/default";
 import AboutPage from "views/home/about";
+import TrainingPage from "views/home/training";
+import ContactPage from "views/home/contact";
+import ProgramsPublicPage from "views/home/programs";
+import ProgramPage from "views/home/programs/ProgramPage";
+import CategoriesHubPage from "views/home/categories";
+import CategoryTypePage from "views/home/categories/CategoryTypePage";
 
 import ProtectedRoute from "components/auth/ProtectedRoute";
 
@@ -19,6 +25,12 @@ const App = () => {
       <Route element={<HomeLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/training" element={<TrainingPage />} />
+        <Route path="/programs" element={<ProgramsPublicPage />} />
+        <Route path="/programs/:uid" element={<ProgramPage />} />
+        <Route path="/categories" element={<CategoriesHubPage />} />
+        <Route path="/categories/:typeSlug" element={<CategoryTypePage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Route>
 
       {/* Auth */}
