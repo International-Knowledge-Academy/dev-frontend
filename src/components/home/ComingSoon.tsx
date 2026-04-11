@@ -90,23 +90,8 @@ const ComingSoon = () => {
           {/* Main */}
           <main className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-6 py-10">
 
-            {/* Floating logo in gold circle */}
-            <div className="fade-up mb-10" style={{ animationDelay: "0.15s" }}>
-              <div className="relative pulse-ring w-24 h-24 mx-auto">
-                <div
-                  className="float w-24 h-24 rounded-full flex items-center justify-center"
-                  style={{
-                    background: "linear-gradient(135deg, #e6c676, #D3AB5C, #b8934a)",
-                    boxShadow: "0 8px 40px #D3AB5C40",
-                  }}
-                >
-                  <img src="/brand/IKA-logo-bg.png" alt="IKA" className="w-14 h-14 object-contain" />
-                </div>
-              </div>
-            </div>
-
             {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-5 fade-up" style={{ animationDelay: "0.25s" }}>
+            <div className="flex items-center gap-3 mb-5 fade-up" style={{ animationDelay: "0.15s" }}>
               <span className="w-10 h-px" style={{ background: "linear-gradient(90deg, transparent, #D3AB5C)" }} />
               <p className="text-[11px] font-semibold tracking-[0.2em] uppercase text-gold-600">
                 We're Working on Something
@@ -117,7 +102,7 @@ const ComingSoon = () => {
             {/* Heading */}
             <h1
               className="text-5xl md:text-7xl font-black mb-4 leading-[1.05] fade-up"
-              style={{ animationDelay: "0.35s" }}
+              style={{ animationDelay: "0.25s" }}
             >
               <span className="text-navy-800">Something Big</span>
               <br />
@@ -127,11 +112,49 @@ const ComingSoon = () => {
             {/* Subtitle */}
             <p
               className="text-navy-400 text-base md:text-lg mb-12 max-w-md leading-relaxed fade-up"
-              style={{ animationDelay: "0.45s" }}
+              style={{ animationDelay: "0.35s" }}
             >
               We're building something extraordinary. Drop your email and be the first to know when we launch.
             </p>
 
+            {/* Email form */}
+            <div className="fade-up w-full max-w-md" style={{ animationDelay: "0.45s" }}>
+              {!submitted ? (
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex items-center gap-2 rounded-full px-2 py-2"
+                  style={{ border: "1.5px solid #e6c676", background: "#fffdf7" }}
+                >
+                  <MdEmail size={18} className="ml-3 flex-shrink-0 text-gold-500" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email address"
+                    required
+                    className="flex-1 text-sm outline-none bg-transparent min-w-0 text-navy-800 placeholder-navy-300"
+                    style={{ caretColor: "#D3AB5C" }}
+                  />
+                  <button
+                    type="submit"
+                    className="flex-shrink-0 text-white text-sm font-bold px-6 py-2.5 rounded-full transition-all hover:-translate-y-0.5"
+                    style={{
+                      background: "linear-gradient(135deg, #e6c676, #D3AB5C, #b8934a)",
+                      boxShadow: "0 4px 20px #D3AB5C40",
+                    }}
+                  >
+                    Notify Me
+                  </button>
+                </form>
+              ) : (
+                <div
+                  className="inline-flex items-center gap-2 font-semibold text-sm rounded-full px-6 py-3"
+                  style={{ color: "#b8934a", border: "1.5px solid #e6c676", background: "#fbf5e8" }}
+                >
+                  You're on the list — we'll be in touch!
+                </div>
+              )}
+            </div>
 
           </main>
 
