@@ -14,7 +14,7 @@ interface PasswordFieldProps {
 const getNestedValue = (obj: Record<string, any>, path: string) => {
   if (!path) return undefined;
   return path
-    .split(/[\.\[\]]/)
+    .split(/[.[\]]/)
     .filter(Boolean)
     .reduce((acc: any, key: string) => (acc ? acc[key] : undefined), obj);
 };

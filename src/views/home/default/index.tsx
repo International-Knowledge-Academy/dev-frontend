@@ -7,7 +7,6 @@ import Programs from "components/home/Programs";
 import TrainingFields from "components/home/TrainingFields";
 import Locations from "components/home/Locations";
 import Features from "components/home/Features";
-import CTA from "components/home/CTA";
 import Footer from "components/home/Footer";
 
 const HomePage = () => {

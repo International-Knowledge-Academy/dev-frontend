@@ -2,7 +2,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  MdArrowBack, MdWorkspacePremium, MdCategory, MdLocationOn,
+  MdArrowBack, MdWorkspacePremium, MdLocationOn,
   MdAccessTime, MdSettings, MdLanguage, MdCalendarToday,
   MdPeople, MdEmail, MdPhone, MdLink, MdSchool, MdHandshake,
   MdHeadsetMic,

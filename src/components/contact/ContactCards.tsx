@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
-import { MdEmail, MdPhone, MdLanguage, MdLocationOn } from "react-icons/md";
+import { MdEmail, MdLanguage, MdLocationOn } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
 
 const cards = [

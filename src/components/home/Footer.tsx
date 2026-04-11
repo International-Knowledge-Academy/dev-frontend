@@ -74,8 +74,8 @@ const Footer = () => {
         <div className="border-t border-gray-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-gray-400 text-sm">
           <p>© {new Date().getFullYear()} International Knowledge Academy. All rights reserved.</p>
           <div className="flex gap-5">
-            <a href="#" className="hover:text-gold-400 transition">Privacy Policy</a>
-            <a href="#" className="hover:text-gold-400 transition">Terms of Service</a>
+            <span className="hover:text-gold-400 transition cursor-pointer">Privacy Policy</span>
+            <span className="hover:text-gold-400 transition cursor-pointer">Terms of Service</span>
           </div>
         </div>
       </div>

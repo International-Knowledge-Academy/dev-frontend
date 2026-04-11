@@ -4,7 +4,7 @@ import React from "react";
 const getNestedValue = (obj, path) => {
   if (!path) return undefined;
   return path
-    .split(/[\.\[\]]/).filter(Boolean)
+    .split(/[.[\]]/).filter(Boolean)
     .reduce((acc, key) => (acc ? acc[key] : undefined), obj);
 };
 

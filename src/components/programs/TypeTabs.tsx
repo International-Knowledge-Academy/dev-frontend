@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import { MdSchool, MdWorkspacePremium, MdHandshake } from "react-icons/md";
 

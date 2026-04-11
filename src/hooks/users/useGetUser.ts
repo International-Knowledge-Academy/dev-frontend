@@ -37,6 +37,7 @@ const useGetUser = (id: string | number): UseGetUserReturn => {
 
   useEffect(() => {
     fetchUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return { user, loading, error, refetch: fetchUser };
