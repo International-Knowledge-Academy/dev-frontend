@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { motion } from "framer-motion";
 import { MdCheckCircle } from "react-icons/md";
 
 const highlights = [
@@ -8,13 +9,34 @@ const highlights = [
   "Internationally recognized accredited certificates",
 ];
 
+const fadeLeft = {
+  hidden: { opacity: 0, x: -40 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut" } },
+};
+const fadeRight = {
+  hidden: { opacity: 0, x: 40 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: "easeOut" } },
+};
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i = 0) => ({
+    opacity: 1, y: 0,
+    transition: { duration: 0.5, ease: "easeOut", delay: i * 0.1 },
+  }),
+};
+
 const About = () => {
   return (
     <section className="py-24 px-6 bg-slate-50 overflow-hidden">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
         {/* Left — text */}
-        <div>
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={fadeLeft}
+        >
           <span className="text-gold-500 font-semibold text-sm uppercase tracking-widest">
             About IKA
           </span>
@@ -32,18 +54,34 @@ const About = () => {
           </p>
 
           {/* Highlights */}
-          <ul className="mt-8 space-y-3">
-            {highlights.map((item) => (
-              <li key={item} className="flex items-start gap-3 text-gray-600 text-sm">
+          <motion.ul
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            className="mt-8 space-y-3"
+          >
+            {highlights.map((item, i) => (
+              <motion.li
+                key={item}
+                custom={i}
+                variants={fadeUp}
+                className="flex items-start gap-3 text-gray-600 text-sm"
+              >
                 <MdCheckCircle size={20} className="text-gold-500 flex-shrink-0 mt-0.5" />
                 {item}
-              </li>
+              </motion.li>
             ))}
-          </ul>
-        </div>
+          </motion.ul>
+        </motion.div>
 
         {/* Right — decorative card */}
-        <div className="relative">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={fadeRight}
+          className="relative"
+        >
           <div className="absolute inset-0 bg-gold-500 opacity-5 rounded-3xl blur-2xl" />
           <div className="relative bg-white border border-gray-100 shadow-sm rounded-3xl p-8 space-y-6">
             <img
@@ -57,11 +95,18 @@ const About = () => {
                 { value: "10",  label: "Countries" },
                 { value: "3",   label: "Program Types" },
                 { value: "5★",  label: "Hotel Partnerships" },
-              ].map((s) => (
-                <div key={s.label}>
+              ].map((s, i) => (
+                <motion.div
+                  key={s.label}
+                  custom={i}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
                   <p className="text-3xl font-extrabold text-gold-500">{s.value}</p>
                   <p className="text-gray-400 text-sm mt-1">{s.label}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
             <div className="border-t border-gray-100 pt-5 text-center">
@@ -70,7 +115,7 @@ const About = () => {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
       </div>
     </section>
