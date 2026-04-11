@@ -39,10 +39,10 @@ const useLocations = (initialParams: LocationsParams = {}): UseLocationsReturn =
         },
       });
 
-      setLocations(data.results);
-      setCount(data.count);
-      setNext(data.next);
-      setPrevious(data.previous);
+      setLocations(Array.isArray(data.results) ? data.results : []);
+      setCount(data.count ?? 0);
+      setNext(data.next ?? null);
+      setPrevious(data.previous ?? null);
     } catch (err: unknown) {
       const message =
         (err as { response?: { data?: { detail?: string; message?: string } } })

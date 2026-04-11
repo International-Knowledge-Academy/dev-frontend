@@ -37,10 +37,10 @@ const useUsers = (initialParams: UsersParams = {}): UseUsersReturn => {
         },
       });
 
-      setUsers(data.results);
-      setCount(data.count);
-      setNext(data.next);
-      setPrevious(data.previous);
+      setUsers(Array.isArray(data.results) ? data.results : []);
+      setCount(data.count ?? 0);
+      setNext(data.next ?? null);
+      setPrevious(data.previous ?? null);
     } catch (err: unknown) {
       const message =
         (err as { response?: { data?: { detail?: string; message?: string } } })

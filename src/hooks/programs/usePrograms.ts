@@ -41,10 +41,10 @@ const usePrograms = (initialParams: ProgramsParams = {}): UseProgramsReturn => {
           ...(params.is_active !== undefined && { is_active: params.is_active }),
         },
       });
-      setPrograms(data.results);
-      setCount(data.count);
-      setNext(data.next);
-      setPrevious(data.previous);
+      setPrograms(Array.isArray(data.results) ? data.results : []);
+      setCount(data.count ?? 0);
+      setNext(data.next ?? null);
+      setPrevious(data.previous ?? null);
     } catch (err: unknown) {
       setError(
         (err as any)?.response?.data?.detail ??
