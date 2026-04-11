@@ -9,7 +9,10 @@ import UserCreatePage from "views/admin/users/UserCreatePage";
 import UserEditPage from "views/admin/users/UserEditPage";
 import UserProfilePage from "views/admin/users/UserProfilePage";
 import LocationCreatePage from "views/admin/locations/LocationCreatePage";
+import LocationDetailPage from "views/admin/locations/LocationDetailPage";
+import LocationEditPage from "views/admin/locations/LocationEditPage";
 import CategoryCreatePage from "views/admin/categories/CategoryCreatePage";
+import CategoryDetailPage from "views/admin/categories/CategoryDetailPage";
 import CategoryEditPage from "views/admin/categories/CategoryEditPage";
 import CourseCreatePage from "views/admin/courses/CourseCreatePage";
 import CourseEditPage from "views/admin/courses/CourseEditPage";
@@ -95,8 +98,11 @@ export default function Admin(props) {
                 <Route path="/users/create"        element={<UserCreatePage />} />
                 <Route path="/users/:id/edit"      element={<UserEditPage />} />
                 <Route path="/users/:id"           element={<UserProfilePage />} />
-                <Route path="/locations/create"    element={<LocationCreatePage />} />
-                <Route path="/categories/create"   element={<CategoryCreatePage />} />
+                <Route path="/locations/create"      element={<LocationCreatePage />} />
+                <Route path="/locations/:uid"        element={<LocationDetailPage />} />
+                <Route path="/locations/:uid/edit"   element={<LocationEditPage />} />
+                <Route path="/categories/create"    element={<CategoryCreatePage />} />
+                <Route path="/categories/:uid"      element={<CategoryDetailPage />} />
                 <Route path="/categories/:uid/edit" element={<CategoryEditPage />} />
                 <Route path="/courses/:uid"         element={<CourseDetailPage />} />
                 <Route path="/courses/create"       element={<CourseCreatePage />} />

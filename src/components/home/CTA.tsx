@@ -1,38 +1,54 @@
 // @ts-nocheck
-import { Link } from "react-router-dom";
+import { MdEmail } from "react-icons/md";
+import { SiWhatsapp } from "react-icons/si";
 
 const CTA = () => {
   return (
-    <section className="py-24 px-6 bg-navy-900 relative overflow-hidden">
+    <section className="py-24 px-6 bg-gold-500 relative overflow-hidden">
 
-      {/* Background glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gold-500 opacity-5 blur-3xl rounded-full" />
-      </div>
+      {/* Background blobs */}
+      <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-white opacity-10 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-white opacity-10 blur-3xl pointer-events-none" />
 
       <div className="relative z-10 max-w-3xl mx-auto text-center">
-        <span className="text-gold-400 font-semibold text-sm uppercase tracking-widest">
-          Get Started Today
+        <span className="text-navy-800 font-semibold text-sm uppercase tracking-widest">
+          Get In Touch
         </span>
-        <h2 className="text-4xl md:text-5xl font-extrabold text-white mt-4 mb-6 leading-tight">
-          Ready to Take Control?
+        <h2 className="text-4xl font-extrabold text-navy-900 mt-3 leading-tight">
+          Ready to Invest in Your Team?
         </h2>
-        <p className="text-navy-300 text-lg mb-10">
-          Sign in to access your dashboard and start managing your team and data right away.
+        <p className="text-navy-800 mt-5 text-base leading-relaxed max-w-xl mx-auto">
+          Contact us today to discuss a custom training program for your organization.
+          Our team will help you find the right format, field, and schedule.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            to="/auth/sign-in"
-            className="bg-gold-500 text-navy-900 font-bold px-10 py-4 rounded-full hover:bg-gold-400 transition shadow-lg shadow-gold-500/20 text-base"
+
+        {/* Buttons */}
+        <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="https://wa.me/601139936766"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-white font-bold px-8 py-4 rounded-full transition shadow-lg shadow-green-500/20 text-sm"
           >
-            Sign In Now
-          </Link>
-          <Link
-            to="/about"
-            className="border border-navy-500 text-white font-semibold px-10 py-4 rounded-full hover:border-gold-400 hover:text-gold-400 transition text-base"
+            <SiWhatsapp size={18} />
+            WhatsApp Us
+          </a>
+          <a
+            href="mailto:info@ika-edu.com"
+            className="inline-flex items-center justify-center gap-2 bg-navy-900 hover:bg-navy-800 text-white font-bold px-8 py-4 rounded-full transition shadow-lg text-sm"
           >
-            Learn More
-          </Link>
+            <MdEmail size={20} />
+            Email Us
+          </a>
+        </div>
+
+        {/* Contact details */}
+        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center text-navy-800 text-sm">
+          <span>info@ika-edu.com</span>
+          <span className="hidden sm:block">·</span>
+          <span>+601139936766</span>
+          <span className="hidden sm:block">·</span>
+          <span>www.ika-edu.com</span>
         </div>
       </div>
     </section>
