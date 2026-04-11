@@ -75,7 +75,13 @@ const ComingSoon = () => {
             className="relative z-10 flex items-center justify-between px-8 py-6 fade-up"
             style={{ animationDelay: "0.05s" }}
           >
-            <img src="/brand/IKA-logo-bg.png" alt="IKA Logo" className="h-12 w-auto" />
+            <div className="flex items-center gap-3">
+              <img src="/brand/IKA-logo-bg.png" alt="IKA Logo" className="h-12 w-auto" />
+              <div className="hidden sm:block">
+                <p className="text-navy-800 font-bold text-sm leading-tight">International Knowledge Academy</p>
+                <p className="text-gold-600 text-[10px] font-medium tracking-wide">for Training & Management Development</p>
+              </div>
+            </div>
             <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-gold-600 border border-gold-300 rounded-full px-4 py-1.5 bg-gold-50">
               Coming Soon
             </span>
@@ -126,44 +132,6 @@ const ComingSoon = () => {
               We're building something extraordinary. Drop your email and be the first to know when we launch.
             </p>
 
-            {/* Email form */}
-            <div className="fade-up w-full max-w-md" style={{ animationDelay: "0.55s" }}>
-              {!submitted ? (
-                <form
-                  onSubmit={handleSubmit}
-                  className="flex items-center gap-2 rounded-full px-2 py-2"
-                  style={{ border: "1.5px solid #e6c676", background: "#fffdf7" }}
-                >
-                  <MdEmail size={18} className="ml-3 flex-shrink-0 text-gold-500" />
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email address"
-                    required
-                    className="flex-1 text-sm outline-none bg-transparent min-w-0 text-navy-800 placeholder-navy-300"
-                    style={{ caretColor: "#D3AB5C" }}
-                  />
-                  <button
-                    type="submit"
-                    className="flex-shrink-0 text-white text-sm font-bold px-6 py-2.5 rounded-full transition-all hover:-translate-y-0.5"
-                    style={{
-                      background: "linear-gradient(135deg, #e6c676, #D3AB5C, #b8934a)",
-                      boxShadow: "0 4px 20px #D3AB5C40",
-                    }}
-                  >
-                    Notify Me
-                  </button>
-                </form>
-              ) : (
-                <div
-                  className="inline-flex items-center gap-2 font-semibold text-sm rounded-full px-6 py-3"
-                  style={{ color: "#b8934a", border: "1.5px solid #e6c676", background: "#fbf5e8" }}
-                >
-                  You're on the list — we'll be in touch!
-                </div>
-              )}
-            </div>
 
           </main>
 
