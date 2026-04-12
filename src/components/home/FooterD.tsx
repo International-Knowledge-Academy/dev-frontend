@@ -31,7 +31,7 @@ const item = {
 
 const FooterD = () => {
   return (
-    <footer className="bg-navy-900 relative overflow-hidden">
+    <footer className="bg-slate-900 relative overflow-hidden">
 
       {/* Giant "IKA" background text */}
       <div
@@ -39,7 +39,7 @@ const FooterD = () => {
         aria-hidden
       >
         <span
-          className="text-[28vw] font-extrabold text-navy-800 leading-none tracking-tighter"
+          className="text-[28vw] font-extrabold text-slate-800 leading-none tracking-tighter"
           style={{ opacity: 0.35 }}
         >
           IKA
@@ -62,13 +62,13 @@ const FooterD = () => {
         >
           <div>
             <img src="/brand/IKA-logo-bg.png" alt="IKA" className="h-12 w-auto mb-2 brightness-200" />
-            <p className="text-navy-300 text-sm">
+            <p className="text-slate-300 text-sm">
               International Knowledge Academy
             </p>
           </div>
           <a
             href="mailto:info@ika-edu.com"
-            className="group flex items-center gap-2 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-navy-900 font-semibold px-6 py-3 rounded-full text-sm transition-all duration-300"
+            className="group flex items-center gap-2 border border-gold-500 text-gold-400 hover:bg-gold-500 hover:text-slate-900 font-semibold px-6 py-3 rounded-full text-sm transition-all duration-300"
           >
             Get in Touch
             <MdArrowForward size={15} className="group-hover:translate-x-1 transition-transform duration-200" />
@@ -81,25 +81,25 @@ const FooterD = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-40px" }}
           variants={stagger}
-          className="grid grid-cols-1 md:grid-cols-3 gap-12 pb-12 border-b border-navy-700"
+          className="grid grid-cols-1 md:grid-cols-3 gap-12 pb-12 border-b border-slate-700"
         >
           {/* About */}
           <motion.div variants={item}>
             <h4 className="text-gold-500 font-bold text-xs uppercase tracking-widest mb-5">
               About Us
             </h4>
-            <p className="text-navy-300 text-sm leading-relaxed mb-5">
+            <p className="text-slate-300 text-sm leading-relaxed mb-5">
               Delivering world-class training programs that blend deep knowledge with practical
               experience — empowering organizations across 10 countries.
             </p>
-            <p className="text-navy-400 text-xs italic">
+            <p className="text-slate-400 text-xs italic">
               "Invest in Your Employees and Invest in the Future of Your Institution."
             </p>
             {/* Socials */}
             <div className="flex gap-2 mt-6">
               {socials.map((s) => (
                 <a key={s.label} href={s.href} target="_blank" rel="noreferrer"
-                  className="w-9 h-9 rounded-full border border-navy-700 text-navy-400 hover:border-gold-500 hover:text-gold-500 flex items-center justify-center transition-all duration-200"
+                  className="w-9 h-9 rounded-full border border-slate-700 text-slate-400 hover:border-gold-500 hover:text-gold-500 flex items-center justify-center transition-all duration-200"
                 >
                   {s.icon}
                 </a>
@@ -116,7 +116,7 @@ const FooterD = () => {
               {quickLinks.map((l) => (
                 <li key={l.to + l.label}>
                   <Link to={l.to}
-                    className="text-navy-300 text-sm hover:text-gold-400 transition-colors flex items-center gap-2 group"
+                    className="text-slate-300 text-sm hover:text-gold-400 transition-colors flex items-center gap-2 group"
                   >
                     <span className="h-px w-4 bg-gold-500 opacity-0 group-hover:opacity-100 transition-all duration-200 group-hover:w-5" />
                     {l.label}
@@ -141,12 +141,12 @@ const FooterD = () => {
                   <a href={c.href} target="_blank" rel="noreferrer"
                     className="group flex items-start gap-3"
                   >
-                    <span className="w-8 h-8 rounded-lg bg-navy-800 group-hover:bg-gold-500 text-gold-500 group-hover:text-navy-900 flex items-center justify-center flex-shrink-0 transition-all duration-200">
+                    <span className="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-gold-500 text-gold-500 group-hover:text-slate-900 flex items-center justify-center flex-shrink-0 transition-all duration-200">
                       {c.icon}
                     </span>
                     <span>
-                      <p className="text-navy-400 text-xs mb-0.5">{c.label}</p>
-                      <p className="text-navy-200 text-sm group-hover:text-gold-400 transition-colors">{c.text}</p>
+                      <p className="text-slate-400 text-xs mb-0.5">{c.label}</p>
+                      <p className="text-slate-200 text-sm group-hover:text-gold-400 transition-colors">{c.text}</p>
                     </span>
                   </a>
                 </li>
@@ -157,13 +157,13 @@ const FooterD = () => {
 
         {/* Bottom bar */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-navy-500 text-xs">
+          <p className="text-slate-500 text-xs">
             © {new Date().getFullYear()} International Knowledge Academy. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
-            <a href="#" className="text-navy-500 text-xs hover:text-gold-400 transition-colors">Privacy Policy</a>
-            <span className="text-navy-700">·</span>
-            <a href="#" className="text-navy-500 text-xs hover:text-gold-400 transition-colors">Terms of Service</a>
+            <a href="#" className="text-slate-500 text-xs hover:text-gold-400 transition-colors">Privacy Policy</a>
+            <span className="text-slate-700">·</span>
+            <a href="#" className="text-slate-500 text-xs hover:text-gold-400 transition-colors">Terms of Service</a>
           </div>
         </div>
       </div>
