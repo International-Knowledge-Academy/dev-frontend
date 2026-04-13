@@ -160,9 +160,9 @@ const Footer = () => {
             © {new Date().getFullYear()} International Knowledge Academy. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
-            <a href="#" className="text-slate-500 text-xs hover:text-gold-400 transition-colors">Privacy Policy</a>
+            <span className="text-slate-500 text-xs hover:text-gold-400 transition-colors cursor-pointer">Privacy Policy</span>
             <span className="text-slate-700">·</span>
-            <a href="#" className="text-slate-500 text-xs hover:text-gold-400 transition-colors">Terms of Service</a>
+            <span className="text-slate-500 text-xs hover:text-gold-400 transition-colors cursor-pointer">Terms of Service</span>
           </div>
         </div>
       </div>
