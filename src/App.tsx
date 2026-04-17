@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import HomeLayout from "layouts/home";
 import AuthLayout from "layouts/auth";
@@ -18,19 +18,26 @@ import CategoryTypePage from "views/home/categories/CategoryTypePage";
 
 import ProtectedRoute from "components/auth/ProtectedRoute";
 
+// Set to false when ready to go live
+const COMING_SOON = true;
+
 const App = () => {
   return (
     <Routes>
       {/* Public */}
       <Route element={<HomeLayout />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/training" element={<TrainingPage />} />
-        <Route path="/programs" element={<ProgramsPublicPage />} />
-        <Route path="/programs/:uid" element={<ProgramPage />} />
-        <Route path="/categories" element={<CategoriesHubPage />} />
-        <Route path="/categories/:typeSlug" element={<CategoryTypePage />} />
-        <Route path="/contact" element={<ContactPage />} />
+        {!COMING_SOON && (
+          <>
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/training" element={<TrainingPage />} />
+            <Route path="/programs" element={<ProgramsPublicPage />} />
+            <Route path="/programs/:uid" element={<ProgramPage />} />
+            <Route path="/categories" element={<CategoriesHubPage />} />
+            <Route path="/categories/:typeSlug" element={<CategoryTypePage />} />
+            <Route path="/contact" element={<ContactPage />} />
+          </>
+        )}
       </Route>
 
       {/* Auth */}
@@ -66,6 +73,9 @@ const App = () => {
           </div>
         }
       />
+
+      {/* Catch-all → Coming Soon */}
+      {COMING_SOON && <Route path="*" element={<Navigate to="/" replace />} />}
     </Routes>
   );
 };
