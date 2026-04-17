@@ -22,22 +22,26 @@ const LocationEditPage = () => {
     country:       "",
     address:       "",
     venue_details: "",
-    latitude:      "",
-    longitude:     "",
-    is_active:     true,
+    latitude:        "",
+    longitude:       "",
+    is_active:       true,
+    contact_phone:   "",
+    whatsapp_number: "",
   });
 
   useEffect(() => {
     if (location) {
       setForm({
-        name:          location.name,
-        city:          location.city,
-        country:       location.country,
-        address:       location.address,
-        venue_details: location.venue_details,
-        latitude:      location.latitude,
-        longitude:     location.longitude,
-        is_active:     location.is_active,
+        name:            location.name,
+        city:            location.city,
+        country:         location.country,
+        address:         location.address,
+        venue_details:   location.venue_details,
+        latitude:        location.latitude,
+        longitude:       location.longitude,
+        is_active:       location.is_active,
+        contact_phone:   location.contact_phone,
+        whatsapp_number: location.whatsapp_number,
       });
     }
   }, [location]);
@@ -134,6 +138,24 @@ const LocationEditPage = () => {
               label="Longitude"
               field="longitude"
               placeholder="55.2708"
+              required={false}
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={updateFormData}
+            />
+            <InputField
+              label="Contact Phone"
+              field="contact_phone"
+              placeholder="+971 50 000 0000"
+              required={false}
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={updateFormData}
+            />
+            <InputField
+              label="WhatsApp Number"
+              field="whatsapp_number"
+              placeholder="+971 50 000 0000"
               required={false}
               formData={form}
               errors={fieldErrors}

@@ -10,6 +10,8 @@ interface FieldErrors {
   venue_details?: string;
   latitude?: string;
   longitude?: string;
+  contact_phone?: string;
+  whatsapp_number?: string;
 }
 
 interface UseCreateLocationReturn {
@@ -37,6 +39,7 @@ const useCreateLocation = (): UseCreateLocationReturn => {
 
       const fields: (keyof FieldErrors)[] = [
         "name", "city", "country", "address", "venue_details", "latitude", "longitude",
+        "contact_phone", "whatsapp_number",
       ];
 
       const extracted: FieldErrors = {};

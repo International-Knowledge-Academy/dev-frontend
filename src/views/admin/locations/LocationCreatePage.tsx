@@ -21,6 +21,8 @@ const LocationCreatePage = () => {
     latitude:      "",
     longitude:     "",
     is_active:     true,
+    contact_phone:   "",
+    whatsapp_number: "",
   });
 
   const updateFormData = (key: string, value: any) =>
@@ -102,6 +104,24 @@ const LocationCreatePage = () => {
               label="Longitude"
               field="longitude"
               placeholder="55.2708"
+              required={false}
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={updateFormData}
+            />
+            <InputField
+              label="Contact Phone"
+              field="contact_phone"
+              placeholder="+971 50 000 0000"
+              required={false}
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={updateFormData}
+            />
+            <InputField
+              label="WhatsApp Number"
+              field="whatsapp_number"
+              placeholder="+971 50 000 0000"
               required={false}
               formData={form}
               errors={fieldErrors}

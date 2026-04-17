@@ -11,6 +11,8 @@ interface FieldErrors {
   latitude?: string;
   longitude?: string;
   is_active?: string;
+  contact_phone?: string;
+  whatsapp_number?: string;
 }
 
 interface UseUpdateLocationReturn {
@@ -39,6 +41,7 @@ const useUpdateLocation = (): UseUpdateLocationReturn => {
 
       const fields: (keyof FieldErrors)[] = [
         "name", "city", "country", "address", "venue_details", "latitude", "longitude", "is_active",
+        "contact_phone", "whatsapp_number",
       ];
 
       const extracted: FieldErrors = {};

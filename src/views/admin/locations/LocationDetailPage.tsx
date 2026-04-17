@@ -3,8 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   MdEdit, MdLocationOn, MdLocationCity, MdPublic,
   MdPlace, MdMyLocation, MdToggleOn, MdSchool,
-  MdCalendarToday, MdInfo,
+  MdCalendarToday, MdInfo, MdPhone,
 } from "react-icons/md";
+import { FaWhatsapp } from "react-icons/fa";
 import useGetLocation from "hooks/locations/useGetLocation";
 import Button from "components/ui/buttons/Button";
 
@@ -97,6 +98,21 @@ const LocationDetailPage = () => {
             icon={<MdInfo size={18} />}
             label="Venue Details"
             value={location.venue_details || "—"}
+          />
+        </div>
+
+        {/* Contact */}
+        <SectionTitle title="Contact" />
+        <div className="px-6 grid grid-cols-1 md:grid-cols-2">
+          <InfoRow
+            icon={<MdPhone size={18} />}
+            label="Contact Phone"
+            value={location.contact_phone || "—"}
+          />
+          <InfoRow
+            icon={<FaWhatsapp size={18} />}
+            label="WhatsApp Number"
+            value={location.whatsapp_number || "—"}
           />
         </div>
 
