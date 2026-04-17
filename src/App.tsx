@@ -41,7 +41,11 @@ const App = () => {
       </Route>
 
       {/* Auth */}
-      <Route path="auth/*" element={<AuthLayout />} />
+      {COMING_SOON ? (
+        <Route path="auth/*" element={<Navigate to="/" replace />} />
+      ) : (
+        <Route path="auth/*" element={<AuthLayout />} />
+      )}
 
       {/* Admin only */}
       <Route
