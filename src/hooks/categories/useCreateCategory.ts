@@ -35,9 +35,7 @@ const useCreateCategory = (): UseCreateCategoryReturn => {
         }
       )?.response?.data;
 
-      const fields: (keyof CreateCategoryPayload)[] = [
-        "name", "description", "type", "display_order", "is_active",
-      ];
+      const fields: (keyof CreateCategoryPayload)[] = ["name"];
 
       const extracted: CategoryFieldErrors = {};
       fields.forEach((field) => {

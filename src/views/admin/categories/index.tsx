@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   MdAdd, MdEdit, MdDelete, MdRefresh, MdVisibility,
-  MdCategory, MdToggleOn, MdSettings, MdSchool,
+  MdCategory, MdSettings,
 } from "react-icons/md";
 import useCategories from "hooks/categories/useCategories";
 import useDeleteCategory from "hooks/categories/useDeleteCategory";
@@ -15,27 +15,9 @@ import Divider from "components/ui/Divider";
 import PrevButton from "components/ui/buttons/PrevButton";
 import NextButton from "components/ui/buttons/NextButton";
 import SearchInput from "components/form/SearchInput";
-import FilterSelectField from "components/form/filter/FilterSelectField";
 import { useToast } from "context/ToastContext";
 import type { Category } from "types/category";
 
-const TYPE_OPTIONS = [
-  { value: "training",           label: "Training & Development" },
-  { value: "international_youth", label: "International & Youth" },
-  { value: "research",           label: "Research & Knowledge" },
-];
-
-const typeLabel: Record<string, string> = {
-  training:           "Training & Development",
-  international_youth: "International & Youth",
-  research:           "Research & Knowledge",
-};
-
-const typeBadgeClass: Record<string, string> = {
-  training:           "bg-blue-50 text-blue-700",
-  international_youth: "bg-purple-50 text-purple-700",
-  research:           "bg-amber-50 text-amber-700",
-};
 
 const CategoriesPage = () => {
   const navigate = useNavigate();
@@ -70,13 +52,6 @@ const CategoriesPage = () => {
             value={params.search ?? ""}
             onChange={(val) => setParams({ search: val })}
             placeholder="Search categories..."
-          />
-          <FilterSelectField
-            value={params.type ?? "all"}
-            onChange={(val) => setParams({ type: val === "all" ? undefined : val })}
-            icon={MdCategory}
-            defaultOption="All Types"
-            options={TYPE_OPTIONS}
           />
           <IconButton
             onClick={refetch}
@@ -118,12 +93,8 @@ const CategoriesPage = () => {
                 <thead>
                   <tr className="border-b border-slate-100 dark:border-navy-700">
                     {[
-                      { label: "Name",         icon: <MdCategory  size={14} /> },
-                      { label: "Type",         icon: <MdSchool    size={14} /> },
-                      { label: "Courses",      icon: <MdSchool    size={14} /> },
-                      { label: "Order",        icon: <MdSettings  size={14} /> },
-                      { label: "Status",       icon: <MdToggleOn  size={14} /> },
-                      { label: "Actions",      icon: <MdSettings  size={14} /> },
+                      { label: "Name",    icon: <MdCategory size={14} /> },
+                      { label: "Actions", icon: <MdSettings size={14} /> },
                     ].map(({ label, icon }) => (
                       <th key={label} className="px-5 py-3.5 text-left text-xs font-bold tracking-widest uppercase text-gray-400">
                         <span className="flex items-center gap-1.5">{icon}{label}</span>
@@ -140,38 +111,8 @@ const CategoriesPage = () => {
                           <div className="w-8 h-8 rounded-lg bg-navy-50 border border-navy-100 flex items-center justify-center text-navy-600 flex-shrink-0">
                             <MdCategory size={16} />
                           </div>
-                          <div>
-                            <p className="font-medium text-navy-800 dark:text-white">{cat.name}</p>
-                            {cat.description && (
-                              <p className="text-xs text-gray-400 truncate max-w-[200px]">{cat.description}</p>
-                            )}
-                          </div>
+                          <span className="font-medium text-navy-800 dark:text-white">{cat.name}</span>
                         </div>
-                      </td>
-                      {/* Type */}
-                      <td className="px-5 py-3.5">
-                        <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold ${typeBadgeClass[cat.type] ?? "bg-gray-50 text-gray-600"}`}>
-                          {typeLabel[cat.type] ?? cat.type_display ?? cat.type}
-                        </span>
-                      </td>
-                      {/* Courses */}
-                      <td className="px-5 py-3.5 text-gray-500 dark:text-navy-300">
-                        {cat.course_count}
-                      </td>
-                      {/* Order */}
-                      <td className="px-5 py-3.5 text-gray-500 dark:text-navy-300">
-                        {cat.display_order}
-                      </td>
-                      {/* Status */}
-                      <td className="px-5 py-3.5">
-                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${
-                          cat.is_active
-                            ? "bg-green-50 text-green-600 border-green-600"
-                            : "bg-red-50 text-red-500 border-red-600"
-                        }`}>
-                          <span className={`w-1.5 h-1.5 rounded-full ${cat.is_active ? "bg-green-500" : "bg-red-400"}`} />
-                          {cat.is_active ? "Active" : "Inactive"}
-                        </span>
                       </td>
                       {/* Actions */}
                       <td className="px-5 py-3.5">

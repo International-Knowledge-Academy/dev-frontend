@@ -33,8 +33,6 @@ const useCategories = (initialParams: CategoriesParams = {}): UseCategoriesRetur
           ...(params.page      && { page:      params.page }),
           ...(params.search    && { search:    params.search }),
           ...(params.ordering  && { ordering:  params.ordering }),
-          ...(params.type      && { type:      params.type }),
-          ...(params.is_active !== undefined && { is_active: params.is_active }),
         },
       });
 
@@ -62,10 +60,8 @@ const useCategories = (initialParams: CategoriesParams = {}): UseCategoriesRetur
       ...prev,
       ...updates,
       page:
-        updates.search    !== undefined ||
-        updates.ordering  !== undefined ||
-        updates.type      !== undefined ||
-        updates.is_active !== undefined
+        updates.search   !== undefined ||
+        updates.ordering !== undefined
           ? 1
           : (updates.page ?? prev.page),
     }));

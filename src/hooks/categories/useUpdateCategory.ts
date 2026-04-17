@@ -35,9 +35,7 @@ const useUpdateCategory = (): UseUpdateCategoryReturn => {
         }
       )?.response?.data;
 
-      const fields: (keyof UpdateCategoryPayload)[] = [
-        "name", "description", "type", "display_order", "is_active",
-      ];
+      const fields: (keyof UpdateCategoryPayload)[] = ["name"];
 
       const extracted: CategoryFieldErrors = {};
       fields.forEach((field) => {
