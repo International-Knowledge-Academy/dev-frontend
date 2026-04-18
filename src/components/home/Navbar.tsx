@@ -3,40 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   MdMenu, MdClose, MdKeyboardArrowDown,
-  MdSchool, MdPublic, MdMenuBook, MdArrowForward, MdGridView,
+  MdArrowForward, MdGridView, MdMenuBook,
 } from "react-icons/md";
-
-const navLinks = [
-  { label: "Home",    to: "/" },
-  { label: "About",   to: "/about" },
-  {
-    label: "Categories",
-    to: "/categories",
-    rich: true,
-    children: [
-      {
-        label: "Training & Development",
-        description: "Leadership, management & professional skills",
-        to: "/categories/training-development",
-        icon: MdSchool,
-      },
-      {
-        label: "International & Youth",
-        description: "Global exchange & youth leadership programs",
-        to: "/categories/international-youth",
-        icon: MdPublic,
-      },
-      {
-        label: "Research & Knowledge",
-        description: "Evidence-based consulting & knowledge services",
-        to: "/categories/research",
-        icon: MdMenuBook,
-      },
-    ],
-  },
-  { label: "Programs", to: "/training" },
-  { label: "Contact",  to: "/contact" },
-];
+import useCategories from "hooks/categories/useCategories";
 
 /* ── Plain dropdown (generic) ─────────────────────────────────────────────── */
 function Dropdown({ items, visible }) {
@@ -68,78 +37,73 @@ function Dropdown({ items, visible }) {
   );
 }
 
-/* ── Rich mega-dropdown (Categories) ─────────────────────────────────────── */
-function RichDropdown({ link, visible }) {
+/* ── Categories rich dropdown (dynamic) ──────────────────────────────────── */
+function CategoriesDropdown({ link, visible }) {
   return (
     <div
-      className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[340px] z-50 ${
+      className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[320px] z-50 ${
         visible ? "pointer-events-auto" : "pointer-events-none"
       }`}
     >
-    <div
-      className={`rounded-2xl bg-white shadow-2xl border border-gray-100 overflow-hidden transition-all duration-200 origin-top ${
-        visible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-      }`}
-    >
-      {/* Header */}
-      <div className="px-4 pt-4 pb-3 border-b border-gray-50">
-        <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">
-          Browse Training Fields
-        </p>
+      <div
+        className={`rounded-2xl bg-white shadow-2xl border border-gray-100 overflow-hidden transition-all duration-200 origin-top ${
+          visible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+        }`}
+      >
+        <div className="px-4 pt-4 pb-3 border-b border-gray-50">
+          <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">
+            Browse Categories
+          </p>
+        </div>
+
+        <div className="p-2 max-h-72 overflow-y-auto">
+          {link.children.length === 0 ? (
+            <p className="text-xs text-gray-400 px-4 py-3">No categories yet</p>
+          ) : (
+            link.children.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className="group flex items-center gap-3.5 px-3 py-3 rounded-xl hover:bg-navy-50 transition-colors duration-150"
+              >
+                <div className="w-9 h-9 rounded-lg bg-navy-50 text-navy-500 flex items-center justify-center flex-shrink-0 group-hover:bg-gold-50 group-hover:text-gold-600 transition-colors duration-150">
+                  <MdMenuBook size={18} />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-navy-800 group-hover:text-navy-600 leading-tight">
+                    {item.label}
+                  </p>
+                  {item.description && (
+                    <p className="text-xs text-gray-400 mt-0.5 leading-tight truncate">
+                      {item.description}
+                    </p>
+                  )}
+                </div>
+                <MdArrowForward
+                  size={14}
+                  className="flex-shrink-0 text-gray-300 group-hover:text-gold-500 group-hover:translate-x-0.5 transition-all duration-150"
+                />
+              </Link>
+            ))
+          )}
+        </div>
+
+        <div className="px-4 py-3 border-t border-gray-50 bg-slate-50/60">
+          <Link
+            to={link.to}
+            className="flex items-center justify-between text-xs font-semibold text-navy-600 hover:text-gold-600 transition-colors group"
+          >
+            <span className="flex items-center gap-1.5">
+              <MdGridView size={14} />
+              View All Categories
+            </span>
+            <MdArrowForward
+              size={13}
+              className="group-hover:translate-x-0.5 transition-transform duration-150"
+            />
+          </Link>
+        </div>
       </div>
-
-      {/* Category items */}
-      <div className="p-2">
-        {link.children.map((item) => {
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.to}
-              to={item.to}
-              className="group flex items-center gap-3.5 px-3 py-3 rounded-xl hover:bg-navy-50 transition-colors duration-150"
-            >
-              {/* Icon box */}
-              <div className="w-9 h-9 rounded-lg bg-navy-50 text-navy-500 flex items-center justify-center flex-shrink-0 group-hover:bg-gold-50 group-hover:text-gold-600 transition-colors duration-150">
-                <Icon size={18} />
-              </div>
-
-              {/* Text */}
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-navy-800 group-hover:text-navy-600 leading-tight">
-                  {item.label}
-                </p>
-                <p className="text-xs text-gray-400 mt-0.5 leading-tight truncate">
-                  {item.description}
-                </p>
-              </div>
-
-              {/* Arrow */}
-              <MdArrowForward
-                size={14}
-                className="ml-auto flex-shrink-0 text-gray-300 group-hover:text-gold-500 group-hover:translate-x-0.5 transition-all duration-150"
-              />
-            </Link>
-          );
-        })}
-      </div>
-
-      {/* Footer — View All */}
-      <div className="px-4 py-3 border-t border-gray-50 bg-slate-50/60">
-        <Link
-          to={link.to}
-          className="flex items-center justify-between text-xs font-semibold text-navy-600 hover:text-gold-600 transition-colors group"
-        >
-          <span className="flex items-center gap-1.5">
-            <MdGridView size={14} />
-            View All Categories
-          </span>
-          <MdArrowForward
-            size={13}
-            className="group-hover:translate-x-0.5 transition-transform duration-150"
-          />
-        </Link>
-      </div>
-    </div>
     </div>
   );
 }
@@ -191,8 +155,8 @@ function NavItem({ link, pathname }) {
         />
       </button>
 
-      {link.rich ? (
-        <RichDropdown link={link} visible={open} />
+      {link.dropdown === "categories" ? (
+        <CategoriesDropdown link={link} visible={open} />
       ) : (
         <Dropdown items={link.children} visible={open} />
       )}
@@ -206,6 +170,24 @@ const Navbar = () => {
   const [mobileExpanded, setMobileExpanded] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const { pathname } = useLocation();
+  const { categories } = useCategories();
+
+  const navLinks = [
+    { label: "Home",     to: "/" },
+    { label: "About",    to: "/about" },
+    {
+      label: "Categories",
+      to: "/categories",
+      dropdown: "categories",
+      children: categories.map((c) => ({
+        label: c.name,
+        description: "Explore programs in this category",
+        to: `/categories`,
+      })),
+    },
+    { label: "Programs", to: "/programs" },
+    { label: "Contact",  to: "/contact" },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -285,54 +267,37 @@ const Navbar = () => {
 
                     {isExpanded && (
                       <div className="ml-2 mt-1 mb-1 flex flex-col gap-0.5">
-                        {/* Rich items (with icon + description) */}
-                        {link.rich ? (
-                          <>
-                            {link.children.map((child) => {
-                              const Icon = child.icon;
-                              return (
-                                <Link
-                                  key={child.to}
-                                  to={child.to}
-                                  onClick={() => { setMenuOpen(false); setMobileExpanded(null); }}
-                                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-navy-50 transition group"
-                                >
-                                  <div className="w-8 h-8 rounded-lg bg-navy-50 text-navy-500 flex items-center justify-center flex-shrink-0 group-hover:bg-gold-50 group-hover:text-gold-600 transition-colors">
-                                    <Icon size={16} />
-                                  </div>
-                                  <div>
-                                    <p className="text-sm font-semibold text-navy-700 leading-tight">
-                                      {child.label}
-                                    </p>
-                                    <p className="text-xs text-gray-400 leading-tight mt-0.5">
-                                      {child.description}
-                                    </p>
-                                  </div>
-                                </Link>
-                              );
-                            })}
-                            {/* View All */}
-                            <Link
-                              to={link.to}
-                              onClick={() => { setMenuOpen(false); setMobileExpanded(null); }}
-                              className="flex items-center gap-2 px-3 py-2.5 mt-1 rounded-xl bg-slate-50 hover:bg-navy-50 transition"
-                            >
-                              <MdGridView size={15} className="text-navy-400" />
-                              <span className="text-sm font-semibold text-navy-600">View All Categories</span>
-                            </Link>
-                          </>
-                        ) : (
-                          link.children.map((child) => (
-                            <Link
-                              key={child.to}
-                              to={child.to}
-                              onClick={() => { setMenuOpen(false); setMobileExpanded(null); }}
-                              className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm text-navy-500 hover:bg-navy-50 hover:text-navy-700 transition"
-                            >
-                              <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0" />
-                              {child.label}
-                            </Link>
-                          ))
+                        {link.children.map((child) => (
+                          <Link
+                            key={child.to}
+                            to={child.to}
+                            onClick={() => { setMenuOpen(false); setMobileExpanded(null); }}
+                            className="group flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-navy-50 transition"
+                          >
+                            <div className="w-8 h-8 rounded-lg bg-navy-50 text-navy-500 flex items-center justify-center flex-shrink-0 group-hover:bg-gold-50 group-hover:text-gold-600 transition-colors">
+                              <MdMenuBook size={15} />
+                            </div>
+                            <div>
+                              <p className="text-sm font-semibold text-navy-700 group-hover:text-navy-600 leading-tight">
+                                {child.label}
+                              </p>
+                              {child.description && (
+                                <p className="text-xs text-gray-400 leading-tight mt-0.5 truncate max-w-[200px]">
+                                  {child.description}
+                                </p>
+                              )}
+                            </div>
+                          </Link>
+                        ))}
+                        {link.dropdown === "categories" && (
+                          <Link
+                            to={link.to}
+                            onClick={() => { setMenuOpen(false); setMobileExpanded(null); }}
+                            className="flex items-center gap-2 px-3 py-2.5 mt-1 rounded-xl bg-slate-50 hover:bg-navy-50 transition"
+                          >
+                            <MdGridView size={15} className="text-navy-400" />
+                            <span className="text-sm font-semibold text-navy-600">View All Categories</span>
+                          </Link>
                         )}
                       </div>
                     )}

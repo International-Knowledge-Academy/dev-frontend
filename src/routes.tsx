@@ -12,8 +12,8 @@ import DataTables from "views/admin/tables";
 import UsersPage from "views/admin/users";
 import LocationsPage from "views/admin/locations";
 import CategoriesPage from "views/admin/categories";
-import CoursesPage from "views/admin/courses";
 import ProgramsPage from "views/admin/programs";
+import FieldsPage from "views/admin/fields";
 
 // Account Manager Imports
 import ManagerDashboard from "views/manager/dashboard";
@@ -31,6 +31,7 @@ import {
   MdCategory,
   MdSchool,
   MdWorkspacePremium,
+  MdLayers,
 } from "react-icons/md";
 
 const routes = [
@@ -79,18 +80,18 @@ const routes = [
     component: <CategoriesPage />,
   },
   {
-    name: "Courses",
-    layout: "/admin",
-    path: "courses",
-    icon: <MdSchool className="h-6 w-6" />,
-    component: <CoursesPage />,
-  },
-  {
     name: "Programs",
     layout: "/admin",
     path: "programs",
     icon: <MdWorkspacePremium className="h-6 w-6" />,
     component: <ProgramsPage />,
+  },
+  {
+    name: "Fields",
+    layout: "/admin",
+    path: "fields",
+    icon: <MdLayers className="h-6 w-6" />,
+    component: <FieldsPage />,
   },
 
   // Account Manager routes
