@@ -6,8 +6,9 @@ import ManagerDashboard from "views/manager/dashboard";
 import ManagerProfile from "views/manager/profile";
 
 const pageTitles: Record<string, string> = {
-  "/account-manager/dashboard": "Dashboard",
-  "/account-manager/profile": "My Profile",
+  "/account-manager/dashboard":        "Dashboard",
+  "/account-manager/profile":          "My Profile",
+  "/account-manager/change-password":  "Change Password",
 };
 
 const ManagerLayout = () => {
@@ -33,8 +34,8 @@ const ManagerLayout = () => {
 
           <Routes>
             <Route path="dashboard" element={<ManagerDashboard />} />
-            <Route path="profile"   element={<ManagerProfile />} />
-            <Route path="/"         element={<Navigate to="/account-manager/dashboard" replace />} />
+            <Route path="profile"          element={<ManagerProfile />} />
+            <Route path="/"                element={<Navigate to="/account-manager/dashboard" replace />} />
           </Routes>
         </div>
       </div>

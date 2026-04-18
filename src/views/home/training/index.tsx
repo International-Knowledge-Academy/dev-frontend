@@ -12,7 +12,6 @@ import CourseCard from "components/training/CourseCard";
 
 import useCategories from "hooks/categories/useCategories";
 import useLocations from "hooks/locations/useLocations";
-import useCourses from "hooks/courses/useCourses";
 
 const container = {
   hidden: {},
@@ -36,11 +35,7 @@ const TrainingPage = () => {
   // Data
   const { categories } = useCategories({ is_active: true, ordering: "display_order", type: "training" });
   const { locations }  = useLocations({ is_active: true });
-  const { courses, count, loading, error, setParams } = useCourses({
-    is_active: true,
-    ...(initialCategory && { category: initialCategory }),
-  });
-
+  
   // Resolve selected category object for hero
   const selectedCategory = useMemo(
     () => categories.find((c) => c.uid === selectedCategoryUid) ?? null,

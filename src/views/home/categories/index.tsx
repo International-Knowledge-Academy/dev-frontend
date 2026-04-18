@@ -1,40 +1,25 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
-import { MdSchool, MdPublic, MdMenuBook } from "react-icons/md";
 
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
 import CategoriesHero from "components/categories/CategoriesHero";
-import TypeCard from "components/categories/TypeCard";
+import CategoryCard from "components/categories/CategoryCard";
+import useCategories from "hooks/categories/useCategories";
 
-const types = [
-  {
-    icon: MdSchool,
-    title: "Training & Development",
-    description:
-      "Professional development programs designed to enhance leadership, management, and technical skills across public and private sector organizations.",
-    href: "/categories/training-development",
-    delay: 0.1,
-  },
-  {
-    icon: MdPublic,
-    title: "International & Youth Programs",
-    description:
-      "Global exchange initiatives, youth leadership programs, and international partnerships that empower the next generation of leaders.",
-    href: "/categories/international-youth",
-    delay: 0.2,
-  },
-  {
-    icon: MdMenuBook,
-    title: "Research and Knowledge Services",
-    description:
-      "Evidence-based research, knowledge management consulting, and organizational development services tailored to institutional needs.",
-    href: "/categories/research",
-    delay: 0.3,
-  },
-];
+const container = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.07 } },
+};
+
+const cardItem = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+};
 
 const CategoriesHubPage = () => {
+  const { categories, loading, error } = useCategories();
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
@@ -49,18 +34,51 @@ const CategoriesHubPage = () => {
           className="text-center mb-12"
         >
           <h2 className="text-3xl font-extrabold text-navy-800 mb-3">
-            Our Training Fields
+            Our Training Categories
           </h2>
           <p className="text-gray-500 text-sm max-w-xl mx-auto">
-            Select a field to explore its specialized sub-categories and available programs.
+            Explore our specialized categories and discover programs tailored to your professional goals.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {types.map((t) => (
-            <TypeCard key={t.href} {...t} />
-          ))}
-        </div>
+        {/* Loading skeleton */}
+        {loading && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl border border-gray-100 p-6 animate-pulse">
+                <div className="w-11 h-11 bg-gray-100 rounded-xl mb-4" />
+                <div className="h-5 bg-gray-100 rounded w-3/4 mb-2" />
+                <div className="h-4 bg-gray-100 rounded w-1/2" />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Error */}
+        {!loading && error && (
+          <div className="text-center py-16 text-red-400">{error}</div>
+        )}
+
+        {/* Empty */}
+        {!loading && !error && categories.length === 0 && (
+          <div className="text-center py-20 text-gray-400">No categories available yet.</div>
+        )}
+
+        {/* Grid */}
+        {!loading && !error && categories.length > 0 && (
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
+            initial="hidden"
+            animate="visible"
+            variants={container}
+          >
+            {categories.map((cat) => (
+              <motion.div key={cat.uid} variants={cardItem}>
+                <CategoryCard category={cat} />
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
       </div>
 
       <Footer />

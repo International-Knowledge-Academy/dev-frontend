@@ -1,9 +1,10 @@
 // @ts-nocheck
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  MdEdit, MdWorkspacePremium, MdCategory, MdLocationOn,
+  MdEdit, MdWorkspacePremium, MdLayers, MdLocationOn,
   MdAccessTime, MdSettings, MdLanguage, MdCalendarToday,
   MdPeople, MdEmail, MdPhone, MdLink, MdDescription, MdToggleOn,
+  MdFlag, MdAttachMoney,
 } from "react-icons/md";
 import useGetProgram from "hooks/programs/useGetProgram";
 
@@ -92,8 +93,8 @@ const ProgramDetailPage = () => {
             )}
           </div>
           <div className="flex items-center gap-2 flex-wrap justify-end flex-shrink-0">
-            <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border ${typeBadge[program.type] ?? "bg-gray-100 text-gray-500 border-gray-200"}`}>
-              {program.type_display ?? program.type}
+            <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border ${typeBadge[program.program_type] ?? "bg-gray-100 text-gray-500 border-gray-200"}`}>
+              {program.program_type_display ?? program.program_type}
             </span>
             <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${statusBadge[program.status] ?? "bg-gray-100 text-gray-500 border-gray-200"}`}>
               <span className="w-1.5 h-1.5 rounded-full bg-current" />
@@ -114,9 +115,9 @@ const ProgramDetailPage = () => {
         <SectionTitle title="General" />
         <div className="px-6">
           <InfoRow
-            icon={<MdCategory size={18} />}
-            label="Category"
-            value={program.category?.name ?? "—"}
+            icon={<MdLayers size={18} />}
+            label="Field"
+            value={program.field?.name ?? "—"}
           />
           <InfoRow
             icon={<MdLocationOn size={18} />}
@@ -155,6 +156,13 @@ const ProgramDetailPage = () => {
               </span>
             }
           />
+          {(program.price || program.currency) && (
+            <InfoRow
+              icon={<MdAttachMoney size={18} />}
+              label="Price"
+              value={program.price ? `${program.price} ${program.currency ?? ""}`.trim() : "—"}
+            />
+          )}
         </div>
 
         {/* Schedule */}
@@ -200,39 +208,57 @@ const ProgramDetailPage = () => {
           />
         </div>
 
-        {/* Brochures */}
-        <SectionTitle title="Brochures" />
-        <div className="px-6">
-          <InfoRow
-            icon={<MdLink size={18} />}
-            label="Brochure URL (EN)"
-            value={
-              program.brochure_url_en
-                ? <a href={program.brochure_url_en} target="_blank" rel="noreferrer" className="text-navy-600 hover:underline break-all">{program.brochure_url_en}</a>
-                : "—"
-            }
-          />
-          <InfoRow
-            icon={<MdLink size={18} />}
-            label="Brochure URL (AR)"
-            value={
-              program.brochure_url_ar
-                ? <a href={program.brochure_url_ar} target="_blank" rel="noreferrer" className="text-navy-600 hover:underline break-all">{program.brochure_url_ar}</a>
-                : "—"
-            }
-          />
-        </div>
-
-        {/* Description */}
-        {program.description && (
+        {/* Brochure */}
+        {program.brochure_url && (
           <>
-            <SectionTitle title="Description" />
+            <SectionTitle title="Brochure" />
             <div className="px-6">
               <InfoRow
-                icon={<MdDescription size={18} />}
-                label="Description"
-                value={<span className="whitespace-pre-wrap">{program.description}</span>}
+                icon={<MdLink size={18} />}
+                label="Brochure URL"
+                value={
+                  <a href={program.brochure_url} target="_blank" rel="noreferrer" className="text-navy-600 hover:underline break-all">
+                    {program.brochure_url}
+                  </a>
+                }
               />
+            </div>
+          </>
+        )}
+
+        {/* Content */}
+        {(program.description || program.objectives || program.target_audience || program.prerequisites) && (
+          <>
+            <SectionTitle title="Content" />
+            <div className="px-6">
+              {program.description && (
+                <InfoRow
+                  icon={<MdDescription size={18} />}
+                  label="Description"
+                  value={<span className="whitespace-pre-wrap">{program.description}</span>}
+                />
+              )}
+              {program.objectives && (
+                <InfoRow
+                  icon={<MdFlag size={18} />}
+                  label="Objectives"
+                  value={<span className="whitespace-pre-wrap">{program.objectives}</span>}
+                />
+              )}
+              {program.target_audience && (
+                <InfoRow
+                  icon={<MdPeople size={18} />}
+                  label="Target Audience"
+                  value={<span className="whitespace-pre-wrap">{program.target_audience}</span>}
+                />
+              )}
+              {program.prerequisites && (
+                <InfoRow
+                  icon={<MdSettings size={18} />}
+                  label="Prerequisites"
+                  value={<span className="whitespace-pre-wrap">{program.prerequisites}</span>}
+                />
+              )}
             </div>
           </>
         )}

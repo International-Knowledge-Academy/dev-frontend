@@ -27,16 +27,17 @@ const useUpdateProgram = (): UseUpdateProgramReturn => {
       const responseData = (err as any)?.response?.data;
 
       const fields: (keyof CreateProgramPayload)[] = [
-        "name", "description", "type", "category", "location", "duration",
+        "name", "description", "objectives", "target_audience", "prerequisites",
+        "field", "location", "trainers", "program_type", "duration",
         "level", "mode", "language", "start_date", "end_date",
-        "max_participants", "brochure_url_en", "brochure_url_ar",
-        "contact_email", "contact_phone", "status", "is_active",
+        "max_participants", "brochure_url", "contact_email", "contact_phone",
+        "status", "is_active", "thumbnail", "price", "currency",
       ];
 
       const extracted: ProgramFieldErrors = {};
-      fields.forEach((field) => {
-        const val = responseData?.[field];
-        if (Array.isArray(val) && val[0]) extracted[field] = val[0];
+      fields.forEach((f) => {
+        const val = responseData?.[f];
+        if (Array.isArray(val) && val[0]) extracted[f] = val[0];
       });
 
       if (Object.keys(extracted).length) {

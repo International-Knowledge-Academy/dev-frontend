@@ -18,29 +18,15 @@ const CategoryCard = ({ category }: Props) => {
       <div className="h-1 w-full bg-gradient-to-r from-navy-600 via-gold-500 to-navy-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       <div className="p-6 flex flex-col flex-1">
-        {/* Icon + course count */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="w-11 h-11 rounded-xl bg-navy-50 text-navy-600 flex items-center justify-center group-hover:bg-gold-50 group-hover:text-gold-600 transition-colors duration-300">
-            <MdMenuBook size={22} />
-          </div>
-          {category.course_count > 0 && (
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-gold-50 text-gold-700">
-              {category.course_count} {category.course_count === 1 ? "Course" : "Courses"}
-            </span>
-          )}
+        {/* Icon */}
+        <div className="w-11 h-11 rounded-xl bg-navy-50 text-navy-600 flex items-center justify-center group-hover:bg-gold-50 group-hover:text-gold-600 transition-colors duration-300 mb-4">
+          <MdMenuBook size={22} />
         </div>
 
         {/* Name */}
-        <h3 className="text-navy-800 font-bold text-base leading-snug mb-2 group-hover:text-navy-600 transition-colors line-clamp-2">
+        <h3 className="text-navy-800 font-bold text-base leading-snug mb-2 group-hover:text-navy-600 transition-colors line-clamp-2 flex-1">
           {category.name}
         </h3>
-
-        {/* Description */}
-        {category.description && (
-          <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 mb-4 flex-1">
-            {category.description}
-          </p>
-        )}
 
         {/* CTA */}
         <div className="mt-auto pt-4 border-t border-gray-100">

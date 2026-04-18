@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useCreateProgram from "hooks/programs/useCreateProgram";
-import useCategories from "hooks/categories/useCategories";
+import useFields from "hooks/fields/useFields";
 import useLocations from "hooks/locations/useLocations";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
@@ -31,23 +31,34 @@ const STATUS_OPTIONS = [
   { value: "completed", label: "Completed" },
   { value: "cancelled", label: "Cancelled" },
 ];
+const CURRENCY_OPTIONS = [
+  { value: "MYR", label: "MYR — Malaysian Ringgit" },
+  { value: "USD", label: "USD — US Dollar" },
+  { value: "EUR", label: "EUR — Euro" },
+  { value: "GBP", label: "GBP — British Pound" },
+  { value: "AED", label: "AED — UAE Dirham" },
+  { value: "SAR", label: "SAR — Saudi Riyal" },
+];
 
 const ProgramCreatePage = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
   const { createProgram, loading, error, fieldErrors } = useCreateProgram();
 
-  const { categories } = useCategories({ is_active: true, ordering: "display_order", type: "international_youth" });
-  const { locations }  = useLocations({ is_active: true });
+  const { fields }    = useFields({ is_active: true });
+  const { locations } = useLocations({ is_active: true });
 
-  const categoryOptions = categories.map((c) => ({ value: c.uid, label: c.name }));
-  const locationOptions  = locations.map((l)  => ({ value: l.uid, label: `${l.name} — ${l.city}, ${l.country}` }));
+  const fieldOptions    = fields.map((f) => ({ value: f.uid, label: f.name }));
+  const locationOptions = locations.map((l) => ({ value: l.uid, label: `${l.name} — ${l.city}, ${l.country}` }));
 
   const [form, setForm] = useState({
     name:             "",
     description:      "",
-    type:             "course",
-    category:         "",
+    objectives:       "",
+    target_audience:  "",
+    prerequisites:    "",
+    program_type:     "course",
+    field:            "",
     location:         "",
     duration:         "",
     level:            "beginner",
@@ -56,12 +67,13 @@ const ProgramCreatePage = () => {
     start_date:       "",
     end_date:         "",
     max_participants: "",
-    brochure_url_en:  "",
-    brochure_url_ar:  "",
+    brochure_url:     "",
     contact_email:    "",
     contact_phone:    "",
     status:           "upcoming",
     is_active:        true,
+    price:            "",
+    currency:         "MYR",
   });
 
   const updateFormData = (key: string, value: any) =>
@@ -72,6 +84,8 @@ const ProgramCreatePage = () => {
     const created = await createProgram({
       ...form,
       max_participants: form.max_participants ? Number(form.max_participants) : null,
+      field:    form.field    || undefined,
+      location: form.location || undefined,
     });
     if (created) {
       addToast("Program created successfully", "success");
@@ -111,7 +125,7 @@ const ProgramCreatePage = () => {
           <div className="md:col-span-2">
             <SelectField
               label="Program Type"
-              field="type"
+              field="program_type"
               options={TYPE_OPTIONS}
               formData={form}
               errors={fieldErrors}
@@ -119,11 +133,11 @@ const ProgramCreatePage = () => {
             />
           </div>
 
-          {/* Category + Location */}
+          {/* Field + Location */}
           <SelectField
-            label="Category"
-            field="category"
-            options={categoryOptions}
+            label="Field"
+            field="field"
+            options={fieldOptions}
             formData={form}
             errors={fieldErrors}
             updateFormData={updateFormData}
@@ -213,6 +227,26 @@ const ProgramCreatePage = () => {
             updateFormData={updateFormData}
           />
 
+          {/* Price + Currency */}
+          <InputField
+            label="Price"
+            field="price"
+            type="text"
+            required={false}
+            placeholder="e.g. 1500.00"
+            formData={form}
+            errors={fieldErrors}
+            updateFormData={updateFormData}
+          />
+          <SelectField
+            label="Currency"
+            field="currency"
+            options={CURRENCY_OPTIONS}
+            formData={form}
+            errors={fieldErrors}
+            updateFormData={updateFormData}
+          />
+
           {/* Contact Email + Phone */}
           <InputField
             label="Contact Email"
@@ -235,25 +269,18 @@ const ProgramCreatePage = () => {
             updateFormData={updateFormData}
           />
 
-          {/* Brochure URLs */}
-          <InputField
-            label="Brochure URL (EN)"
-            field="brochure_url_en"
-            required={false}
-            placeholder="https://..."
-            formData={form}
-            errors={fieldErrors}
-            updateFormData={updateFormData}
-          />
-          <InputField
-            label="Brochure URL (AR)"
-            field="brochure_url_ar"
-            required={false}
-            placeholder="https://..."
-            formData={form}
-            errors={fieldErrors}
-            updateFormData={updateFormData}
-          />
+          {/* Brochure URL — full width */}
+          <div className="md:col-span-2">
+            <InputField
+              label="Brochure URL"
+              field="brochure_url"
+              required={false}
+              placeholder="https://..."
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={updateFormData}
+            />
+          </div>
 
           {/* Description — full width */}
           <div className="md:col-span-2">
@@ -261,13 +288,49 @@ const ProgramCreatePage = () => {
               label="Description"
               field="description"
               required={false}
-              rows={4}
-              placeholder="Detailed description of the program content, objectives, and outcomes..."
+              rows={3}
+              placeholder="Detailed description of the program content..."
               formData={form}
               errors={fieldErrors}
               updateFormData={updateFormData}
             />
           </div>
+
+          {/* Objectives — full width */}
+          <div className="md:col-span-2">
+            <TextareaField
+              label="Objectives"
+              field="objectives"
+              required={false}
+              rows={3}
+              placeholder="What participants will achieve..."
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={updateFormData}
+            />
+          </div>
+
+          {/* Target Audience + Prerequisites */}
+          <TextareaField
+            label="Target Audience"
+            field="target_audience"
+            required={false}
+            rows={3}
+            placeholder="Who this program is for..."
+            formData={form}
+            errors={fieldErrors}
+            updateFormData={updateFormData}
+          />
+          <TextareaField
+            label="Prerequisites"
+            field="prerequisites"
+            required={false}
+            rows={3}
+            placeholder="Requirements before joining..."
+            formData={form}
+            errors={fieldErrors}
+            updateFormData={updateFormData}
+          />
 
           {/* Active toggle — full width */}
           <div className="md:col-span-2">

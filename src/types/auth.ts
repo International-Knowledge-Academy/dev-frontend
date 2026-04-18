@@ -7,6 +7,26 @@ export interface AuthUser {
   role: UserRole;
 }
 
+export interface UserProfile {
+  uid: string;
+  title: string;
+  bio: string;
+  years_experience: number | null;
+  certifications: string;
+  linkedin_url: string;
+  cv: string | null;
+  primary_email: string;
+  secondary_email: string;
+  address: string;
+  country: string;
+  city: string;
+  postal_code: string;
+  phone: string;
+  whatsapp: string;
+  profile_picture: string | null;
+  specializations: number[];
+}
+
 export interface User {
   id: number;
   uid: string;
@@ -21,6 +41,7 @@ export interface User {
   updated_at: string;
   groups: number[];
   user_permissions: number[];
+  profile?: UserProfile | null;
 }
 
 export interface PaginatedUsers {

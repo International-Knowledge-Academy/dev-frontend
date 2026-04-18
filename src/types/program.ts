@@ -3,11 +3,9 @@ export type ProgramLevel  = "beginner" | "intermediate" | "advanced";
 export type ProgramMode   = "online" | "offline" | "hybrid";
 export type ProgramStatus = "upcoming" | "ongoing" | "completed" | "cancelled";
 
-export interface ProgramCategory {
+export interface ProgramField {
   uid: string;
   name: string;
-  type: string;
-  type_display: string;
 }
 
 export interface ProgramLocation {
@@ -17,31 +15,43 @@ export interface ProgramLocation {
   country: string;
 }
 
+export interface ProgramTrainer {
+  uid: string;
+  user: { uid: string; name: string };
+  title: string;
+  profile_picture: string;
+}
+
 export interface Program {
   uid: string;
   name: string;
   description: string;
-  type: ProgramType;
-  type_display: string;
-  category: ProgramCategory;
-  location: ProgramLocation;
+  objectives: string;
+  target_audience: string;
+  prerequisites: string;
+  program_type: ProgramType;
+  program_type_display?: string;
+  field: ProgramField | null;
+  location: ProgramLocation | null;
+  trainers: ProgramTrainer[];
   duration: string;
   level: ProgramLevel;
-  level_display: string;
+  level_display?: string;
   mode: ProgramMode;
-  mode_display: string;
+  mode_display?: string;
   language: string;
   start_date: string | null;
   end_date: string | null;
   status: ProgramStatus;
-  status_display: string;
+  status_display?: string;
   is_active: boolean;
-  // Detail-only fields
   max_participants?: number | null;
-  brochure_url_en?: string;
-  brochure_url_ar?: string;
+  brochure_url?: string;
   contact_email?: string;
   contact_phone?: string;
+  thumbnail?: string;
+  price?: string;
+  currency?: string;
 }
 
 export interface PaginatedPrograms {
@@ -55,9 +65,9 @@ export interface ProgramsParams {
   page?: number;
   search?: string;
   ordering?: string;
-  category?: string;
+  field?: string;
   location?: string;
-  type?: ProgramType | "";
+  program_type?: ProgramType | "";
   level?: ProgramLevel | "";
   mode?: ProgramMode | "";
   status?: ProgramStatus | "";
@@ -67,23 +77,29 @@ export interface ProgramsParams {
 
 export interface CreateProgramPayload {
   name: string;
-  description: string;
-  type: ProgramType;
-  category: string;
-  location: string;
-  duration: string;
+  description?: string;
+  objectives?: string;
+  target_audience?: string;
+  prerequisites?: string;
+  field?: string;
+  location?: string;
+  trainers?: string[];
+  program_type: ProgramType;
+  duration?: string;
   level: ProgramLevel;
   mode: ProgramMode;
-  language: string;
-  start_date: string;
-  end_date: string;
-  max_participants: number | null;
-  brochure_url_en: string;
-  brochure_url_ar: string;
-  contact_email: string;
-  contact_phone: string;
+  language?: string;
+  start_date?: string;
+  end_date?: string;
+  max_participants?: number | null;
+  brochure_url?: string;
+  contact_email?: string;
+  contact_phone?: string;
   status: ProgramStatus;
   is_active: boolean;
+  thumbnail?: string;
+  price?: string;
+  currency?: string;
 }
 
 export type ProgramFieldErrors = Partial<Record<keyof CreateProgramPayload, string>>;

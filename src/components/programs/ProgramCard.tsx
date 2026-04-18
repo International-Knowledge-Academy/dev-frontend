@@ -30,7 +30,7 @@ interface Props {
 
 const ProgramCard = ({ program }: Props) => {
   const navigate = useNavigate();
-  const type  = typeConfig[program.type] ?? typeConfig.course;
+  const type  = typeConfig[program.program_type] ?? typeConfig.course;
   const flag  = countryFlags[program.location?.country] ?? "🌍";
 
   return (
@@ -58,12 +58,12 @@ const ProgramCard = ({ program }: Props) => {
           )}
         </div>
 
-        {/* Category */}
-        {program.category && (
+        {/* Field */}
+        {program.field && (
           <div className="flex items-center gap-1.5 mb-3">
             <MdSchool size={13} className="text-gold-500 flex-shrink-0" />
             <span className="text-xs text-gold-600 font-medium truncate">
-              {program.category.name}
+              {program.field.name}
             </span>
           </div>
         )}

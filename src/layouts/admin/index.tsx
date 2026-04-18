@@ -14,13 +14,13 @@ import LocationEditPage from "views/admin/locations/LocationEditPage";
 import CategoryCreatePage from "views/admin/categories/CategoryCreatePage";
 import CategoryDetailPage from "views/admin/categories/CategoryDetailPage";
 import CategoryEditPage from "views/admin/categories/CategoryEditPage";
-import CourseCreatePage from "views/admin/courses/CourseCreatePage";
-import CourseEditPage from "views/admin/courses/CourseEditPage";
-import CourseDetailPage from "views/admin/courses/CourseDetailPage";
 import ProgramsPage from "views/admin/programs";
 import ProgramCreatePage from "views/admin/programs/ProgramCreatePage";
 import ProgramEditPage from "views/admin/programs/ProgramEditPage";
 import ProgramDetailPage from "views/admin/programs/ProgramDetailPage";
+import FieldCreatePage from "views/admin/fields/FieldCreatePage";
+import FieldEditPage from "views/admin/fields/FieldEditPage";
+import FieldDetailPage from "views/admin/fields/FieldDetailPage";
 
 export default function Admin(props) {
   const { ...rest } = props;
@@ -104,13 +104,13 @@ export default function Admin(props) {
                 <Route path="/categories/create"    element={<CategoryCreatePage />} />
                 <Route path="/categories/:uid"      element={<CategoryDetailPage />} />
                 <Route path="/categories/:uid/edit" element={<CategoryEditPage />} />
-                <Route path="/courses/:uid"         element={<CourseDetailPage />} />
-                <Route path="/courses/create"       element={<CourseCreatePage />} />
-                <Route path="/courses/:uid/edit"    element={<CourseEditPage />} />
                 <Route path="/programs"             element={<ProgramsPage />} />
                 <Route path="/programs/:uid"        element={<ProgramDetailPage />} />
                 <Route path="/programs/create"      element={<ProgramCreatePage />} />
                 <Route path="/programs/:uid/edit"   element={<ProgramEditPage />} />
+                <Route path="/fields/create"        element={<FieldCreatePage />} />
+                <Route path="/fields/:uid"          element={<FieldDetailPage />} />
+                <Route path="/fields/:uid/edit"       element={<FieldEditPage />} />
 
                 <Route
                   path="/"

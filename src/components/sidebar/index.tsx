@@ -63,28 +63,7 @@ const Sidebar = ({ open, onClose }) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 px-4 py-3 mx-3 mt-4 rounded-xl bg-navy-50 border border-navy-100">
-          <div className="relative flex-shrink-0">
-            <div className="w-9 h-9 rounded-full bg-navy-500 flex items-center justify-center text-white font-bold text-sm">
-              {user?.name?.[0]?.toUpperCase() ?? "?"}
-            </div>
-            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-400 border-2 border-white" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-navy-800 truncate leading-tight">
-              {user?.name ?? "Loading..."}
-            </p>
-            <p className="text-[10px] font-bold tracking-widest uppercase text-gold-500 leading-tight mt-0.5">
-              {label}
-            </p>
-          </div>
-        </div>
-
-        <p className="px-6 mt-5 mb-1.5 text-[10px] font-bold tracking-widest uppercase text-gray-400">
-          Main Menu
-        </p>
-
-        <div className="flex-1 overflow-y-auto px-3">
+        <div className="mt-5 flex-1 overflow-y-auto px-3">
           <Links routes={routes} layout={layout} />
         </div>
 

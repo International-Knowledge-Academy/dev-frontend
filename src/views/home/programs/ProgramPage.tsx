@@ -95,7 +95,7 @@ const ProgramPage = () => {
     );
   }
 
-  const type = typeConfig[program.type] ?? typeConfig.course;
+  const type = typeConfig[program.program_type] ?? typeConfig.course;
   const flag = countryFlags[program.location?.country] ?? "🌍";
   const startDate = formatDate(program.start_date);
   const endDate   = formatDate(program.end_date);
@@ -140,9 +140,9 @@ const ProgramPage = () => {
               {type.icon}
               {type.label}
             </span>
-            {program.category && (
+            {program.field && (
               <span className="text-xs text-gold-400 font-medium">
-                {program.category.name}
+                {program.field.name}
               </span>
             )}
             <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full border ${statusBadge[program.status] ?? "bg-gray-50 text-gray-500 border-gray-200"}`}>
@@ -325,8 +325,8 @@ const ProgramPage = () => {
               </motion.div>
             )}
 
-            {/* Brochures */}
-            {(program.brochure_url_en || program.brochure_url_ar) && (
+            {/* Brochure */}
+            {program.brochure_url && (
               <motion.div
                 initial={{ opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -334,30 +334,17 @@ const ProgramPage = () => {
                 className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-3"
               >
                 <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400">
-                  Brochures
+                  Brochure
                 </h3>
-                {program.brochure_url_en && (
-                  <a
-                    href={program.brochure_url_en}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-3 text-sm text-navy-700 hover:text-gold-600 transition"
-                  >
-                    <MdLink size={18} className="text-gold-500 flex-shrink-0" />
-                    Download Brochure (EN)
-                  </a>
-                )}
-                {program.brochure_url_ar && (
-                  <a
-                    href={program.brochure_url_ar}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-3 text-sm text-navy-700 hover:text-gold-600 transition"
-                  >
-                    <MdLink size={18} className="text-gold-500 flex-shrink-0" />
-                    Download Brochure (AR)
-                  </a>
-                )}
+                <a
+                  href={program.brochure_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-3 text-sm text-navy-700 hover:text-gold-600 transition"
+                >
+                  <MdLink size={18} className="text-gold-500 flex-shrink-0" />
+                  Download Brochure
+                </a>
               </motion.div>
             )}
 

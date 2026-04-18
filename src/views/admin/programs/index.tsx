@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   MdAdd, MdEdit, MdDelete, MdRefresh, MdVisibility,
   MdWorkspacePremium, MdToggleOn, MdSettings,
-  MdLocationOn, MdCategory,
+  MdLocationOn, MdLayers,
 } from "react-icons/md";
 import usePrograms from "hooks/programs/usePrograms";
 import useDeleteProgram from "hooks/programs/useDeleteProgram";
@@ -62,7 +62,7 @@ const ProgramsPage = () => {
   const { programs, count, loading, error, params, setParams, refetch } = usePrograms();
   const { deleteProgram, loading: deleting } = useDeleteProgram();
 
-  const [deleteOpen, setDeleteOpen]         = useState(false);
+  const [deleteOpen, setDeleteOpen]           = useState(false);
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
 
   const openDelete = (program: Program) => { setSelectedProgram(program); setDeleteOpen(true); };
@@ -92,8 +92,8 @@ const ProgramsPage = () => {
             placeholder="Search programs..."
           />
           <FilterSelectField
-            value={params.type ?? "all"}
-            onChange={(val) => setParams({ type: val === "all" ? undefined : val })}
+            value={params.program_type ?? "all"}
+            onChange={(val) => setParams({ program_type: val === "all" ? undefined : val })}
             icon={MdWorkspacePremium}
             defaultOption="All Types"
             options={TYPE_OPTIONS}
@@ -164,7 +164,7 @@ const ProgramsPage = () => {
                     {[
                       { label: "Program",  icon: <MdWorkspacePremium size={14} /> },
                       { label: "Type",     icon: <MdWorkspacePremium size={14} /> },
-                      { label: "Category", icon: <MdCategory size={14} /> },
+                      { label: "Field",    icon: <MdLayers size={14} /> },
                       { label: "Location", icon: <MdLocationOn size={14} /> },
                       { label: "Level",    icon: <MdSettings size={14} /> },
                       { label: "Status",   icon: <MdSettings size={14} /> },
@@ -200,15 +200,15 @@ const ProgramsPage = () => {
 
                       {/* Type */}
                       <td className="px-5 py-3.5">
-                        <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border ${typeBadge[program.type] ?? "bg-gray-50 text-gray-500 border-gray-200"}`}>
-                          {program.type_display ?? program.type}
+                        <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border ${typeBadge[program.program_type] ?? "bg-gray-50 text-gray-500 border-gray-200"}`}>
+                          {program.program_type_display ?? program.program_type}
                         </span>
                       </td>
 
-                      {/* Category */}
+                      {/* Field */}
                       <td className="px-5 py-3.5">
                         <span className="text-gray-600 dark:text-navy-200 text-sm">
-                          {program.category?.name ?? "—"}
+                          {program.field?.name ?? "—"}
                         </span>
                       </td>
 

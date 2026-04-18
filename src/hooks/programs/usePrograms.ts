@@ -29,15 +29,15 @@ const usePrograms = (initialParams: ProgramsParams = {}): UseProgramsReturn => {
     try {
       const { data } = await axiosInstance.get<PaginatedPrograms>("/programs", {
         params: {
-          ...(params.page      && { page:      params.page }),
-          ...(params.search    && { search:    params.search }),
-          ...(params.ordering  && { ordering:  params.ordering }),
-          ...(params.category  && { category:  params.category }),
-          ...(params.location  && { location:  params.location }),
-          ...(params.type      && { type:      params.type }),
-          ...(params.level     && { level:     params.level }),
-          ...(params.mode      && { mode:      params.mode }),
-          ...(params.status    && { status:    params.status }),
+          ...(params.page         && { page:         params.page }),
+          ...(params.search       && { search:       params.search }),
+          ...(params.ordering     && { ordering:     params.ordering }),
+          ...(params.field        && { field:        params.field }),
+          ...(params.location     && { location:     params.location }),
+          ...(params.program_type && { program_type: params.program_type }),
+          ...(params.level        && { level:        params.level }),
+          ...(params.mode         && { mode:         params.mode }),
+          ...(params.status       && { status:       params.status }),
           ...(params.is_active !== undefined && { is_active: params.is_active }),
         },
       });
@@ -63,14 +63,14 @@ const usePrograms = (initialParams: ProgramsParams = {}): UseProgramsReturn => {
       ...prev,
       ...updates,
       page:
-        updates.search    !== undefined ||
-        updates.category  !== undefined ||
-        updates.location  !== undefined ||
-        updates.type      !== undefined ||
-        updates.level     !== undefined ||
-        updates.mode      !== undefined ||
-        updates.status    !== undefined ||
-        updates.is_active !== undefined
+        updates.search       !== undefined ||
+        updates.field        !== undefined ||
+        updates.location     !== undefined ||
+        updates.program_type !== undefined ||
+        updates.level        !== undefined ||
+        updates.mode         !== undefined ||
+        updates.status       !== undefined ||
+        updates.is_active    !== undefined
           ? 1
           : (updates.page ?? prev.page),
     }));

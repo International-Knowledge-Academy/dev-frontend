@@ -109,7 +109,7 @@ const LocationsPage = () => {
                       { label: "City",         icon: <MdLocationCity size={14} /> },
                       { label: "Country",      icon: <MdPublic       size={14} /> },
                       { label: "Status",       icon: <MdToggleOn     size={14} /> },
-                      { label: "Course Count", icon: <MdSchool       size={14} /> },
+                      { label: "Programs",     icon: <MdSchool       size={14} /> },
                       { label: "Actions",      icon: <MdSettings     size={14} /> },
                     ].map(({ label, icon }) => (
                       <th key={label} className="px-5 py-3.5 text-left text-xs font-bold tracking-widest uppercase text-gray-400">
