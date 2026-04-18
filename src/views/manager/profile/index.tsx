@@ -5,7 +5,7 @@ const ManagerProfile = () => {
   const { user } = useAuth();
 
   return (
-    <div className="mt-3">
+    <div className="mt-3 max-w-5xl mx-auto">
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-navy-700">My Profile</h2>
       </div>

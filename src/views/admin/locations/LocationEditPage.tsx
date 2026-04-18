@@ -75,7 +75,7 @@ const LocationEditPage = () => {
   }
 
   return (
-    <div className="">
+    <div className="max-w-5xl mx-auto">
       <div className="bg-white dark:bg-navy-800 rounded-2xl border border-gray-100 dark:border-navy-700 shadow-sm">
         <div className="px-6 py-4 border-b border-gray-100 dark:border-navy-700">
           <h1 className="text-base font-bold text-navy-800 dark:text-white">Edit Location</h1>

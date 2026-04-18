@@ -81,7 +81,7 @@ const ProgramsPage = () => {
   const totalPages = Math.ceil(count / 10);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100">
+    <div className="bg-white rounded-2xl border border-slate-100 max-w-5xl mx-auto">
 
       {/* Toolbar */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-5 px-6">
