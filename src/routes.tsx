@@ -26,7 +26,7 @@ import {
   MdBarChart,
   MdPerson,
   MdDashboard,
-  MdPeople,
+  MdAdminPanelSettings,
   MdLocationOn,
   MdCategory,
   MdSchool,
@@ -57,12 +57,13 @@ const routes = [
     path: "profile",
     icon: <MdPerson className="h-6 w-6" />,
     component: <Profile />,
+    hide: true,
   },
   {
     name: "Users",
     layout: "/admin",
     path: "users",
-    icon: <MdPeople className="h-6 w-6" />,
+    icon: <MdAdminPanelSettings className="h-6 w-6" />,
     component: <UsersPage />,
   },
   {

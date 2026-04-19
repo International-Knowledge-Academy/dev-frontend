@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  MdAdd, MdEdit, MdDelete, MdRefresh, MdVisibility,
+  MdAdd, MdEdit, MdDelete, MdRefresh,
   MdCategory, MdSettings,
 } from "react-icons/md";
 import useCategories from "hooks/categories/useCategories";
@@ -25,7 +25,7 @@ const CategoriesPage = () => {
   const { categories, count, loading, error, params, setParams, refetch } = useCategories();
   const { deleteCategory, loading: deleting } = useDeleteCategory();
 
-  const [deleteOpen, setDeleteOpen]         = useState(false);
+  const [deleteOpen, setDeleteOpen]             = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
 
   const openDelete = (category: Category) => { setSelectedCategory(category); setDeleteOpen(true); };
@@ -80,7 +80,7 @@ const CategoriesPage = () => {
 
       {/* Table */}
       <div className="pb-5 px-6">
-        <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden dark:bg-navy-800 dark:border-navy-700">
+        <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
           {loading ? (
             <Loading text="Fetching categories..." />
           ) : error ? (
@@ -91,10 +91,10 @@ const CategoriesPage = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-slate-100 dark:border-navy-700">
+                  <tr className="border-b border-slate-100">
                     {[
                       { label: "Name",    icon: <MdCategory size={14} /> },
-                      { label: "Actions", icon: <MdSettings size={14} /> },
+                      { label: "Actions", icon: <MdSettings  size={14} /> },
                     ].map(({ label, icon }) => (
                       <th key={label} className="px-5 py-3.5 text-left text-xs font-bold tracking-widest uppercase text-gray-400">
                         <span className="flex items-center gap-1.5">{icon}{label}</span>
@@ -102,28 +102,25 @@ const CategoriesPage = () => {
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50 dark:divide-navy-700">
+                <tbody className="divide-y divide-gray-50">
                   {categories.map((cat) => (
-                    <tr key={cat.uid} className="hover:bg-gray-50 dark:hover:bg-navy-700 transition">
+                    <tr
+                      key={cat.uid}
+                      onClick={() => navigate(`/admin/categories/${cat.uid}`)}
+                      className="hover:bg-gray-50 transition cursor-pointer"
+                    >
                       {/* Name */}
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-lg bg-navy-50 border border-navy-100 flex items-center justify-center text-navy-600 flex-shrink-0">
                             <MdCategory size={16} />
                           </div>
-                          <span className="font-medium text-navy-800 dark:text-white">{cat.name}</span>
+                          <span className="font-medium text-navy-800">{cat.name}</span>
                         </div>
                       </td>
                       {/* Actions */}
-                      <td className="px-5 py-3.5">
+                      <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center gap-1">
-                          <button
-                            onClick={() => navigate(`/admin/categories/${cat.uid}`)}
-                            className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-50 hover:text-navy-700 transition"
-                            title="View"
-                          >
-                            <MdVisibility size={16} />
-                          </button>
                           <button
                             onClick={() => navigate(`/admin/categories/${cat.uid}/edit`)}
                             className="p-1.5 rounded-lg text-navy-400 hover:bg-navy-50 hover:text-navy-700 transition"

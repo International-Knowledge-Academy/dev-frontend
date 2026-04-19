@@ -117,6 +117,9 @@ module.exports = {
       borderRadius: {
         primary: "20px",
       },
+      maxWidth: {
+        "8xl": "1440px",
+      },
     },
     screens: {
       sm: "576px",

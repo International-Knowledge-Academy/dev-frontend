@@ -11,7 +11,7 @@ export function SidebarLinks({ routes, layout = "/admin" }) {
   return (
     <nav className="flex flex-col gap-0.5">
       {routes.map((route, index) => {
-        if (route.layout !== layout) return null;
+        if (route.layout !== layout || route.hide) return null;
         const active = isActive(route.path);
 
         return (
