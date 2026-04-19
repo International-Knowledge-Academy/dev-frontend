@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MdAddLocation, MdRefresh, MdPlace, MdLocationCity, MdPublic, MdToggleOn, MdSettings, MdVisibility, MdSchool, MdEdit, MdDelete, MdWarning } from "react-icons/md";
+import { MdAddLocation, MdRefresh, MdPlace, MdLocationCity, MdPublic, MdToggleOn, MdSettings, MdSchool, MdEdit, MdDelete, MdWarning } from "react-icons/md";
 import useLocations from "hooks/locations/useLocations";
 import useDeleteLocation from "hooks/locations/useDeleteLocation";
 import { useToast } from "context/ToastContext";
@@ -92,7 +92,7 @@ const LocationsPage = () => {
       {/* Table */}
       <div className="pb-5 px-6">
 
-        <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden dark:bg-navy-800 dark:border-navy-700">
+        <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
           {loading ? (
             <Loading text="Fetching locations data..." />
           ) : error ? (
@@ -103,14 +103,14 @@ const LocationsPage = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-slate-100 dark:border-navy-700">
+                  <tr className="border-b border-slate-100">
                     {[
-                      { label: "Name",         icon: <MdPlace        size={14} /> },
-                      { label: "City",         icon: <MdLocationCity size={14} /> },
-                      { label: "Country",      icon: <MdPublic       size={14} /> },
-                      { label: "Status",       icon: <MdToggleOn     size={14} /> },
-                      { label: "Programs",     icon: <MdSchool       size={14} /> },
-                      { label: "Actions",      icon: <MdSettings     size={14} /> },
+                      { label: "Name",     icon: <MdPlace        size={14} /> },
+                      { label: "City",     icon: <MdLocationCity size={14} /> },
+                      { label: "Country",  icon: <MdPublic       size={14} /> },
+                      { label: "Status",   icon: <MdToggleOn     size={14} /> },
+                      { label: "Programs", icon: <MdSchool       size={14} /> },
+                      { label: "Actions",  icon: <MdSettings     size={14} /> },
                     ].map(({ label, icon }) => (
                       <th key={label} className="px-5 py-3.5 text-left text-xs font-bold tracking-widest uppercase text-gray-400">
                         <span className="flex items-center gap-1.5">{icon}{label}</span>
@@ -118,22 +118,26 @@ const LocationsPage = () => {
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50 dark:divide-navy-700">
+                <tbody className="divide-y divide-gray-50">
                   {locations.map((location) => (
-                    <tr key={location.uid} className="hover:bg-gray-50 dark:hover:bg-navy-700 transition">
+                    <tr
+                      key={location.uid}
+                      onClick={() => navigate(`/admin/locations/${location.uid}`)}
+                      className="hover:bg-gray-50 transition cursor-pointer"
+                    >
                       {/* Name */}
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-lg bg-navy-500 border border-navy-400 flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
                             {location.name?.[0]?.toUpperCase() ?? "?"}
                           </div>
-                          <span className="font-medium text-navy-800 dark:text-white">{location.name}</span>
+                          <span className="font-medium text-navy-800 truncate">{location.name}</span>
                         </div>
                       </td>
                       {/* City */}
-                      <td className="px-5 py-3.5 text-gray-500 dark:text-navy-300">{location.city}</td>
+                      <td className="px-5 py-3.5 text-gray-500">{location.city}</td>
                       {/* Country */}
-                      <td className="px-5 py-3.5 text-gray-500 dark:text-navy-300">{location.country}</td>
+                      <td className="px-5 py-3.5 text-gray-500">{location.country}</td>
                       {/* Status */}
                       <td className="px-5 py-3.5">
                         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${
@@ -145,33 +149,26 @@ const LocationsPage = () => {
                           {location.is_active ? "Active" : "Inactive"}
                         </span>
                       </td>
-                      {/* Course Count */}
+                      {/* Program Count */}
                       <td className="px-5 py-3.5">
-                        <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-navy-50 text-navy-700 dark:bg-navy-700 dark:text-white">
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-navy-50 text-navy-700">
                           {location.course_count}
                         </span>
                       </td>
                       {/* Actions */}
-                      <td className="px-5 py-3.5">
+                      <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center gap-1">
                           <button
-                            onClick={() => navigate(`/admin/locations/${location.uid}`)}
-                            className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-50 hover:text-navy-700 transition"
-                            title="View Location"
-                          >
-                            <MdVisibility size={16} />
-                          </button>
-                          <button
                             onClick={() => navigate(`/admin/locations/${location.uid}/edit`)}
-                            className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-50 hover:text-navy-700 transition"
-                            title="Edit Location"
+                            className="p-1.5 rounded-lg text-navy-400 hover:bg-navy-50 hover:text-navy-700 transition"
+                            title="Edit"
                           >
                             <MdEdit size={16} />
                           </button>
                           <button
                             onClick={() => setDeleteTarget(location)}
                             className="p-1.5 rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-500 transition"
-                            title="Delete Location"
+                            title="Delete"
                           >
                             <MdDelete size={16} />
                           </button>
@@ -218,7 +215,7 @@ const LocationsPage = () => {
       message={
         <>
           Are you sure you want to delete{" "}
-          <span className="font-semibold text-navy-800 dark:text-white">{deleteTarget?.name}</span>?
+          <span className="font-semibold text-navy-800">{deleteTarget?.name}</span>?
           {" "}This action cannot be undone.
         </>
       }
