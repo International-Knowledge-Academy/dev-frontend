@@ -7,6 +7,8 @@ import AuthLayout from "layouts/auth";
 import AdminLayout from "layouts/admin";
 import ManagerLayout from "layouts/manager";
 
+
+
 import HomePage from "views/home/default";
 import AboutPage from "views/home/about";
 import TrainingPage from "views/home/training";
