@@ -25,7 +25,7 @@ const usePatchUser = (): UsePatchUserReturn => {
     setFieldErrors({});
 
     try {
-      const { data } = await axiosInstance.patch<User>(`/auth/users/${id}/`, payload);
+      const { data } = await axiosInstance.patch<User>(`/auth/users/${id}`, payload);
       return data;
     } catch (err: unknown) {
       const responseData = (

@@ -26,10 +26,10 @@ const FieldDetailPage = () => {
 
   return (
     <div className="space-y-4 max-w-5xl mx-auto">
-      <div className="bg-white dark:bg-navy-800 rounded-2xl border border-gray-100 dark:border-navy-700 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
 
         {/* Header */}
-        <div className="px-6 py-5 border-b border-gray-100 dark:border-navy-700 flex items-center gap-4">
+        <div className="px-6 py-5 border-b border-gray-100 flex items-center gap-4">
           <div
             className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
             style={{
@@ -40,10 +40,10 @@ const FieldDetailPage = () => {
             <MdLayers size={22} />
           </div>
           <div className="flex-1 min-w-0">
-            <h1 className="text-base font-bold text-navy-800 dark:text-white">{field.name}</h1>
-            <p className="text-xs text-gray-400 mt-0.5">{field.uid}</p>
+            <h1 className="text-base font-bold text-navy-800 truncate">{field.name}</h1>
+            <p className="text-xs text-gray-400 mt-0.5 truncate">{field.uid}</p>
           </div>
-          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${
+          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border flex-shrink-0 ${
             field.is_active
               ? "bg-green-50 text-green-600 border-green-600"
               : "bg-red-50 text-red-500 border-red-600"
@@ -56,69 +56,56 @@ const FieldDetailPage = () => {
         {/* Details grid */}
         <div className="px-6 py-5 grid grid-cols-1 md:grid-cols-2 gap-5">
 
-          {/* Name */}
           <div>
             <p className="text-xs text-gray-400 mb-1">Name</p>
-            <p className="text-sm font-medium text-navy-800 dark:text-white">{field.name}</p>
+            <p className="text-sm font-medium text-navy-800 truncate">{field.name}</p>
           </div>
 
-          {/* Category */}
           <div>
             <p className="text-xs text-gray-400 mb-1">Category</p>
-            <p className="text-sm font-medium text-navy-800 dark:text-white">
+            <p className="text-sm font-medium text-navy-800 truncate">
               {field.category?.name ?? <span className="italic text-gray-400">None</span>}
             </p>
           </div>
 
-          {/* Programs count */}
           <div>
             <p className="text-xs text-gray-400 mb-1">Programs</p>
-            <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-navy-50 text-navy-700 dark:bg-navy-700 dark:text-white">
+            <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-navy-50 text-navy-700">
               {field.program_count ?? 0}
             </span>
           </div>
 
-          {/* Description */}
           {field.description && (
             <div className="md:col-span-2">
               <p className="text-xs text-gray-400 mb-1">Description</p>
-              <p className="text-sm text-gray-600 dark:text-navy-300 leading-relaxed">{field.description}</p>
+              <p className="text-sm text-gray-600 leading-relaxed">{field.description}</p>
             </div>
           )}
 
-          {/* Background Color */}
           <div>
             <p className="text-xs text-gray-400 mb-1">Background Color</p>
             <div className="flex items-center gap-2">
               {field.hex_color && (
-                <span
-                  className="w-6 h-6 rounded-md border border-gray-200 flex-shrink-0"
-                  style={{ backgroundColor: field.hex_color }}
-                />
+                <span className="w-6 h-6 rounded-md border border-gray-200 flex-shrink-0" style={{ backgroundColor: field.hex_color }} />
               )}
-              <span className="text-sm font-medium text-navy-800 dark:text-white font-mono">
+              <span className="text-sm font-medium text-navy-800 font-mono truncate">
                 {field.hex_color || <span className="italic text-gray-400">Not set</span>}
               </span>
             </div>
           </div>
 
-          {/* Text Color */}
           <div>
             <p className="text-xs text-gray-400 mb-1">Text Color</p>
             <div className="flex items-center gap-2">
               {field.text_color && (
-                <span
-                  className="w-6 h-6 rounded-md border border-gray-200 flex-shrink-0"
-                  style={{ backgroundColor: field.text_color }}
-                />
+                <span className="w-6 h-6 rounded-md border border-gray-200 flex-shrink-0" style={{ backgroundColor: field.text_color }} />
               )}
-              <span className="text-sm font-medium text-navy-800 dark:text-white font-mono">
+              <span className="text-sm font-medium text-navy-800 font-mono truncate">
                 {field.text_color || <span className="italic text-gray-400">Not set</span>}
               </span>
             </div>
           </div>
 
-          {/* Thumbnail */}
           {field.thumbnail && (
             <div className="md:col-span-2">
               <p className="text-xs text-gray-400 mb-2">Thumbnail</p>
@@ -130,7 +117,6 @@ const FieldDetailPage = () => {
             </div>
           )}
 
-          {/* Video URL */}
           {field.video && (
             <div className="md:col-span-2">
               <p className="text-xs text-gray-400 mb-1">Video URL</p>
@@ -147,12 +133,12 @@ const FieldDetailPage = () => {
         </div>
 
         {/* Trainers */}
-        {field.trainers && field.trainers.length > 0 && (
-          <div className="px-6 py-5 border-t border-gray-100 dark:border-navy-700">
+        {field.trainers?.length > 0 && (
+          <div className="px-6 py-5 border-t border-gray-100">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Trainers</p>
             <div className="flex flex-col gap-3">
               {field.trainers.map((trainer) => (
-                <div key={trainer.uid} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-navy-700 border border-gray-100 dark:border-navy-600">
+                <div key={trainer.uid} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100">
                   {trainer.profile_picture ? (
                     <img
                       src={trainer.profile_picture}
@@ -165,8 +151,8 @@ const FieldDetailPage = () => {
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-navy-800 dark:text-white">{trainer.user?.name}</p>
-                    <p className="text-xs text-gray-400">{trainer.title}</p>
+                    <p className="text-sm font-semibold text-navy-800 truncate">{trainer.user?.name}</p>
+                    <p className="text-xs text-gray-400 truncate">{trainer.title}</p>
                     {trainer.bio && (
                       <p className="text-xs text-gray-500 mt-0.5 truncate">{trainer.bio}</p>
                     )}
@@ -178,18 +164,18 @@ const FieldDetailPage = () => {
         )}
 
         {/* Actions */}
-        <div className="px-6 py-4 border-t border-gray-100 dark:border-navy-700 flex gap-2">
+        <div className="px-6 py-4 border-t border-gray-100 flex gap-2">
           <button
             type="button"
             onClick={() => navigate("/admin/fields")}
-            className="flex-1 rounded-xl border border-gray-200 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
+            className="flex-1 rounded-md lg:rounded-lg border border-gray-200 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
           >
             Back
           </button>
           <button
             type="button"
             onClick={() => navigate(`/admin/fields/${uid}/edit`)}
-            className="flex-1 rounded-xl bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition flex items-center justify-center gap-2"
+            className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition flex items-center justify-center gap-2"
           >
             <MdEdit size={16} />
             Edit Field

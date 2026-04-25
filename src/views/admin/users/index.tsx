@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MdPersonAdd, MdAdd, MdSearch, MdEdit, MdDelete, MdRefresh, MdPerson, MdEmail, MdBadge, MdToggleOn, MdSettings, MdVisibility } from "react-icons/md";
+import { MdPersonAdd, MdEdit, MdDelete, MdRefresh, MdPerson, MdEmail, MdBadge, MdToggleOn, MdSettings, MdAdminPanelSettings, MdManageAccounts, MdSchool } from "react-icons/md";
 import useUsers from "hooks/users/useUsers";
 import useDeleteUser from "hooks/users/useDeleteUser";
 import DeleteUserModal from "./components/DeleteUserModal";
@@ -19,6 +19,19 @@ import type { User } from "types/auth";
 const roleLabel: Record<string, string> = {
   admin:           "Admin",
   account_manager: "Account Manager",
+  trainer:         "Trainer",
+};
+
+const roleIcon: Record<string, React.ReactNode> = {
+  admin:           <MdAdminPanelSettings size={16} />,
+  account_manager: <MdManageAccounts size={16} />,
+  trainer:         <MdSchool size={16} />,
+};
+
+const roleIconStyle: Record<string, string> = {
+  admin:           "bg-navy-800 border-navy-700 text-white",
+  account_manager: "bg-gold-500 border-gold-400 text-white",
+  trainer:         "bg-green-600 border-green-500 text-white",
 };
 
 const UsersPage = () => {
@@ -64,6 +77,7 @@ const UsersPage = () => {
             options={[
               { value: "admin",           label: "Admin" },
               { value: "account_manager", label: "Account Manager" },
+              { value: "trainer",         label: "Trainer" },
             ]}
           />
           <IconButton
@@ -126,14 +140,14 @@ const UsersPage = () => {
             </thead>
             <tbody className="divide-y divide-gray-50 dark:divide-navy-700">
               {users.map((user) => (
-                <tr key={user.uid} className="hover:bg-gray-50 dark:hover:bg-navy-700 transition">
+                <tr key={user.uid} onClick={() => navigate(`/admin/users/${user.uid}`)} className="hover:bg-gray-50 transition cursor-pointer">
                   {/* Name */}
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-navy-500 border border-navy-400 flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
-                        {user.name?.[0]?.toUpperCase() ?? "?"}
+                      <div className={`w-8 h-8 rounded-md lg:rounded-lg border flex items-center justify-center flex-shrink-0 ${roleIconStyle[user.role] ?? "bg-navy-500 border-navy-400 text-white"}`}>
+                        {roleIcon[user.role] ?? <MdPerson size={16} />}
                       </div>
-                      <span className="font-medium text-navy-800 dark:text-white">{user.name}</span>
+                      <span className="font-medium text-navy-800">{user.name}</span>
                     </div>
                   </td>
                   {/* Email */}
@@ -154,15 +168,8 @@ const UsersPage = () => {
                     </span>
                   </td>
                   {/* Actions */}
-                  <td className="px-5 py-3.5">
+                  <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center gap-1">
-                      <button
-                        onClick={() => navigate(`/admin/users/${user.uid}`)}
-                        className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-50 hover:text-navy-700 transition"
-                        title="View Profile"
-                      >
-                        <MdVisibility size={16} />
-                      </button>
                       <button
                         onClick={() => navigate(`/admin/users/${user.uid}/edit`)}
                         className="p-1.5 rounded-lg text-navy-400 hover:bg-navy-50 hover:text-navy-700 transition"

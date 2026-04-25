@@ -1,9 +1,16 @@
 // @ts-nocheck
 import { useState } from "react";
+import { motion } from "framer-motion";
 import InputField from "components/form/InputField";
 import PasswordField from "components/form/PasswordField";
 import Checkbox from "components/checkbox";
 import useLogin from "hooks/auth/useLogin";
+
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5, ease: "easeOut", delay },
+});
 
 export default function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -26,16 +33,23 @@ export default function SignIn() {
   };
 
   return (
-    <div className="mt-16 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
-      <div className="mt-[10vh] w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]">
-        <h4 className="mb-2.5 text-4xl font-bold text-navy-700 dark:text-white">
-          Sign In
-        </h4>
-        <p className="mb-9 ml-1 text-base text-gray-600">
-          Enter your email and password to sign in!
-        </p>
+    <div className="flex min-h-screen w-full items-center justify-center px-5 md:mx-0 md:px-0 md:items-center md:justify-start">
+      <div className="w-full max-w-[420px] md:pl-4 lg:pl-0">
 
-        <form onSubmit={handleSubmit}>
+        {/* Mobile logo */}
+        <motion.div {...fadeUp(0)} className="flex flex-col items-center mb-8 md:hidden">
+          <img src="/brand/IKA Logo-02.png" alt="IKA" className="w-16 h-16 object-contain mb-3" />
+          <h2 className="text-lg font-black text-navy-800">International Knowledge Academy</h2>
+        </motion.div>
+
+        <motion.h4 {...fadeUp(0)} className="mb-2 text-3xl font-bold text-navy-800">
+          Sign In
+        </motion.h4>
+        <motion.p {...fadeUp(0.08)} className="mb-8 text-sm text-gray-500">
+          Enter your email and password to sign in.
+        </motion.p>
+
+        <motion.form {...fadeUp(0.16)} onSubmit={handleSubmit}>
           <InputField
             label="Email"
             field="email"
@@ -53,17 +67,12 @@ export default function SignIn() {
             updateFormData={updateFormData}
           />
 
-          <div className="mb-4 flex items-center justify-between px-2">
-            <div className="flex items-center">
+          <div className="mb-5 flex items-center justify-between px-1">
+            <div className="flex items-center gap-2">
               <Checkbox />
-              <p className="ml-2 text-sm font-medium text-navy-700 dark:text-white">
-                Keep me logged In
-              </p>
+              <p className="text-sm font-medium text-navy-700">Keep me logged in</p>
             </div>
-            <a
-              className="text-sm font-medium text-navy-500 hover:text-navy-600 dark:text-white"
-              href=" "
-            >
+            <a className="text-sm font-medium text-navy-500 hover:text-navy-700 transition-colors" href=" ">
               Forgot Password?
             </a>
           </div>
@@ -75,11 +84,11 @@ export default function SignIn() {
           <button
             type="submit"
             disabled={loading}
-            className="linear mt-2 w-full rounded-xl bg-navy-800 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-navy-900 active:bg-navy-700 disabled:opacity-60 disabled:cursor-not-allowed"
+            className="mt-2 w-full rounded-md lg:rounded-lg bg-navy-800 py-3 text-base font-semibold text-white transition duration-200 hover:bg-navy-900 active:bg-navy-700 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
-        </form>
+        </motion.form>
       </div>
     </div>
   );

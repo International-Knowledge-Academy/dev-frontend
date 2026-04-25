@@ -64,7 +64,7 @@ const UserProfilePage = () => {
     : user.email?.[0]?.toUpperCase() ?? "?";
 
   return (
-    <div className="max-w-3xl space-y-4">
+    <div className="max-w-5xl m-auto space-y-4">
 
       {/* Header */}
       <div className="bg-white dark:bg-navy-800 rounded-2xl border border-gray-100 dark:border-navy-700 shadow-sm overflow-hidden">
@@ -131,7 +131,6 @@ const UserProfilePage = () => {
         <div className="px-6">
           <InfoRow icon={<MdPerson size={18} />} label="Full Name" value={user.name || "—"} />
           <InfoRow icon={<MdEmail size={18} />} label="Email" value={user.email} />
-          <InfoRow icon={<MdBadge size={18} />} label="User ID" value={<span className="font-mono text-xs text-gray-500">{user.uid ?? user.id}</span>} />
           <InfoRow
             icon={<MdAdminPanelSettings size={18} />}
             label="Role"

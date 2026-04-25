@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  MdAdd, MdEdit, MdDelete, MdRefresh, MdVisibility,
+  MdAdd, MdEdit, MdDelete, MdRefresh,
   MdLayers, MdSettings, MdToggleOn, MdWarning,
 } from "react-icons/md";
 import useFields from "hooks/fields/useFields";
@@ -45,13 +45,27 @@ const FieldsPage = () => {
     <>
       <div className="bg-white rounded-2xl border border-slate-100 max-w-5xl mx-auto">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-5 px-6">
-          <div className="flex items-center gap-3">
+        <div className="pt-5 px-6 space-y-3">
+          {/* Row 1: Search + Actions */}
+          <div className="flex items-center justify-between gap-3">
             <SearchInput
               value={params.search ?? ""}
               onChange={(val) => setParams({ search: val })}
               placeholder="Search fields..."
             />
+            <div className="flex items-center gap-3 flex-shrink-0">
+              <p className="text-sm text-gray-400 whitespace-nowrap">{count} fields</p>
+              <Button
+                variant="dark-navy"
+                text="Add Field"
+                icon={<MdAdd />}
+                onClick={() => navigate("/admin/fields/create")}
+              />
+            </div>
+          </div>
+
+          {/* Row 2: Filters */}
+          <div className="flex items-center gap-3">
             <FilterSelectField
               value={params.category ?? "all"}
               onChange={(val) => setParams({ category: val === "all" ? undefined : val })}
@@ -61,9 +75,7 @@ const FieldsPage = () => {
             />
             <FilterSelectField
               value={params.is_active === undefined ? "all" : String(params.is_active)}
-              onChange={(val) =>
-                setParams({ is_active: val === "all" ? undefined : val === "true" })
-              }
+              onChange={(val) => setParams({ is_active: val === "all" ? undefined : val === "true" })}
               icon={MdToggleOn}
               defaultOption="All"
               options={[
@@ -82,23 +94,13 @@ const FieldsPage = () => {
               className="rounded-xl p-2.5"
             />
           </div>
-
-          <div className="flex items-center gap-4">
-            <Button
-              variant="dark-navy"
-              text="Add Field"
-              icon={<MdAdd />}
-              onClick={() => navigate("/admin/fields/create")}
-            />
-            <p className="text-sm text-gray-400 mt-0.5">{count} fields</p>
-          </div>
         </div>
 
         <Divider />
 
         {/* Table */}
         <div className="pb-5 px-6">
-          <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden dark:bg-navy-800 dark:border-navy-700">
+          <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
             {loading ? (
               <Loading text="Fetching fields..." />
             ) : error ? (
@@ -109,7 +111,7 @@ const FieldsPage = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-slate-100 dark:border-navy-700">
+                    <tr className="border-b border-slate-100">
                       {[
                         { label: "Name",     icon: <MdLayers   size={14} /> },
                         { label: "Category", icon: <MdLayers   size={14} /> },
@@ -123,25 +125,25 @@ const FieldsPage = () => {
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-50 dark:divide-navy-700">
+                  <tbody className="divide-y divide-gray-50">
                     {fields.map((field) => (
-                      <tr key={field.uid} className="hover:bg-gray-50 dark:hover:bg-navy-700 transition">
+                      <tr
+                        key={field.uid}
+                        onClick={() => navigate(`/admin/fields/${field.uid}`)}
+                        className="hover:bg-gray-50 transition cursor-pointer"
+                      >
                         {/* Name */}
                         <td className="px-5 py-3.5">
                           <div className="flex items-center gap-3">
-                            {field.hex_color ? (
-                              <span
-                                className="w-3 h-3 rounded-full flex-shrink-0 border border-white shadow-sm"
-                                style={{ backgroundColor: field.hex_color }}
-                              />
-                            ) : (
-                              <span className="w-3 h-3 rounded-full flex-shrink-0 bg-gray-200" />
-                            )}
-                            <span className="font-medium text-navy-800 dark:text-white">{field.name}</span>
+                            <span
+                              className="w-3 h-3 rounded-full flex-shrink-0 border border-white shadow-sm"
+                              style={{ backgroundColor: field.hex_color || "#cbd5e1" }}
+                            />
+                            <span className="font-medium text-navy-800 truncate">{field.name}</span>
                           </div>
                         </td>
                         {/* Category */}
-                        <td className="px-5 py-3.5 text-gray-500 dark:text-navy-300">
+                        <td className="px-5 py-3.5 text-gray-500 truncate">
                           {field.category?.name ?? <span className="text-gray-300 italic">—</span>}
                         </td>
                         {/* Status */}
@@ -157,20 +159,13 @@ const FieldsPage = () => {
                         </td>
                         {/* Programs */}
                         <td className="px-5 py-3.5">
-                          <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-navy-50 text-navy-700 dark:bg-navy-700 dark:text-white">
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-navy-50 text-navy-700">
                             {field.program_count ?? 0}
                           </span>
                         </td>
                         {/* Actions */}
-                        <td className="px-5 py-3.5">
+                        <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                           <div className="flex items-center gap-1">
-                            <button
-                              onClick={() => navigate(`/admin/fields/${field.uid}`)}
-                              className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-50 hover:text-navy-700 transition"
-                              title="View"
-                            >
-                              <MdVisibility size={16} />
-                            </button>
                             <button
                               onClick={() => navigate(`/admin/fields/${field.uid}/edit`)}
                               className="p-1.5 rounded-lg text-navy-400 hover:bg-navy-50 hover:text-navy-700 transition"
@@ -226,7 +221,7 @@ const FieldsPage = () => {
         message={
           <>
             Are you sure you want to delete{" "}
-            <span className="font-semibold text-navy-800 dark:text-white">{deleteTarget?.name}</span>?
+            <span className="font-semibold text-navy-800">{deleteTarget?.name}</span>?
             {" "}This action cannot be undone.
           </>
         }

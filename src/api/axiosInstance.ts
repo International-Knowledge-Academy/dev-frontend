@@ -53,7 +53,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         const { data } = await axios.post(
-          `${process.env.REACT_APP_API_URL}/auth/token/refresh/`,
+          `${process.env.REACT_APP_API_URL}/auth/token/refresh`,
           { refresh }
         );
         localStorage.setItem("access", data.access);

@@ -2,10 +2,8 @@ import { useState } from "react";
 import axiosInstance from "api/axiosInstance";
 import type { User } from "types/auth";
 
-type UpdateMethod = "put" | "patch";
-
 interface UseUpdateProfilePictureReturn {
-  updateProfilePicture: (uid: string, file: File, method?: UpdateMethod) => Promise<User | void>;
+  updateProfilePicture: (uid: string, file: File) => Promise<User | void>;
   loading: boolean;
   error: string | null;
 }
@@ -14,7 +12,7 @@ const useUpdateProfilePicture = (): UseUpdateProfilePictureReturn => {
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState<string | null>(null);
 
-  const updateProfilePicture = async (uid: string, file: File, method: UpdateMethod = "put"): Promise<User | void> => {
+  const updateProfilePicture = async (uid: string, file: File): Promise<User | void> => {
     setLoading(true);
     setError(null);
 
@@ -22,7 +20,7 @@ const useUpdateProfilePicture = (): UseUpdateProfilePictureReturn => {
     formData.append("profile_picture", file);
 
     try {
-      const { data } = await axiosInstance[method]<User>(
+      const { data } = await axiosInstance.put<User>(
         `/auth/users/${uid}/upload_profile_picture`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
