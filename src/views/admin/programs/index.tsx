@@ -130,7 +130,7 @@ const ProgramsPage = () => {
             borderColor="border-slate-200"
             hoverTextColor="hover:text-gray-700"
             hoverBorderColor="hover:border-slate-300"
-            className="rounded-xl p-2.5"
+            className="p-2.5"
           />
         </div>
 
@@ -247,15 +247,8 @@ const ProgramsPage = () => {
                       </td>
 
                       {/* Actions */}
-                      <td className="px-5 py-3.5">
+                      <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center gap-1">
-                          <button
-                            onClick={() => navigate(`/admin/programs/${program.uid}`)}
-                            className="p-1.5 rounded-lg text-gray-400 hover:bg-blue-50 hover:text-blue-600 transition"
-                            title="View"
-                          >
-                            <MdVisibility size={16} />
-                          </button>
                           <button
                             onClick={() => navigate(`/admin/programs/${program.uid}/edit`)}
                             className="p-1.5 rounded-lg text-navy-400 hover:bg-navy-50 hover:text-navy-700 transition"
@@ -290,13 +283,11 @@ const ProgramsPage = () => {
                   text="Previous"
                   disabled={!params.page || params.page <= 1}
                   onClick={() => setParams({ page: (params.page ?? 1) - 1 })}
-                  className="rounded-xl"
                 />
                 <NextButton
                   text="Next"
                   disabled={(params.page ?? 1) >= totalPages}
                   onClick={() => setParams({ page: (params.page ?? 1) + 1 })}
-                  className="rounded-xl"
                 />
               </div>
             </div>

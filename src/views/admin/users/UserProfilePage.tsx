@@ -107,13 +107,11 @@ const UserProfilePage = () => {
               text="Edit User"
               icon={<MdEdit size={15} />}
               onClick={() => navigate(`/admin/users/${id}/edit`)}
-              className="rounded-xl"
             />
             <Button
               type="button"
               text="Back"
               onClick={() => navigate("/admin/users")}
-              className="rounded-xl"
               bgColor="bg-white"
               textColor="text-gray-600"
               borderColor="border-gray-200"

@@ -60,7 +60,7 @@ const FilterBar = ({
         {/* Mobile filter toggle */}
         <button
           onClick={() => setFiltersOpen((o) => !o)}
-          className={`md:hidden flex items-center gap-1.5 px-3 py-2.5 text-sm font-medium border rounded-xl transition-colors ${
+          className={`md:hidden flex items-center gap-1.5 px-3 py-2.5 text-sm font-medium border rounded-md lg:rounded-lg transition-colors ${
             hasActive
               ? "bg-gold-50 border-gold-300 text-gold-700"
               : "bg-slate-50 border-gray-200 text-gray-500 hover:text-navy-700"
@@ -120,7 +120,7 @@ const FilterBar = ({
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   onClick={clearAll}
-                  className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-gray-500 hover:text-red-500 bg-slate-50 border border-gray-200 rounded-xl transition-colors"
+                  className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-gray-500 hover:text-red-500 bg-slate-50 border border-gray-200 rounded-md lg:rounded-lg transition-colors"
                 >
                   <MdTune size={15} />
                   Clear

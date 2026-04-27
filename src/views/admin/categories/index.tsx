@@ -61,7 +61,7 @@ const CategoriesPage = () => {
             borderColor="border-slate-200"
             hoverTextColor="hover:text-gray-700"
             hoverBorderColor="hover:border-slate-300"
-            className="rounded-xl p-2.5"
+            className="p-2.5"
           />
         </div>
 
@@ -155,13 +155,11 @@ const CategoriesPage = () => {
                   text="Previous"
                   disabled={!params.page || params.page <= 1}
                   onClick={() => setParams({ page: (params.page ?? 1) - 1 })}
-                  className="rounded-xl"
                 />
                 <NextButton
                   text="Next"
                   disabled={(params.page ?? 1) >= totalPages}
                   onClick={() => setParams({ page: (params.page ?? 1) + 1 })}
-                  className="rounded-xl"
                 />
               </div>
             </div>
