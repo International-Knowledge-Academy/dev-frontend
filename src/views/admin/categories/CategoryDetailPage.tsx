@@ -35,7 +35,6 @@ const CategoryDetailPage = () => {
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-bold text-navy-800 truncate">{category.name}</h1>
-            <p className="text-xs text-gray-400 mt-0.5 truncate">{category.uid}</p>
             {category.summary && (
               <p className="text-sm text-gray-500 mt-1 line-clamp-2">{category.summary}</p>
             )}
