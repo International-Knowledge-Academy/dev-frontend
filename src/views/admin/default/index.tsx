@@ -5,11 +5,11 @@ import { MdBarChart, MdDashboard } from "react-icons/md";
 
 import { columnsDataCheck, columnsDataComplex } from "./variables/columnsData";
 
-import Widget from "components/widget/Widget";
-
 const Dashboard = () => {
   return (
     <div>
+
+      Welcome to IKA 
       
     </div>
   );
