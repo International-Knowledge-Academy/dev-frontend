@@ -115,7 +115,7 @@ const CategoriesPage = () => {
                           <div className="w-8 h-8 rounded-lg bg-navy-50 border border-navy-100 flex items-center justify-center text-navy-600 flex-shrink-0">
                             <MdCategory size={16} />
                           </div>
-                          <span className="font-medium text-navy-800 truncate">{cat.name}</span>
+                          <span className="font-medium text-navy-800 truncate" title={cat.name}>{cat.name}</span>
                         </div>
                       </td>
                       {/* Actions */}

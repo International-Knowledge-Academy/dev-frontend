@@ -7,7 +7,7 @@ import Button from "components/ui/buttons/Button";
 
 const PasswordField = ({ label, value, onChange, show, onToggle, placeholder }) => (
   <div className="flex flex-col gap-1.5">
-    <label className="text-xs font-semibold text-navy-700 dark:text-white">{label}</label>
+    <label className="text-xs font-semibold text-navy-700">{label}</label>
     <div className="relative">
       <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
         <MdLock size={16} />
@@ -17,7 +17,7 @@ const PasswordField = ({ label, value, onChange, show, onToggle, placeholder }) 
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full pl-9 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-navy-600 bg-white dark:bg-navy-700 text-sm text-navy-800 dark:text-white placeholder-gray-300 focus:outline-none focus:border-navy-400 transition"
+        className="w-full pl-9 pr-10 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-navy-800 placeholder-gray-300 focus:outline-none focus:border-navy-400 transition"
       />
       <button
         type="button"
@@ -59,14 +59,14 @@ const ChangePasswordPage = () => {
 
   return (
     <div className="max-w-md">
-      <div className="bg-white dark:bg-navy-800 rounded-2xl border border-gray-100 dark:border-navy-700 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
 
-        <div className="px-6 py-5 border-b border-gray-100 dark:border-navy-700 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-navy-50 dark:bg-navy-900 flex items-center justify-center text-navy-500">
+        <div className="px-6 py-5 border-b border-gray-100 flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-navy-50 flex items-center justify-center text-navy-500">
             <MdLock size={18} />
           </div>
           <div>
-            <h1 className="text-base font-bold text-navy-800 dark:text-white">Change Password</h1>
+            <h1 className="text-base font-bold text-navy-800">Change Password</h1>
             <p className="text-xs text-gray-400 mt-0.5">Update your account password</p>
           </div>
         </div>
@@ -78,7 +78,7 @@ const ChangePasswordPage = () => {
               <div className="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center">
                 <MdCheckCircle size={32} className="text-green-500" />
               </div>
-              <p className="text-sm font-semibold text-navy-800 dark:text-white">{success}</p>
+              <p className="text-sm font-semibold text-navy-800">{success}</p>
               <Button
                 type="button"
                 variant="primary"

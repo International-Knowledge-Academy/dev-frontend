@@ -131,7 +131,7 @@ const LocationsPage = () => {
                           <div className="w-8 h-8 rounded-lg bg-navy-500 border border-navy-400 flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
                             {location.name?.[0]?.toUpperCase() ?? "?"}
                           </div>
-                          <span className="font-medium text-navy-800 truncate">{location.name}</span>
+                          <span className="font-medium text-navy-800 truncate" title={location.name}>{location.name}</span>
                         </div>
                       </td>
                       {/* City */}

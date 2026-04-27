@@ -23,10 +23,10 @@ function CheckTable(props) {
     columnHelper.accessor("name", {
       id: "name",
       header: () => (
-        <p className="text-sm font-bold text-gray-600 dark:text-white">NAME</p>
+        <p className="text-sm font-bold text-gray-600">NAME</p>
       ),
       cell: (info) => (
-        <p className="text-sm font-bold text-navy-700 dark:text-white">
+        <p className="text-sm font-bold text-navy-700">
           {info.getValue()}
         </p>
       ),
@@ -34,7 +34,7 @@ function CheckTable(props) {
     columnHelper.accessor("tech", {
       id: "tech",
       header: () => (
-        <p className="text-sm font-bold text-gray-600 dark:text-white">TECH</p>
+        <p className="text-sm font-bold text-gray-600">TECH</p>
       ),
       cell: (info) => (
         <div className="flex items-center gap-2">
@@ -43,7 +43,7 @@ function CheckTable(props) {
               return (
                 <div
                   key={key}
-                  className="text-[22px] text-gray-600 dark:text-white"
+                  className="text-[22px] text-gray-600"
                 >
                   <DiApple />
                 </div>
@@ -52,7 +52,7 @@ function CheckTable(props) {
               return (
                 <div
                   key={key}
-                  className="text-[21px] text-gray-600 dark:text-white"
+                  className="text-[21px] text-gray-600"
                 >
                   <DiAndroid />
                 </div>
@@ -61,7 +61,7 @@ function CheckTable(props) {
               return (
                 <div
                   key={key}
-                  className="text-xl text-gray-600 dark:text-white"
+                  className="text-xl text-gray-600"
                 >
                   <DiWindows />
                 </div>
@@ -74,12 +74,12 @@ function CheckTable(props) {
     columnHelper.accessor("progress", {
       id: "progress",
       header: () => (
-        <p className="text-sm font-bold text-gray-600 dark:text-white">
+        <p className="text-sm font-bold text-gray-600">
           PROGRESS
         </p>
       ),
       cell: (info) => (
-        <p className="text-sm font-bold text-navy-700 dark:text-white">
+        <p className="text-sm font-bold text-navy-700">
           {info.getValue()}
         </p>
       ),
@@ -87,10 +87,10 @@ function CheckTable(props) {
     columnHelper.accessor("date", {
       id: "date",
       header: () => (
-        <p className="text-sm font-bold text-gray-600 dark:text-white">DATE</p>
+        <p className="text-sm font-bold text-gray-600">DATE</p>
       ),
       cell: (info) => (
-        <p className="text-sm font-bold text-navy-700 dark:text-white">
+        <p className="text-sm font-bold text-navy-700">
           {info.getValue()}
         </p>
       ),
@@ -98,13 +98,13 @@ function CheckTable(props) {
     columnHelper.accessor("progress", {
       id: "quantity",
       header: () => (
-        <p className="text-sm font-bold text-gray-600 dark:text-white">
+        <p className="text-sm font-bold text-gray-600">
           QUANTITY
         </p>
       ),
       cell: (info) => (
         <div className="flex items-center gap-3">
-          <p className="text-sm font-bold text-navy-700 dark:text-white">
+          <p className="text-sm font-bold text-navy-700">
             {info.getValue()}%
           </p>
           <Progress width="w-[68px]" value={info.getValue()} />
@@ -127,7 +127,7 @@ function CheckTable(props) {
   return (
     <Card extra={"w-full h-full sm:overflow-auto px-6"}>
       <header className="relative flex items-center justify-between pt-4">
-        <div className="text-xl font-bold text-navy-700 dark:text-white">
+        <div className="text-xl font-bold text-navy-700">
           Check Table
         </div>
 

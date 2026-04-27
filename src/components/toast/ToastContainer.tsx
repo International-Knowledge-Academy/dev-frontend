@@ -26,7 +26,7 @@ const ToastItem = ({ toast, onRemove }) => {
 
   return (
     <div
-      className={`relative flex items-start gap-3 bg-white dark:bg-navy-800 border border-gray-100 dark:border-navy-700 rounded-lg px-4 py-3 min-w-[280px] max-w-sm overflow-hidden transition-all duration-300 ${
+      className={`relative flex items-start gap-3 bg-white border border-gray-100 rounded-lg px-4 py-3 min-w-[280px] max-w-sm overflow-hidden transition-all duration-300 ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
       }`}
     >
@@ -34,7 +34,7 @@ const ToastItem = ({ toast, onRemove }) => {
       <span className={`absolute bottom-0 left-0 h-0.5 w-full ${bars[toast.type]} animate-[shrink_3.5s_linear_forwards]`} />
 
       {icons[toast.type]}
-      <p className="text-sm text-navy-800 dark:text-white leading-snug flex-1">{toast.message}</p>
+      <p className="text-sm text-navy-800 leading-snug flex-1">{toast.message}</p>
       <button
         onClick={() => onRemove(toast.id)}
         className="p-0.5 text-gray-400 hover:text-gray-600 transition"

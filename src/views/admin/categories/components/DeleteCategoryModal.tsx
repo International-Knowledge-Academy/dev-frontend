@@ -21,7 +21,7 @@ const DeleteCategoryModal = ({ open, category, onClose, onConfirm, loading }: De
       message={
         <>
           Are you sure you want to delete{" "}
-          <span className="font-semibold text-navy-800 dark:text-white">{category.name}</span>?
+          <span className="font-semibold text-navy-800">{category.name}</span>?
           {" "}This action cannot be undone.
         </>
       }

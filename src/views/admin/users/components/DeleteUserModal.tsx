@@ -21,7 +21,7 @@ const DeleteUserModal = ({ open, user, onClose, onConfirm, loading }: DeleteUser
       message={
         <>
           Are you sure you want to delete{" "}
-          <span className="font-semibold text-navy-800 dark:text-white">{user.name}</span>?
+          <span className="font-semibold text-navy-800">{user.name}</span>?
           {" "}This action cannot be undone.
         </>
       }

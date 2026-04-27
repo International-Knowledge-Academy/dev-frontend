@@ -21,7 +21,7 @@ const DeleteProgramModal = ({ open, program, onClose, onConfirm, loading }: Dele
       message={
         <>
           Are you sure you want to delete{" "}
-          <span className="font-semibold text-navy-800 dark:text-white">{program.name}</span>?
+          <span className="font-semibold text-navy-800">{program.name}</span>?
           {" "}This action cannot be undone.
         </>
       }

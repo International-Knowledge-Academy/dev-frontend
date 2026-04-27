@@ -30,13 +30,13 @@ const formatDateTime = (s?: string | null) => {
 };
 
 const InfoRow = ({ icon, label, value }) => (
-  <div className="flex items-start gap-4 py-4 border-b border-gray-100 dark:border-navy-700 last:border-0">
-    <div className="w-9 h-9 rounded-xl bg-navy-50 dark:bg-navy-900 flex items-center justify-center text-navy-400 flex-shrink-0">
+  <div className="flex items-start gap-4 py-4 border-b border-gray-100 last:border-0">
+    <div className="w-9 h-9 rounded-xl bg-navy-50 flex items-center justify-center text-navy-400 flex-shrink-0">
       {icon}
     </div>
     <div className="flex-1 min-w-0">
       <p className="text-xs text-gray-400 mb-0.5">{label}</p>
-      <div className="text-sm font-medium text-navy-800 dark:text-white break-words">{value}</div>
+      <div className="text-sm font-medium text-navy-800 break-words">{value}</div>
     </div>
   </div>
 );
@@ -67,7 +67,7 @@ const UserProfilePage = () => {
     <div className="max-w-5xl m-auto space-y-4">
 
       {/* Header */}
-      <div className="bg-white dark:bg-navy-800 rounded-2xl border border-gray-100 dark:border-navy-700 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="px-6 py-6 flex items-start gap-5">
           <div className="flex-shrink-0">
             {p?.profile_picture ? (
@@ -80,9 +80,9 @@ const UserProfilePage = () => {
           </div>
 
           <div className="flex-1 min-w-0">
-            <h1 className="text-lg font-bold text-navy-800 dark:text-white">{user.name || "—"}</h1>
+            <h1 className="text-lg font-bold text-navy-800">{user.name || "—"}</h1>
             {p?.title && <p className="text-sm text-gray-500 mt-0.5">{p.title}</p>}
-            <p className="text-sm text-gray-400 mt-0.5 truncate">{user.email}</p>
+            <p className="text-sm text-gray-400 mt-0.5 truncate" title={user.email}>{user.email}</p>
             <div className="flex flex-wrap items-center gap-2 mt-3">
               <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${roleBadge[user.role] ?? "bg-gray-50 text-gray-500 border-gray-200"}`}>
                 <MdAdminPanelSettings size={12} />
@@ -126,7 +126,7 @@ const UserProfilePage = () => {
       </div>
 
       {/* Account & activity */}
-      <div className="bg-white dark:bg-navy-800 rounded-2xl border border-gray-100 dark:border-navy-700 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <SectionTitle title="Account" />
         <div className="px-6">
           <InfoRow icon={<MdPerson size={18} />} label="Full Name" value={user.name || "—"} />
@@ -158,7 +158,7 @@ const UserProfilePage = () => {
 
       {/* Profile details */}
       {p && (
-        <div className="bg-white dark:bg-navy-800 rounded-2xl border border-gray-100 dark:border-navy-700 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <SectionTitle title="Professional Info" />
           <div className="px-6">
             {p.title && <InfoRow icon={<MdWork size={18} />} label="Title" value={p.title} />}

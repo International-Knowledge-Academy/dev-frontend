@@ -139,11 +139,11 @@ const FieldsPage = () => {
                               className="w-3 h-3 rounded-full flex-shrink-0 border border-white shadow-sm"
                               style={{ backgroundColor: field.hex_color || "#cbd5e1" }}
                             />
-                            <span className="font-medium text-navy-800 truncate">{field.name}</span>
+                            <span className="font-medium text-navy-800 truncate" title={field.name}>{field.name}</span>
                           </div>
                         </td>
                         {/* Category */}
-                        <td className="px-5 py-3.5 text-gray-500 truncate">
+                        <td className="px-5 py-3.5 text-gray-500 truncate" title={field.category?.name}>
                           {field.category?.name ?? <span className="text-gray-300 italic">—</span>}
                         </td>
                         {/* Status */}

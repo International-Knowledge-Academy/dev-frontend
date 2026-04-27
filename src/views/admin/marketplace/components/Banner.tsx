@@ -4,7 +4,7 @@ import nft1 from "assets/img/nfts/NftBanner1.png";
 const Banner1 = () => {
   return (
     <div
-      className="flex w-full flex-col rounded-[20px] bg-cover px-[30px] py-[30px] md:px-[64px] md:py-[56px]"
+      className="flex w-full flex-col rounded-3xl bg-cover px-[30px] py-[30px] md:px-[64px] md:py-[56px]"
       style={{ backgroundImage: `url(${nft1})` }}
     >
       <div className="w-full">

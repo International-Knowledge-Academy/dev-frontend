@@ -60,16 +60,16 @@ const UserFormModal = ({
   };
 
   const inputCls = (key: string) =>
-    `w-full rounded-xl border px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:ring-2 focus:ring-navy-300 dark:bg-navy-800 dark:text-white ${
+    `w-full rounded-xl border px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:ring-2 focus:ring-navy-300 ${
       fieldErrors[key] ? "border-red-400 bg-red-50" : "border-gray-200 bg-gray-50"
     }`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl dark:bg-navy-800">
+      <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-navy-700">
-          <h2 className="text-base font-bold text-navy-800 dark:text-white">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <h2 className="text-base font-bold text-navy-800">
             {isEdit ? "Edit User" : "Create User"}
           </h2>
           <button onClick={onClose} className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition">
@@ -87,21 +87,21 @@ const UserFormModal = ({
 
           {/* Name */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">Full Name</label>
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">Full Name</label>
             <input {...field("name")} required placeholder="John Doe" className={inputCls("name")} />
             {fieldErrors.name && <p className="mt-1 text-xs text-red-500">{fieldErrors.name}</p>}
           </div>
 
           {/* Email */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">Email</label>
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">Email</label>
             <input {...field("email")} type="email" required placeholder="john@example.com" className={inputCls("email")} />
             {fieldErrors.email && <p className="mt-1 text-xs text-red-500">{fieldErrors.email}</p>}
           </div>
 
           {/* Password */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">
               Password {isEdit && <span className="text-gray-400 font-normal">(leave blank to keep current)</span>}
             </label>
             <input {...field("password")} type="password" placeholder="••••••••" required={!isEdit} className={inputCls("password")} />
@@ -110,7 +110,7 @@ const UserFormModal = ({
 
           {/* Role */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">Role</label>
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">Role</label>
             <select {...field("role")} className={inputCls("role")}>
               {ROLES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
             </select>
@@ -119,7 +119,7 @@ const UserFormModal = ({
 
           {/* Active toggle */}
           <div className="flex items-center justify-between rounded-xl bg-gray-50 border border-gray-200 px-4 py-3">
-            <span className="text-sm font-medium text-navy-700 dark:text-white">Active</span>
+            <span className="text-sm font-medium text-navy-700">Active</span>
             <button
               type="button"
               onClick={() => setForm((p) => ({ ...p, is_active: !p.is_active }))}

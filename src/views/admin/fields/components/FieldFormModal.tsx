@@ -63,7 +63,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
   const set = (key: string, value: any) => setForm((p) => ({ ...p, [key]: value }));
 
   const inputCls = (key: string) =>
-    `w-full rounded-xl border px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:ring-2 focus:ring-navy-300 dark:bg-navy-800 dark:text-white ${
+    `w-full rounded-xl border px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:ring-2 focus:ring-navy-300 ${
       fieldErrors[key] ? "border-red-400 bg-red-50" : "border-gray-200 bg-gray-50"
     }`;
 
@@ -95,10 +95,10 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl dark:bg-navy-800 max-h-[90vh] overflow-y-auto">
+      <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-navy-700">
-          <h2 className="text-base font-bold text-navy-800 dark:text-white">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <h2 className="text-base font-bold text-navy-800">
             {isEdit ? "Edit Field" : "Add Field"}
           </h2>
           <button onClick={onClose} className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition">
@@ -116,7 +116,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
 
           {/* Name */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">
               Name <span className="text-red-500">*</span>
             </label>
             <input
@@ -131,7 +131,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">Description</label>
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">Description</label>
             <textarea
               value={form.description}
               onChange={(e) => set("description", e.target.value)}
@@ -144,7 +144,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
 
           {/* Category */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">Category</label>
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">Category</label>
             <select
               value={form.category_uid}
               onChange={(e) => set("category_uid", e.target.value)}
@@ -160,7 +160,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
 
           {/* hex_color */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">Background Color</label>
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">Background Color</label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
@@ -181,7 +181,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
 
           {/* text_color */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">Text Color</label>
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">Text Color</label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
@@ -202,7 +202,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
 
           {/* Thumbnail */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">Thumbnail URL</label>
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">Thumbnail URL</label>
             <input
               value={form.thumbnail}
               onChange={(e) => set("thumbnail", e.target.value)}
@@ -214,7 +214,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
 
           {/* Video */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">Video URL</label>
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">Video URL</label>
             <input
               value={form.video}
               onChange={(e) => set("video", e.target.value)}
@@ -226,7 +226,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
 
           {/* is_active toggle */}
           <div className="flex items-center justify-between rounded-xl bg-gray-50 border border-gray-200 px-4 py-3">
-            <span className="text-sm font-medium text-navy-700 dark:text-white">Active</span>
+            <span className="text-sm font-medium text-navy-700">Active</span>
             <button
               type="button"
               onClick={() => set("is_active", !form.is_active)}

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  MdAdd, MdEdit, MdDelete, MdRefresh, MdVisibility,
+  MdAdd, MdEdit, MdDelete, MdRefresh,
   MdWorkspacePremium, MdToggleOn, MdSettings,
   MdLocationOn, MdLayers,
 } from "react-icons/md";
@@ -149,7 +149,7 @@ const ProgramsPage = () => {
 
       {/* Table */}
       <div className="pb-5 px-6">
-        <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden dark:bg-navy-800 dark:border-navy-700">
+        <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
           {loading ? (
             <Loading text="Fetching programs..." />
           ) : error ? (
@@ -160,7 +160,7 @@ const ProgramsPage = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-slate-100 dark:border-navy-700">
+                  <tr className="border-b border-slate-100">
                     {[
                       { label: "Program",  icon: <MdWorkspacePremium size={14} /> },
                       { label: "Type",     icon: <MdWorkspacePremium size={14} /> },
@@ -177,9 +177,9 @@ const ProgramsPage = () => {
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50 dark:divide-navy-700">
+                <tbody className="divide-y divide-gray-50">
                   {programs.map((program) => (
-                    <tr key={program.uid} className="hover:bg-gray-50 dark:hover:bg-navy-700 transition">
+                    <tr key={program.uid} onClick={() => navigate(`/admin/programs/${program.uid}`)} className="hover:bg-gray-50 transition cursor-pointer">
 
                       {/* Program name */}
                       <td className="px-5 py-3.5">
@@ -188,7 +188,7 @@ const ProgramsPage = () => {
                             <MdWorkspacePremium size={16} />
                           </div>
                           <div>
-                            <p className="font-medium text-navy-800 dark:text-white max-w-[200px] truncate">
+                            <p className="font-medium text-navy-800 max-w-[200px] truncate" title={program.name}>
                               {program.name}
                             </p>
                             {program.duration && (
@@ -207,14 +207,14 @@ const ProgramsPage = () => {
 
                       {/* Field */}
                       <td className="px-5 py-3.5">
-                        <span className="text-gray-600 dark:text-navy-200 text-sm">
+                        <span className="text-gray-600 text-sm">
                           {program.field?.name ?? "—"}
                         </span>
                       </td>
 
                       {/* Location */}
                       <td className="px-5 py-3.5">
-                        <span className="text-gray-600 dark:text-navy-200 text-sm">
+                        <span className="text-gray-600 text-sm">
                           {program.location ? `${program.location.city}, ${program.location.country}` : "—"}
                         </span>
                       </td>

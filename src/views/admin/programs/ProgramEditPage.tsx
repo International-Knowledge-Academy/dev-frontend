@@ -143,12 +143,12 @@ const ProgramEditPage = () => {
   }
 
   return (
-    <div className="bg-white dark:bg-navy-800 rounded-2xl border border-gray-100 dark:border-navy-700 shadow-sm max-w-5xl mx-auto">
-      <div className="px-6 py-4 border-b border-gray-100 dark:border-navy-700">
-        <h1 className="text-base font-bold text-navy-800 dark:text-white">Edit Program</h1>
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm max-w-5xl mx-auto">
+      <div className="px-6 py-4 border-b border-gray-100">
+        <h1 className="text-base font-bold text-navy-800">Edit Program</h1>
         <p className="text-xs text-gray-400 mt-0.5">
           Updating{" "}
-          <span className="font-semibold text-navy-700 dark:text-white">{program?.name}</span>
+          <span className="font-semibold text-navy-700">{program?.name}</span>
         </p>
       </div>
 

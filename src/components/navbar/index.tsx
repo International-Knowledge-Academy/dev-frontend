@@ -19,17 +19,17 @@ const Navbar = (props) => {
 
         <div className="flex items-center gap-4">
           <button
-            className="xl:hidden flex items-center justify-center w-9 h-9 rounded-lg text-navy-500 hover:bg-navy-50 hover:text-navy-800 transition dark:text-white dark:hover:bg-navy-700"
+            className="xl:hidden flex items-center justify-center w-9 h-9 rounded-lg text-navy-500 hover:bg-navy-50 hover:text-navy-800 transition"
             onClick={onOpenSidenav}
           >
             <FiAlignJustify size={20} />
           </button>
 
           <div>
-            <p className="text-xs text-gray-400 dark:text-navy-300 leading-none mb-0.5">
+            <p className="text-xs text-gray-400 leading-none mb-0.5">
               Pages / <span className="capitalize">{brandText}</span>
             </p>
-            <h1 className="text-lg font-bold capitalize sm:text-2xl lg:text-3xl text-navy-800 dark:text-white leading-none">
+            <h1 className="text-lg font-bold capitalize sm:text-2xl lg:text-3xl text-navy-800 leading-none">
               {brandText}
             </h1>
           </div>
@@ -37,15 +37,15 @@ const Navbar = (props) => {
 
         <Dropdown
           button={
-            <button className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-navy-50 dark:hover:bg-navy-700 transition-all group">
+            <button className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-navy-50 transition-all group">
               <div className="relative">
                 <div className="w-9 h-9 rounded-full bg-navy-500 border-1 flex items-center justify-center text-white font-bold text-sm">
                   {user?.name?.[0]?.toUpperCase() ?? "?"}
                 </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-400 border-2 border-white dark:border-navy-800" />
+                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-400 border-2 border-white" />
               </div>
               <div className="hidden md:block text-left">
-                <p className="text-sm font-semibold text-navy-800 dark:text-white leading-tight">
+                <p className="text-sm font-semibold text-navy-800 leading-tight">
                   {user?.name ?? "..."}
                 </p>
                 <p className="text-[10px] font-bold tracking-widest uppercase text-gold-500 leading-tight">
@@ -54,18 +54,18 @@ const Navbar = (props) => {
               </div>
               <MdKeyboardArrowDown
                 size={16}
-                className="hidden md:block text-gray-400 group-hover:text-navy-600 transition dark:text-navy-300"
+                className="hidden md:block text-gray-400 group-hover:text-navy-600 transition"
               />
             </button>
           }
           children={
-            <div className="w-56 rounded-2xl bg-white shadow-xl border border-gray-100 dark:!bg-navy-700 dark:border-navy-600 overflow-hidden">
-              <div className="flex items-center gap-3 px-4 py-3 bg-navy-50 dark:bg-navy-800">
+            <div className="w-56 rounded-2xl bg-white shadow-xl border border-gray-100 overflow-hidden">
+              <div className="flex items-center gap-3 px-4 py-3 bg-navy-50">
                 <div className="w-9 h-9 rounded-xl bg-navy-800 border-2 border-gold-400 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                   {user?.name?.[0]?.toUpperCase() ?? "?"}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-bold text-navy-800 dark:text-white truncate">
+                  <p className="text-sm font-bold text-navy-800 truncate">
                     {user?.name ?? "..."}
                   </p>
                   <p className="text-[10px] font-bold tracking-widest uppercase text-gold-500">
@@ -73,27 +73,27 @@ const Navbar = (props) => {
                   </p>
                 </div>
               </div>
-              <div className="h-px bg-gray-100 dark:bg-navy-600" />
+              <div className="h-px bg-gray-100" />
 
               <div className="p-2 flex flex-col gap-0.5">
                 <button
                   onClick={() => navigate("/admin/profile")}
-                  className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-navy-700 dark:text-white hover:bg-navy-50 dark:hover:bg-navy-600 transition text-left"
+                  className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-navy-700 hover:bg-navy-50 transition text-left"
                 >
                   <MdPerson size={16} />
                   My Profile
                 </button>
                 <button
                   onClick={() => setShowChangePassword(true)}
-                  className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-navy-700 dark:text-white hover:bg-navy-50 dark:hover:bg-navy-600 transition text-left"
+                  className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-navy-700 hover:bg-navy-50 transition text-left"
                 >
                   <MdLock size={16} />
                   Change Password
                 </button>
-                <div className="h-px bg-gray-100 dark:bg-navy-600 my-1" />
+                <div className="h-px bg-gray-100 my-1" />
                 <button
                   onClick={logout}
-                  className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition text-left"
+                  className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition text-left"
                 >
                   <MdLogout size={16} />
                   Log Out

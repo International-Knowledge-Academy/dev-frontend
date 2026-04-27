@@ -38,10 +38,10 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       />
 
       {/* Modal */}
-      <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl dark:bg-navy-800 z-10">
+      <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl z-10">
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-gray-100 dark:border-navy-700">
-          <h2 className="text-lg font-bold text-navy-800 dark:text-white">{title}</h2>
+        <div className="flex items-center justify-between px-8 py-5 border-b border-gray-100">
+          <h2 className="text-lg font-bold text-navy-800">{title}</h2>
           <button
             onClick={onClose}
             className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 transition"
@@ -57,11 +57,11 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
               <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0">
                 {icon}
               </div>
-              <p className="text-sm text-gray-600 dark:text-navy-300 pt-3">{message}</p>
+              <p className="text-sm text-gray-600 pt-3">{message}</p>
             </div>
           )}
           {!icon && (
-            <p className="text-sm text-gray-600 dark:text-navy-300 mb-6">{message}</p>
+            <p className="text-sm text-gray-600 mb-6">{message}</p>
           )}
 
           {/* Actions */}

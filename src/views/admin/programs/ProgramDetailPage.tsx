@@ -34,13 +34,13 @@ const modeBadge: Record<string, string> = {
 };
 
 const InfoRow = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: React.ReactNode }) => (
-  <div className="flex items-start gap-4 py-4 border-b border-gray-100 dark:border-navy-700 last:border-0">
-    <div className="w-9 h-9 rounded-xl bg-navy-50 dark:bg-navy-900 flex items-center justify-center text-navy-400 flex-shrink-0">
+  <div className="flex items-start gap-4 py-4 border-b border-gray-100 last:border-0">
+    <div className="w-9 h-9 rounded-xl bg-navy-50 flex items-center justify-center text-navy-400 flex-shrink-0">
       {icon}
     </div>
     <div className="flex-1 min-w-0">
       <p className="text-xs text-gray-400 mb-0.5">{label}</p>
-      <div className="text-sm font-medium text-navy-800 dark:text-white break-words">{value}</div>
+      <div className="text-sm font-medium text-navy-800 break-words">{value}</div>
     </div>
   </div>
 );
@@ -79,15 +79,15 @@ const ProgramDetailPage = () => {
 
   return (
     <div className="space-y-4 max-w-5xl mx-auto">
-      <div className="bg-white dark:bg-navy-800 rounded-2xl border border-gray-100 dark:border-navy-700 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
 
         {/* Header */}
-        <div className="px-6 py-5 border-b border-gray-100 dark:border-navy-700 flex items-center gap-4">
+        <div className="px-6 py-5 border-b border-gray-100 flex items-center gap-4">
           <div className="w-12 h-12 rounded-2xl bg-navy-700 flex items-center justify-center text-white flex-shrink-0">
             <MdWorkspacePremium size={22} />
           </div>
           <div className="flex-1 min-w-0">
-            <h1 className="text-base font-bold text-navy-800 dark:text-white leading-snug">{program.name}</h1>
+            <h1 className="text-base font-bold text-navy-800 leading-snug">{program.name}</h1>
             {program.duration && (
               <p className="text-xs text-gray-400 mt-0.5">{program.duration}</p>
             )}
@@ -264,7 +264,7 @@ const ProgramDetailPage = () => {
         )}
 
         {/* Actions */}
-        <div className="px-6 py-4 border-t border-gray-100 dark:border-navy-700 flex gap-2 mt-2">
+        <div className="px-6 py-4 border-t border-gray-100 flex gap-2 mt-2">
           <button
             type="button"
             onClick={() => navigate("/admin/programs")}

@@ -1,6 +1,7 @@
 // @ts-nocheck
-import { motion } from "framer-motion";
-import { MdSearch, MdLocationOn, MdCategory, MdTune } from "react-icons/md";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { MdSearch, MdLocationOn, MdCategory, MdTune, MdFilterList } from "react-icons/md";
 import type { Location } from "types/location";
 import type { Category } from "types/category";
 
@@ -27,6 +28,7 @@ const FilterBar = ({
   categories,
   totalResults,
 }: Props) => {
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const hasActive = search || locationUid || categoryUid;
 
   const clearAll = () => {
@@ -42,9 +44,8 @@ const FilterBar = ({
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm"
     >
-      <div className="flex flex-col md:flex-row gap-3">
-
-        {/* Search */}
+      {/* Search row — always visible */}
+      <div className="flex items-center gap-3">
         <div className="relative flex-1">
           <MdSearch size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
@@ -56,49 +57,79 @@ const FilterBar = ({
           />
         </div>
 
-        {/* Category filter */}
-        <div className="relative md:w-52">
-          <MdCategory size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-          <select
-            value={categoryUid}
-            onChange={(e) => onCategoryChange(e.target.value)}
-            className="w-full pl-9 pr-8 py-2.5 text-sm bg-slate-50 border border-gray-200 rounded-xl text-navy-800 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition appearance-none cursor-pointer"
-          >
-            <option value="">All Categories</option>
-            {categories.map((c) => (
-              <option key={c.uid} value={c.uid}>{c.name}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Location filter */}
-        <div className="relative md:w-52">
-          <MdLocationOn size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-          <select
-            value={locationUid}
-            onChange={(e) => onLocationChange(e.target.value)}
-            className="w-full pl-9 pr-8 py-2.5 text-sm bg-slate-50 border border-gray-200 rounded-xl text-navy-800 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition appearance-none cursor-pointer"
-          >
-            <option value="">All Locations</option>
-            {locations.map((l) => (
-              <option key={l.uid} value={l.uid}>{l.city}, {l.country}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Clear button */}
-        {hasActive && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            onClick={clearAll}
-            className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-gray-500 hover:text-red-500 bg-slate-50 border border-gray-200 rounded-xl transition-colors"
-          >
-            <MdTune size={15} />
-            Clear
-          </motion.button>
-        )}
+        {/* Mobile filter toggle */}
+        <button
+          onClick={() => setFiltersOpen((o) => !o)}
+          className={`md:hidden flex items-center gap-1.5 px-3 py-2.5 text-sm font-medium border rounded-xl transition-colors ${
+            hasActive
+              ? "bg-gold-50 border-gold-300 text-gold-700"
+              : "bg-slate-50 border-gray-200 text-gray-500 hover:text-navy-700"
+          }`}
+        >
+          <MdFilterList size={18} />
+          {hasActive ? "Filters" : "Filter"}
+        </button>
       </div>
+
+      {/* Filters — always visible on desktop, toggle on mobile */}
+      <AnimatePresence initial={false}>
+        {(filtersOpen || true) && (
+          <motion.div
+            key="filters"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+            className={`overflow-hidden ${filtersOpen ? "block" : "hidden md:block"}`}
+          >
+            <div className="flex flex-col md:flex-row gap-3 mt-3">
+
+              {/* Category filter */}
+              <div className="relative md:w-52">
+                <MdCategory size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                <select
+                  value={categoryUid}
+                  onChange={(e) => onCategoryChange(e.target.value)}
+                  className="w-full pl-9 pr-8 py-2.5 text-sm bg-slate-50 border border-gray-200 rounded-xl text-navy-800 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition appearance-none cursor-pointer"
+                >
+                  <option value="">All Categories</option>
+                  {categories.map((c) => (
+                    <option key={c.uid} value={c.uid}>{c.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Location filter */}
+              <div className="relative md:w-52">
+                <MdLocationOn size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                <select
+                  value={locationUid}
+                  onChange={(e) => onLocationChange(e.target.value)}
+                  className="w-full pl-9 pr-8 py-2.5 text-sm bg-slate-50 border border-gray-200 rounded-xl text-navy-800 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400 transition appearance-none cursor-pointer"
+                >
+                  <option value="">All Locations</option>
+                  {locations.map((l) => (
+                    <option key={l.uid} value={l.uid}>{l.city}, {l.country}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Clear button */}
+              {hasActive && (
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  onClick={clearAll}
+                  className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-gray-500 hover:text-red-500 bg-slate-50 border border-gray-200 rounded-xl transition-colors"
+                >
+                  <MdTune size={15} />
+                  Clear
+                </motion.button>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Results count */}
       <div className="mt-3 flex items-center justify-between">

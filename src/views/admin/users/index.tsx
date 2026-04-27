@@ -113,7 +113,7 @@ const UsersPage = () => {
       {/* Table */}
       <div className="pb-5 px-6">
 
-           <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden dark:bg-navy-800 dark:border-navy-700">
+           <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
         {loading ? (
            <Loading text="Fetching users data..." />
           ) : error ? (
@@ -124,7 +124,7 @@ const UsersPage = () => {
           <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-100 dark:border-navy-700">
+              <tr className="border-b border-slate-100">
                 {[
                   { label: "Name",    icon: <MdPerson    size={14} /> },
                   { label: "Email",   icon: <MdEmail     size={14} /> },
@@ -138,7 +138,7 @@ const UsersPage = () => {
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50 dark:divide-navy-700">
+            <tbody className="divide-y divide-gray-50">
               {users.map((user) => (
                 <tr key={user.uid} onClick={() => navigate(`/admin/users/${user.uid}`)} className="hover:bg-gray-50 transition cursor-pointer">
                   {/* Name */}
@@ -151,10 +151,10 @@ const UsersPage = () => {
                     </div>
                   </td>
                   {/* Email */}
-                  <td className="px-5 py-3.5 text-gray-500 dark:text-navy-300">{user.email}</td>
+                  <td className="px-5 py-3.5 text-gray-500">{user.email}</td>
                   {/* Role */}
                   <td className="px-5 py-3.5">
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-navy-50 text-navy-700 dark:bg-navy-700 dark:text-white">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-navy-50 text-navy-700">
                       {roleLabel[user.role] ?? user.role}
                     </span>
                   </td>

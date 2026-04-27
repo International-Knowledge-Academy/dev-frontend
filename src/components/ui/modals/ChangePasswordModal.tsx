@@ -11,7 +11,7 @@ interface Props {
 
 const PasswordField = ({ label, value, onChange, show, onToggle, placeholder }) => (
   <div className="flex flex-col gap-1.5">
-    <label className="text-xs font-semibold text-navy-700 dark:text-white">{label}</label>
+    <label className="text-xs font-semibold text-navy-700">{label}</label>
     <div className="relative">
       <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
         <MdLock size={15} />
@@ -21,7 +21,7 @@ const PasswordField = ({ label, value, onChange, show, onToggle, placeholder }) 
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full pl-9 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-navy-600 bg-white dark:bg-navy-700 text-sm text-navy-800 dark:text-white placeholder-gray-300 focus:outline-none focus:border-navy-400 transition"
+        className="w-full pl-9 pr-10 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-navy-800 placeholder-gray-300 focus:outline-none focus:border-navy-400 transition"
       />
       <button
         type="button"
@@ -73,16 +73,16 @@ const ChangePasswordModal = ({ open, onClose }: Props) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-navy-overlay-20 backdrop-blur-sm" onClick={handleClose} />
 
-      <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl dark:bg-navy-800 z-10">
+      <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl z-10">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-navy-700">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-navy-50 dark:bg-navy-900 flex items-center justify-center text-navy-500">
+            <div className="w-8 h-8 rounded-xl bg-navy-50 flex items-center justify-center text-navy-500">
               <MdLock size={16} />
             </div>
-            <h2 className="text-base font-bold text-navy-800 dark:text-white">Change Password</h2>
+            <h2 className="text-base font-bold text-navy-800">Change Password</h2>
           </div>
-          <button onClick={handleClose} className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-navy-700 transition">
+          <button onClick={handleClose} className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 transition">
             <MdClose size={20} />
           </button>
         </div>
@@ -94,7 +94,7 @@ const ChangePasswordModal = ({ open, onClose }: Props) => {
               <div className="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center">
                 <MdCheckCircle size={32} className="text-green-500" />
               </div>
-              <p className="text-sm font-semibold text-navy-800 dark:text-white">{success}</p>
+              <p className="text-sm font-semibold text-navy-800">{success}</p>
               <Button
                 type="button"
                 variant="primary"
