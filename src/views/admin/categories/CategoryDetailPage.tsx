@@ -35,14 +35,24 @@ const CategoryDetailPage = () => {
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-bold text-navy-800 truncate">{category.name}</h1>
-            <p className="text-xs text-gray-400 mt-0.5 truncate">{category.uid}</p>
+            {category.summary && (
+              <p className="text-sm text-gray-500 mt-1 line-clamp-2">{category.summary}</p>
+            )}
           </div>
         </div>
 
         {/* Details */}
-        <div className="px-6 py-5">
-          <p className="text-xs text-gray-400 mb-1">Category Name</p>
-          <p className="text-sm font-medium text-navy-800 truncate">{category.name}</p>
+        <div className="px-6 py-5 flex flex-col gap-4">
+          <div>
+            <p className="text-xs text-gray-400 mb-1">Category Name</p>
+            <p className="text-sm font-medium text-navy-800">{category.name}</p>
+          </div>
+          {category.summary && (
+            <div>
+              <p className="text-xs text-gray-400 mb-1">Summary</p>
+              <p className="text-sm text-gray-600 whitespace-pre-wrap">{category.summary}</p>
+            </div>
+          )}
         </div>
 
         {/* Actions */}

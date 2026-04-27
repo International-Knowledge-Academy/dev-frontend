@@ -41,7 +41,6 @@ const FieldDetailPage = () => {
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-bold text-navy-800 truncate">{field.name}</h1>
-            <p className="text-xs text-gray-400 mt-0.5 truncate">{field.uid}</p>
           </div>
           <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border flex-shrink-0 ${
             field.is_active

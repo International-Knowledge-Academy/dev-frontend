@@ -94,6 +94,7 @@ const CategoriesPage = () => {
                   <tr className="border-b border-slate-100">
                     {[
                       { label: "Name",    icon: <MdCategory size={14} /> },
+                      { label: "Summary", icon: <MdCategory size={14} /> },
                       { label: "Actions", icon: <MdSettings  size={14} /> },
                     ].map(({ label, icon }) => (
                       <th key={label} className="px-5 py-3.5 text-left text-xs font-bold tracking-widest uppercase text-gray-400">
@@ -117,6 +118,12 @@ const CategoriesPage = () => {
                           </div>
                           <span className="font-medium text-navy-800 truncate" title={cat.name}>{cat.name}</span>
                         </div>
+                      </td>
+                      {/* Summary */}
+                      <td className="px-5 py-3.5 max-w-xs">
+                        <span className="text-sm text-gray-500 truncate block" title={cat.summary ?? ""}>
+                          {cat.summary || <span className="text-gray-300 italic">—</span>}
+                        </span>
                       </td>
                       {/* Actions */}
                       <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>

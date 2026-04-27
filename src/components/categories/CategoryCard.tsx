@@ -24,9 +24,17 @@ const CategoryCard = ({ category }: Props) => {
         </div>
 
         {/* Name */}
-        <h3 className="text-navy-800 font-bold text-base leading-snug mb-2 group-hover:text-navy-600 transition-colors line-clamp-2 flex-1">
+        <h3 className="text-navy-800 font-bold text-base leading-snug mb-2 group-hover:text-navy-600 transition-colors line-clamp-2">
           {category.name}
         </h3>
+
+        {/* Summary */}
+        {category.summary && (
+          <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 flex-1 mb-2">
+            {category.summary}
+          </p>
+        )}
+        {!category.summary && <div className="flex-1" />}
 
         {/* CTA */}
         <div className="mt-auto pt-4 border-t border-gray-100">

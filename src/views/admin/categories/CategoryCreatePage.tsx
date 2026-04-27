@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import useCreateCategory from "hooks/categories/useCreateCategory";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
+import TextareaField from "components/form/TextareaField";
 import Button from "components/ui/buttons/Button";
 
 const CategoryCreatePage = () => {
@@ -11,7 +12,7 @@ const CategoryCreatePage = () => {
   const { addToast } = useToast();
   const { createCategory, loading, error, fieldErrors } = useCreateCategory();
 
-  const [form, setForm] = useState({ name: "" });
+  const [form, setForm] = useState({ name: "", summary: "" });
 
   const updateFormData = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
@@ -44,6 +45,15 @@ const CategoryCreatePage = () => {
             label="Category Name"
             field="name"
             placeholder="e.g. Leadership Training"
+            formData={form}
+            errors={fieldErrors}
+            updateFormData={updateFormData}
+          />
+
+          <TextareaField
+            label="Summary"
+            field="summary"
+            placeholder="Brief description of this category..."
             formData={form}
             errors={fieldErrors}
             updateFormData={updateFormData}
