@@ -1,6 +1,7 @@
 export interface Category {
   uid: string;
   name: string;
+  summary?: string | null;
 }
 
 export interface PaginatedCategories {
@@ -18,10 +19,12 @@ export interface CategoriesParams {
 
 export interface CreateCategoryPayload {
   name: string;
+  summary?: string;
 }
 
 export interface UpdateCategoryPayload {
   name?: string;
+  summary?: string;
 }
 
 export type CategoryFieldErrors = Partial<Record<keyof CreateCategoryPayload, string>>;

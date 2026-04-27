@@ -5,6 +5,7 @@ import useGetCategory from "hooks/categories/useGetCategory";
 import useUpdateCategory from "hooks/categories/useUpdateCategory";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
+import TextareaField from "components/form/TextareaField";
 import Button from "components/ui/buttons/Button";
 
 const CategoryEditPage = () => {
@@ -15,10 +16,10 @@ const CategoryEditPage = () => {
   const { category, loading: loadingCategory, error: loadError } = useGetCategory(uid);
   const { updateCategory, loading: updating, error, fieldErrors } = useUpdateCategory();
 
-  const [form, setForm] = useState({ name: "" });
+  const [form, setForm] = useState({ name: "", summary: "" });
 
   useEffect(() => {
-    if (category) setForm({ name: category.name });
+    if (category) setForm({ name: category.name, summary: category.summary ?? "" });
   }, [category]);
 
   const updateFormData = (key: string, value: any) =>
@@ -70,6 +71,15 @@ const CategoryEditPage = () => {
             label="Category Name"
             field="name"
             placeholder="e.g. Leadership Training"
+            formData={form}
+            errors={fieldErrors}
+            updateFormData={updateFormData}
+          />
+
+          <TextareaField
+            label="Summary"
+            field="summary"
+            placeholder="Brief description of this category..."
             formData={form}
             errors={fieldErrors}
             updateFormData={updateFormData}

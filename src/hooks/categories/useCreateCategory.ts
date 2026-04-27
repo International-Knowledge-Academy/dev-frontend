@@ -35,7 +35,7 @@ const useCreateCategory = (): UseCreateCategoryReturn => {
         }
       )?.response?.data;
 
-      const fields: (keyof CreateCategoryPayload)[] = ["name"];
+      const fields: (keyof CreateCategoryPayload)[] = ["name", "summary"];
 
       const extracted: CategoryFieldErrors = {};
       fields.forEach((field) => {

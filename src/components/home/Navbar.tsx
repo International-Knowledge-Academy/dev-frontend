@@ -181,7 +181,7 @@ const Navbar = () => {
       dropdown: "categories",
       children: categories.map((c) => ({
         label: c.name,
-        description: "Explore programs in this category",
+        description: c.summary || "Explore programs in this category",
         to: `/categories`,
       })),
     },
