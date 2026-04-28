@@ -21,7 +21,7 @@ const InfoRow = ({ icon, label, value }) => (
 );
 
 const SectionTitle = ({ title }) => (
-  <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mt-6 mb-1 px-6">{title}</p>
+  <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mt-6 mb-1 px-4 sm:px-6">{title}</p>
 );
 
 const formatDate = (dateStr: string) =>
@@ -55,7 +55,7 @@ const LocationDetailPage = () => {
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
 
         {/* Header */}
-        <div className="px-6 py-5 border-b border-gray-100 flex items-center gap-4">
+        <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100 flex items-center gap-3 sm:gap-4">
           <div className="w-12 h-12 rounded-2xl bg-navy-700 flex items-center justify-center text-white flex-shrink-0">
             <MdLocationOn size={22} />
           </div>
@@ -77,7 +77,7 @@ const LocationDetailPage = () => {
 
         {/* Location Info */}
         <SectionTitle title="Location" />
-        <div className="px-6 grid grid-cols-1 md:grid-cols-2">
+        <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
           <InfoRow icon={<MdLocationCity size={18} />} label="City"         value={location.city          || "—"} />
           <InfoRow icon={<MdPublic       size={18} />} label="Country"      value={location.country       || "—"} />
           <InfoRow icon={<MdPlace        size={18} />} label="Address"      value={location.address       || "—"} />
@@ -86,21 +86,21 @@ const LocationDetailPage = () => {
 
         {/* Contact */}
         <SectionTitle title="Contact" />
-        <div className="px-6 grid grid-cols-1 md:grid-cols-2">
+        <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
           <InfoRow icon={<MdPhone      size={18} />} label="Contact Phone"   value={location.contact_phone   || "—"} />
           <InfoRow icon={<FaWhatsapp   size={18} />} label="WhatsApp Number" value={location.whatsapp_number || "—"} />
         </div>
 
         {/* Coordinates */}
         <SectionTitle title="Coordinates" />
-        <div className="px-6 grid grid-cols-1 md:grid-cols-2">
+        <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
           <InfoRow icon={<MdMyLocation size={18} />} label="Latitude"  value={location.latitude  || "—"} />
           <InfoRow icon={<MdMyLocation size={18} />} label="Longitude" value={location.longitude || "—"} />
         </div>
 
         {/* Stats */}
         <SectionTitle title="Stats" />
-        <div className="px-6 grid grid-cols-1 md:grid-cols-2">
+        <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
           <InfoRow
             icon={<MdSchool size={18} />}
             label="Course Count"
@@ -123,13 +123,13 @@ const LocationDetailPage = () => {
 
         {/* Timestamps */}
         <SectionTitle title="Timestamps" />
-        <div className="px-6 grid grid-cols-1 md:grid-cols-2">
+        <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
           <InfoRow icon={<MdCalendarToday size={18} />} label="Created"      value={formatDate(location.created_at)} />
           <InfoRow icon={<MdCalendarToday size={18} />} label="Last Updated" value={formatDate(location.updated_at)} />
         </div>
 
         {/* Actions */}
-        <div className="px-6 py-4 border-t border-gray-100 flex gap-2 mt-2">
+        <div className="px-4 sm:px-6 py-4 border-t border-gray-100 flex gap-2 mt-2">
           <button
             type="button"
             onClick={() => navigate("/admin/locations")}

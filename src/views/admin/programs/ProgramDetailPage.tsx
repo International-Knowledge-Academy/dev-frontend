@@ -46,7 +46,7 @@ const InfoRow = ({ icon, label, value }: { icon: React.ReactNode; label: string;
 );
 
 const SectionTitle = ({ title }: { title: string }) => (
-  <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mt-6 mb-1 px-6">{title}</p>
+  <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mt-6 mb-1 px-4 sm:px-6">{title}</p>
 );
 
 const formatDate = (dateStr: string | null) => {
@@ -82,9 +82,9 @@ const ProgramDetailPage = () => {
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
 
         {/* Header */}
-        <div className="px-6 py-5 border-b border-gray-100 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-navy-700 flex items-center justify-center text-white flex-shrink-0">
-            <MdWorkspacePremium size={22} />
+        <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100 flex items-center gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-navy-700 flex items-center justify-center text-white flex-shrink-0">
+            <MdWorkspacePremium size={20} />
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-bold text-navy-800 leading-snug">{program.name}</h1>
@@ -92,7 +92,7 @@ const ProgramDetailPage = () => {
               <p className="text-xs text-gray-400 mt-0.5">{program.duration}</p>
             )}
           </div>
-          <div className="flex items-center gap-2 flex-wrap justify-end flex-shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap justify-start sm:justify-end flex-shrink-0">
             <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border ${typeBadge[program.program_type] ?? "bg-gray-100 text-gray-500 border-gray-200"}`}>
               {program.program_type_display ?? program.program_type}
             </span>
@@ -113,7 +113,7 @@ const ProgramDetailPage = () => {
 
         {/* General Info */}
         <SectionTitle title="General" />
-        <div className="px-6">
+        <div className="px-4 sm:px-6">
           <InfoRow
             icon={<MdLayers size={18} />}
             label="Field"
@@ -167,7 +167,7 @@ const ProgramDetailPage = () => {
 
         {/* Schedule */}
         <SectionTitle title="Schedule" />
-        <div className="px-6">
+        <div className="px-4 sm:px-6">
           <InfoRow
             icon={<MdCalendarToday size={18} />}
             label="Start Date"
@@ -187,7 +187,7 @@ const ProgramDetailPage = () => {
 
         {/* Contact */}
         <SectionTitle title="Contact" />
-        <div className="px-6">
+        <div className="px-4 sm:px-6">
           <InfoRow
             icon={<MdEmail size={18} />}
             label="Contact Email"
@@ -212,7 +212,7 @@ const ProgramDetailPage = () => {
         {program.brochure_url && (
           <>
             <SectionTitle title="Brochure" />
-            <div className="px-6">
+            <div className="px-4 sm:px-6">
               <InfoRow
                 icon={<MdLink size={18} />}
                 label="Brochure URL"
@@ -230,7 +230,7 @@ const ProgramDetailPage = () => {
         {(program.description || program.objectives || program.target_audience || program.prerequisites) && (
           <>
             <SectionTitle title="Content" />
-            <div className="px-6">
+            <div className="px-4 sm:px-6">
               {program.description && (
                 <InfoRow
                   icon={<MdDescription size={18} />}
@@ -264,18 +264,18 @@ const ProgramDetailPage = () => {
         )}
 
         {/* Actions */}
-        <div className="px-6 py-4 border-t border-gray-100 flex gap-2 mt-2">
+        <div className="px-4 sm:px-6 py-4 border-t border-gray-100 flex gap-2 mt-2">
           <button
             type="button"
             onClick={() => navigate("/admin/programs")}
-            className="flex-1 rounded-xl border border-gray-200 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
+            className="flex-1 rounded-md lg:rounded-lg border border-gray-200 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
           >
             Back
           </button>
           <button
             type="button"
             onClick={() => navigate(`/admin/programs/${uid}/edit`)}
-            className="flex-1 rounded-xl bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition flex items-center justify-center gap-2"
+            className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition flex items-center justify-center gap-2"
           >
             <MdEdit size={16} />
             Edit Program
