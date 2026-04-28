@@ -56,7 +56,8 @@ const UsersPage = () => {
     }
   };
 
-  const totalPages = Math.ceil(count / 10);
+  const staffUsers  = users.filter((u) => u.role !== "trainer");
+  const totalPages  = Math.ceil(count / 10);
 
   return (
     <div className="bg-white rounded-2xl border border-slate-100 max-w-5xl mx-auto">
@@ -73,11 +74,10 @@ const UsersPage = () => {
             value={params.role ?? "all"}
             onChange={(val) => setParams({ role: val === "all" ? undefined : val })}
             icon={MdBadge}
-            defaultOption="All Roles"
+            defaultOption="All"
             options={[
               { value: "admin",           label: "Admin" },
               { value: "account_manager", label: "Account Manager" },
-              { value: "trainer",         label: "Trainer" },
             ]}
           />
           <IconButton
@@ -92,19 +92,21 @@ const UsersPage = () => {
           />
         </div>
 
-        <div className="flex items-center gap-4">
-
-        <Button
-          variant="dark-navy"
-          text="Add User"
-          icon={<MdPersonAdd />}
-          onClick={() => navigate("/admin/users/create")}
-        />
-
-        <div>
-          <p className="text-sm text-gray-400 mt-0.5">{count} users</p>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="dark-navy"
+            text="Add Staff"
+            icon={<MdPersonAdd />}
+            onClick={() => navigate("/admin/users/create")}
+          />
+          <Button
+            variant="primary"
+            text="Add Trainer"
+            icon={<MdSchool />}
+            onClick={() => navigate("/admin/trainers/create")}
+          />
+          <p className="text-sm text-gray-400 ml-2">{staffUsers.length} users</p>
         </div>
-      </div>
 
       </div>
 
@@ -118,7 +120,7 @@ const UsersPage = () => {
            <Loading text="Fetching users data..." />
           ) : error ? (
           <div className="flex items-center justify-center py-16 text-sm text-red-500">{error}</div>
-        ) : users.length === 0 ? (
+        ) : staffUsers.length === 0 ? (
           <div className="flex items-center justify-center py-16 text-sm text-gray-400">No users found.</div>
         ) : (
           <div className="overflow-x-auto">
@@ -139,7 +141,7 @@ const UsersPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {users.map((user) => (
+              {staffUsers.map((user) => (
                 <tr key={user.uid} onClick={() => navigate(`/admin/users/${user.uid}`)} className="hover:bg-gray-50 transition cursor-pointer">
                   {/* Name */}
                   <td className="px-5 py-3.5">
@@ -161,7 +163,7 @@ const UsersPage = () => {
                   {/* Status */}
                   <td className="px-5 py-3.5">
                     <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${
-                      user.is_active ? "bg-green-50 text-green-600 border-green-600" : "bg-red-50 text-red-500 border-red-600"
+                      user.is_active ? "bg-green-50 text-green-600 border-green-600" : "bg-red-50 text-red-500 border-red-500"
                     }`}>
                       <span className={`w-1.5 h-1.5 rounded-full ${user.is_active ? "bg-green-500" : "bg-red-400"}`} />
                       {user.is_active ? "Active" : "Inactive"}

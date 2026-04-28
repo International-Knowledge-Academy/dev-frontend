@@ -1,12 +1,5 @@
 export type UserRole = "admin" | "account_manager" | "trainer";
 
-export interface AuthUser {
-  id: number;
-  email: string;
-  name: string;
-  role: UserRole;
-}
-
 export interface UserProfile {
   uid: string;
   title: string;
@@ -28,7 +21,6 @@ export interface UserProfile {
 }
 
 export interface User {
-  id: number;
   uid: string;
   email: string;
   name: string;
@@ -37,8 +29,6 @@ export interface User {
   is_staff: boolean;
   is_superuser: boolean;
   last_login: string | null;
-  created_at: string;
-  updated_at: string;
   groups: number[];
   user_permissions: number[];
   profile?: UserProfile | null;

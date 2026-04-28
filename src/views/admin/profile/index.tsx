@@ -12,8 +12,8 @@ import DropdownButton from "components/ui/buttons/DropdownButton";
 import ChangePasswordModal from "components/ui/modals/ChangePasswordModal";
 
 const roleBadge: Record<string, string> = {
-  admin:           "bg-navy-50 text-navy-700 border-navy-200",
-  account_manager: "bg-gold-50 text-gold-700 border-gold-200",
+  admin:           "bg-navy-50 text-navy-700 border-navy-700",
+  account_manager: "bg-gold-50 text-gold-700 border-gold-700",
 };
 const roleLabel: Record<string, string> = {
   admin:           "Admin",
@@ -133,17 +133,17 @@ const ProfileOverview = () => {
                 <MdAdminPanelSettings size={12} />
                 {roleLabel[me.role] ?? me.role}
               </span>
-              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${me.is_active ? "bg-green-50 text-green-600 border-green-200" : "bg-red-50 text-red-500 border-red-200"}`}>
+              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${me.is_active ? "bg-green-50 text-green-600 border-green-600" : "bg-red-50 text-red-500 border-red-500"}`}>
                 <span className={`w-1.5 h-1.5 rounded-full ${me.is_active ? "bg-green-500" : "bg-red-400"}`} />
                 {me.is_active ? "Active" : "Inactive"}
               </span>
               {me.is_superuser && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-50 text-purple-600 border border-purple-200">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-50 text-purple-600 border border-purple-600">
                   <MdVerified size={12} /> Superuser
                 </span>
               )}
               {me.is_staff && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-200">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-600">
                   Staff
                 </span>
               )}

@@ -10,6 +10,7 @@ import NFTMarketplace from "views/admin/marketplace";
 import Profile from "views/admin/profile";
 import DataTables from "views/admin/tables";
 import UsersPage from "views/admin/users";
+import TrainersPage from "views/admin/trainers";
 import LocationsPage from "views/admin/locations";
 import CategoriesPage from "views/admin/categories";
 import ProgramsPage from "views/admin/programs";
@@ -65,6 +66,13 @@ const routes = [
     path: "users",
     icon: <MdAdminPanelSettings className="h-6 w-6" />,
     component: <UsersPage />,
+  },
+  {
+    name: "Trainers",
+    layout: "/admin",
+    path: "trainers",
+    icon: <MdSchool className="h-6 w-6" />,
+    component: <TrainersPage />,
   },
   {
     name: "Locations",

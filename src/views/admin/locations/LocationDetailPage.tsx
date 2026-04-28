@@ -66,8 +66,8 @@ const LocationDetailPage = () => {
           <div className="flex items-center gap-2 flex-shrink-0">
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold border ${
               location.is_active
-                ? "bg-green-50 text-green-600 border-green-200"
-                : "bg-red-50 text-red-500 border-red-200"
+                ? "bg-green-50 text-green-600 border-green-600"
+                : "bg-red-50 text-red-500 border-red-500"
             }`}>
               <span className={`w-1.5 h-1.5 rounded-full ${location.is_active ? "bg-green-500" : "bg-red-400"}`} />
               {location.is_active ? "Active" : "Inactive"}
