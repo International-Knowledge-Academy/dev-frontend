@@ -26,10 +26,10 @@ const typeConfig: Record<string, { label: string; cls: string; icon: React.React
 };
 
 const statusBadge: Record<string, string> = {
-  upcoming:  "bg-blue-50 text-blue-600 border-blue-200",
-  ongoing:   "bg-green-50 text-green-600 border-green-200",
-  completed: "bg-gray-100 text-gray-500 border-gray-200",
-  cancelled: "bg-red-50 text-red-500 border-red-200",
+  upcoming:  "bg-blue-50 text-blue-600 border-blue-600",
+  ongoing:   "bg-green-50 text-green-600 border-green-600",
+  completed: "bg-gray-100 text-gray-500 border-gray-500",
+  cancelled: "bg-red-50 text-red-500 border-red-500",
 };
 
 const levelColors: Record<string, string> = {

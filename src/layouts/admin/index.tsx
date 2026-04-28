@@ -6,6 +6,10 @@ import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
 import routes from "routes";
 import UserCreatePage from "views/admin/users/UserCreatePage";
+import TrainersPage from "views/admin/trainers";
+import TrainerCreatePage from "views/admin/trainers/TrainerCreatePage";
+import TrainerEditPage from "views/admin/trainers/TrainerEditPage";
+import TrainerProfilePage from "views/admin/trainers/TrainerProfilePage";
 import UserEditPage from "views/admin/users/UserEditPage";
 import UserProfilePage from "views/admin/users/UserProfilePage";
 import LocationCreatePage from "views/admin/locations/LocationCreatePage";
@@ -95,9 +99,13 @@ export default function Admin(props) {
             <div className="pt-6 mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
               <Routes>
                 {getRoutes(routes)}
-                <Route path="/users/create"        element={<UserCreatePage />} />
-                <Route path="/users/:id/edit"      element={<UserEditPage />} />
-                <Route path="/users/:id"           element={<UserProfilePage />} />
+                <Route path="/users/create"          element={<UserCreatePage />} />
+                <Route path="/users/:id/edit"        element={<UserEditPage />} />
+                <Route path="/users/:id"             element={<UserProfilePage />} />
+                <Route path="/trainers"              element={<TrainersPage />} />
+                <Route path="/trainers/create"       element={<TrainerCreatePage />} />
+                <Route path="/trainers/:uid/edit"    element={<TrainerEditPage />} />
+                <Route path="/trainers/:uid"         element={<TrainerProfilePage />} />
                 <Route path="/locations/create"      element={<LocationCreatePage />} />
                 <Route path="/locations/:uid"        element={<LocationDetailPage />} />
                 <Route path="/locations/:uid/edit"   element={<LocationEditPage />} />

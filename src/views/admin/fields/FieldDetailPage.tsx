@@ -45,7 +45,7 @@ const FieldDetailPage = () => {
           <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border flex-shrink-0 ${
             field.is_active
               ? "bg-green-50 text-green-600 border-green-600"
-              : "bg-red-50 text-red-500 border-red-600"
+              : "bg-red-50 text-red-500 border-red-500"
           }`}>
             <span className={`w-1.5 h-1.5 rounded-full ${field.is_active ? "bg-green-500" : "bg-red-400"}`} />
             {field.is_active ? "Active" : "Inactive"}

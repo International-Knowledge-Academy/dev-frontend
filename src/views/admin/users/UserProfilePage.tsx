@@ -10,8 +10,8 @@ import useGetUser from "hooks/users/useGetUser";
 import Button from "components/ui/buttons/Button";
 
 const roleBadge: Record<string, string> = {
-  admin:           "bg-navy-50 text-navy-700 border-navy-200",
-  account_manager: "bg-gold-50 text-gold-700 border-gold-200",
+  admin:           "bg-navy-50 text-navy-700 border-navy-700",
+  account_manager: "bg-gold-50 text-gold-700 border-gold-700",
 };
 const roleLabel: Record<string, string> = {
   admin:           "Admin",
@@ -88,12 +88,12 @@ const UserProfilePage = () => {
                 <MdAdminPanelSettings size={12} />
                 {roleLabel[user.role] ?? user.role}
               </span>
-              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${user.is_active ? "bg-green-50 text-green-600 border-green-200" : "bg-red-50 text-red-500 border-red-200"}`}>
+              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${user.is_active ? "bg-green-50 text-green-600 border-green-600" : "bg-red-50 text-red-500 border-red-500"}`}>
                 <span className={`w-1.5 h-1.5 rounded-full ${user.is_active ? "bg-green-500" : "bg-red-400"}`} />
                 {user.is_active ? "Active" : "Inactive"}
               </span>
               {user.is_superuser && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-50 text-purple-600 border border-purple-200">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-50 text-purple-600 border border-purple-600">
                   <MdVerified size={12} /> Superuser
                 </span>
               )}
@@ -139,8 +139,8 @@ const UserProfilePage = () => {
             label="Permissions"
             value={
               <div className="flex flex-wrap gap-1.5">
-                {user.is_superuser && <span className="px-2 py-0.5 rounded-md text-xs font-semibold bg-purple-50 text-purple-600 border border-purple-200">Superuser</span>}
-                {user.is_staff     && <span className="px-2 py-0.5 rounded-md text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-200">Staff</span>}
+                {user.is_superuser && <span className="px-2 py-0.5 rounded-md text-xs font-semibold bg-purple-50 text-purple-600 border border-purple-600">Superuser</span>}
+                {user.is_staff     && <span className="px-2 py-0.5 rounded-md text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-600">Staff</span>}
                 {!user.is_superuser && !user.is_staff && <span className="text-gray-400 text-xs">Standard</span>}
               </div>
             }
@@ -149,7 +149,6 @@ const UserProfilePage = () => {
 
         <SectionTitle title="Activity" />
         <div className="px-6">
-          <InfoRow icon={<MdCalendarToday size={18} />} label="Member Since" value={formatDate(user.created_at)} />
           <InfoRow icon={<MdAccessTime size={18} />} label="Last Login" value={formatDateTime(user.last_login)} />
         </div>
       </div>

@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom";
 import {
   MdAdd, MdEdit, MdDelete, MdRefresh,
   MdWorkspacePremium, MdToggleOn, MdSettings,
-  MdLocationOn, MdLayers,
+  MdLocationOn, MdLayers, MdPersonAdd,
 } from "react-icons/md";
 import usePrograms from "hooks/programs/usePrograms";
 import useDeleteProgram from "hooks/programs/useDeleteProgram";
 import DeleteProgramModal from "./components/DeleteProgramModal";
+import AssignTrainerModal from "./components/AssignTrainerModal";
 import Loading from "components/loading/Loading";
 import Button from "components/ui/buttons/Button";
 import IconButton from "components/ui/buttons/IconButton";
@@ -38,16 +39,16 @@ const STATUS_OPTIONS = [
 ];
 
 const statusBadge: Record<string, string> = {
-  upcoming:  "bg-blue-50 text-blue-600 border-blue-200",
-  ongoing:   "bg-green-50 text-green-600 border-green-200",
-  completed: "bg-gray-100 text-gray-500 border-gray-200",
-  cancelled: "bg-red-50 text-red-500 border-red-200",
+  upcoming:  "bg-blue-50 text-blue-600 border-blue-600",
+  ongoing:   "bg-green-50 text-green-600 border-green-600",
+  completed: "bg-gray-100 text-gray-500 border-gray-500",
+  cancelled: "bg-red-50 text-red-500 border-red-500",
 };
 
 const typeBadge: Record<string, string> = {
-  course:     "bg-navy-50 text-navy-600 border-navy-200",
-  diploma:    "bg-gold-50 text-gold-600 border-gold-200",
-  contracted: "bg-purple-50 text-purple-600 border-purple-200",
+  course:     "bg-navy-50 text-navy-600 border-navy-600",
+  diploma:    "bg-gold-50 text-gold-600 border-gold-600",
+  contracted: "bg-purple-50 text-purple-600 border-purple-600",
 };
 
 const levelBadge: Record<string, string> = {
@@ -64,8 +65,11 @@ const ProgramsPage = () => {
 
   const [deleteOpen, setDeleteOpen]           = useState(false);
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
+  const [assignOpen, setAssignOpen]           = useState(false);
+  const [assignProgram, setAssignProgram]     = useState<Program | null>(null);
 
   const openDelete = (program: Program) => { setSelectedProgram(program); setDeleteOpen(true); };
+  const openAssign = (program: Program) => { setAssignProgram(program); setAssignOpen(true); };
 
   const handleDelete = async () => {
     if (!selectedProgram) return;
@@ -238,8 +242,8 @@ const ProgramsPage = () => {
                       <td className="px-5 py-3.5">
                         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${
                           program.is_active
-                            ? "bg-green-50 text-green-600 border-green-200"
-                            : "bg-red-50 text-red-500 border-red-200"
+                            ? "bg-green-50 text-green-600 border-green-600"
+                            : "bg-red-50 text-red-500 border-red-500"
                         }`}>
                           <span className={`w-1.5 h-1.5 rounded-full ${program.is_active ? "bg-green-500" : "bg-red-400"}`} />
                           {program.is_active ? "Active" : "Inactive"}
@@ -249,6 +253,13 @@ const ProgramsPage = () => {
                       {/* Actions */}
                       <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => openAssign(program)}
+                            className="p-1.5 rounded-lg text-green-500 hover:bg-green-50 hover:text-green-700 transition"
+                            title="Assign Trainer"
+                          >
+                            <MdPersonAdd size={16} />
+                          </button>
                           <button
                             onClick={() => navigate(`/admin/programs/${program.uid}/edit`)}
                             className="p-1.5 rounded-lg text-navy-400 hover:bg-navy-50 hover:text-navy-700 transition"
@@ -301,6 +312,13 @@ const ProgramsPage = () => {
         onClose={() => setDeleteOpen(false)}
         onConfirm={handleDelete}
         loading={deleting}
+      />
+
+      <AssignTrainerModal
+        open={assignOpen}
+        program={assignProgram}
+        onClose={() => setAssignOpen(false)}
+        onSuccess={refetch}
       />
     </div>
   );
