@@ -45,27 +45,17 @@ const FieldsPage = () => {
     <>
       <div className="bg-white rounded-2xl border border-slate-100 max-w-5xl mx-auto">
 
-        <div className="pt-5 px-6 space-y-3">
-          {/* Row 1: Search + Actions */}
-          <div className="flex items-center justify-between gap-3">
-            <SearchInput
-              value={params.search ?? ""}
-              onChange={(val) => setParams({ search: val })}
-              placeholder="Search fields..."
-            />
-            <div className="flex items-center gap-3 flex-shrink-0">
-              <p className="text-sm text-gray-400 whitespace-nowrap">{count} fields</p>
-              <Button
-                variant="dark-navy"
-                text="Add Field"
-                icon={<MdAdd />}
-                onClick={() => navigate("/admin/fields/create")}
-              />
-            </div>
-          </div>
+        <div className="pt-5 px-4 sm:px-6 pb-1 space-y-3">
 
-          {/* Row 2: Filters */}
-          <div className="flex items-center gap-3">
+          {/* Row 1: Search */}
+          <SearchInput
+            value={params.search ?? ""}
+            onChange={(val) => setParams({ search: val })}
+            placeholder="Search fields..."
+          />
+
+          {/* Row 2: Filters + Add + Count */}
+          <div className="flex items-center gap-2 flex-wrap">
             <FilterSelectField
               value={params.category ?? "all"}
               onChange={(val) => setParams({ category: val === "all" ? undefined : val })}
@@ -93,13 +83,23 @@ const FieldsPage = () => {
               hoverBorderColor="hover:border-slate-300"
               className="p-2.5"
             />
+            <div className="flex items-center gap-2 ml-auto">
+              <Button
+                variant="dark-navy"
+                text="Add Field"
+                icon={<MdAdd />}
+                onClick={() => navigate("/admin/fields/create")}
+              />
+              <span className="text-sm text-gray-400 whitespace-nowrap">{count} fields</span>
+            </div>
           </div>
+
         </div>
 
         <Divider />
 
         {/* Table */}
-        <div className="pb-5 px-6">
+        <div className="pb-5 px-4 sm:px-6">
           <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
             {loading ? (
               <Loading text="Fetching fields..." />
@@ -191,7 +191,7 @@ const FieldsPage = () => {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-between px-6 py-5 border-t border-slate-100">
+              <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 border-t border-slate-100">
                 <p className="text-xs text-gray-400">
                   Page {params.page ?? 1} of {totalPages}
                 </p>

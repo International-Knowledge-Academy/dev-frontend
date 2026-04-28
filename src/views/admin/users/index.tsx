@@ -62,19 +62,42 @@ const UsersPage = () => {
   return (
     <div className="bg-white rounded-2xl border border-slate-100 max-w-5xl mx-auto">
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-5 px-6">
+      <div className="px-4 sm:px-6 pt-4">
 
-        <div className="flex items-center gap-3">
+        {/* Command bar */}
+        <div className="flex items-center justify-between gap-3 py-3">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-navy-50 flex items-center justify-center text-navy-600 flex-shrink-0">
+              <MdPerson size={15} />
+            </div>
+            <span className="text-xs font-semibold text-navy-700">{staffUsers.length} Staff Members</span>
+          </div>
+          <Button
+            variant="dark-navy"
+            text="Add Staff"
+            icon={<MdPersonAdd />}
+            onClick={() => navigate("/admin/users/create")}
+          />
+        </div>
+
+        <div className="border-t border-gray-100" />
+
+        {/* Search */}
+        <div className="pt-3">
           <SearchInput
             value={params.search ?? ""}
             onChange={(val) => setParams({ search: val })}
             placeholder="Search users..."
           />
+        </div>
+
+        {/* Filters */}
+        <div className="flex items-center gap-2 flex-wrap py-3">
           <FilterSelectField
             value={params.role ?? "all"}
             onChange={(val) => setParams({ role: val === "all" ? undefined : val })}
             icon={MdBadge}
-            defaultOption="All"
+            defaultOption="All Roles"
             options={[
               { value: "admin",           label: "Admin" },
               { value: "account_manager", label: "Account Manager" },
@@ -92,23 +115,12 @@ const UsersPage = () => {
           />
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button
-            variant="dark-navy"
-            text="Add Staff"
-            icon={<MdPersonAdd />}
-            onClick={() => navigate("/admin/users/create")}
-          />
-         
-          <p className="text-sm text-gray-400 ml-2">{staffUsers.length} users</p>
-        </div>
-
       </div>
 
       <Divider />
 
       {/* Table */}
-      <div className="pb-5 px-6">
+      <div className="pb-5 px-4 sm:px-6">
 
            <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
         {loading ? (
@@ -192,7 +204,7 @@ const UsersPage = () => {
          {/* Pagination */}
       
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-6 py-5 border-t border-slate-100">
+          <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 border-t border-slate-100">
             <p className="text-xs text-gray-400">
               Page {params.page ?? 1} of {totalPages}
             </p>

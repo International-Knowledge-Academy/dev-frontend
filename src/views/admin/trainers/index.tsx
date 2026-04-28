@@ -44,13 +44,37 @@ const TrainersPage = () => {
   return (
     <div className="bg-white rounded-2xl border border-slate-100 max-w-5xl mx-auto">
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-5 px-6">
-        <div className="flex items-center gap-3">
+      <div className="px-4 sm:px-6 pt-4">
+
+        {/* Command bar */}
+        <div className="flex items-center justify-between gap-3 py-3">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-green-50 flex items-center justify-center text-green-600 flex-shrink-0">
+              <MdPerson size={15} />
+            </div>
+            <span className="text-xs font-semibold text-navy-700">{count} Trainers</span>
+          </div>
+          <Button
+            variant="primary"
+            text="Add Trainer"
+            icon={<MdPersonAdd />}
+            onClick={() => navigate("/admin/trainers/create")}
+          />
+        </div>
+
+        <div className="border-t border-gray-100" />
+
+        {/* Search */}
+        <div className="pt-3">
           <SearchInput
             value={params.search ?? ""}
             onChange={(val) => setParams({ search: val })}
             placeholder="Search trainers..."
           />
+        </div>
+
+        {/* Filters */}
+        <div className="flex items-center gap-2 flex-wrap py-3">
           <button
             onClick={refetch}
             className="p-2.5 rounded-md lg:rounded-lg border border-slate-200 text-gray-500 hover:text-gray-700 hover:border-slate-300 transition bg-white"
@@ -59,20 +83,11 @@ const TrainersPage = () => {
           </button>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button
-            variant="primary"
-            text="Add Trainer"
-            icon={<MdPersonAdd />}
-            onClick={() => navigate("/admin/trainers/create")}
-          />
-          <p className="text-sm text-gray-400 ml-2">{count} trainers</p>
-        </div>
       </div>
 
       <Divider />
 
-      <div className="pb-5 px-6">
+      <div className="pb-5 px-4 sm:px-6">
         <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
           {loading ? (
             <Loading text="Fetching trainers..." />
@@ -122,7 +137,7 @@ const TrainersPage = () => {
                         </div>
                       </td>
                       {/* Email */}
-                      <td className="px-5 py-3.5 text-gray-500 truncate max-w-[200px]">{trainer.email}</td>
+                      <td className="px-5 py-3.5 text-gray-500 truncate max-w-[140px] sm:max-w-[200px]">{trainer.email}</td>
                       {/* Status */}
                       <td className="px-5 py-3.5">
                         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${
@@ -161,7 +176,7 @@ const TrainersPage = () => {
           )}
 
           {totalPages > 1 && (
-            <div className="flex items-center justify-between px-6 py-5 border-t border-slate-100">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 border-t border-slate-100">
               <p className="text-xs text-gray-400">
                 Page {params.page ?? 1} of {totalPages}
               </p>

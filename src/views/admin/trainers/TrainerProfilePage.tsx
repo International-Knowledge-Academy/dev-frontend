@@ -48,7 +48,7 @@ const InfoRow = ({ icon, label, value }) => (
 );
 
 const SectionTitle = ({ title, count }: { title: string; count?: number }) => (
-  <div className="flex items-center gap-2 mt-6 mb-1 px-6">
+  <div className="flex items-center gap-2 mt-6 mb-1 px-4 sm:px-6">
     <p className="text-xs font-bold uppercase tracking-widest text-gray-400">{title}</p>
     {count != null && (
       <span className="text-xs font-semibold bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-md">{count}</span>
@@ -81,16 +81,16 @@ const TrainerProfilePage = () => {
 
       {/* Header */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-6 flex items-start gap-5">
+        <div className="px-4 sm:px-6 py-5 sm:py-6 flex items-start gap-3 sm:gap-5">
           <div className="flex-shrink-0">
             {p?.profile_picture ? (
               <img
                 src={p.profile_picture}
                 alt={user.name}
-                className="w-20 h-20 rounded-full object-cover border-2 border-green-100 shadow-sm"
+                className="w-14 h-14 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-green-100 shadow-sm"
               />
             ) : (
-              <div className="w-20 h-20 rounded-full bg-green-600 text-white flex items-center justify-center text-2xl font-bold shadow-sm">
+              <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-green-600 text-white flex items-center justify-center text-xl sm:text-2xl font-bold shadow-sm">
                 {initials}
               </div>
             )}
@@ -162,7 +162,7 @@ const TrainerProfilePage = () => {
       {p && (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <SectionTitle title="Professional Info" />
-          <div className="px-6">
+          <div className="px-4 sm:px-6">
             {p.title && <InfoRow icon={<MdWork size={18} />} label="Title" value={p.title} />}
             {p.bio && (
               <InfoRow
@@ -199,7 +199,7 @@ const TrainerProfilePage = () => {
           </div>
 
           <SectionTitle title="Contact" />
-          <div className="px-6">
+          <div className="px-4 sm:px-6">
             {p.primary_email   && <InfoRow icon={<MdEmail    size={18} />} label="Primary Email"   value={p.primary_email} />}
             {p.secondary_email && <InfoRow icon={<MdEmail    size={18} />} label="Secondary Email" value={p.secondary_email} />}
             {p.phone           && <InfoRow icon={<MdPhone    size={18} />} label="Phone"           value={p.phone} />}
@@ -209,7 +209,7 @@ const TrainerProfilePage = () => {
           {(p.address || p.city || p.country || p.postal_code) && (
             <>
               <SectionTitle title="Address" />
-              <div className="px-6">
+              <div className="px-4 sm:px-6">
                 {p.address     && <InfoRow icon={<MdLocationOn size={18} />} label="Address"     value={p.address} />}
                 {p.city        && <InfoRow icon={<MdLocationOn size={18} />} label="City"        value={p.city} />}
                 {p.country     && <InfoRow icon={<MdLocationOn size={18} />} label="Country"     value={p.country} />}
@@ -219,7 +219,7 @@ const TrainerProfilePage = () => {
           )}
 
           <SectionTitle title="Documents" />
-          <div className="px-6 pb-2">
+          <div className="px-4 sm:px-6 pb-2">
             <InfoRow
               icon={<MdLink size={18} />}
               label="CV / Resume"

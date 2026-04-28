@@ -29,7 +29,7 @@ const FieldDetailPage = () => {
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
 
         {/* Header */}
-        <div className="px-6 py-5 border-b border-gray-100 flex items-center gap-4">
+        <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100 flex items-center gap-3 sm:gap-4">
           <div
             className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
             style={{
@@ -53,7 +53,7 @@ const FieldDetailPage = () => {
         </div>
 
         {/* Details grid */}
-        <div className="px-6 py-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="px-4 sm:px-6 py-5 grid grid-cols-1 md:grid-cols-2 gap-5">
 
           <div>
             <p className="text-xs text-gray-400 mb-1">Name</p>
@@ -133,7 +133,7 @@ const FieldDetailPage = () => {
 
         {/* Trainers */}
         {field.trainers?.length > 0 && (
-          <div className="px-6 py-5 border-t border-gray-100">
+          <div className="px-4 sm:px-6 py-5 border-t border-gray-100">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Trainers</p>
             <div className="flex flex-col gap-3">
               {field.trainers.map((trainer) => (
@@ -163,7 +163,7 @@ const FieldDetailPage = () => {
         )}
 
         {/* Actions */}
-        <div className="px-6 py-4 border-t border-gray-100 flex gap-2">
+        <div className="px-4 sm:px-6 py-4 border-t border-gray-100 flex gap-2">
           <button
             type="button"
             onClick={() => navigate("/admin/fields")}

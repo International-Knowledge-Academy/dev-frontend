@@ -88,13 +88,37 @@ const ProgramsPage = () => {
     <div className="bg-white rounded-2xl border border-slate-100 max-w-5xl mx-auto">
 
       {/* Toolbar */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-5 px-6">
-        <div className="flex items-center gap-3 flex-wrap">
+      <div className="px-4 sm:px-6 pt-4">
+
+        {/* Command bar: primary action + count */}
+        <div className="flex items-center justify-between gap-3 py-3">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-navy-50 flex items-center justify-center text-navy-600 flex-shrink-0">
+              <MdWorkspacePremium size={15} />
+            </div>
+            <span className="text-xs font-semibold text-navy-700">{count} Programs</span>
+          </div>
+          <Button
+            variant="dark-navy"
+            text="Add Program"
+            icon={<MdAdd />}
+            onClick={() => navigate("/admin/programs/create")}
+          />
+        </div>
+
+        <div className="border-t border-gray-100" />
+
+        {/* Search */}
+        <div className="pt-3">
           <SearchInput
             value={params.search ?? ""}
             onChange={(val) => setParams({ search: val })}
             placeholder="Search programs..."
           />
+        </div>
+
+        {/* Filters */}
+        <div className="flex items-center gap-2 flex-wrap py-3">
           <FilterSelectField
             value={params.program_type ?? "all"}
             onChange={(val) => setParams({ program_type: val === "all" ? undefined : val })}
@@ -138,21 +162,12 @@ const ProgramsPage = () => {
           />
         </div>
 
-        <div className="flex items-center gap-4">
-          <Button
-            variant="dark-navy"
-            text="Add Program"
-            icon={<MdAdd />}
-            onClick={() => navigate("/admin/programs/create")}
-          />
-          <p className="text-sm text-gray-400">{count} programs</p>
-        </div>
       </div>
 
       <Divider />
 
       {/* Table */}
-      <div className="pb-5 px-6">
+      <div className="pb-5 px-4 sm:px-6">
         <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
           {loading ? (
             <Loading text="Fetching programs..." />
@@ -192,7 +207,7 @@ const ProgramsPage = () => {
                             <MdWorkspacePremium size={16} />
                           </div>
                           <div>
-                            <p className="font-medium text-navy-800 max-w-[200px] truncate" title={program.name}>
+                            <p className="font-medium text-navy-800 max-w-[140px] sm:max-w-[200px] truncate" title={program.name}>
                               {program.name}
                             </p>
                             {program.duration && (
@@ -285,7 +300,7 @@ const ProgramsPage = () => {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between px-6 py-5 border-t border-slate-100">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 border-t border-slate-100">
               <p className="text-xs text-gray-400">
                 Page {params.page ?? 1} of {totalPages}
               </p>

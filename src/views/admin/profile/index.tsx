@@ -83,12 +83,12 @@ const ProfileOverview = () => {
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           {/* Banner */}
           <div
-            className="h-28 w-full"
+            className="h-20 sm:h-28 w-full"
             style={{ background: "linear-gradient(135deg, #101a3c 0%, #1B2A5E 50%, #3d5494 100%)" }}
           />
 
           {/* Avatar + info row */}
-          <div className="px-6 pb-5">
+          <div className="px-4 sm:px-6 pb-5">
             <div className="flex items-end justify-between -mt-10 mb-4">
               {/* Avatar */}
               <div className="ring-4 ring-white rounded-2xl shadow-md flex-shrink-0">
@@ -152,7 +152,7 @@ const ProfileOverview = () => {
         </div>
 
         {/* Two-column grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
           {/* Left column */}
           <div className="grid grid-cols-1">
