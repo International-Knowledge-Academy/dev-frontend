@@ -99,12 +99,7 @@ const UsersPage = () => {
             icon={<MdPersonAdd />}
             onClick={() => navigate("/admin/users/create")}
           />
-          <Button
-            variant="primary"
-            text="Add Trainer"
-            icon={<MdSchool />}
-            onClick={() => navigate("/admin/trainers/create")}
-          />
+         
           <p className="text-sm text-gray-400 ml-2">{staffUsers.length} users</p>
         </div>
 
@@ -163,7 +158,7 @@ const UsersPage = () => {
                   {/* Status */}
                   <td className="px-5 py-3.5">
                     <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${
-                      user.is_active ? "bg-green-50 text-green-600 border-green-600" : "bg-red-50 text-red-500 border-red-500"
+                      user.is_active ? "bg-green-50 text-green-600 border-green-600" : "bg-red-50 text-red-500 border-red-600"
                     }`}>
                       <span className={`w-1.5 h-1.5 rounded-full ${user.is_active ? "bg-green-500" : "bg-red-400"}`} />
                       {user.is_active ? "Active" : "Inactive"}
