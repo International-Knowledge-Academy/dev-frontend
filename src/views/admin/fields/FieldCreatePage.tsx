@@ -7,6 +7,7 @@ import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import ToggleInput from "components/form/toggle/ToggleInput";
 import Button from "components/ui/buttons/Button";
+import MediaUploadField from "components/form/filesUpload/MediaUploadField";
 
 const FieldCreatePage = () => {
   const navigate = useNavigate();
@@ -150,35 +151,23 @@ const FieldCreatePage = () => {
             </div>
           </div>
 
-          {/* Thumbnail URL */}
-          <div>
-            <label className="block text-sm font-medium text-navy-800 mb-2">
-              Thumbnail URL <span className="text-xs font-normal text-gray-400">(optional)</span>
-            </label>
-            <input
-              type="text"
-              value={form.thumbnail}
-              onChange={(e) => updateFormData("thumbnail", e.target.value)}
-              placeholder="https://example.com/image.jpg"
-              className={inputCls("thumbnail")}
-            />
-            {fieldErrors.thumbnail && <p className="mt-1 text-xs text-red-500">{fieldErrors.thumbnail}</p>}
-          </div>
+          <MediaUploadField
+            label="Thumbnail"
+            type="image"
+            folder="fields/thumbnails"
+            value={form.thumbnail}
+            onChange={(url) => updateFormData("thumbnail", url)}
+            error={fieldErrors.thumbnail}
+          />
 
-          {/* Video URL */}
-          <div>
-            <label className="block text-sm font-medium text-navy-800 mb-2">
-              Video URL <span className="text-xs font-normal text-gray-400">(optional)</span>
-            </label>
-            <input
-              type="text"
-              value={form.video}
-              onChange={(e) => updateFormData("video", e.target.value)}
-              placeholder="https://example.com/video.mp4"
-              className={inputCls("video")}
-            />
-            {fieldErrors.video && <p className="mt-1 text-xs text-red-500">{fieldErrors.video}</p>}
-          </div>
+          <MediaUploadField
+            label="Video"
+            type="video"
+            folder="fields/videos"
+            value={form.video}
+            onChange={(url) => updateFormData("video", url)}
+            error={fieldErrors.video}
+          />
 
           <ToggleInput
             label="Active"

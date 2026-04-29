@@ -35,7 +35,6 @@ const useFields = (initialParams: FieldsParams = {}): UseFieldsReturn => {
           ...(params.search    && { search:    params.search }),
           ...(params.ordering  && { ordering:  params.ordering }),
           ...(params.is_active !== undefined && { is_active: params.is_active }),
-          ...(params.category  && { category: params.category }),
         },
       });
 
@@ -68,8 +67,7 @@ const useFields = (initialParams: FieldsParams = {}): UseFieldsReturn => {
       page:
         updates.search    !== undefined ||
         updates.ordering  !== undefined ||
-        updates.is_active !== undefined ||
-        updates.category  !== undefined
+        updates.is_active !== undefined
           ? 1
           : (updates.page ?? prev.page),
     }));
