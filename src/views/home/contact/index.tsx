@@ -2,11 +2,11 @@
 import { motion } from "framer-motion";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
-import Locations from "components/home/Locations";
 import ContactHero from "components/contact/ContactHero";
 import ContactCards from "components/contact/ContactCards";
 import ContactForm from "components/contact/ContactForm";
 import SocialLinks from "components/contact/SocialLinks";
+import WorldMapSection from "components/home/WorldMapSection";
 import { MdInfo } from "react-icons/md";
 
 const ContactPage = () => {
@@ -75,8 +75,8 @@ const ContactPage = () => {
         </div>
       </section>
 
-      {/* Locations */}
-      <Locations />
+      {/* World Map */}
+      <WorldMapSection />
 
       <Footer />
     </div>
