@@ -60,7 +60,7 @@ const LocationEditPage = () => {
 
   if (loadingLocation) {
     return (
-      <div className="flex items-center justify-center py-20 text-sm text-gray-400">
+      <div className="flex items-center justify-center py-20 text-sm text-slate-400">
         Loading location...
       </div>
     );
@@ -79,7 +79,7 @@ const LocationEditPage = () => {
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
         <div className="px-6 py-4 border-b border-gray-100">
           <h1 className="text-base font-bold text-navy-800">Edit Location</h1>
-          <p className="text-xs text-gray-400 mt-0.5">
+          <p className="text-xs text-slate-400 mt-0.5">
             Update the details for <span className="font-semibold text-navy-700">{location?.name}</span>
           </p>
         </div>
@@ -188,7 +188,7 @@ const LocationEditPage = () => {
               onClick={() => navigate(`/admin/locations/${uid}`)}
               className="flex-1 rounded-xl py-2.5"
               bgColor="bg-white"
-              textColor="text-gray-600"
+              textColor="text-slate-600"
               borderColor="border-gray-200"
               hoverBgColor="hover:bg-gray-50"
               hoverTextColor=""

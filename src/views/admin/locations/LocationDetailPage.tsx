@@ -14,14 +14,14 @@ const InfoRow = ({ icon, label, value }) => (
       {icon}
     </div>
     <div className="flex-1 min-w-0">
-      <p className="text-xs text-gray-400 mb-0.5">{label}</p>
+      <p className="text-xs text-slate-400 mb-0.5">{label}</p>
       <div className="text-sm font-medium text-navy-800 break-words">{value}</div>
     </div>
   </div>
 );
 
 const SectionTitle = ({ title }) => (
-  <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mt-6 mb-1 px-4 sm:px-6">{title}</p>
+  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mt-6 mb-1 px-4 sm:px-6">{title}</p>
 );
 
 const formatDate = (dateStr: string) =>
@@ -36,7 +36,7 @@ const LocationDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20 text-sm text-gray-400">
+      <div className="flex items-center justify-center py-20 text-sm text-slate-400">
         Loading location...
       </div>
     );
@@ -61,7 +61,7 @@ const LocationDetailPage = () => {
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-bold text-navy-800 truncate leading-snug">{location.name}</h1>
-            <p className="text-xs text-gray-400 mt-0.5 truncate">{location.city}, {location.country}</p>
+            <p className="text-xs text-slate-400 mt-0.5 truncate">{location.city}, {location.country}</p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold border ${
@@ -133,7 +133,7 @@ const LocationDetailPage = () => {
           <button
             type="button"
             onClick={() => navigate("/admin/locations")}
-            className="flex-1 rounded-md lg:rounded-lg border border-gray-200 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
+            className="flex-1 rounded-md lg:rounded-lg border border-gray-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-gray-50 transition"
           >
             Back
           </button>

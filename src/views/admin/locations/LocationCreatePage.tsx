@@ -47,7 +47,7 @@ const LocationCreatePage = () => {
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
         <div className="px-6 py-4 border-b border-gray-100">
           <h1 className="text-base font-bold text-navy-800">Create Location</h1>
-          <p className="text-xs text-gray-400 mt-0.5">Fill in the details to add a new location</p>
+          <p className="text-xs text-slate-400 mt-0.5">Fill in the details to add a new location</p>
         </div>
 
         <form onSubmit={handleSubmit} className="px-6 py-5 grid grid-cols-1 gap-4">
@@ -154,7 +154,7 @@ const LocationCreatePage = () => {
               onClick={() => navigate("/admin/locations")}
               className="flex-1 rounded-xl py-2.5"
               bgColor="bg-white"
-              textColor="text-gray-600"
+              textColor="text-slate-600"
               borderColor="border-gray-200"
               hoverBgColor="hover:bg-gray-50"
               hoverTextColor=""
