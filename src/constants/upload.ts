@@ -16,3 +16,9 @@ export const IMAGE_TYPES = {
   extensions: ".png,.jpg,.jpeg",
   label: "PNG or JPG",
 };
+
+export const VIDEO_TYPES = {
+  mimeTypes: ["video/mp4", "video/webm", "video/ogg", "video/quicktime"],
+  extensions: ".mp4,.webm,.ogg,.mov",
+  label: "MP4, WebM, MOV",
+};

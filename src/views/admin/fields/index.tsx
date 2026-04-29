@@ -7,7 +7,6 @@ import {
 } from "react-icons/md";
 import useFields from "hooks/fields/useFields";
 import useDeleteField from "hooks/fields/useDeleteField";
-import useCategories from "hooks/categories/useCategories";
 import { useToast } from "context/ToastContext";
 import Loading from "components/loading/Loading";
 import Button from "components/ui/buttons/Button";
@@ -25,7 +24,6 @@ const FieldsPage = () => {
   const { addToast } = useToast();
   const { fields, count, loading, error, params, setParams, refetch } = useFields();
   const { deleteField, loading: deleting } = useDeleteField();
-  const { categories } = useCategories();
 
   const [deleteTarget, setDeleteTarget] = useState<Field | null>(null);
 
@@ -56,13 +54,6 @@ const FieldsPage = () => {
 
           {/* Row 2: Filters + Add + Count */}
           <div className="flex items-center gap-2 flex-wrap">
-            <FilterSelectField
-              value={params.category ?? "all"}
-              onChange={(val) => setParams({ category: val === "all" ? undefined : val })}
-              icon={MdLayers}
-              defaultOption="All Categories"
-              options={categories.map((c) => ({ value: c.uid, label: c.name }))}
-            />
             <FilterSelectField
               value={params.is_active === undefined ? "all" : String(params.is_active)}
               onChange={(val) => setParams({ is_active: val === "all" ? undefined : val === "true" })}

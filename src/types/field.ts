@@ -11,7 +11,7 @@ export interface Field {
   uid: string;
   name: string;
   description: string;
-  category: { uid: string; name: string } | null;
+  category: { uid: string; name: string; summary: string } | null;
   is_active: boolean;
   program_count: number;
   hex_color: string;
@@ -33,7 +33,6 @@ export interface FieldsParams {
   search?: string;
   ordering?: string;
   is_active?: boolean;
-  category?: string;
 }
 
 export interface CreateFieldPayload {

@@ -5,6 +5,7 @@ import useCreateField from "hooks/fields/useCreateField";
 import useUpdateField from "hooks/fields/useUpdateField";
 import useCategories from "hooks/categories/useCategories";
 import { useToast } from "context/ToastContext";
+import MediaUploadField from "components/form/filesUpload/MediaUploadField";
 import type { Field } from "types/field";
 
 interface FieldFormModalProps {
@@ -200,29 +201,23 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
             {fieldErrors.text_color && <p className="mt-1 text-xs text-red-500">{fieldErrors.text_color}</p>}
           </div>
 
-          {/* Thumbnail */}
-          <div>
-            <label className="block text-xs font-semibold text-navy-600 mb-1.5">Thumbnail URL</label>
-            <input
-              value={form.thumbnail}
-              onChange={(e) => set("thumbnail", e.target.value)}
-              placeholder="https://example.com/image.jpg"
-              className={inputCls("thumbnail")}
-            />
-            {fieldErrors.thumbnail && <p className="mt-1 text-xs text-red-500">{fieldErrors.thumbnail}</p>}
-          </div>
+          <MediaUploadField
+            label="Thumbnail"
+            type="image"
+            folder="fields/thumbnails"
+            value={form.thumbnail}
+            onChange={(url) => set("thumbnail", url)}
+            error={fieldErrors.thumbnail}
+          />
 
-          {/* Video */}
-          <div>
-            <label className="block text-xs font-semibold text-navy-600 mb-1.5">Video URL</label>
-            <input
-              value={form.video}
-              onChange={(e) => set("video", e.target.value)}
-              placeholder="https://example.com/video.mp4"
-              className={inputCls("video")}
-            />
-            {fieldErrors.video && <p className="mt-1 text-xs text-red-500">{fieldErrors.video}</p>}
-          </div>
+          <MediaUploadField
+            label="Video"
+            type="video"
+            folder="fields/videos"
+            value={form.video}
+            onChange={(url) => set("video", url)}
+            error={fieldErrors.video}
+          />
 
           {/* is_active toggle */}
           <div className="flex items-center justify-between rounded-xl bg-gray-50 border border-gray-200 px-4 py-3">
