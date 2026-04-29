@@ -1,5 +1,4 @@
 import React from "react";
-import noDataImg from "assets/img/empty/Hand drawn no data.png";
 
 interface EmptyStateProps {
   icon?: React.ReactNode;
@@ -17,29 +16,27 @@ const EmptyState = ({
   className = "",
 }: EmptyStateProps) => {
   return (
-    <div
-      className={`flex flex-col items-center justify-center text-center py-16 px-6 rounded-2xl border border-dashed border-navy-100 bg-navy-50/30 ${className}`}
-    >
-        
-        {/* <img
-            src={noDataImg}
-            alt="No data"
-            className="w-[160px] h-[160px] object-contain drop-shadow-xl"
-        /> */}
-    
+    <div className={`flex flex-col items-center justify-center py-16 px-6 ${className}`}>
+
+      {/* Icon bubble */}
       {icon && (
-        <div className="mb-4 text-gold-400 text-5xl flex items-center justify-center">
-          {icon}
+        <div className="relative mb-5">
+          <div className="w-16 h-16 rounded-2xl bg-navy-50 border border-navy-100 flex items-center justify-center text-navy-300 text-3xl shadow-sm">
+            {icon}
+          </div>
+          {/* Decorative dots */}
+          <span className="absolute -top-1.5 -right-1.5 w-3 h-3 rounded-full bg-gold-200 border-2 border-white" />
+          <span className="absolute -bottom-1 -left-1.5 w-2 h-2 rounded-full bg-navy-200 border-2 border-white" />
         </div>
       )}
 
-      <h3 className="text-base font-bold text-navy-700 mb-1">{title}</h3>
+      <h3 className="text-sm font-bold text-navy-700 mb-1">{title}</h3>
 
-      <p className="text-sm text-navy-300 max-w-xs leading-relaxed">
+      <p className="text-xs text-gray-400 max-w-[220px] text-center leading-relaxed">
         {description}
       </p>
 
-      {actionButton && <div className="mt-6">{actionButton}</div>}
+      {actionButton && <div className="mt-5">{actionButton}</div>}
     </div>
   );
 };
