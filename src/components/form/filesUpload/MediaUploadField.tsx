@@ -48,7 +48,7 @@ const MediaUploadField = ({
 
       {/* Preview */}
       {value && !uploading && (
-        <div className="relative rounded-lg border border-gray-200 overflow-hidden bg-gray-50">
+        <div className="relative rounded-lg border border-slate-200 overflow-hidden bg-gray-50">
           {type === "image" ? (
             <img
               src={value}
@@ -61,7 +61,7 @@ const MediaUploadField = ({
           <button
             type="button"
             onClick={() => onChange("")}
-            className="absolute top-2 right-2 w-7 h-7 bg-white rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:text-red-500 hover:border-red-300 transition shadow-sm"
+            className="absolute top-2 right-2 w-7 h-7 bg-white rounded-full border border-slate-200 flex items-center justify-center text-gray-500 hover:text-red-500 hover:border-red-300 transition shadow-sm"
           >
             <MdClose size={14} />
           </button>
@@ -73,7 +73,7 @@ const MediaUploadField = ({
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          className="w-full flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 py-8 hover:border-navy-400 hover:bg-navy-50 transition"
+          className="w-full flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-slate-200 bg-gray-50 py-8 hover:border-navy-400 hover:bg-navy-50 transition"
         >
           {type === "video" ? (
             <MdVideoFile size={24} className="text-gray-400" />
@@ -87,7 +87,7 @@ const MediaUploadField = ({
 
       {/* Upload progress */}
       {uploading && (
-        <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-4 space-y-2">
+        <div className="rounded-lg border border-slate-200 bg-gray-50 px-4 py-4 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-navy-700">Uploading...</span>
             <span className="text-sm font-semibold text-navy-600">{progress}%</span>

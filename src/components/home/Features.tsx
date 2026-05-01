@@ -95,7 +95,7 @@ const Features = () => {
               key={feature.title}
               variants={card}
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
-              className="group p-7 rounded-2xl border border-gray-100 hover:border-gold-300 hover:shadow-lg transition-colors duration-300 bg-white cursor-default"
+              className="group p-7 rounded-2xl border border-slate-100 hover:border-gold-300 hover:shadow-lg transition-colors duration-300 bg-white cursor-default"
             >
               <div className="w-12 h-12 rounded-xl bg-navy-50 text-navy-600 flex items-center justify-center mb-5 group-hover:bg-gold-500 group-hover:text-white transition-all duration-300">
                 {feature.icon}

@@ -28,7 +28,7 @@ const typeConfig: Record<string, { label: string; cls: string; icon: React.React
 const statusBadge: Record<string, string> = {
   upcoming:  "bg-blue-50 text-blue-600 border-blue-600",
   ongoing:   "bg-green-50 text-green-600 border-green-600",
-  completed: "bg-gray-100 text-gray-500 border-gray-500",
+  completed: "bg-gray-100 text-gray-500 border-slate-500",
   cancelled: "bg-red-50 text-red-500 border-red-500",
 };
 
@@ -50,7 +50,7 @@ const formatDate = (d: string | null) => {
 };
 
 const InfoChip = ({ icon, label }: { icon: React.ReactNode; label: string }) => (
-  <div className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-100 rounded-xl text-sm text-navy-700 shadow-sm">
+  <div className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-100 rounded-xl text-sm text-navy-700 shadow-sm">
     <span className="text-navy-400">{icon}</span>
     {label}
   </div>
@@ -145,7 +145,7 @@ const ProgramPage = () => {
                 {program.field.name}
               </span>
             )}
-            <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full border ${statusBadge[program.status] ?? "bg-gray-50 text-gray-500 border-gray-200"}`}>
+            <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full border ${statusBadge[program.status] ?? "bg-gray-50 text-gray-500 border-slate-200"}`}>
               <span className="w-1.5 h-1.5 rounded-full bg-current" />
               {program.status_display ?? program.status}
             </span>
@@ -198,13 +198,13 @@ const ProgramPage = () => {
                 <InfoChip icon={<MdLanguage size={16} />} label={program.language} />
               )}
               {program.level && (
-                <span className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-gray-100 ${levelColors[program.level] ?? "text-navy-700 bg-white"}`}>
+                <span className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-slate-100 ${levelColors[program.level] ?? "text-navy-700 bg-white"}`}>
                   <MdSettings size={16} />
                   {program.level_display ?? program.level}
                 </span>
               )}
               {program.mode && (
-                <span className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-gray-100 ${modeColors[program.mode] ?? "text-navy-700 bg-white"}`}>
+                <span className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-slate-100 ${modeColors[program.mode] ?? "text-navy-700 bg-white"}`}>
                   <MdSettings size={16} />
                   {program.mode_display ?? program.mode}
                 </span>
@@ -226,7 +226,7 @@ const ProgramPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm"
+                className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm"
               >
                 <h2 className="text-sm font-bold text-navy-800 uppercase tracking-widest mb-4 flex items-center gap-2">
                   <MdCalendarToday size={16} className="text-gold-500" />
@@ -255,7 +255,7 @@ const ProgramPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.15 }}
-                className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm"
+                className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm"
               >
                 <h2 className="text-sm font-bold text-navy-800 uppercase tracking-widest mb-4">
                   About This Program
@@ -299,7 +299,7 @@ const ProgramPage = () => {
                 initial={{ opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-4"
+                className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-4"
               >
                 <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400">
                   Contact
@@ -331,7 +331,7 @@ const ProgramPage = () => {
                 initial={{ opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.35 }}
-                className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-3"
+                className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-3"
               >
                 <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400">
                   Brochure

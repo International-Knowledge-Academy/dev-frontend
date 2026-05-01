@@ -95,7 +95,7 @@ const Team = () => {
               key={trainer.name}
               variants={card}
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
-              className="group bg-white border border-gray-100 hover:border-gold-300 hover:shadow-lg transition-colors duration-300 rounded-2xl p-6 cursor-default"
+              className="group bg-white border border-slate-100 hover:border-gold-300 hover:shadow-lg transition-colors duration-300 rounded-2xl p-6 cursor-default"
             >
               {/* Avatar */}
               <div className="flex items-center gap-4 mb-5">
@@ -112,7 +112,7 @@ const Team = () => {
               </div>
 
               {/* Specialty */}
-              <div className="border-t border-gray-100 pt-4">
+              <div className="border-t border-slate-100 pt-4">
                 <p className="text-xs text-gray-400 uppercase tracking-wider mb-2 font-medium">Specialization</p>
                 <p className="text-gray-600 text-sm leading-relaxed">{trainer.specialty}</p>
               </div>

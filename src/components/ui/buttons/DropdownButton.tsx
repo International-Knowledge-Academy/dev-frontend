@@ -31,7 +31,7 @@ const DropdownButton = ({ label, icon, items, variant = "primary" }: DropdownBut
   const triggerClass =
     variant === "primary"
       ? "bg-navy-800 text-white hover:bg-navy-700 border-navy-800"
-      : "bg-white text-gray-700 hover:bg-gray-50 border-gray-200";
+      : "bg-white text-gray-700 hover:bg-gray-50 border-slate-200";
 
   return (
     <div ref={ref} className="relative inline-block">
@@ -49,7 +49,7 @@ const DropdownButton = ({ label, icon, items, variant = "primary" }: DropdownBut
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white border border-gray-100 shadow-lg z-50 overflow-hidden">
+        <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white border border-slate-100 shadow-lg z-50 overflow-hidden">
           {items.map((item, i) => (
             <button
               key={i}

@@ -32,7 +32,7 @@ const formatDateTime = (s?: string | null) => {
 };
 
 const InfoRow = ({ icon, label, value }) => (
-  <div className="flex items-start gap-3 py-3 border-b border-gray-50 last:border-0">
+  <div className="flex items-start gap-3 py-3 border-b border-slate-50 last:border-0">
     <div className="w-8 h-8 rounded-lg bg-navy-50 flex items-center justify-center text-navy-400 flex-shrink-0 mt-0.5">
       {icon}
     </div>
@@ -44,9 +44,9 @@ const InfoRow = ({ icon, label, value }) => (
 );
 
 const Card = ({ title, children }) => (
-  <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+  <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
     {title && (
-      <div className="px-5 py-3.5 border-b border-gray-50">
+      <div className="px-5 py-3.5 border-b border-slate-50">
         <p className="text-xs font-bold uppercase tracking-widest text-gray-400">{title}</p>
       </div>
     )}
@@ -80,7 +80,7 @@ const ProfileOverview = () => {
       <div className="max-w-5xl mx-auto space-y-5">
 
         {/* Hero card */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
           {/* Banner */}
           <div
             className="h-20 sm:h-28 w-full"
@@ -129,7 +129,7 @@ const ProfileOverview = () => {
             <p className="text-sm text-gray-400 mt-0.5">{me.email}</p>
 
             <div className="flex flex-wrap items-center gap-2 mt-3">
-              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${roleBadge[me.role] ?? "bg-gray-50 text-gray-500 border-gray-200"}`}>
+              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${roleBadge[me.role] ?? "bg-gray-50 text-gray-500 border-slate-200"}`}>
                 <MdAdminPanelSettings size={12} />
                 {roleLabel[me.role] ?? me.role}
               </span>

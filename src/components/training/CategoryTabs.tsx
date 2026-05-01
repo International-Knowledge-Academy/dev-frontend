@@ -13,7 +13,7 @@ const CategoryTabs = ({ categories, selected, onSelect }: Props) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="bg-white border-b border-gray-100 sticky top-[72px] z-40">
+    <div className="bg-white border-b border-slate-100 sticky top-[72px] z-40">
       <div className="max-w-6xl mx-auto px-6">
         <div
           ref={scrollRef}

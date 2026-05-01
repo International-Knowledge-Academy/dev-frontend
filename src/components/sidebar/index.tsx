@@ -39,7 +39,7 @@ const Sidebar = ({ open, onClose }) => {
       )}
 
       <div
-        className={`fixed left-0 top-0 z-50 flex h-screen w-[260px] flex-col bg-white border-r border-gray-100 shadow-lg transition-transform duration-300 xl:z-0 xl:translate-x-0 ${
+        className={`fixed left-0 top-0 z-50 flex h-screen w-[260px] flex-col bg-white border-r border-slate-100 shadow-lg transition-transform duration-300 xl:z-0 xl:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -51,7 +51,7 @@ const Sidebar = ({ open, onClose }) => {
           <HiX size={18} />
         </button>
 
-        <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-100">
+        <div className="flex items-center gap-3 px-6 py-5 border-b border-slate-100">
           <img
             src="/brand/IKA Logo-01.png"
             alt="IKA"
@@ -67,7 +67,7 @@ const Sidebar = ({ open, onClose }) => {
           <Links routes={routes} layout={layout} />
         </div>
 
-        <div className="border-t border-gray-100 px-3 py-3">
+        <div className="border-t border-slate-100 px-3 py-3">
           <button
             onClick={logout}
             className="flex w-full items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-colors"

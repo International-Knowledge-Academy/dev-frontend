@@ -24,7 +24,7 @@ const TypeTabs = ({ selected, counts, total, onSelect }: Props) => {
     value === null ? total : (counts[value] ?? 0);
 
   return (
-    <div className="sticky top-0 z-20 bg-white border-b border-gray-100 shadow-sm">
+    <div className="sticky top-0 z-20 bg-white border-b border-slate-100 shadow-sm">
       <div className="max-w-6xl mx-auto px-6">
         <div
           ref={scrollRef}

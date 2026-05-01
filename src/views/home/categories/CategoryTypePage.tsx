@@ -118,7 +118,7 @@ const CategoryTypePage = () => {
             {Array.from({ length: 6 }).map((_, i) => (
               <div
                 key={i}
-                className="bg-white rounded-2xl border border-gray-100 p-6 animate-pulse"
+                className="bg-white rounded-2xl border border-slate-100 p-6 animate-pulse"
               >
                 <div className="w-11 h-11 bg-gray-100 rounded-xl mb-4" />
                 <div className="h-4 bg-gray-100 rounded w-1/3 mb-3" />

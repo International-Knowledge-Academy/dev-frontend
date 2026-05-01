@@ -7,7 +7,7 @@ const Radio = (props) => {
       name={name}
       type="radio"
       className={`before:contet[""] relative h-5 w-5 cursor-pointer appearance-none rounded-full
-       border !border-gray-300 transition-all duration-[0.2s] before:absolute before:top-[3px]
+       border !border-slate-300 transition-all duration-[0.2s] before:absolute before:top-[3px]
        before:left-[50%] before:h-3 before:w-3 before:translate-x-[-50%] before:rounded-full before:transition-all before:duration-[0.2s]
        ${
          color === "red"
@@ -37,7 +37,7 @@ const Radio = (props) => {
            : color === "indigo"
            ? "checked:!border-indigo-500 checked:before:!bg-indigo-500"
            : color === "gray"
-           ? "checked:!border-gray-500 checked:before:!bg-gray-500"
+           ? "checked:!border-slate-500 checked:before:!bg-gray-500"
            : "checked:!border-brand-500 checked:before:!bg-brand-500"
        } `}
       {...rest}

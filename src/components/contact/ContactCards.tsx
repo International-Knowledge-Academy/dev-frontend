@@ -61,7 +61,7 @@ const ContactCards = () => {
           <motion.div
             variants={card}
             whileHover={{ y: -5, transition: { duration: 0.2 } }}
-            className="group relative bg-white border border-gray-100 hover:border-gold-300 hover:shadow-lg transition-all duration-300 rounded-2xl p-6 flex flex-col items-center text-center cursor-pointer overflow-hidden"
+            className="group relative bg-white border border-slate-100 hover:border-gold-300 hover:shadow-lg transition-all duration-300 rounded-2xl p-6 flex flex-col items-center text-center cursor-pointer overflow-hidden"
           >
             {/* Icon */}
             <div className={`w-14 h-14 rounded-2xl bg-navy-50 text-navy-600 flex items-center justify-center mb-4 transition-all duration-300 ${c.color} group-hover:text-white`}>

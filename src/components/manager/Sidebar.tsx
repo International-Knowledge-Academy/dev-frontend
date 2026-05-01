@@ -30,7 +30,7 @@ const ManagerSidebar = ({ open, onClose }: SidebarProps) => {
           ${open ? "translate-x-0" : "-translate-x-full"} xl:translate-x-0`}
       >
         {/* Logo */}
-        <div className="flex items-center gap-2 px-6 py-6 border-b border-gray-100">
+        <div className="flex items-center gap-2 px-6 py-6 border-b border-slate-100">
           <div className="h-8 w-8 rounded-lg bg-navy-700 flex items-center justify-center">
             <span className="text-white text-sm font-bold">M</span>
           </div>

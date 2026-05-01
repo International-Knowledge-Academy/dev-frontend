@@ -91,14 +91,14 @@ const ProgramsPublicPage = () => {
               value={search}
               onChange={(e) => handleSearchChange(e.target.value)}
               placeholder="Search programs..."
-              className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-navy-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-navy-300 transition"
+              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-navy-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-navy-300 transition"
             />
           </div>
 
           <select
             value={fieldUid}
             onChange={(e) => handleFieldChange(e.target.value)}
-            className="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-300 transition"
+            className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-300 transition"
           >
             <option value="">All Fields</option>
             {fields.map((f) => (
@@ -109,7 +109,7 @@ const ProgramsPublicPage = () => {
           <select
             value={locationUid}
             onChange={(e) => handleLocationChange(e.target.value)}
-            className="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-300 transition"
+            className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-300 transition"
           >
             <option value="">All Locations</option>
             {locations.map((l) => (
@@ -136,7 +136,7 @@ const ProgramsPublicPage = () => {
         {loading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-gray-100 p-6 animate-pulse">
+              <div key={i} className="bg-white rounded-2xl border border-slate-100 p-6 animate-pulse">
                 <div className="h-4 bg-gray-100 rounded w-1/3 mb-4" />
                 <div className="h-5 bg-gray-100 rounded w-3/4 mb-2" />
                 <div className="h-4 bg-gray-100 rounded w-full mb-1" />

@@ -16,7 +16,7 @@ function Dropdown({ items, visible }) {
       }`}
     >
       <div
-        className={`rounded-2xl bg-white shadow-2xl border border-gray-100 overflow-hidden transition-all duration-200 origin-top ${
+        className={`rounded-2xl bg-white shadow-2xl border border-slate-100 overflow-hidden transition-all duration-200 origin-top ${
           visible ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
       >
@@ -46,11 +46,11 @@ function CategoriesDropdown({ link, visible }) {
       }`}
     >
       <div
-        className={`rounded-2xl bg-white shadow-2xl border border-gray-100 overflow-hidden transition-all duration-200 origin-top ${
+        className={`rounded-2xl bg-white shadow-2xl border border-slate-100 overflow-hidden transition-all duration-200 origin-top ${
           visible ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
       >
-        <div className="px-4 pt-4 pb-3 border-b border-gray-50">
+        <div className="px-4 pt-4 pb-3 border-b border-slate-50">
           <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">
             Browse Categories
           </p>
@@ -88,7 +88,7 @@ function CategoriesDropdown({ link, visible }) {
           )}
         </div>
 
-        <div className="px-4 py-3 border-t border-gray-50 bg-slate-50/60">
+        <div className="px-4 py-3 border-t border-slate-50 bg-slate-50/60">
           <Link
             to={link.to}
             className="flex items-center justify-between text-xs font-semibold text-navy-600 hover:text-gold-600 transition-colors group"
@@ -242,7 +242,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 px-5 py-4 flex flex-col gap-1 shadow-lg">
+        <div className="lg:hidden bg-white border-t border-slate-100 px-5 py-4 flex flex-col gap-1 shadow-lg">
           {navLinks.map((link) => {
             const hasChildren = link.children?.length > 0;
             const isExpanded = mobileExpanded === link.to;
@@ -319,7 +319,7 @@ const Navbar = () => {
             );
           })}
 
-          <div className="mt-3 pt-3 border-t border-gray-100 flex flex-col gap-2">
+          <div className="mt-3 pt-3 border-t border-slate-100 flex flex-col gap-2">
             <Link
               to="/auth/sign-in"
               onClick={() => setMenuOpen(false)}

@@ -59,7 +59,7 @@ export default function StatusFileUpload({
 
       <label
         htmlFor={id}
-        className="group relative flex cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-300 bg-white px-6 py-10 text-center transition-all duration-200 hover:border-navy-500 hover:bg-navy-50"
+        className="group relative flex cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-slate-300 bg-white px-6 py-10 text-center transition-all duration-200 hover:border-navy-500 hover:bg-navy-50"
       >
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-md bg-navy-100 text-navy-600 transition">
           <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,7 +79,7 @@ export default function StatusFileUpload({
       </label>
 
       {file && (
-        <div className="rounded-md border border-gray-200 bg-white px-4 py-3">
+        <div className="rounded-md border border-slate-200 bg-white px-4 py-3">
           <div className="flex items-center justify-between">
             <span className="truncate text-sm text-slate-500">{file.name}</span>
             {!uploading && (

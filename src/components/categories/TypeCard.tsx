@@ -18,7 +18,7 @@ const TypeCard = ({ icon: Icon, title, description, href, delay = 0 }: Props) =>
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       whileHover={{ y: -6, transition: { duration: 0.2 } }}
-      className="group relative bg-white border border-gray-100 hover:border-gold-300 hover:shadow-xl rounded-3xl overflow-hidden flex flex-col transition-all duration-300"
+      className="group relative bg-white border border-slate-100 hover:border-gold-300 hover:shadow-xl rounded-3xl overflow-hidden flex flex-col transition-all duration-300"
     >
       {/* Top accent line */}
       <div className="h-1 w-full bg-gradient-to-r from-navy-600 via-gold-500 to-navy-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

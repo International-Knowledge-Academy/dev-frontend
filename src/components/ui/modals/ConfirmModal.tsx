@@ -40,7 +40,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       {/* Modal */}
       <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl z-10">
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-gray-100">
+        <div className="flex items-center justify-between px-8 py-5 border-b border-slate-100">
           <h2 className="text-lg font-bold text-navy-800">{title}</h2>
           <button
             onClick={onClose}
@@ -73,7 +73,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
               className="flex-1 rounded-xl py-2.5"
               bgColor="bg-white"
               textColor="text-slate-600"
-              borderColor="border-gray-200"
+              borderColor="border-slate-200"
               hoverBgColor="hover:bg-gray-50"
               hoverTextColor=""
               hoverBorderColor=""

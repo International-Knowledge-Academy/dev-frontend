@@ -12,7 +12,7 @@ const CategoryCard = ({ category }: Props) => {
   return (
     <motion.div
       whileHover={{ y: -5, transition: { duration: 0.2 } }}
-      className="group bg-white border border-gray-100 hover:border-gold-300 hover:shadow-lg rounded-2xl overflow-hidden flex flex-col transition-all duration-300"
+      className="group bg-white border border-slate-100 hover:border-gold-300 hover:shadow-lg rounded-2xl overflow-hidden flex flex-col transition-all duration-300"
     >
       {/* Top accent line */}
       <div className="h-1 w-full bg-gradient-to-r from-navy-600 via-gold-500 to-navy-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -37,7 +37,7 @@ const CategoryCard = ({ category }: Props) => {
         {!category.summary && <div className="flex-1" />}
 
         {/* CTA */}
-        <div className="mt-auto pt-4 border-t border-gray-100">
+        <div className="mt-auto pt-4 border-t border-slate-100">
           <Link
             to={`/training?category=${category.uid}`}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-600 group-hover:text-gold-600 transition-colors"

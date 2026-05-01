@@ -41,7 +41,7 @@ const STATUS_OPTIONS = [
 const statusBadge: Record<string, string> = {
   upcoming:  "bg-blue-50 text-blue-600 border-blue-600",
   ongoing:   "bg-green-50 text-green-600 border-green-600",
-  completed: "bg-gray-100 text-gray-500 border-gray-500",
+  completed: "bg-gray-100 text-gray-500 border-slate-500",
   cancelled: "bg-red-50 text-red-500 border-red-500",
 };
 
@@ -106,7 +106,7 @@ const ProgramsPage = () => {
           />
         </div>
 
-        <div className="border-t border-gray-100" />
+        <div className="border-t border-slate-100" />
 
         {/* Search */}
         <div className="pt-3">
@@ -219,7 +219,7 @@ const ProgramsPage = () => {
 
                       {/* Type */}
                       <td className="px-5 py-3.5">
-                        <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border ${typeBadge[program.program_type] ?? "bg-gray-50 text-gray-500 border-gray-200"}`}>
+                        <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border ${typeBadge[program.program_type] ?? "bg-gray-50 text-gray-500 border-slate-200"}`}>
                           {program.program_type_display ?? program.program_type}
                         </span>
                       </td>
@@ -247,7 +247,7 @@ const ProgramsPage = () => {
 
                       {/* Status */}
                       <td className="px-5 py-3.5">
-                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${statusBadge[program.status] ?? "bg-gray-50 text-gray-500 border-gray-200"}`}>
+                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${statusBadge[program.status] ?? "bg-gray-50 text-gray-500 border-slate-200"}`}>
                           <span className="w-1.5 h-1.5 rounded-full bg-current" />
                           {program.status_display ?? program.status}
                         </span>

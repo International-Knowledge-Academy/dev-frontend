@@ -82,7 +82,7 @@ const Locations = () => {
                 key={loc.country}
                 variants={card}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className="group rounded-2xl border border-gray-100 hover:border-gold-300 hover:shadow-md p-5 text-center cursor-default"
+                className="group rounded-2xl border border-slate-100 hover:border-gold-300 hover:shadow-md p-5 text-center cursor-default"
               >
                 <div className="text-4xl mb-3">{loc.flag}</div>
                 <p className="text-navy-800 font-bold text-sm">{loc.country}</p>

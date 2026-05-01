@@ -79,7 +79,7 @@ const Programs = () => {
               className={`relative rounded-3xl p-8 flex flex-col gap-5 border transition-all duration-300 cursor-default ${
                 i === 0
                   ? "bg-navy-600 border-navy-700 text-white shadow-xl shadow-navy-900/20"
-                  : "bg-white border-gray-100 hover:border-gold-300 hover:shadow-lg"
+                  : "bg-white border-slate-100 hover:border-gold-300 hover:shadow-lg"
               }`}
             >
               {/* Badge */}

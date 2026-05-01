@@ -47,7 +47,7 @@ const ContactPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55, ease: "easeOut", delay: 0.1 }}
-              className="bg-white border border-gray-100 rounded-3xl p-7"
+              className="bg-white border border-slate-100 rounded-3xl p-7"
             >
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-8 h-8 rounded-lg bg-gold-50 text-gold-500 flex items-center justify-center flex-shrink-0">

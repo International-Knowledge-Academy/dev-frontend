@@ -59,7 +59,7 @@ const Navbar = (props) => {
             </button>
           }
           children={
-            <div className="w-56 rounded-2xl bg-white shadow-xl border border-gray-100 overflow-hidden">
+            <div className="w-56 rounded-2xl bg-white shadow-xl border border-slate-100 overflow-hidden">
               <div className="flex items-center gap-3 px-4 py-3 bg-navy-50">
                 <div className="w-9 h-9 rounded-xl bg-navy-800 border-2 border-gold-400 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                   {user?.name?.[0]?.toUpperCase() ?? "?"}

@@ -76,7 +76,7 @@ const History = () => {
                     viewport={{ once: true, margin: "-40px" }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                   >
-                    <div className="bg-white border border-gray-100 hover:border-gold-300 hover:shadow-md transition-all duration-200 rounded-2xl p-6">
+                    <div className="bg-white border border-slate-100 hover:border-gold-300 hover:shadow-md transition-all duration-200 rounded-2xl p-6">
                       <p className="text-gold-500 font-bold text-sm uppercase tracking-widest mb-1">
                         {item.year}
                       </p>

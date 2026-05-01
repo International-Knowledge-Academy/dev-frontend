@@ -52,8 +52,8 @@ const CategoryEditPage = () => {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
-        <div className="px-6 py-4 border-b border-gray-100">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+        <div className="px-6 py-4 border-b border-slate-100">
           <h1 className="text-base font-bold text-navy-800">Edit Category</h1>
           <p className="text-xs text-gray-400 mt-0.5">
             Updating <span className="font-semibold text-navy-700">{category?.name}</span>
@@ -85,7 +85,7 @@ const CategoryEditPage = () => {
             updateFormData={updateFormData}
           />
 
-          <div className="flex gap-2 border-t border-gray-100 pt-4">
+          <div className="flex gap-2 border-t border-slate-100 pt-4">
             <Button
               type="button"
               text="Cancel"
@@ -93,7 +93,7 @@ const CategoryEditPage = () => {
               className="flex-1 rounded-xl py-2.5"
               bgColor="bg-white"
               textColor="text-gray-600"
-              borderColor="border-gray-200"
+              borderColor="border-slate-200"
               hoverBgColor="hover:bg-gray-50"
               hoverTextColor=""
               hoverBorderColor=""

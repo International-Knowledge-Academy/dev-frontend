@@ -17,7 +17,7 @@ const PasswordField = ({ label, value, onChange, show, onToggle, placeholder }) 
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full pl-9 pr-10 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-navy-800 placeholder-gray-300 focus:outline-none focus:border-navy-400 transition"
+        className="w-full pl-9 pr-10 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-navy-800 placeholder-gray-300 focus:outline-none focus:border-navy-400 transition"
       />
       <button
         type="button"
@@ -59,9 +59,9 @@ const ChangePasswordPage = () => {
 
   return (
     <div className="max-w-md">
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
 
-        <div className="px-6 py-5 border-b border-gray-100 flex items-center gap-3">
+        <div className="px-6 py-5 border-b border-slate-100 flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-navy-50 flex items-center justify-center text-navy-500">
             <MdLock size={18} />
           </div>
@@ -128,7 +128,7 @@ const ChangePasswordPage = () => {
                   className="flex-1 rounded-xl py-2.5"
                   bgColor="bg-white"
                   textColor="text-gray-600"
-                  borderColor="border-gray-200"
+                  borderColor="border-slate-200"
                   hoverBgColor="hover:bg-gray-50"
                   hoverTextColor=""
                   hoverBorderColor=""

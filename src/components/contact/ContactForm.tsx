@@ -63,7 +63,7 @@ const ContactForm = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden"
+      className="bg-white border border-slate-100 rounded-3xl shadow-sm overflow-hidden"
     >
       {/* Header */}
       <div className="bg-navy-600 px-8 py-7 relative overflow-hidden">

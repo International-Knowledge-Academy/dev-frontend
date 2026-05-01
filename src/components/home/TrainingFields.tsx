@@ -60,7 +60,7 @@ const TrainingFields = () => {
                 key={field.uid}
                 variants={item}
                 whileHover={{ y: -3, transition: { duration: 0.2 } }}
-                className="group flex items-center gap-3 bg-white border border-gray-100 hover:border-gold-300 hover:shadow-md rounded-2xl px-4 py-4 transition-colors duration-200 cursor-default"
+                className="group flex items-center gap-3 bg-white border border-slate-100 hover:border-gold-300 hover:shadow-md rounded-2xl px-4 py-4 transition-colors duration-200 cursor-default"
               >
                 <span className="text-gold-500 group-hover:text-gold-400 flex-shrink-0 transition-colors">
                   <MdCategory size={22} />

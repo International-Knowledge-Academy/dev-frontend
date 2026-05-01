@@ -61,14 +61,14 @@ const UserFormModal = ({
 
   const inputCls = (key: string) =>
     `w-full rounded-xl border px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:ring-2 focus:ring-navy-300 ${
-      fieldErrors[key] ? "border-red-400 bg-red-50" : "border-gray-200 bg-gray-50"
+      fieldErrors[key] ? "border-red-400 bg-red-50" : "border-slate-200 bg-gray-50"
     }`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
       <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
           <h2 className="text-base font-bold text-navy-800">
             {isEdit ? "Edit User" : "Create User"}
           </h2>
@@ -118,7 +118,7 @@ const UserFormModal = ({
           </div>
 
           {/* Active toggle */}
-          <div className="flex items-center justify-between rounded-xl bg-gray-50 border border-gray-200 px-4 py-3">
+          <div className="flex items-center justify-between rounded-xl bg-gray-50 border border-slate-200 px-4 py-3">
             <span className="text-sm font-medium text-navy-700">Active</span>
             <button
               type="button"
@@ -132,7 +132,7 @@ const UserFormModal = ({
           {/* Actions */}
           <div className="flex gap-2 pt-1">
             <button type="button" onClick={onClose}
-              className="flex-1 rounded-xl border border-gray-200 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition">
+              className="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition">
               Cancel
             </button>
             <button type="submit" disabled={loading}

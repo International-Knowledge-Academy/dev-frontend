@@ -21,7 +21,7 @@ const PasswordField = ({ label, value, onChange, show, onToggle, placeholder }) 
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full pl-9 pr-10 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-navy-800 placeholder-gray-300 focus:outline-none focus:border-navy-400 transition"
+        className="w-full pl-9 pr-10 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-navy-800 placeholder-gray-300 focus:outline-none focus:border-navy-400 transition"
       />
       <button
         type="button"
@@ -75,7 +75,7 @@ const ChangePasswordModal = ({ open, onClose }: Props) => {
 
       <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl z-10">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-xl bg-navy-50 flex items-center justify-center text-navy-500">
               <MdLock size={16} />
@@ -142,7 +142,7 @@ const ChangePasswordModal = ({ open, onClose }: Props) => {
                   className="flex-1 rounded-xl py-2.5"
                   bgColor="bg-white"
                   textColor="text-gray-600"
-                  borderColor="border-gray-200"
+                  borderColor="border-slate-200"
                   hoverBgColor="hover:bg-gray-50"
                   hoverTextColor=""
                   hoverBorderColor=""

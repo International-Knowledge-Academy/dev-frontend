@@ -26,7 +26,7 @@ const CourseCard = ({ course }: Props) => {
   return (
     <motion.div
       whileHover={{ y: -5, transition: { duration: 0.2 } }}
-      className="group bg-white border border-gray-100 hover:border-gold-300 hover:shadow-lg transition-colors duration-300 rounded-2xl overflow-hidden flex flex-col cursor-default"
+      className="group bg-white border border-slate-100 hover:border-gold-300 hover:shadow-lg transition-colors duration-300 rounded-2xl overflow-hidden flex flex-col cursor-default"
     >
       {/* Top accent line */}
       <div className="h-1 w-full bg-gradient-to-r from-navy-600 via-gold-500 to-navy-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -66,7 +66,7 @@ const CourseCard = ({ course }: Props) => {
         )}
 
         {/* Meta row */}
-        <div className="flex items-center gap-4 mt-auto pt-4 border-t border-gray-100">
+        <div className="flex items-center gap-4 mt-auto pt-4 border-t border-slate-100">
           {/* Duration */}
           <div className="flex items-center gap-1.5 text-xs text-gray-400">
             <MdAccessTime size={13} className="flex-shrink-0" />

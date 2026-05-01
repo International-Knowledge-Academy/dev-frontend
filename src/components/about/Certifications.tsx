@@ -91,7 +91,7 @@ const Certifications = () => {
                 key={cert.name}
                 variants={card}
                 whileHover={{ y: -3, transition: { duration: 0.2 } }}
-                className="flex gap-5 p-6 rounded-2xl border border-gray-100 hover:border-gold-300 hover:shadow-md transition-colors duration-200 bg-white cursor-default"
+                className="flex gap-5 p-6 rounded-2xl border border-slate-100 hover:border-gold-300 hover:shadow-md transition-colors duration-200 bg-white cursor-default"
               >
                 <div className="w-12 h-12 rounded-xl bg-gold-500 text-white font-extrabold text-xs flex items-center justify-center flex-shrink-0 text-center leading-tight px-1">
                   {cert.name.split(" ")[0]}

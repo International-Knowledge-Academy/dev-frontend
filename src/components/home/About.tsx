@@ -83,13 +83,13 @@ const About = () => {
           className="relative"
         >
           <div className="absolute inset-0 bg-gold-500 opacity-5 rounded-3xl blur-2xl" />
-          <div className="relative bg-white border border-gray-100 shadow-sm rounded-3xl p-8 space-y-6">
+          <div className="relative bg-white border border-slate-100 shadow-sm rounded-3xl p-8 space-y-6">
             <img
               src="/brand/IKA-logo-bg.png"
               alt="IKA Logo"
               className="h-16 w-auto mx-auto"
             />
-            <div className="border-t border-gray-100 pt-6 grid grid-cols-2 gap-6 text-center">
+            <div className="border-t border-slate-100 pt-6 grid grid-cols-2 gap-6 text-center">
               {[
                 { value: "20+", label: "Training Fields" },
                 { value: "10",  label: "Countries" },
@@ -109,7 +109,7 @@ const About = () => {
                 </motion.div>
               ))}
             </div>
-            <div className="border-t border-gray-100 pt-5 text-center">
+            <div className="border-t border-slate-100 pt-5 text-center">
               <p className="text-gray-400 text-xs">
                 Operating across the UAE, UK, Europe, Asia & the Middle East
               </p>

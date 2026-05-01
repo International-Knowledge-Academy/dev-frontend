@@ -27,7 +27,7 @@ function InputField(props) {
               ? "!border-green-500 text-green-500 placeholder:text-green-500"
               : disabled === true
               ? "!border-none !bg-gray-100"
-              : "border-gray-200"
+              : "border-slate-200"
           }`}
           name={id}
           id={id}

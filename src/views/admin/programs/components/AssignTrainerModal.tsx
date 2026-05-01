@@ -69,7 +69,7 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
       <div className="relative w-full max-w-lg rounded-2xl bg-white shadow-2xl z-10 flex flex-col max-h-[90vh]">
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 flex-shrink-0">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-green-50 flex items-center justify-center text-green-600">
               <MdSchool size={18} />
@@ -101,11 +101,11 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by name or email..."
-                className="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-200 bg-gray-50 outline-none focus:ring-1 focus:ring-navy-400 focus:border-navy-400"
+                className="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-slate-200 bg-gray-50 outline-none focus:ring-1 focus:ring-navy-400 focus:border-navy-400"
               />
             </div>
 
-            <div className="rounded-xl border border-gray-100 overflow-y-auto max-h-52">
+            <div className="rounded-xl border border-slate-100 overflow-y-auto max-h-52">
               {loadingTrainers ? (
                 <p className="text-xs text-gray-400 text-center py-6">Loading trainers...</p>
               ) : filtered.length === 0 ? (
@@ -120,7 +120,7 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
                       key={trainer.uid}
                       type="button"
                       onClick={() => setSelected(isSelected ? null : trainer)}
-                      className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition border-b border-gray-50 last:border-0 ${
+                      className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition border-b border-slate-50 last:border-0 ${
                         isSelected ? "bg-green-50" : "hover:bg-gray-50"
                       }`}
                     >
@@ -153,7 +153,7 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
           </div>
 
           {/* Lead instructor toggle */}
-          <div className="flex items-center justify-between rounded-xl border border-gray-100 px-4 py-3">
+          <div className="flex items-center justify-between rounded-xl border border-slate-100 px-4 py-3">
             <div className="flex items-center gap-2">
               <MdStar size={16} className={isLead ? "text-gold-500" : "text-gray-300"} />
               <div>
@@ -183,7 +183,7 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Any notes about this assignment..."
               rows={2}
-              className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-gray-50 outline-none focus:ring-1 focus:ring-navy-400 focus:border-navy-400 resize-none"
+              className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 bg-gray-50 outline-none focus:ring-1 focus:ring-navy-400 focus:border-navy-400 resize-none"
             />
           </div>
 
@@ -196,11 +196,11 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
         </div>
 
         {/* Footer */}
-        <div className="flex gap-2 px-6 py-4 border-t border-gray-100 flex-shrink-0">
+        <div className="flex gap-2 px-6 py-4 border-t border-slate-100 flex-shrink-0">
           <button
             type="button"
             onClick={handleClose}
-            className="flex-1 py-2.5 rounded-md lg:rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
+            className="flex-1 py-2.5 rounded-md lg:rounded-lg border border-slate-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
           >
             Cancel
           </button>
