@@ -2,37 +2,38 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useCreateField from "hooks/fields/useCreateField";
-import useCategories from "hooks/categories/useCategories";
+import useAllCategories from "hooks/categories/useAllCategories";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
+import TextareaField from "components/form/TextareaField";
+import SelectField from "components/form/SelectField";
 import ToggleInput from "components/form/toggle/ToggleInput";
 import Button from "components/ui/buttons/Button";
 import MediaUploadField from "components/form/filesUpload/MediaUploadField";
+
+const SectionLabel = ({ children }) => (
+  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">{children}</p>
+);
 
 const FieldCreatePage = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
   const { createField, loading, error, fieldErrors } = useCreateField();
-  const { categories } = useCategories({ page: 1 });
+  const { categories } = useAllCategories();
 
   const [form, setForm] = useState({
     name:         "",
     description:  "",
     category_uid: "",
-    hex_color:    "#000000",
+    hex_color:    "#1e3a5f",
     text_color:   "#ffffff",
     thumbnail:    "",
     video:        "",
     is_active:    true,
   });
 
-  const updateFormData = (key: string, value: any) =>
+  const set = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
-
-  const inputCls = (key: string) =>
-    `w-full rounded-md lg:rounded-lg border px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:ring-2 focus:ring-navy-300 ${
-      fieldErrors[key] ? "border-red-400 bg-red-50" : "border-gray-200 bg-gray-50"
-    }`;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,142 +52,152 @@ const FieldCreatePage = () => {
     }
   };
 
+  const categoryOptions = categories.map((c) => ({ value: c.uid, label: c.name }));
+
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
-        <div className="px-6 py-4 border-b border-gray-100">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+        <div className="px-4 sm:px-6 py-4 border-b border-slate-100">
           <h1 className="text-base font-bold text-navy-800">Create Field</h1>
-          <p className="text-xs text-gray-400 mt-0.5">Add a new training field</p>
+          <p className="text-xs text-slate-400 mt-0.5">Add a new training field</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="px-6 py-5 flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="px-4 sm:px-6 py-5 space-y-6">
           {error && (
             <div className="rounded-md border border-red-200 bg-red-50 px-4 py-2.5 text-sm text-red-600">
               {error}
             </div>
           )}
 
-          <InputField
-            label="Name"
-            field="name"
-            placeholder="e.g. Technology"
-            formData={form}
-            errors={fieldErrors}
-            updateFormData={updateFormData}
-          />
-
-          {/* Description */}
-          <div>
-            <label className="block text-sm font-medium text-navy-800 mb-2">
-              Description <span className="text-xs font-normal text-gray-400">(optional)</span>
-            </label>
-            <textarea
-              value={form.description}
-              onChange={(e) => updateFormData("description", e.target.value)}
+          {/* Basic info */}
+          <div className="space-y-4">
+            <SectionLabel>Basic Info</SectionLabel>
+            <InputField
+              label="Name"
+              field="name"
+              placeholder="e.g. Technology"
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={set}
+            />
+            <TextareaField
+              label="Description"
+              field="description"
               placeholder="Brief description of this field..."
               rows={3}
-              className={`${inputCls("description")} resize-none`}
+              required={false}
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={set}
             />
-            {fieldErrors.description && <p className="mt-1 text-xs text-red-500">{fieldErrors.description}</p>}
-          </div>
-
-          {/* Category */}
-          <div>
-            <label className="block text-sm font-medium text-navy-800 mb-2">
-              Category <span className="text-xs font-normal text-gray-400">(optional)</span>
-            </label>
-            <select
-              value={form.category_uid}
-              onChange={(e) => updateFormData("category_uid", e.target.value)}
-              className={inputCls("category_uid")}
-            >
-              <option value="">Select category...</option>
-              {categories.map((cat) => (
-                <option key={cat.uid} value={cat.uid}>{cat.name}</option>
-              ))}
-            </select>
-            {fieldErrors.category_uid && <p className="mt-1 text-xs text-red-500">{fieldErrors.category_uid}</p>}
+            <SelectField
+              label="Category"
+              field="category_uid"
+              options={categoryOptions}
+              required={false}
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={set}
+            />
           </div>
 
           {/* Colors */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-navy-800 mb-2">Background Color</label>
-              <div className="flex items-center gap-2">
-                <input
-                  type="color"
-                  value={form.hex_color}
-                  onChange={(e) => updateFormData("hex_color", e.target.value)}
-                  className="w-10 h-10 rounded-md border border-gray-200 cursor-pointer p-0.5 bg-gray-50 flex-shrink-0"
-                />
-                <input
-                  type="text"
-                  value={form.hex_color}
-                  onChange={(e) => updateFormData("hex_color", e.target.value)}
-                  placeholder="#000000"
-                  className={inputCls("hex_color")}
-                />
+          <div>
+            <SectionLabel>Colors</SectionLabel>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-navy-800 mb-2">Background Color</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={form.hex_color}
+                    onChange={(e) => set("hex_color", e.target.value)}
+                    className="w-10 h-10 rounded-md border border-slate-200 cursor-pointer p-0.5 bg-slate-50 flex-shrink-0"
+                  />
+                  <input
+                    type="text"
+                    value={form.hex_color}
+                    onChange={(e) => set("hex_color", e.target.value)}
+                    placeholder="#000000"
+                    className="flex-1 rounded-md lg:rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:ring-2 focus:ring-navy-300"
+                  />
+                </div>
+                {fieldErrors.hex_color && <p className="mt-1 text-xs text-red-500">{fieldErrors.hex_color}</p>}
               </div>
-              {fieldErrors.hex_color && <p className="mt-1 text-xs text-red-500">{fieldErrors.hex_color}</p>}
+
+              <div>
+                <label className="block text-sm font-medium text-navy-800 mb-2">Text Color</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={form.text_color}
+                    onChange={(e) => set("text_color", e.target.value)}
+                    className="w-10 h-10 rounded-md border border-slate-200 cursor-pointer p-0.5 bg-slate-50 flex-shrink-0"
+                  />
+                  <input
+                    type="text"
+                    value={form.text_color}
+                    onChange={(e) => set("text_color", e.target.value)}
+                    placeholder="#ffffff"
+                    className="flex-1 rounded-md lg:rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:ring-2 focus:ring-navy-300"
+                  />
+                </div>
+                {fieldErrors.text_color && <p className="mt-1 text-xs text-red-500">{fieldErrors.text_color}</p>}
+              </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-navy-800 mb-2">Text Color</label>
-              <div className="flex items-center gap-2">
-                <input
-                  type="color"
-                  value={form.text_color}
-                  onChange={(e) => updateFormData("text_color", e.target.value)}
-                  className="w-10 h-10 rounded-md border border-gray-200 cursor-pointer p-0.5 bg-gray-50 flex-shrink-0"
-                />
-                <input
-                  type="text"
-                  value={form.text_color}
-                  onChange={(e) => updateFormData("text_color", e.target.value)}
-                  placeholder="#ffffff"
-                  className={inputCls("text_color")}
-                />
-              </div>
-              {fieldErrors.text_color && <p className="mt-1 text-xs text-red-500">{fieldErrors.text_color}</p>}
+            {/* Color preview */}
+            <div
+              className="mt-3 rounded-xl px-4 py-3 flex items-center gap-2 text-sm font-semibold transition"
+              style={{ backgroundColor: form.hex_color, color: form.text_color }}
+            >
+              Preview: {form.name || "Field Name"}
             </div>
           </div>
 
-          <MediaUploadField
-            label="Thumbnail"
-            type="image"
-            folder="fields/thumbnails"
-            value={form.thumbnail}
-            onChange={(url) => updateFormData("thumbnail", url)}
-            error={fieldErrors.thumbnail}
-          />
+          {/* Media */}
+          <div className="space-y-4">
+            <SectionLabel>Media</SectionLabel>
+            <MediaUploadField
+              label="Thumbnail"
+              type="image"
+              folder="fields/thumbnails"
+              value={form.thumbnail}
+              onChange={(url) => set("thumbnail", url)}
+              error={fieldErrors.thumbnail}
+            />
+            <MediaUploadField
+              label="Video"
+              type="video"
+              folder="fields/videos"
+              value={form.video}
+              onChange={(url) => set("video", url)}
+              error={fieldErrors.video}
+            />
+          </div>
 
-          <MediaUploadField
-            label="Video"
-            type="video"
-            folder="fields/videos"
-            value={form.video}
-            onChange={(url) => updateFormData("video", url)}
-            error={fieldErrors.video}
-          />
+          {/* Status */}
+          <div>
+            <SectionLabel>Status</SectionLabel>
+            <ToggleInput
+              label="Active"
+              field="is_active"
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={set}
+            />
+          </div>
 
-          <ToggleInput
-            label="Active"
-            field="is_active"
-            formData={form}
-            errors={fieldErrors}
-            updateFormData={updateFormData}
-          />
-
-          <div className="flex gap-2 border-t border-gray-100 pt-4">
+          <div className="flex gap-2 border-t border-slate-100 pt-5">
             <Button
               type="button"
               text="Cancel"
               onClick={() => navigate("/admin/fields")}
               className="flex-1 py-2.5"
               bgColor="bg-white"
-              textColor="text-gray-600"
-              borderColor="border-gray-200"
-              hoverBgColor="hover:bg-gray-50"
+              textColor="text-slate-600"
+              borderColor="border-slate-200"
+              hoverBgColor="hover:bg-slate-50"
               hoverTextColor=""
               hoverBorderColor=""
             />

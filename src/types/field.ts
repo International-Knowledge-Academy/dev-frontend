@@ -7,6 +7,11 @@ export interface FieldTrainer {
   profile_picture: string;
 }
 
+export interface FieldMedia {
+  file_key: string;
+  public_url: string;
+}
+
 export interface Field {
   uid: string;
   name: string;
@@ -16,10 +21,17 @@ export interface Field {
   program_count: number;
   hex_color: string;
   text_color: string;
-  thumbnail: string;
-  video: string;
+  thumbnail: FieldMedia | null;
+  video: FieldMedia | null;
   trainers: FieldTrainer[];
 }
+
+/** Extract the usable URL from a media field (API returns an object, not a plain string) */
+export const getMediaUrl = (media: FieldMedia | string | null | undefined): string => {
+  if (!media) return "";
+  if (typeof media === "string") return media;
+  return media.file_key;
+};
 
 export interface PaginatedFields {
   count: number;

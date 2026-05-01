@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import {
   MdAdd, MdEdit, MdDelete, MdRefresh,
   MdLayers, MdSettings, MdToggleOn, MdWarning,
+  MdFilterList, MdClose,
 } from "react-icons/md";
 import useFields from "hooks/fields/useFields";
 import useDeleteField from "hooks/fields/useDeleteField";
 import { useToast } from "context/ToastContext";
 import Loading from "components/loading/Loading";
+import EmptyState from "components/empty/empty";
 import Button from "components/ui/buttons/Button";
 import IconButton from "components/ui/buttons/IconButton";
 import Divider from "components/ui/Divider";
@@ -26,6 +28,7 @@ const FieldsPage = () => {
   const { deleteField, loading: deleting } = useDeleteField();
 
   const [deleteTarget, setDeleteTarget] = useState<Field | null>(null);
+  const [filtersOpen, setFiltersOpen]   = useState(false);
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
@@ -37,52 +40,121 @@ const FieldsPage = () => {
     }
   };
 
+  const hasActiveFilters = params.is_active !== undefined;
+  const clearFilters = () => setParams({ is_active: undefined });
+
   const totalPages = Math.ceil(count / 10);
+
+  const statusOptions = [
+    { value: "true",  label: "Active" },
+    { value: "false", label: "Inactive" },
+  ];
 
   return (
     <>
       <div className="bg-white rounded-2xl border border-slate-100 max-w-5xl mx-auto">
 
-        <div className="pt-5 px-4 sm:px-6 pb-1 space-y-3">
+        <div className="px-4 sm:px-6 pt-4 pb-1 space-y-3">
 
-          {/* Row 1: Search */}
-          <SearchInput
-            value={params.search ?? ""}
-            onChange={(val) => setParams({ search: val })}
-            placeholder="Search fields..."
-          />
+          {/* Row 1: search + mobile toggle + desktop controls */}
+          <div className="flex items-center gap-2">
+            <SearchInput
+              value={params.search ?? ""}
+              onChange={(val) => setParams({ search: val })}
+              placeholder="Search fields..."
+            />
 
-          {/* Row 2: Filters + Add + Count */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <FilterSelectField
-              value={params.is_active === undefined ? "all" : String(params.is_active)}
-              onChange={(val) => setParams({ is_active: val === "all" ? undefined : val === "true" })}
-              icon={MdToggleOn}
-              defaultOption="All"
-              options={[
-                { value: "true",  label: "Active" },
-                { value: "false", label: "Inactive" },
-              ]}
-            />
-            <IconButton
-              onClick={refetch}
-              icon={<MdRefresh size={18} />}
-              bgColor="bg-white"
-              textColor="text-gray-500"
-              borderColor="border-slate-200"
-              hoverTextColor="hover:text-gray-700"
-              hoverBorderColor="hover:border-slate-300"
-              className="p-2.5"
-            />
-            <div className="flex items-center gap-2 ml-auto">
+            {/* Mobile: filter toggle with badge */}
+            <button
+              type="button"
+              onClick={() => setFiltersOpen((o) => !o)}
+              className="relative sm:hidden shrink-0 p-2.5 rounded-md lg:rounded-lg border border-slate-200 text-slate-500 hover:text-slate-700 hover:border-slate-300 transition"
+            >
+              <MdFilterList size={18} />
+              {hasActiveFilters && (
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-navy-600 border-2 border-white" />
+              )}
+            </button>
+
+            {/* Desktop: all controls inline */}
+            <div className="hidden sm:flex items-center gap-2 shrink-0">
+              <FilterSelectField
+                value={params.is_active === undefined ? "all" : String(params.is_active)}
+                onChange={(val) => setParams({ is_active: val === "all" ? undefined : val === "true" })}
+                icon={MdToggleOn}
+                defaultOption="All"
+                options={statusOptions}
+              />
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition whitespace-nowrap"
+                >
+                  <MdClose size={13} /> Clear
+                </button>
+              )}
+              <IconButton
+                onClick={refetch}
+                icon={<MdRefresh size={18} />}
+                bgColor="bg-white"
+                textColor="text-slate-500"
+                borderColor="border-slate-200"
+                hoverTextColor="hover:text-slate-700"
+                hoverBorderColor="hover:border-slate-300"
+                className="p-2.5"
+              />
               <Button
                 variant="dark-navy"
                 text="Add Field"
                 icon={<MdAdd />}
                 onClick={() => navigate("/admin/fields/create")}
               />
-              <span className="text-sm text-gray-400 whitespace-nowrap">{count} fields</span>
+              <span className="text-sm text-slate-400 whitespace-nowrap">{count} fields</span>
             </div>
+          </div>
+
+          {/* Mobile: filter panel */}
+          {filtersOpen && (
+            <div className="sm:hidden flex items-center gap-2">
+              <FilterSelectField
+                value={params.is_active === undefined ? "all" : String(params.is_active)}
+                onChange={(val) => setParams({ is_active: val === "all" ? undefined : val === "true" })}
+                icon={MdToggleOn}
+                defaultOption="All"
+                options={statusOptions}
+              />
+            </div>
+          )}
+
+          {/* Mobile: row 2 — clear + refresh + add + count */}
+          <div className="flex sm:hidden items-center gap-2">
+            {hasActiveFilters && (
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition whitespace-nowrap"
+              >
+                <MdClose size={13} /> Clear
+              </button>
+            )}
+            <IconButton
+              onClick={refetch}
+              icon={<MdRefresh size={18} />}
+              bgColor="bg-white"
+              textColor="text-slate-500"
+              borderColor="border-slate-200"
+              hoverTextColor="hover:text-slate-700"
+              hoverBorderColor="hover:border-slate-300"
+              className="p-2.5"
+            />
+            <Button
+              variant="dark-navy"
+              text="Add Field"
+              icon={<MdAdd />}
+              onClick={() => navigate("/admin/fields/create")}
+            />
+            <span className="text-sm text-slate-400 whitespace-nowrap">{count} fields</span>
           </div>
 
         </div>
@@ -97,7 +169,11 @@ const FieldsPage = () => {
             ) : error ? (
               <div className="flex items-center justify-center py-16 text-sm text-red-500">{error}</div>
             ) : fields.length === 0 ? (
-              <div className="flex items-center justify-center py-16 text-sm text-gray-400">No fields found.</div>
+              <EmptyState
+                icon={<MdLayers />}
+                title="No fields found"
+                description="Try adjusting your search or filters, or add a new field."
+              />
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
@@ -110,18 +186,18 @@ const FieldsPage = () => {
                         { label: "Programs", icon: <MdLayers   size={14} /> },
                         { label: "Actions",  icon: <MdSettings size={14} /> },
                       ].map(({ label, icon }) => (
-                        <th key={label} className="px-5 py-3.5 text-left text-xs font-bold tracking-widest uppercase text-gray-400">
+                        <th key={label} className="px-5 py-3.5 text-left text-xs font-bold tracking-widest uppercase text-slate-400">
                           <span className="flex items-center gap-1.5">{icon}{label}</span>
                         </th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-50">
+                  <tbody className="divide-y divide-slate-50">
                     {fields.map((field) => (
                       <tr
                         key={field.uid}
                         onClick={() => navigate(`/admin/fields/${field.uid}`)}
-                        className="hover:bg-gray-50 transition cursor-pointer"
+                        className="hover:bg-slate-50 transition cursor-pointer"
                       >
                         {/* Name */}
                         <td className="px-5 py-3.5">
@@ -134,8 +210,8 @@ const FieldsPage = () => {
                           </div>
                         </td>
                         {/* Category */}
-                        <td className="px-5 py-3.5 text-gray-500 truncate" title={field.category?.name}>
-                          {field.category?.name ?? <span className="text-gray-300 italic">—</span>}
+                        <td className="px-5 py-3.5 text-slate-500 truncate" title={field.category?.name}>
+                          {field.category?.name ?? <span className="text-slate-300 italic">—</span>}
                         </td>
                         {/* Status */}
                         <td className="px-5 py-3.5">
@@ -166,7 +242,7 @@ const FieldsPage = () => {
                             </button>
                             <button
                               onClick={() => setDeleteTarget(field)}
-                              className="p-1.5 rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-500 transition"
+                              className="p-1.5 rounded-lg text-slate-400 hover:bg-red-50 hover:text-red-500 transition"
                               title="Delete"
                             >
                               <MdDelete size={16} />
@@ -183,7 +259,7 @@ const FieldsPage = () => {
             {/* Pagination */}
             {totalPages > 1 && (
               <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 border-t border-slate-100">
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-slate-400">
                   Page {params.page ?? 1} of {totalPages}
                 </p>
                 <div className="flex gap-2">
