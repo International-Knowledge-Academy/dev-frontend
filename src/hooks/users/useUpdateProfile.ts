@@ -4,6 +4,7 @@ import type { User } from "types/auth";
 
 export interface UpdateProfilePayload {
   profile_picture?: string;
+  cv?: string;
   title?: string;
   bio?: string;
   years_experience?: number | null;

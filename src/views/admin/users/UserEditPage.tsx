@@ -5,8 +5,6 @@ import { MdPhotoCamera } from "react-icons/md";
 import useGetUser from "hooks/users/useGetUser";
 import useUpdateUser from "hooks/users/useUpdateUser";
 import useUpdateProfile from "hooks/users/useUpdateProfile";
-import useUploadCV from "hooks/users/profile/useUploadCV";
-import useUpdateCV from "hooks/users/profile/useUpdateCV";
 import useDeleteCV from "hooks/users/profile/useDeleteCV";
 import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import { useToast } from "context/ToastContext";
@@ -127,11 +125,10 @@ const UserEditPage = () => {
   const { user, loading: loadingUser, error: loadError, refetch } = useGetUser(id);
   const { updateUser,    loading: updating,        error: updateError,  fieldErrors }              = useUpdateUser();
   const { updateProfile, loading: updatingProfile, error: profileError, fieldErrors: profileFieldErrors } = useUpdateProfile();
-  const { uploadCV, loading: uploadingCV } = useUploadCV();
-  const { updateCV, loading: updatingCV }  = useUpdateCV();
-  const { deleteCV, loading: deletingCV }  = useDeleteCV();
+  const { deleteCV, loading: deletingCV }                                                              = useDeleteCV();
+  const { upload: uploadCvFile, uploading: uploadingCvFile }                                          = usePresignedUpload();
 
-  const cvBusy = uploadingCV || updatingCV || deletingCV;
+  const cvBusy = uploadingCvFile || deletingCV;
   const isBusy = updating || updatingProfile;
 
   // ── Combined flat form state ───────────────────────────────────────────
@@ -193,11 +190,12 @@ const UserEditPage = () => {
 
   const handleCvChange = async (file: File) => {
     setCvFile(file);
-    const result = user?.profile?.cv
-      ? await updateCV(user.uid, file)
-      : await uploadCV(user.uid, file);
+    const uploaded = await uploadCvFile(file, { folder: "users/cvs", file_type: "file" });
     setCvFile(null);
-    if (result) { addToast("CV updated", "success"); refetch(); }
+    if (uploaded) {
+      const result = await updateProfile(id, { cv: uploaded.public_url });
+      if (result) { addToast("CV updated", "success"); refetch(); }
+    }
   };
 
   const handleCvDelete = async () => {

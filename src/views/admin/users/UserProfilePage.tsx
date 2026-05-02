@@ -1,9 +1,8 @@
 // @ts-nocheck
 import { useNavigate, useParams } from "react-router-dom";
-import { MdEdit, MdAdminPanelSettings, MdVerified, MdOpenInNew, MdLink } from "react-icons/md";
+import { MdEdit, MdAdminPanelSettings, MdVerified, MdOpenInNew, MdArrowBack } from "react-icons/md";
 import { FaWhatsapp, FaLinkedin } from "react-icons/fa";
 import useGetUser from "hooks/users/useGetUser";
-import Button from "components/ui/buttons/Button";
 
 const roleBadgeStyle: Record<string, string> = {
   admin:           "bg-navy-50 text-navy-700 border-navy-200",
@@ -16,72 +15,70 @@ const roleLabel: Record<string, string> = {
   trainer:         "Trainer",
 };
 
-const SectionTitle = ({ children }) => (
-  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">{children}</p>
-);
-
-const InfoRow = ({ label, value }) => (
-  <div className="flex items-start gap-3 py-2.5 border-b border-slate-50 last:border-0">
-    <span className="text-xs text-slate-400 w-28 flex-shrink-0 pt-0.5">{label}</span>
-    <span className="text-sm text-navy-800 font-medium flex-1 min-w-0 break-words">{value}</span>
+const Field = ({ label, value }) => (
+  <div className="space-y-1">
+    <p className="text-xs text-slate-400">{label}</p>
+    <div className="text-sm font-medium text-navy-800 break-words">{value ?? "—"}</div>
   </div>
 );
+
+const Section = ({ title, children }) => (
+  <div>
+    <p className="text-sm font-semibold text-navy-800 mb-4">{title}</p>
+    {children}
+  </div>
+);
+
+const Divider = () => <div className="border-t border-slate-100 my-6" />;
 
 const UserProfilePage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user, loading, error } = useGetUser(id);
 
-  if (loading) {
-    return <div className="flex items-center justify-center py-20 text-sm text-slate-400">Loading profile...</div>;
-  }
-  if (error || !user) {
-    return <div className="flex items-center justify-center py-20 text-sm text-red-500">{error ?? "User not found."}</div>;
-  }
+  if (loading) return (
+    <div className="flex items-center justify-center py-20 text-sm text-slate-400">Loading profile...</div>
+  );
+  if (error || !user) return (
+    <div className="flex items-center justify-center py-20 text-sm text-red-500">{error ?? "User not found."}</div>
+  );
 
   const p = user.profile;
   const initials = user.name
     ? user.name.split(" ").filter(Boolean).map((n) => n[0]).join("").toUpperCase().slice(0, 2)
     : user.email?.[0]?.toUpperCase() ?? "?";
+  const location = [p?.city, p?.country].filter(Boolean).join(", ");
 
-  const hasProfessional = p?.bio || p?.years_experience != null || p?.certifications || p?.linkedin_url;
-  const hasContact      = p?.primary_email || p?.secondary_email || p?.phone || p?.whatsapp;
-  const hasAddress      = p?.address || p?.city || p?.country || p?.postal_code;
+  const hasProfessional = p && (p.title || p.bio || p.years_experience != null || p.certifications || p.linkedin_url);
+  const hasContact      = p && (p.primary_email || p.secondary_email || p.phone || p.whatsapp);
+  const hasAddress      = p && (p.address || p.city || p.country || p.postal_code);
 
   return (
-    <div className="space-y-4 max-w-5xl mx-auto">
+    <div className="max-w-5xl mx-auto space-y-4">
 
-      {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm px-4 sm:px-6 py-5">
-
-        {/* Main row: avatar | info | buttons */}
+      {/* ── Identity card ────────────────────────────────────────────── */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
         <div className="flex items-start gap-4">
 
           {/* Avatar */}
           <div className="flex-shrink-0">
             {p?.profile_picture ? (
-              <img
-                src={p.profile_picture}
-                alt={user.name}
-                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover ring-4 ring-slate-100"
-              />
+              <img src={p.profile_picture} alt={user.name}
+                className="w-16 h-16 rounded-full object-cover ring-4 ring-slate-100" />
             ) : (
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-navy-700 text-white flex items-center justify-center text-lg sm:text-xl font-bold ring-4 ring-slate-100 select-none">
+              <div className="w-16 h-16 rounded-full bg-navy-700 text-white flex items-center justify-center text-xl font-bold ring-4 ring-slate-100 select-none">
                 {initials}
               </div>
             )}
           </div>
 
-          {/* Identity */}
+          {/* Info */}
           <div className="flex-1 min-w-0">
-            <h1 className="text-base sm:text-lg font-bold text-navy-800 truncate">{user.name || "—"}</h1>
-            {p?.title && (
-              <p className="text-sm text-slate-500 mt-0.5 truncate">{p.title}</p>
-            )}
+            <h1 className="text-lg font-bold text-navy-800 leading-tight">{user.name || "—"}</h1>
+            {p?.title && <p className="text-sm text-slate-500 mt-0.5">{p.title}</p>}
             <p className="text-sm text-slate-400 mt-0.5 truncate">{user.email}</p>
-
-            {/* Badges */}
-            <div className="flex flex-wrap items-center gap-2 mt-2.5">
+            {location && <p className="text-xs text-slate-400 mt-0.5">{location}</p>}
+            <div className="flex flex-wrap items-center gap-1.5 mt-3">
               <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold border ${roleBadgeStyle[user.role] ?? "bg-slate-50 text-slate-500 border-slate-200"}`}>
                 <MdAdminPanelSettings size={11} />
                 {roleLabel[user.role] ?? user.role}
@@ -102,152 +99,115 @@ const UserProfilePage = () => {
             </div>
           </div>
 
-          {/* Desktop buttons */}
-          <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
-            <Button
-              type="button"
-              text="Back"
-              onClick={() => navigate("/admin/users")}
-              bgColor="bg-white"
-              textColor="text-slate-600"
-              borderColor="border-slate-200"
-              hoverBgColor="hover:bg-slate-50"
-              hoverTextColor=""
-              hoverBorderColor=""
-            />
-            <Button
-              type="button"
-              variant="primary"
-              text="Edit"
-              icon={<MdEdit size={14} />}
+          {/* Actions */}
+          <div className="flex flex-col gap-2 flex-shrink-0">
+            <button type="button"
               onClick={() => navigate(`/admin/users/${id}/edit`)}
-            />
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md lg:rounded-lg bg-navy-800 hover:bg-navy-700 text-xs font-medium text-white transition">
+              <MdEdit size={13} /> Edit
+            </button>
+            <button type="button"
+              onClick={() => navigate("/admin/users")}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md lg:rounded-lg border border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-50 transition">
+              <MdArrowBack size={13} /> Back
+            </button>
           </div>
-        </div>
-
-        {/* Mobile buttons */}
-        <div className="flex sm:hidden gap-2 mt-4 pt-4 border-t border-slate-100">
-          <Button
-            type="button"
-            text="Back"
-            onClick={() => navigate("/admin/users")}
-            className="flex-1 py-2.5"
-            bgColor="bg-white"
-            textColor="text-slate-600"
-            borderColor="border-slate-200"
-            hoverBgColor="hover:bg-slate-50"
-            hoverTextColor=""
-            hoverBorderColor=""
-          />
-          <Button
-            type="button"
-            variant="primary"
-            text="Edit"
-            icon={<MdEdit size={14} />}
-            onClick={() => navigate(`/admin/users/${id}/edit`)}
-            className="flex-1 py-2.5"
-          />
         </div>
       </div>
 
-      {/* ── Professional | Contact ────────────────────────────────────────── */}
-      {(hasProfessional || hasContact) && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* ── Details card ─────────────────────────────────────────────── */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
 
-          {/* Professional */}
-          {hasProfessional && (
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5">
-              <SectionTitle>Professional</SectionTitle>
+        {/* Account */}
+        <Section title="Account">
+          <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+            <Field label="Full Name" value={user.name} />
+            <Field label="Email"     value={user.email} />
+          </div>
+        </Section>
 
-              {p?.bio && (
-                <div className="py-2.5 border-b border-slate-50">
-                  <p className="text-xs text-slate-400 mb-1">Bio</p>
-                  <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">{p.bio}</p>
+        {hasProfessional && (
+          <>
+            <Divider />
+            <Section title="Professional">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+                {p.title && <Field label="Title" value={p.title} />}
+                {p.years_experience != null && (
+                  <Field label="Experience" value={`${p.years_experience} year${p.years_experience !== 1 ? "s" : ""}`} />
+                )}
+                {p.linkedin_url && (
+                  <Field label="LinkedIn" value={
+                    <a href={p.linkedin_url} target="_blank" rel="noreferrer"
+                      className="text-navy-600 hover:underline inline-flex items-center gap-1 font-normal">
+                      <FaLinkedin size={12} /> View Profile <MdOpenInNew size={11} />
+                    </a>
+                  } />
+                )}
+              </div>
+              {p.bio && (
+                <div className="mt-5">
+                  <Field label="Bio" value={<span className="whitespace-pre-wrap font-normal text-slate-600">{p.bio}</span>} />
                 </div>
               )}
-              {p?.years_experience != null && (
-                <InfoRow
-                  label="Experience"
-                  value={`${p.years_experience} year${p.years_experience !== 1 ? "s" : ""}`}
-                />
-              )}
-              {p?.certifications && (
-                <div className="py-2.5 border-b border-slate-50 last:border-0">
-                  <p className="text-xs text-slate-400 mb-1">Certifications</p>
-                  <p className="text-sm text-slate-600 whitespace-pre-wrap">{p.certifications}</p>
+              {p.certifications && (
+                <div className="mt-5">
+                  <Field label="Certifications" value={<span className="whitespace-pre-wrap font-normal text-slate-600">{p.certifications}</span>} />
                 </div>
               )}
-              {p?.linkedin_url && (
-                <div className="py-2.5">
-                  <p className="text-xs text-slate-400 mb-1">LinkedIn</p>
-                  <a
-                    href={p.linkedin_url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm text-navy-600 hover:text-navy-800 hover:underline break-all"
-                  >
-                    <FaLinkedin size={13} className="flex-shrink-0" />
-                    View Profile
-                    <MdOpenInNew size={11} className="flex-shrink-0" />
-                  </a>
-                </div>
-              )}
-            </div>
-          )}
+            </Section>
+          </>
+        )}
 
-          {/* Contact */}
-          {hasContact && (
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5">
-              <SectionTitle>Contact</SectionTitle>
-              {p?.primary_email   && <InfoRow label="Primary Email"   value={p.primary_email} />}
-              {p?.secondary_email && <InfoRow label="Secondary Email" value={p.secondary_email} />}
-              {p?.phone           && <InfoRow label="Phone"           value={p.phone} />}
-              {p?.whatsapp && (
-                <InfoRow
-                  label="WhatsApp"
-                  value={
-                    <span className="inline-flex items-center gap-1.5">
+        {hasContact && (
+          <>
+            <Divider />
+            <Section title="Contact">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+                {p.primary_email   && <Field label="Primary Email"   value={p.primary_email} />}
+                {p.secondary_email && <Field label="Secondary Email" value={p.secondary_email} />}
+                {p.phone           && <Field label="Phone"           value={p.phone} />}
+                {p.whatsapp        && (
+                  <Field label="WhatsApp" value={
+                    <span className="inline-flex items-center gap-1.5 font-normal">
                       <FaWhatsapp size={13} className="text-green-500 flex-shrink-0" />
                       {p.whatsapp}
                     </span>
-                  }
-                />
-              )}
-            </div>
-          )}
-        </div>
-      )}
+                  } />
+                )}
+              </div>
+            </Section>
+          </>
+        )}
 
-      {/* ── Address ──────────────────────────────────────────────────────── */}
-      {hasAddress && (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5">
-          <SectionTitle>Address</SectionTitle>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8">
-            {p?.address     && <InfoRow label="Street"      value={p.address} />}
-            {p?.city        && <InfoRow label="City"        value={p.city} />}
-            {p?.country     && <InfoRow label="Country"     value={p.country} />}
-            {p?.postal_code && <InfoRow label="Postal Code" value={p.postal_code} />}
-          </div>
-        </div>
-      )}
+        {hasAddress && (
+          <>
+            <Divider />
+            <Section title="Address">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+                {p.country     && <Field label="Country"     value={p.country} />}
+                {p.city        && <Field label="City"        value={p.city} />}
+                {p.address     && <Field label="Street"      value={p.address} />}
+                {p.postal_code && <Field label="Postal Code" value={p.postal_code} />}
+              </div>
+            </Section>
+          </>
+        )}
 
-      {/* ── Documents ────────────────────────────────────────────────────── */}
-      {p?.cv && (
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5">
-          <SectionTitle>Documents</SectionTitle>
-          <a
-            href={p.cv}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md lg:rounded-lg border border-navy-200 bg-navy-50 text-sm font-medium text-navy-700 hover:bg-navy-100 transition"
-          >
-            <MdLink size={16} />
-            View / Download CV
-            <MdOpenInNew size={13} />
-          </a>
-        </div>
-      )}
+        {p?.cv && (
+          <>
+            <Divider />
+            <Section title="Documents">
+              <Field label="CV / Resume" value={
+                <a href={p.cv} target="_blank" rel="noreferrer"
+                  className="text-navy-600 hover:underline inline-flex items-center gap-1 font-normal">
+                  View / Download CV <MdOpenInNew size={11} />
+                </a>
+              } />
+            </Section>
+          </>
+        )}
 
+      </div>
     </div>
   );
 };

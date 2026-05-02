@@ -12,21 +12,10 @@ const roleLayout: Record<string, string> = {
   account_manager: "/account-manager",
 };
 
-const roleLabel: Record<string, string> = {
-  admin:           "Admin",
-  account_manager: "Account Manager",
-};
-
-const rolePanel: Record<string, string> = {
-  admin:           "Admin Panel",
-  account_manager: "Account Manager Panel",
-};
 
 const Sidebar = ({ open, onClose }) => {
   const { logout, user } = useAuth();
   const layout = roleLayout[user?.role] ?? "/admin";
-  const label  = roleLabel[user?.role]  ?? "";
-  const panel  = rolePanel[user?.role]  ?? "Panel";
 
   return (
     <>
@@ -45,7 +34,7 @@ const Sidebar = ({ open, onClose }) => {
       >
 
         <button
-          className="absolute right-3 top-3 p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition xl:hidden"
+          className="absolute right-3 top-3 p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition xl:hidden"
           onClick={onClose}
         >
           <HiX size={18} />
@@ -57,10 +46,7 @@ const Sidebar = ({ open, onClose }) => {
             alt="IKA"
             className="h-9 w-9 rounded-lg object-cover"
           />
-          <div>
-            <p className="text-sm font-bold text-navy-800 leading-tight">IKA</p>
-            <p className="text-[10px] text-gray-400 leading-tight">{panel}</p>
-          </div>
+          <p className="text-sm font-bold text-navy-800 leading-tight">IKA</p>
         </div>
 
         <div className="mt-5 flex-1 overflow-y-auto px-3">
