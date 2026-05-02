@@ -44,9 +44,9 @@ const routes = [
     component: <SignIn />,
   },
 
-  // Admin routes
+  // ── Admin routes ──────────────────────────────────────────────────────────
   {
-    name: "Main Dashboard",
+    name: "Dashboard",
     layout: "/admin",
     path: "default",
     icon: <MdHome className="h-6 w-6" />,
@@ -60,12 +60,15 @@ const routes = [
     component: <Profile />,
     hide: true,
   },
+
+  // Manage
   {
-    name: "Users",
+    name: "Programs",
     layout: "/admin",
-    path: "users",
-    icon: <MdAdminPanelSettings className="h-6 w-6" />,
-    component: <UsersPage />,
+    path: "programs",
+    icon: <MdWorkspacePremium className="h-6 w-6" />,
+    component: <ProgramsPage />,
+    group: "Manage",
   },
   {
     name: "Trainers",
@@ -73,27 +76,17 @@ const routes = [
     path: "trainers",
     icon: <MdSchool className="h-6 w-6" />,
     component: <TrainersPage />,
+    group: "Manage",
   },
-  {
-    name: "Locations",
-    layout: "/admin",
-    path: "locations",
-    icon: <MdLocationOn className="h-6 w-6" />,
-    component: <LocationsPage />,
-  },
+
+  // Configure
   {
     name: "Categories",
     layout: "/admin",
     path: "categories",
     icon: <MdCategory className="h-6 w-6" />,
     component: <CategoriesPage />,
-  },
-  {
-    name: "Programs",
-    layout: "/admin",
-    path: "programs",
-    icon: <MdWorkspacePremium className="h-6 w-6" />,
-    component: <ProgramsPage />,
+    group: "Configure",
   },
   {
     name: "Fields",
@@ -101,9 +94,28 @@ const routes = [
     path: "fields",
     icon: <MdLayers className="h-6 w-6" />,
     component: <FieldsPage />,
+    group: "Configure",
+  },
+  {
+    name: "Locations",
+    layout: "/admin",
+    path: "locations",
+    icon: <MdLocationOn className="h-6 w-6" />,
+    component: <LocationsPage />,
+    group: "Configure",
   },
 
-  // Account Manager routes
+  // Admin
+  {
+    name: "Users",
+    layout: "/admin",
+    path: "users",
+    icon: <MdAdminPanelSettings className="h-6 w-6" />,
+    component: <UsersPage />,
+    group: "Admin",
+  },
+
+  // ── Account Manager routes ────────────────────────────────────────────────
   {
     name: "Dashboard",
     layout: "/account-manager",

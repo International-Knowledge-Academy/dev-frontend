@@ -1,245 +1,245 @@
 // @ts-nocheck
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  MdPerson, MdEmail, MdBadge, MdCalendarToday, MdAccessTime,
-  MdVerified, MdAdminPanelSettings, MdEdit, MdLock, MdLink,
-  MdWork, MdPhone, MdLocationOn, MdSchool, MdOpenInNew,
-} from "react-icons/md";
+import { MdEdit, MdLock, MdVerified, MdAdminPanelSettings, MdOpenInNew, MdPhotoCamera } from "react-icons/md";
 import { FaWhatsapp, FaLinkedin } from "react-icons/fa";
 import useMe from "hooks/auth/useMe";
-import DropdownButton from "components/ui/buttons/DropdownButton";
+import useUpdateProfile from "hooks/users/useUpdateProfile";
+import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import ChangePasswordModal from "components/ui/modals/ChangePasswordModal";
 
 const roleBadge: Record<string, string> = {
-  admin:           "bg-navy-50 text-navy-700 border-navy-700",
-  account_manager: "bg-gold-50 text-gold-700 border-gold-700",
+  admin:           "bg-navy-50 text-navy-700 border-navy-200",
+  account_manager: "bg-gold-50 text-gold-700 border-gold-200",
 };
 const roleLabel: Record<string, string> = {
   admin:           "Admin",
   account_manager: "Account Manager",
 };
 
-const formatDate = (s?: string | null) => {
-  if (!s) return "—";
-  return new Date(s).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-};
-const formatDateTime = (s?: string | null) => {
-  if (!s) return "—";
-  return new Date(s).toLocaleString("en-US", {
-    year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit",
-  });
-};
-
-const InfoRow = ({ icon, label, value }) => (
-  <div className="flex items-start gap-3 py-3 border-b border-slate-50 last:border-0">
-    <div className="w-8 h-8 rounded-lg bg-navy-50 flex items-center justify-center text-navy-400 flex-shrink-0 mt-0.5">
-      {icon}
-    </div>
-    <div className="flex-1 min-w-0">
-      <p className="text-[11px] text-gray-400 mb-0.5 uppercase tracking-wide font-medium">{label}</p>
-      <div className="text-sm font-medium text-navy-800 break-words">{value}</div>
-    </div>
+const Field = ({ label, value }) => (
+  <div className="space-y-1">
+    <p className="text-xs text-slate-400">{label}</p>
+    <div className="text-sm font-medium text-navy-800 break-words">{value ?? "—"}</div>
   </div>
 );
 
-const Card = ({ title, children }) => (
-  <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-    {title && (
-      <div className="px-5 py-3.5 border-b border-slate-50">
-        <p className="text-xs font-bold uppercase tracking-widest text-gray-400">{title}</p>
-      </div>
-    )}
-    <div className="px-5 py-2">{children}</div>
+const Section = ({ title, children }) => (
+  <div>
+    <p className="text-sm font-semibold text-navy-800 mb-4">{title}</p>
+    {children}
   </div>
 );
+
+const Divider = () => <div className="border-t border-slate-100 my-6" />;
 
 const ProfileOverview = () => {
   const navigate = useNavigate();
-  const { me, loading, error } = useMe();
-  const [showChangePassword, setShowChangePassword] = useState(false);
+  const { me, loading, error, refetch }              = useMe();
+  const { updateProfile }                            = useUpdateProfile();
+  const { upload, uploading, progress }              = usePresignedUpload();
+  const [showChangePassword, setShowChangePassword]  = useState(false);
+  const inputRef                                     = useRef<HTMLInputElement>(null);
+
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file || !me) return;
+    e.target.value = "";
+    const result = await upload(file, { folder: "users/profiles", file_type: "image" });
+    if (result) {
+      await updateProfile(me.uid, { profile_picture: result.public_url });
+      refetch();
+    }
+  };
 
   if (loading) return (
-    <div className="flex items-center justify-center py-20 text-sm text-gray-400">
-      Loading profile...
-    </div>
+    <div className="flex items-center justify-center py-20 text-sm text-slate-400">Loading profile...</div>
   );
   if (error || !me) return (
-    <div className="flex items-center justify-center py-20 text-sm text-red-500">
-      {error ?? "Failed to load profile."}
-    </div>
+    <div className="flex items-center justify-center py-20 text-sm text-red-500">{error ?? "Failed to load profile."}</div>
   );
 
-  const p = me.profile;
+  const p        = me.profile;
   const initials = me.name
     ? me.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
     : me.email?.[0]?.toUpperCase() ?? "?";
+  const location = [p?.city, p?.country].filter(Boolean).join(", ");
+
+  const hasProfessional = p && (p.title || p.bio || p.years_experience != null || p.certifications || p.linkedin_url);
+  const hasContact      = p && (p.primary_email || p.secondary_email || p.phone || p.whatsapp);
+  const hasAddress      = p && (p.address || p.city || p.country || p.postal_code);
+
+  const goEdit = () => me.uid && navigate(`/admin/users/${me.uid}/edit`);
 
   return (
     <>
-      <div className="max-w-5xl mx-auto space-y-5">
+      <div className="max-w-5xl mx-auto space-y-4">
 
-        {/* Hero card */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-          {/* Banner */}
-          <div
-            className="h-20 sm:h-28 w-full"
-            style={{ background: "linear-gradient(135deg, #101a3c 0%, #1B2A5E 50%, #3d5494 100%)" }}
-          />
+        {/* ── Identity card ──────────────────────────────────────────── */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
+          <div className="flex items-start gap-4">
 
-          {/* Avatar + info row */}
-          <div className="px-4 sm:px-6 pb-5">
-            <div className="flex items-end justify-between -mt-10 mb-4">
-              {/* Avatar */}
-              <div className="ring-4 ring-white rounded-2xl shadow-md flex-shrink-0">
+            {/* Avatar — clickable upload */}
+            <div className="flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => inputRef.current?.click()}
+                disabled={uploading}
+                className="relative group block w-16 h-16 rounded-full ring-4 ring-slate-100 focus:outline-none"
+              >
                 {p?.profile_picture ? (
-                  <img
-                    src={p.profile_picture}
-                    alt={me.name}
-                    className="w-20 h-20 rounded-2xl object-cover"
-                  />
+                  <img src={p.profile_picture} alt={me.name}
+                    className="w-16 h-16 rounded-full object-cover" />
                 ) : (
-                  <div className="w-20 h-20 rounded-2xl bg-navy-700 text-white flex items-center justify-center text-2xl font-bold">
+                  <div className="w-16 h-16 rounded-full bg-navy-700 text-white flex items-center justify-center text-xl font-bold select-none">
                     {initials}
                   </div>
                 )}
-              </div>
-
-              <DropdownButton
-                label="Actions"
-                variant="primary"
-                items={[
-                  {
-                    label: "Edit Profile",
-                    icon: <MdEdit size={15} />,
-                    onClick: () => me.uid && navigate(`/admin/users/${me.uid}/edit`),
-                  },
-                  {
-                    label: "Change Password",
-                    icon: <MdLock size={15} />,
-                    onClick: () => setShowChangePassword(true),
-                  },
-                ]}
-              />
+                <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                  <MdPhotoCamera size={18} className="text-white" />
+                </div>
+                {uploading && (
+                  <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                    <span className="text-white text-[10px] font-bold">{progress}%</span>
+                  </div>
+                )}
+              </button>
+              <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp"
+                className="hidden" onChange={handleAvatarChange} />
             </div>
 
-            {/* Name / title / badges */}
-            <h1 className="text-xl font-bold text-navy-800">{me.name || "—"}</h1>
-            {p?.title && <p className="text-sm text-gray-500 mt-0.5">{p.title}</p>}
-            <p className="text-sm text-gray-400 mt-0.5">{me.email}</p>
+            {/* Info */}
+            <div className="flex-1 min-w-0">
+              <h1 className="text-lg font-bold text-navy-800 leading-tight">{me.name || "—"}</h1>
+              <p className="text-sm text-slate-500 mt-0.5">{p?.title || roleLabel[me.role] || me.role}</p>
+              {location && <p className="text-xs text-slate-400 mt-0.5">{location}</p>}
+              <div className="flex flex-wrap items-center gap-1.5 mt-3">
+                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold border ${roleBadge[me.role] ?? "bg-slate-50 text-slate-500 border-slate-200"}`}>
+                  <MdAdminPanelSettings size={11} />
+                  {roleLabel[me.role] ?? me.role}
+                </span>
+                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold border ${me.is_active ? "bg-green-50 text-green-700 border-green-200" : "bg-red-50 text-red-600 border-red-200"}`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${me.is_active ? "bg-green-500" : "bg-red-400"}`} />
+                  {me.is_active ? "Active" : "Inactive"}
+                </span>
+                {me.is_superuser && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200">
+                    <MdVerified size={11} /> Superuser
+                  </span>
+                )}
+              </div>
+            </div>
 
-            <div className="flex flex-wrap items-center gap-2 mt-3">
-              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${roleBadge[me.role] ?? "bg-gray-50 text-gray-500 border-slate-200"}`}>
-                <MdAdminPanelSettings size={12} />
-                {roleLabel[me.role] ?? me.role}
-              </span>
-              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${me.is_active ? "bg-green-50 text-green-600 border-green-600" : "bg-red-50 text-red-500 border-red-500"}`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${me.is_active ? "bg-green-500" : "bg-red-400"}`} />
-                {me.is_active ? "Active" : "Inactive"}
-              </span>
-              {me.is_superuser && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-50 text-purple-600 border border-purple-600">
-                  <MdVerified size={12} /> Superuser
-                </span>
-              )}
-              {me.is_staff && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-600">
-                  Staff
-                </span>
-              )}
+            {/* Actions */}
+            <div className="flex flex-col gap-2 flex-shrink-0">
+              <button type="button" onClick={goEdit}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md lg:rounded-lg bg-navy-800 hover:bg-navy-700 text-xs font-medium text-white transition">
+                <MdEdit size={13} /> Edit Profile
+              </button>
+              <button type="button" onClick={() => setShowChangePassword(true)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md lg:rounded-lg border border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-50 transition">
+                <MdLock size={13} /> Change Password
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Two-column grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {/* ── Details card ───────────────────────────────────────────── */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
 
-          {/* Left column */}
-          <div className="grid grid-cols-1">
-            <Card title="Account">
-              <InfoRow icon={<MdPerson size={16} />} label="Full Name" value={me.name || "—"} />
-              <InfoRow icon={<MdEmail size={16} />} label="Email" value={me.email} />
-              
-            </Card>
+          {/* Account */}
+          <Section title="Account">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+              <Field label="Full Name" value={me.name} />
+              <Field label="Email"     value={me.email} />
+            </div>
+          </Section>
 
-            {(p?.address || p?.city || p?.country || p?.postal_code) && (
-              <Card title="Address">
-                {p.address     && <InfoRow icon={<MdLocationOn size={16} />} label="Address"     value={p.address} />}
-                {p.city        && <InfoRow icon={<MdLocationOn size={16} />} label="City"        value={p.city} />}
-                {p.country     && <InfoRow icon={<MdLocationOn size={16} />} label="Country"     value={p.country} />}
-                {p.postal_code && <InfoRow icon={<MdLocationOn size={16} />} label="Postal Code" value={p.postal_code} />}
-              </Card>
-            )}
-          </div>
-
-          {/* Right column */}
-          <div className="space-y-5">
-            {p && (
-              <>
-                <Card title="Professional Info">
-                  {p.title && <InfoRow icon={<MdWork size={16} />} label="Title" value={p.title} />}
-                  {p.bio && (
-                    <InfoRow
-                      icon={<MdPerson size={16} />}
-                      label="Bio"
-                      value={<span className="whitespace-pre-wrap text-gray-600 font-normal">{p.bio}</span>}
-                    />
-                  )}
+          {hasProfessional && (
+            <>
+              <Divider />
+              <Section title="Professional">
+                <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+                  {p.title            && <Field label="Title"      value={p.title} />}
                   {p.years_experience != null && (
-                    <InfoRow
-                      icon={<MdSchool size={16} />}
-                      label="Experience"
-                      value={`${p.years_experience} year${p.years_experience !== 1 ? "s" : ""}`}
-                    />
-                  )}
-                  {p.certifications && (
-                    <InfoRow
-                      icon={<MdVerified size={16} />}
-                      label="Certifications"
-                      value={<span className="whitespace-pre-wrap text-gray-600 font-normal">{p.certifications}</span>}
-                    />
+                    <Field label="Experience" value={`${p.years_experience} year${p.years_experience !== 1 ? "s" : ""}`} />
                   )}
                   {p.linkedin_url && (
-                    <InfoRow
-                      icon={<FaLinkedin size={14} />}
-                      label="LinkedIn"
-                      value={
-                        <a href={p.linkedin_url} target="_blank" rel="noreferrer" className="text-navy-600 hover:underline inline-flex items-center gap-1">
-                          View Profile <MdOpenInNew size={12} />
-                        </a>
-                      }
-                    />
+                    <Field label="LinkedIn" value={
+                      <a href={p.linkedin_url} target="_blank" rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-200 bg-slate-50 text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
+                        <FaLinkedin size={12} className="text-[#0077b5]" /> LinkedIn <MdOpenInNew size={11} className="text-slate-400" />
+                      </a>
+                    } />
                   )}
-                </Card>
+                </div>
+                {p.bio && (
+                  <div className="mt-5">
+                    <Field label="Bio" value={<span className="whitespace-pre-wrap font-normal text-slate-600">{p.bio}</span>} />
+                  </div>
+                )}
+                {p.certifications && (
+                  <div className="mt-5">
+                    <Field label="Certifications" value={<span className="whitespace-pre-wrap font-normal text-slate-600">{p.certifications}</span>} />
+                  </div>
+                )}
+              </Section>
+            </>
+          )}
 
-                <Card title="Contact">
-                  {p.primary_email   && <InfoRow icon={<MdEmail size={16} />}    label="Primary Email"   value={p.primary_email} />}
-                  {p.secondary_email && <InfoRow icon={<MdEmail size={16} />}    label="Secondary Email" value={p.secondary_email} />}
-                  {p.phone           && <InfoRow icon={<MdPhone size={16} />}    label="Phone"           value={p.phone} />}
-                  {p.whatsapp        && <InfoRow icon={<FaWhatsapp size={14} />} label="WhatsApp"        value={p.whatsapp} />}
-                </Card>
+          {hasContact && (
+            <>
+              <Divider />
+              <Section title="Contact">
+                <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+                  {p.primary_email   && <Field label="Primary Email"   value={p.primary_email} />}
+                  {p.secondary_email && <Field label="Secondary Email" value={p.secondary_email} />}
+                  {p.phone           && <Field label="Phone"           value={p.phone} />}
+                  {p.whatsapp && (
+                    <Field label="WhatsApp" value={
+                      <span className="inline-flex items-center gap-1.5 font-normal">
+                        <FaWhatsapp size={13} className="text-green-500 flex-shrink-0" />
+                        {p.whatsapp}
+                      </span>
+                    } />
+                  )}
+                </div>
+              </Section>
+            </>
+          )}
 
-                <Card title="Documents">
-                  <InfoRow
-                    icon={<MdLink size={16} />}
-                    label="CV / Resume"
-                    value={
-                      p.cv
-                        ? <a href={p.cv} target="_blank" rel="noreferrer" className="text-navy-600 hover:underline inline-flex items-center gap-1">View / Download <MdOpenInNew size={12} /></a>
-                        : <span className="text-gray-400 italic font-normal text-xs">No CV uploaded</span>
-                    }
-                  />
-                </Card>
-              </>
-            )}
-          </div>
+          {hasAddress && (
+            <>
+              <Divider />
+              <Section title="Address">
+                <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+                  {p.country     && <Field label="Country"     value={p.country} />}
+                  {p.city        && <Field label="City"        value={p.city} />}
+                  {p.address     && <Field label="Street"      value={p.address} />}
+                  {p.postal_code && <Field label="Postal Code" value={p.postal_code} />}
+                </div>
+              </Section>
+            </>
+          )}
+
+          {p?.cv && (
+            <>
+              <Divider />
+              <Section title="Documents">
+                <Field label="CV / Resume" value={
+                  <a href={p.cv} target="_blank" rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-200 bg-slate-50 text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
+                    <MdOpenInNew size={12} className="text-slate-400" /> View CV
+                  </a>
+                } />
+              </Section>
+            </>
+          )}
+
         </div>
       </div>
 
-      <ChangePasswordModal
-        open={showChangePassword}
-        onClose={() => setShowChangePassword(false)}
-      />
+      <ChangePasswordModal open={showChangePassword} onClose={() => setShowChangePassword(false)} />
     </>
   );
 };
