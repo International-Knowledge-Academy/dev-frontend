@@ -1,8 +1,11 @@
 // @ts-nocheck
+import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { MdEdit, MdAdminPanelSettings, MdVerified, MdOpenInNew, MdArrowBack } from "react-icons/md";
+import { MdEdit, MdAdminPanelSettings, MdVerified, MdOpenInNew, MdArrowBack, MdPhotoCamera } from "react-icons/md";
 import { FaWhatsapp, FaLinkedin } from "react-icons/fa";
 import useGetUser from "hooks/users/useGetUser";
+import useUpdateProfile from "hooks/users/useUpdateProfile";
+import usePresignedUpload from "hooks/storage/usePresignedUpload";
 
 const roleBadgeStyle: Record<string, string> = {
   admin:           "bg-navy-50 text-navy-700 border-navy-200",
@@ -34,7 +37,22 @@ const Divider = () => <div className="border-t border-slate-100 my-6" />;
 const UserProfilePage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { user, loading, error } = useGetUser(id);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const { user, loading, error, refetch } = useGetUser(id);
+  const { updateProfile }                 = useUpdateProfile();
+  const { upload, uploading, progress }   = usePresignedUpload();
+
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+    e.target.value = "";
+    const result = await upload(file, { folder: "users/profiles", file_type: "image" });
+    if (result) {
+      await updateProfile(user.uid, { profile_picture: result.public_url });
+      refetch();
+    }
+  };
 
   if (loading) return (
     <div className="flex items-center justify-center py-20 text-sm text-slate-400">Loading profile...</div>
@@ -60,16 +78,33 @@ const UserProfilePage = () => {
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
         <div className="flex items-start gap-4">
 
-          {/* Avatar */}
+          {/* Avatar — clickable upload */}
           <div className="flex-shrink-0">
-            {p?.profile_picture ? (
-              <img src={p.profile_picture} alt={user.name}
-                className="w-16 h-16 rounded-full object-cover ring-4 ring-slate-100" />
-            ) : (
-              <div className="w-16 h-16 rounded-full bg-navy-700 text-white flex items-center justify-center text-xl font-bold ring-4 ring-slate-100 select-none">
-                {initials}
+            <button
+              type="button"
+              onClick={() => inputRef.current?.click()}
+              disabled={uploading}
+              className="relative group block w-16 h-16 rounded-full ring-4 ring-slate-100 focus:outline-none"
+            >
+              {p?.profile_picture ? (
+                <img src={p.profile_picture} alt={user.name}
+                  className="w-16 h-16 rounded-full object-cover" />
+              ) : (
+                <div className="w-16 h-16 rounded-full bg-navy-700 text-white flex items-center justify-center text-xl font-bold select-none">
+                  {initials}
+                </div>
+              )}
+              <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                <MdPhotoCamera size={18} className="text-white" />
               </div>
-            )}
+              {uploading && (
+                <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                  <span className="text-white text-[10px] font-bold">{progress}%</span>
+                </div>
+              )}
+            </button>
+            <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp"
+              className="hidden" onChange={handleAvatarChange} />
           </div>
 
           {/* Info */}
@@ -138,8 +173,8 @@ const UserProfilePage = () => {
                 {p.linkedin_url && (
                   <Field label="LinkedIn" value={
                     <a href={p.linkedin_url} target="_blank" rel="noreferrer"
-                      className="text-navy-600 hover:underline inline-flex items-center gap-1 font-normal">
-                      <FaLinkedin size={12} /> View Profile <MdOpenInNew size={11} />
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-200 bg-slate-50 text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
+                      <FaLinkedin size={12} className="text-[#0077b5]" /> LinkedIn <MdOpenInNew size={11} className="text-slate-400" />
                     </a>
                   } />
                 )}
@@ -199,8 +234,8 @@ const UserProfilePage = () => {
             <Section title="Documents">
               <Field label="CV / Resume" value={
                 <a href={p.cv} target="_blank" rel="noreferrer"
-                  className="text-navy-600 hover:underline inline-flex items-center gap-1 font-normal">
-                  View / Download CV <MdOpenInNew size={11} />
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-200 bg-slate-50 text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
+                  <MdOpenInNew size={12} className="text-slate-400" /> View CV
                 </a>
               } />
             </Section>
