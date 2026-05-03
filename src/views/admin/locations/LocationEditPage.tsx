@@ -7,6 +7,10 @@ import useUpdateLocation from "hooks/locations/useUpdateLocation";
 import InputField from "components/form/InputField";
 import ToggleInput from "components/form/toggle/ToggleInput";
 import Button from "components/ui/buttons/Button";
+import SearchableDropdown from "components/form/search/SearchableDropdown";
+import { COUNTRIES } from "constants/lists";
+
+const COUNTRY_OPTIONS = COUNTRIES.map((c) => ({ value: c.name, label: c.name }));
 
 const LocationEditPage = () => {
   const { uid } = useParams<{ uid: string }>();
@@ -108,13 +112,14 @@ const LocationEditPage = () => {
               errors={fieldErrors}
               updateFormData={updateFormData}
             />
-            <InputField
+            <SearchableDropdown
               label="Country"
               field="country"
-              placeholder="UAE"
+              options={COUNTRY_OPTIONS}
               formData={form}
               errors={fieldErrors}
               updateFormData={updateFormData}
+              placeholder="Select country..."
             />
             <InputField
               label="Address"
