@@ -252,8 +252,6 @@ const ProgramPage = () => {
   const audience   = parseLines(program.target_audience);
   const prereqs    = parseLines(program.prerequisites);
 
-  const fieldHex = program.field?.hex_color ?? "#1B2A5E";
-
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
