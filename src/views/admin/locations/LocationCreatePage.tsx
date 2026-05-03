@@ -8,6 +8,7 @@ import Button from "components/ui/buttons/Button";
 import SearchableDropdown from "components/form/search/SearchableDropdown";
 import useCreateLocation from "hooks/locations/useCreateLocation";
 import { COUNTRIES } from "constants/lists";
+import PageHeader from "components/ui/PageHeader";
 
 const COUNTRY_OPTIONS = COUNTRIES.map((c) => ({ value: c.name, label: c.name }));
 
@@ -49,10 +50,11 @@ const LocationCreatePage = () => {
   return (
     <div className="max-w-5xl mx-auto">
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
-        <div className="px-6 py-4 border-b border-slate-100">
-          <h1 className="text-base font-bold text-navy-800">Create Location</h1>
-          <p className="text-xs text-slate-400 mt-0.5">Fill in the details to add a new location</p>
-        </div>
+        <PageHeader
+          title="Create Location"
+          subtitle="Fill in the details to add a new location"
+          bordered
+        />
 
         <form onSubmit={handleSubmit} className="px-6 py-5 grid grid-cols-1 gap-4">
           {error && (

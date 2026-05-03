@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "context/ToastContext";
 import useGetLocation from "hooks/locations/useGetLocation";
 import useUpdateLocation from "hooks/locations/useUpdateLocation";
+import PageHeader from "components/ui/PageHeader";
 import InputField from "components/form/InputField";
 import ToggleInput from "components/form/toggle/ToggleInput";
 import Button from "components/ui/buttons/Button";
@@ -81,12 +82,11 @@ const LocationEditPage = () => {
   return (
     <div className="max-w-5xl mx-auto">
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
-        <div className="px-6 py-4 border-b border-slate-100">
-          <h1 className="text-base font-bold text-navy-800">Edit Location</h1>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Update the details for <span className="font-semibold text-navy-700">{location?.name}</span>
-          </p>
-        </div>
+        <PageHeader
+          title="Edit Location"
+          subtitle={<>Update the details for <span className="font-semibold text-navy-700">{location?.name}</span></>}
+          bordered
+        />
 
         <form onSubmit={handleSubmit} className="px-6 py-5 grid grid-cols-1 gap-4">
           {error && (
