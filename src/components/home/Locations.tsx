@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { MapPin, GraduationCap, ArrowRight, Globe, Building2, PauseCircle } from "lucide-react";
+import { MapPin, GraduationCap, ArrowRight, Globe, PauseCircle } from "lucide-react";
 import useLocations from "hooks/locations/useLocations";
 import type { Location } from "types/location";
 
