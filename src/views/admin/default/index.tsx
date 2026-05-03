@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import {
   MdWorkspacePremium, MdLocationOn, MdLayers,
   MdPeople, MdSchool, MdTrendingUp, MdCalendarToday,
@@ -51,7 +51,7 @@ const statCards = [
 const programStatusStats = [
   { label: "Upcoming",  value: 14, icon: <MdPending    size={16} />, cls: "bg-blue-50 text-blue-600 border-blue-600" },
   { label: "Ongoing",   value: 9,  icon: <MdAccessTime size={16} />, cls: "bg-green-50 text-green-600 border-green-600" },
-  { label: "Completed", value: 21, icon: <MdCheckCircle size={16} />, cls: "bg-gray-100 text-gray-500 border-slate-500" },
+  { label: "Completed", value: 21, icon: <MdCheckCircle size={16} />, cls: "bg-slate-100 text-slate-500 border-slate-500" },
   { label: "Cancelled", value: 4,  icon: <MdCancel     size={16} />, cls: "bg-red-50 text-red-500 border-red-500" },
 ];
 
@@ -66,7 +66,7 @@ const recentPrograms = [
 const statusBadge: Record<string, string> = {
   upcoming:  "bg-blue-50 text-blue-600 border-blue-600",
   ongoing:   "bg-green-50 text-green-600 border-green-600",
-  completed: "bg-gray-100 text-gray-500 border-slate-500",
+  completed: "bg-slate-100 text-slate-500 border-slate-500",
   cancelled: "bg-red-50 text-red-500 border-red-500",
 };
 
@@ -89,9 +89,9 @@ const Dashboard = () => {
             </div>
             <div>
               <p className="text-2xl font-extrabold text-navy-800 leading-none">{s.value}</p>
-              <p className="text-xs text-gray-400 mt-1">{s.label}</p>
+              <p className="text-xs text-slate-400 mt-1">{s.label}</p>
             </div>
-            <p className={`text-xs font-medium ${s.positive === true ? "text-green-500" : s.positive === false ? "text-red-500" : "text-gray-400"}`}>
+            <p className={`text-xs font-medium ${s.positive === true ? "text-green-500" : s.positive === false ? "text-red-500" : "text-slate-400"}`}>
               {s.change}
             </p>
           </div>

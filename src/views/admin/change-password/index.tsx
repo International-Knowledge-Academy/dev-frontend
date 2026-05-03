@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdLock, MdVisibility, MdVisibilityOff, MdCheckCircle } from "react-icons/md";
@@ -9,7 +9,7 @@ const PasswordField = ({ label, value, onChange, show, onToggle, placeholder }) 
   <div className="flex flex-col gap-1.5">
     <label className="text-xs font-semibold text-navy-700">{label}</label>
     <div className="relative">
-      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
         <MdLock size={16} />
       </div>
       <input
@@ -22,7 +22,7 @@ const PasswordField = ({ label, value, onChange, show, onToggle, placeholder }) 
       <button
         type="button"
         onClick={onToggle}
-        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-navy-600 transition"
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-navy-600 transition"
       >
         {show ? <MdVisibilityOff size={16} /> : <MdVisibility size={16} />}
       </button>
@@ -67,7 +67,7 @@ const ChangePasswordPage = () => {
           </div>
           <div>
             <h1 className="text-base font-bold text-navy-800">Change Password</h1>
-            <p className="text-xs text-gray-400 mt-0.5">Update your account password</p>
+            <p className="text-xs text-slate-400 mt-0.5">Update your account password</p>
           </div>
         </div>
 
@@ -127,9 +127,9 @@ const ChangePasswordPage = () => {
                   onClick={() => navigate(-1)}
                   className="flex-1 rounded-xl py-2.5"
                   bgColor="bg-white"
-                  textColor="text-gray-600"
+                  textColor="text-slate-600"
                   borderColor="border-slate-200"
-                  hoverBgColor="hover:bg-gray-50"
+                  hoverBgColor="hover:bg-slate-50"
                   hoverTextColor=""
                   hoverBorderColor=""
                 />

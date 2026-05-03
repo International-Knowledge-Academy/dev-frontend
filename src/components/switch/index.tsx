@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 const Switch = (props) => {
   const { extra, color, ...rest } = props;
   return (
@@ -35,7 +35,7 @@ const Switch = (props) => {
           : color === "indigo"
           ? "checked:bg-indigo-500"
           : color === "gray"
-          ? "checked:bg-gray-500"
+          ? "checked:bg-slate-500"
           : "checked:bg-brand-500"
       } ${extra}`}
       name="weekly"

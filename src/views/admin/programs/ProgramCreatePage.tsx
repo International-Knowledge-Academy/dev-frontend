@@ -1,14 +1,82 @@
 // @ts-nocheck
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { MdPhotoCamera } from "react-icons/md";
 import useCreateProgram from "hooks/programs/useCreateProgram";
 import useFields from "hooks/fields/useFields";
 import useLocations from "hooks/locations/useLocations";
+import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import SelectField from "components/form/SelectField";
 import TextareaField from "components/form/TextareaField";
 import ToggleInput from "components/form/toggle/ToggleInput";
+
+const ThumbnailUpload = ({ value, onChange }) => {
+  const { upload, uploading, progress, error } = usePresignedUpload();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = "";
+    const result = await upload(file, { folder: "programs/thumbnails", file_type: "image" });
+    if (result) onChange(result.public_url);
+  };
+
+  return (
+    <div>
+      <label className="block text-xs font-semibold text-navy-700 mb-2">Thumbnail</label>
+      {value ? (
+        <div className="relative group rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
+          <img src={value} alt="Thumbnail" className="w-full h-40 object-cover" />
+          <button
+            type="button"
+            onClick={() => inputRef.current?.click()}
+            disabled={uploading}
+            className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition"
+          >
+            <MdPhotoCamera size={24} className="text-white" />
+          </button>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          disabled={uploading}
+          className="w-full h-32 rounded-xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center gap-2 text-slate-400 hover:border-navy-300 hover:text-navy-500 transition bg-slate-50"
+        >
+          <MdPhotoCamera size={22} />
+          <span className="text-xs font-medium">Upload thumbnail</span>
+          <span className="text-[10px] text-slate-300">JPG, PNG, WebP</span>
+        </button>
+      )}
+      {uploading && (
+        <div className="mt-2 space-y-1">
+          <div className="h-1 rounded-full bg-slate-100 overflow-hidden">
+            <div className="h-full bg-navy-500 transition-all duration-300" style={{ width: `${progress}%` }} />
+          </div>
+          <p className="text-xs text-slate-400 text-center">Uploading {progress}%</p>
+        </div>
+      )}
+      {value && !uploading && (
+        <div className="flex gap-3 mt-2">
+          <button type="button" onClick={() => inputRef.current?.click()}
+            className="text-xs text-navy-600 hover:text-navy-800 font-medium transition">
+            Change
+          </button>
+          <button type="button" onClick={() => onChange("")}
+            className="text-xs text-red-500 hover:text-red-700 transition">
+            Remove
+          </button>
+        </div>
+      )}
+      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
+      <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp"
+        className="hidden" onChange={handleChange} />
+    </div>
+  );
+};
 
 const TYPE_OPTIONS = [
   { value: "course",     label: "Training Course" },
@@ -74,6 +142,7 @@ const ProgramCreatePage = () => {
     is_active:        true,
     price:            "",
     currency:         "MYR",
+    thumbnail:        "",
   });
 
   const updateFormData = (key: string, value: any) =>
@@ -97,7 +166,7 @@ const ProgramCreatePage = () => {
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm max-w-5xl mx-auto">
       <div className="px-6 py-4 border-b border-slate-100">
         <h1 className="text-base font-bold text-navy-800">Create Program</h1>
-        <p className="text-xs text-gray-400 mt-0.5">Fill in the details to add a new training program</p>
+        <p className="text-xs text-slate-400 mt-0.5">Fill in the details to add a new training program</p>
       </div>
 
       <form onSubmit={handleSubmit} className="px-6 py-5">
@@ -332,6 +401,14 @@ const ProgramCreatePage = () => {
             updateFormData={updateFormData}
           />
 
+          {/* Thumbnail — full width */}
+          <div className="md:col-span-2">
+            <ThumbnailUpload
+              value={form.thumbnail}
+              onChange={(url) => updateFormData("thumbnail", url)}
+            />
+          </div>
+
           {/* Active toggle — full width */}
           <div className="md:col-span-2">
             <ToggleInput
@@ -350,14 +427,14 @@ const ProgramCreatePage = () => {
           <button
             type="button"
             onClick={() => navigate("/admin/programs")}
-            className="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
+            className="flex-1 rounded-md lg:rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 rounded-xl bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition disabled:opacity-60"
+            className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition disabled:opacity-60"
           >
             {loading ? "Creating..." : "Create Program"}
           </button>

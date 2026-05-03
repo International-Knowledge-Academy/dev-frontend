@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -205,7 +205,7 @@ const LocationsPage = () => {
                       <tr
                         key={location.uid}
                         onClick={() => navigate(`/admin/locations/${location.uid}`)}
-                        className="hover:bg-gray-50 transition cursor-pointer"
+                        className="hover:bg-slate-50 transition cursor-pointer"
                       >
                         <td className="px-5 py-3.5">
                           <div className="flex items-center gap-3">

@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 
 interface LoadingProps {
   size?: number;
@@ -23,7 +23,7 @@ const Loading: React.FC<LoadingProps> = ({
           animation: "spin 1s linear infinite",
         }}
       ></div>
-      {text && <p className="mt-3 text-gray-600">{text}</p>}
+      {text && <p className="mt-3 text-slate-600">{text}</p>}
 
       <style>{`
           @keyframes spin {

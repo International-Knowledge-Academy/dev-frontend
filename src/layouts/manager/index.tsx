@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Sidebar from "components/sidebar";
 import ManagerTopbar from "components/manager/Topbar";
@@ -18,7 +18,7 @@ const ManagerLayout = () => {
   const pageTitle = pageTitles[pathname] ?? "Manager";
 
   return (
-    <div className="flex h-full min-h-screen bg-gray-50">
+    <div className="flex h-full min-h-screen bg-slate-50">
       <Sidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}

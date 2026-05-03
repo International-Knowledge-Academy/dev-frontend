@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 import { MdLocationOn } from "react-icons/md";
 import useLocations from "hooks/locations/useLocations";
@@ -59,14 +59,14 @@ const Locations = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             Training Across {countries.length} {countries.length === 1 ? "Country" : "Countries"}
           </h2>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
             IKA programs are delivered at premium venues across the Middle East, Europe, and Southeast Asia.
           </p>
         </motion.div>
 
         {/* Grid */}
         {loading ? (
-          <div className="text-center text-gray-400 py-12">Loading locations...</div>
+          <div className="text-center text-slate-400 py-12">Loading locations...</div>
         ) : error ? (
           <div className="text-center text-red-400 py-12">{error}</div>
         ) : (
@@ -90,7 +90,7 @@ const Locations = () => {
                   {loc.cities.map((city) => (
                     <span
                       key={city}
-                      className="inline-flex items-center gap-0.5 text-xs text-gray-500 group-hover:text-gold-600 transition-colors"
+                      className="inline-flex items-center gap-0.5 text-xs text-slate-500 group-hover:text-gold-600 transition-colors"
                     >
                       <MdLocationOn size={12} />
                       {city}

@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useCreateCategory from "hooks/categories/useCreateCategory";
@@ -31,7 +31,7 @@ const CategoryCreatePage = () => {
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
         <div className="px-6 py-4 border-b border-slate-100">
           <h1 className="text-base font-bold text-navy-800">Create Category</h1>
-          <p className="text-xs text-gray-400 mt-0.5">Add a new category</p>
+          <p className="text-xs text-slate-400 mt-0.5">Add a new category</p>
         </div>
 
         <form onSubmit={handleSubmit} className="px-6 py-5 flex flex-col gap-4">
@@ -66,9 +66,9 @@ const CategoryCreatePage = () => {
               onClick={() => navigate("/admin/categories")}
               className="flex-1 rounded-xl py-2.5"
               bgColor="bg-white"
-              textColor="text-gray-600"
+              textColor="text-slate-600"
               borderColor="border-slate-200"
-              hoverBgColor="hover:bg-gray-50"
+              hoverBgColor="hover:bg-slate-50"
               hoverTextColor=""
               hoverBorderColor=""
             />

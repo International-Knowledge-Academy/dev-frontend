@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -62,7 +62,7 @@ const App = () => {
         element={
           <div className="flex h-screen items-center justify-center flex-col gap-3">
             <h1 className="text-3xl font-bold text-navy-700">403</h1>
-            <p className="text-gray-500">You don't have access to this page.</p>
+            <p className="text-slate-500">You don't have access to this page.</p>
           </div>
         }
       />

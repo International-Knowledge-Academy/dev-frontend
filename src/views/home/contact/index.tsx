@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
@@ -63,7 +63,7 @@ const ContactPage = () => {
                   "Custom contracted programs available",
                   "Training delivered in English & Arabic",
                 ].map((tip, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-gray-500 text-sm">
+                  <li key={i} className="flex items-start gap-2.5 text-slate-500 text-sm">
                     <span className="w-1.5 h-1.5 rounded-full bg-gold-500 flex-shrink-0 mt-1.5" />
                     {tip}
                   </li>

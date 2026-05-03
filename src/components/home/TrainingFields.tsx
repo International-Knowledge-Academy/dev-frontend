@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 import { MdCategory } from "react-icons/md";
 import useCategories from "hooks/categories/useCategories";
@@ -37,14 +37,14 @@ const TrainingFields = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             {count} Specialized {count === 1 ? "Category" : "Categories"}
           </h2>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
             From leadership to technical programs — we cover the full spectrum of professional development needs.
           </p>
         </motion.div>
 
         {/* Grid */}
         {loading ? (
-          <div className="text-center text-gray-400 py-12">Loading categories...</div>
+          <div className="text-center text-slate-400 py-12">Loading categories...</div>
         ) : error ? (
           <div className="text-center text-red-400 py-12">{error}</div>
         ) : (
@@ -65,7 +65,7 @@ const TrainingFields = () => {
                 <span className="text-gold-500 group-hover:text-gold-400 flex-shrink-0 transition-colors">
                   <MdCategory size={22} />
                 </span>
-                <span className="text-gray-600 group-hover:text-navy-800 text-sm font-medium leading-snug transition-colors">
+                <span className="text-slate-600 group-hover:text-navy-800 text-sm font-medium leading-snug transition-colors">
                   {field.name}
                 </span>
               </motion.div>

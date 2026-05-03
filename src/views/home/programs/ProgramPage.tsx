@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -28,7 +28,7 @@ const typeConfig: Record<string, { label: string; cls: string; icon: React.React
 const statusBadge: Record<string, string> = {
   upcoming:  "bg-blue-50 text-blue-600 border-blue-600",
   ongoing:   "bg-green-50 text-green-600 border-green-600",
-  completed: "bg-gray-100 text-gray-500 border-slate-500",
+  completed: "bg-slate-100 text-slate-500 border-slate-500",
   cancelled: "bg-red-50 text-red-500 border-red-500",
 };
 
@@ -68,8 +68,8 @@ const ProgramPage = () => {
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center space-y-3">
             <div className="w-16 h-16 rounded-2xl bg-navy-50 animate-pulse mx-auto" />
-            <div className="h-6 bg-gray-100 rounded w-64 mx-auto animate-pulse" />
-            <div className="h-4 bg-gray-100 rounded w-48 mx-auto animate-pulse" />
+            <div className="h-6 bg-slate-100 rounded w-64 mx-auto animate-pulse" />
+            <div className="h-4 bg-slate-100 rounded w-48 mx-auto animate-pulse" />
           </div>
         </div>
         <Footer />
@@ -145,7 +145,7 @@ const ProgramPage = () => {
                 {program.field.name}
               </span>
             )}
-            <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full border ${statusBadge[program.status] ?? "bg-gray-50 text-gray-500 border-slate-200"}`}>
+            <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full border ${statusBadge[program.status] ?? "bg-slate-50 text-slate-500 border-slate-200"}`}>
               <span className="w-1.5 h-1.5 rounded-full bg-current" />
               {program.status_display ?? program.status}
             </span>
@@ -235,13 +235,13 @@ const ProgramPage = () => {
                 <div className="grid grid-cols-2 gap-4">
                   {startDate && (
                     <div>
-                      <p className="text-xs text-gray-400 mb-1">Start Date</p>
+                      <p className="text-xs text-slate-400 mb-1">Start Date</p>
                       <p className="text-sm font-semibold text-navy-800">{startDate}</p>
                     </div>
                   )}
                   {endDate && (
                     <div>
-                      <p className="text-xs text-gray-400 mb-1">End Date</p>
+                      <p className="text-xs text-slate-400 mb-1">End Date</p>
                       <p className="text-sm font-semibold text-navy-800">{endDate}</p>
                     </div>
                   )}
@@ -260,7 +260,7 @@ const ProgramPage = () => {
                 <h2 className="text-sm font-bold text-navy-800 uppercase tracking-widest mb-4">
                   About This Program
                 </h2>
-                <p className="text-gray-600 leading-relaxed whitespace-pre-wrap text-sm">
+                <p className="text-slate-600 leading-relaxed whitespace-pre-wrap text-sm">
                   {program.description}
                 </p>
               </motion.div>
@@ -301,7 +301,7 @@ const ProgramPage = () => {
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-4"
               >
-                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400">
                   Contact
                 </h3>
                 {program.contact_email && (
@@ -333,7 +333,7 @@ const ProgramPage = () => {
                 transition={{ duration: 0.5, delay: 0.35 }}
                 className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-3"
               >
-                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400">
                   Brochure
                 </h3>
                 <a

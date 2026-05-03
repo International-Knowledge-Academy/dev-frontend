@@ -44,14 +44,14 @@ const PasswordField = ({
           value={value}
           onChange={(e) => updateFormData(field, e.target.value)}
           placeholder={placeholder}
-          className={`flex h-12 w-full items-center bg-gray-50 rounded-md border p-3 pr-10 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-navy-500 ${
+          className={`flex h-12 w-full items-center bg-slate-50 rounded-md border p-3 pr-10 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-navy-500 ${
             error ? "border-red-500" : "border-default"
           }`}
         />
         <button
           type="button"
           onClick={() => setShow((prev) => !prev)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-navy-700 transition focus:outline-none"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-navy-700 transition focus:outline-none"
           aria-label={show ? "Hide password" : "Show password"}
         >
           {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}

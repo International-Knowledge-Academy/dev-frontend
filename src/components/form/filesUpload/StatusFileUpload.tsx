@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Trash2 } from "lucide-react";
 import { ALLOWED_FILE_TYPES } from "constants/upload";
 import { useToast } from "context/ToastContext";
@@ -67,7 +67,7 @@ export default function StatusFileUpload({
           </svg>
         </div>
         <p className="text-sm font-semibold text-navy-800">{label}</p>
-        <p className="mt-2 text-xs text-gray-500">{ALLOWED_FILE_TYPES.label} – Max 5MB</p>
+        <p className="mt-2 text-xs text-slate-500">{ALLOWED_FILE_TYPES.label} – Max 5MB</p>
         <input
           id={id}
           type="file"

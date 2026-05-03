@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -115,14 +115,14 @@ const TrainingPage = () => {
                 key={i}
                 className="bg-white rounded-2xl border border-slate-100 p-6 animate-pulse"
               >
-                <div className="h-4 bg-gray-100 rounded w-1/3 mb-4" />
-                <div className="h-5 bg-gray-100 rounded w-3/4 mb-2" />
-                <div className="h-4 bg-gray-100 rounded w-full mb-1" />
-                <div className="h-4 bg-gray-100 rounded w-5/6 mb-6" />
-                <div className="h-px bg-gray-100 mb-4" />
+                <div className="h-4 bg-slate-100 rounded w-1/3 mb-4" />
+                <div className="h-5 bg-slate-100 rounded w-3/4 mb-2" />
+                <div className="h-4 bg-slate-100 rounded w-full mb-1" />
+                <div className="h-4 bg-slate-100 rounded w-5/6 mb-6" />
+                <div className="h-px bg-slate-100 mb-4" />
                 <div className="flex gap-4">
-                  <div className="h-3 bg-gray-100 rounded w-16" />
-                  <div className="h-3 bg-gray-100 rounded w-20" />
+                  <div className="h-3 bg-slate-100 rounded w-16" />
+                  <div className="h-3 bg-slate-100 rounded w-20" />
                 </div>
               </div>
             ))}
@@ -145,7 +145,7 @@ const TrainingPage = () => {
               📚
             </div>
             <h3 className="text-navy-800 font-bold text-lg mb-2">No programs found</h3>
-            <p className="text-gray-400 text-sm max-w-xs mx-auto mb-5">
+            <p className="text-slate-400 text-sm max-w-xs mx-auto mb-5">
               Try adjusting your filters or clearing them to see all available programs.
             </p>
             <button

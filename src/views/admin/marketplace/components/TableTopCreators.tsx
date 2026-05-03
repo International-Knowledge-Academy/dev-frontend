@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import React from "react";
 import Progress from "components/progress";
 import Card from "components/card";
@@ -19,7 +19,7 @@ function CheckTable(props) {
     columnHelper.accessor("name", {
       id: "name",
       header: () => (
-        <p className="text-sm font-bold text-gray-600">NAME</p>
+        <p className="text-sm font-bold text-slate-600">NAME</p>
       ),
       cell: (info) => (
         <div className="flex items-center gap-2">
@@ -39,12 +39,12 @@ function CheckTable(props) {
     columnHelper.accessor("artworks", {
       id: "artworks",
       header: () => (
-        <p className="text-sm font-bold text-gray-600">
+        <p className="text-sm font-bold text-slate-600">
           ARTWORKS
         </p>
       ),
       cell: (info) => (
-        <p className="text-md font-medium text-gray-600">
+        <p className="text-md font-medium text-slate-600">
           {info.getValue()}
         </p>
       ),
@@ -52,7 +52,7 @@ function CheckTable(props) {
     columnHelper.accessor("rating", {
       id: "rating",
       header: () => (
-        <p className="text-sm font-bold text-gray-600">
+        <p className="text-sm font-bold text-slate-600">
           RATING
         </p>
       ),
@@ -82,7 +82,7 @@ function CheckTable(props) {
           Check Table
         </div>
 
-        <button className=" linear rounded-md bg-lightPrimary px-4 py-2 text-base font-medium text-brand-500 transition duration-200 hover:bg-gray-100 active:bg-gray-200">
+        <button className=" linear rounded-md bg-lightPrimary px-4 py-2 text-base font-medium text-brand-500 transition duration-200 hover:bg-slate-100 active:bg-slate-200">
           See all
         </button>
       </header>
@@ -100,7 +100,7 @@ function CheckTable(props) {
                       onClick={header.column.getToggleSortingHandler()}
                       className="cursor-pointer border-b border-slate-200 pb-2 pr-4 pt-4 text-start"
                     >
-                      <div className="items-center justify-between text-xs text-gray-200">
+                      <div className="items-center justify-between text-xs text-slate-200">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()

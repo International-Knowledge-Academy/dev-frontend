@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import React from "react";
 import CardMenu from "components/card/CardMenu";
 import Card from "components/card";
@@ -24,7 +24,7 @@ export default function ComplexTable(props) {
     columnHelper.accessor("name", {
       id: "name",
       header: () => (
-        <p className="text-sm font-bold text-gray-600">NAME</p>
+        <p className="text-sm font-bold text-slate-600">NAME</p>
       ),
       cell: (info) => (
         <p className="text-sm font-bold text-navy-700">
@@ -35,7 +35,7 @@ export default function ComplexTable(props) {
     columnHelper.accessor("status", {
       id: "status",
       header: () => (
-        <p className="text-sm font-bold text-gray-600">
+        <p className="text-sm font-bold text-slate-600">
           STATUS
         </p>
       ),
@@ -57,7 +57,7 @@ export default function ComplexTable(props) {
     columnHelper.accessor("date", {
       id: "date",
       header: () => (
-        <p className="text-sm font-bold text-gray-600">DATE</p>
+        <p className="text-sm font-bold text-slate-600">DATE</p>
       ),
       cell: (info) => (
         <p className="text-sm font-bold text-navy-700">
@@ -68,7 +68,7 @@ export default function ComplexTable(props) {
     columnHelper.accessor("progress", {
       id: "progress",
       header: () => (
-        <p className="text-sm font-bold text-gray-600">
+        <p className="text-sm font-bold text-slate-600">
           PROGRESS
         </p>
       ),
@@ -113,7 +113,7 @@ export default function ComplexTable(props) {
                       onClick={header.column.getToggleSortingHandler()}
                       className="cursor-pointer border-b-[1px] border-slate-200 pt-4 pb-2 pr-4 text-start"
                     >
-                      <div className="items-center justify-between text-xs text-gray-200">
+                      <div className="items-center justify-between text-xs text-slate-200">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()

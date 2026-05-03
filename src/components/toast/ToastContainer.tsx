@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useEffect, useState } from "react";
 import { MdCheckCircle, MdError, MdInfo, MdClose } from "react-icons/md";
 import { useToast } from "context/ToastContext";
@@ -64,13 +64,13 @@ const ToastItem = ({ toast, onRemove }) => {
       {/* Text */}
       <div className="flex-1 min-w-0 pt-0.5">
         <p className="text-xs font-bold text-navy-700 leading-none mb-1">{c.label}</p>
-        <p className="text-sm text-gray-500 leading-snug">{toast.message}</p>
+        <p className="text-sm text-slate-500 leading-snug">{toast.message}</p>
       </div>
 
       {/* Close */}
       <button
         onClick={handleClose}
-        className="p-1 rounded-lg text-gray-300 hover:text-gray-500 hover:bg-gray-50 transition flex-shrink-0"
+        className="p-1 rounded-lg text-slate-300 hover:text-slate-500 hover:bg-slate-50 transition flex-shrink-0"
       >
         <MdClose size={14} />
       </button>

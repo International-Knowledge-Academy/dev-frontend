@@ -67,16 +67,18 @@ const CreatableSelectField = ({
   };
 
   return (
-    <div className="mb-4" ref={containerRef}>
+    <div className={label ? "mb-4" : ""} ref={containerRef}>
 
-      <label className="block text-sm font-medium text-slate-900">
-        {label} {required && <span className="text-red-600">*</span>}
-      </label>
+      {label && (
+        <label className="block text-sm font-medium text-slate-900">
+          {label} {required && <span className="text-red-600">*</span>}
+        </label>
+      )}
 
       <div
         onClick={() => setIsOpen((prev) => !prev)}
 
-        className={`mt-2 flex h-12 w-full items-center justify-between bg-white rounded-md border p-3 px-3 py-2 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-blue-500 ${
+        className={`${label ? "mt-2" : ""} flex h-12 w-full items-center justify-between bg-white rounded-md border p-3 px-3 py-2 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-blue-500 ${
           getNestedValue(errors, field) ? "border-red-500" : "border-default"
         }`}
 

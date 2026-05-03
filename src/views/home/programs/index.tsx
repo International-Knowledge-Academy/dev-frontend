@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,6 +8,7 @@ import Footer from "components/home/Footer";
 import ProgramsHero from "components/programs/ProgramsHero";
 import TypeTabs from "components/programs/TypeTabs";
 import ProgramCard from "components/programs/ProgramCard";
+import SearchableDropdown from "components/form/search/SearchableDropdown";
 
 import usePrograms from "hooks/programs/usePrograms";
 import useLocations from "hooks/locations/useLocations";
@@ -34,6 +35,11 @@ const ProgramsPublicPage = () => {
 
   const { locations } = useLocations();
   const { fields }    = useFields();
+
+  const locationOptions = [
+    { value: "", label: "All Locations" },
+    ...locations.map((l) => ({ value: l.uid, label: `${l.name} — ${l.city}, ${l.country}` })),
+  ];
 
   const { programs, count, loading, error, setParams } = usePrograms({
     is_active: true,
@@ -106,19 +112,21 @@ const ProgramsPublicPage = () => {
             ))}
           </select>
 
-          <select
-            value={locationUid}
-            onChange={(e) => handleLocationChange(e.target.value)}
-            className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-300 transition"
-          >
-            <option value="">All Locations</option>
-            {locations.map((l) => (
-              <option key={l.uid} value={l.uid}>{l.name} — {l.city}, {l.country}</option>
-            ))}
-          </select>
+          <div className="relative min-w-[220px]">
+            <SearchableDropdown
+              field="location"
+              label="Location"
+              options={locationOptions}
+              formData={{ location: locationUid }}
+              errors={{}}
+              updateFormData={(_, v) => handleLocationChange(v)}
+              placeholder="All Locations"
+              required={false}
+            />
+          </div>
 
           <div className="flex items-center gap-3 ml-auto">
-            <span className="text-sm text-gray-400">
+            <span className="text-sm text-slate-400">
               {loading ? "Loading..." : `${count} program${count !== 1 ? "s" : ""}`}
             </span>
             {(search || locationUid || fieldUid || selectedType) && (
@@ -137,14 +145,14 @@ const ProgramsPublicPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="bg-white rounded-2xl border border-slate-100 p-6 animate-pulse">
-                <div className="h-4 bg-gray-100 rounded w-1/3 mb-4" />
-                <div className="h-5 bg-gray-100 rounded w-3/4 mb-2" />
-                <div className="h-4 bg-gray-100 rounded w-full mb-1" />
-                <div className="h-4 bg-gray-100 rounded w-5/6 mb-6" />
-                <div className="h-px bg-gray-100 mb-4" />
+                <div className="h-4 bg-slate-100 rounded w-1/3 mb-4" />
+                <div className="h-5 bg-slate-100 rounded w-3/4 mb-2" />
+                <div className="h-4 bg-slate-100 rounded w-full mb-1" />
+                <div className="h-4 bg-slate-100 rounded w-5/6 mb-6" />
+                <div className="h-px bg-slate-100 mb-4" />
                 <div className="flex gap-4">
-                  <div className="h-3 bg-gray-100 rounded w-16" />
-                  <div className="h-3 bg-gray-100 rounded w-20" />
+                  <div className="h-3 bg-slate-100 rounded w-16" />
+                  <div className="h-3 bg-slate-100 rounded w-20" />
                 </div>
               </div>
             ))}
@@ -167,7 +175,7 @@ const ProgramsPublicPage = () => {
               🎓
             </div>
             <h3 className="text-navy-800 font-bold text-lg mb-2">No programs found</h3>
-            <p className="text-gray-400 text-sm max-w-xs mx-auto mb-5">
+            <p className="text-slate-400 text-sm max-w-xs mx-auto mb-5">
               Try adjusting your filters or clearing them to see all available programs.
             </p>
             <button

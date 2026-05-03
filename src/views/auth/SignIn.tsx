@@ -45,7 +45,7 @@ export default function SignIn() {
         <motion.h4 {...fadeUp(0)} className="mb-2 text-3xl font-bold text-navy-800">
           Sign In
         </motion.h4>
-        <motion.p {...fadeUp(0.08)} className="mb-8 text-sm text-gray-500">
+        <motion.p {...fadeUp(0.08)} className="mb-8 text-sm text-slate-500">
           Enter your email and password to sign in.
         </motion.p>
 

@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useNavigate, useParams } from "react-router-dom";
 import { MdEdit, MdCategory } from "react-icons/md";
 import useGetCategory from "hooks/categories/useGetCategory";
@@ -10,7 +10,7 @@ const CategoryDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20 text-sm text-gray-400">
+      <div className="flex items-center justify-center py-20 text-sm text-slate-400">
         Loading category...
       </div>
     );
@@ -36,7 +36,7 @@ const CategoryDetailPage = () => {
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-bold text-navy-800 truncate">{category.name}</h1>
             {category.summary && (
-              <p className="text-sm text-gray-500 mt-1 line-clamp-2">{category.summary}</p>
+              <p className="text-sm text-slate-500 mt-1 line-clamp-2">{category.summary}</p>
             )}
           </div>
         </div>
@@ -44,13 +44,13 @@ const CategoryDetailPage = () => {
         {/* Details */}
         <div className="px-6 py-5 flex flex-col gap-4">
           <div>
-            <p className="text-xs text-gray-400 mb-1">Category Name</p>
+            <p className="text-xs text-slate-400 mb-1">Category Name</p>
             <p className="text-sm font-medium text-navy-800">{category.name}</p>
           </div>
           {category.summary && (
             <div>
-              <p className="text-xs text-gray-400 mb-1">Summary</p>
-              <p className="text-sm text-gray-600 whitespace-pre-wrap">{category.summary}</p>
+              <p className="text-xs text-slate-400 mb-1">Summary</p>
+              <p className="text-sm text-slate-600 whitespace-pre-wrap">{category.summary}</p>
             </div>
           )}
         </div>
@@ -60,7 +60,7 @@ const CategoryDetailPage = () => {
           <button
             type="button"
             onClick={() => navigate("/admin/categories")}
-            className="flex-1 rounded-md lg:rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
+            className="flex-1 rounded-md lg:rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition"
           >
             Back
           </button>

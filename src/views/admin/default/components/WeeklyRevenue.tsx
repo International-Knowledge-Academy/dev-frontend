@@ -14,7 +14,7 @@ const WeeklyRevenue = () => {
         <h2 className="text-lg font-bold text-navy-700">
           Weekly Revenue
         </h2>
-        <button className="!linear z-[1] flex items-center justify-center rounded-lg bg-lightPrimary p-2 text-brand-500 !transition !duration-200 hover:bg-gray-100 active:bg-gray-200">
+        <button className="!linear z-[1] flex items-center justify-center rounded-md lg:rounded-lg bg-lightPrimary p-2 text-brand-500 !transition !duration-200 hover:bg-slate-100 active:bg-slate-200">
           <MdBarChart className="h-6 w-6" />
         </button>
       </div>

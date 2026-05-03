@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MdSend, MdCheckCircle } from "react-icons/md";
@@ -89,7 +89,7 @@ const ContactForm = () => {
                 <MdCheckCircle size={36} />
               </div>
               <h4 className="text-navy-800 font-extrabold text-xl mb-2">Message Sent!</h4>
-              <p className="text-gray-500 text-sm max-w-xs">
+              <p className="text-slate-500 text-sm max-w-xs">
                 Thank you for reaching out. Our team will contact you within 24 hours.
               </p>
               <button
@@ -210,7 +210,7 @@ const ContactForm = () => {
                 )}
               </motion.button>
 
-              <p className="text-center text-gray-400 text-xs mt-3">
+              <p className="text-center text-slate-400 text-xs mt-3">
                 We'll respond within 24 hours · No spam, ever
               </p>
             </motion.form>

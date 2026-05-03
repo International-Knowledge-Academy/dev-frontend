@@ -6,6 +6,8 @@ export type ProgramStatus = "upcoming" | "ongoing" | "completed" | "cancelled";
 export interface ProgramField {
   uid: string;
   name: string;
+  hex_color?: string;
+  text_color?: string;
 }
 
 export interface ProgramLocation {
@@ -13,11 +15,16 @@ export interface ProgramLocation {
   name: string;
   city: string;
   country: string;
+  address?: string;
+  venue_details?: string;
+  contact_phone?: string;
+  whatsapp_number?: string;
 }
 
 export interface ProgramTrainer {
   uid: string;
-  user: { uid: string; name: string };
+  user: { uid: string; name: string; email?: string; role?: string };
+  bio?: string;
   title: string;
   profile_picture: string;
 }
@@ -33,7 +40,7 @@ export interface Program {
   program_type_display?: string;
   field: ProgramField | null;
   location: ProgramLocation | null;
-  trainers: ProgramTrainer[];
+  trainer_profiles: ProgramTrainer[];
   duration: string;
   level: ProgramLevel;
   level_display?: string;
@@ -52,6 +59,8 @@ export interface Program {
   thumbnail?: string;
   price?: string;
   currency?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface PaginatedPrograms {
@@ -72,6 +81,8 @@ export interface ProgramsParams {
   mode?: ProgramMode | "";
   status?: ProgramStatus | "";
   language?: string;
+  start_date_from?: string;
+  start_date_to?: string;
   is_active?: boolean;
 }
 
@@ -83,7 +94,7 @@ export interface CreateProgramPayload {
   prerequisites?: string;
   field?: string;
   location?: string;
-  trainers?: string[];
+  trainer_profiles?: string[];
   program_type: ProgramType;
   duration?: string;
   level: ProgramLevel;

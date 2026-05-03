@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 import { MdEmail, MdLanguage, MdLocationOn } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
@@ -68,11 +68,11 @@ const ContactCards = () => {
               {c.icon}
             </div>
 
-            <p className="text-xs text-gray-400 uppercase tracking-widest font-semibold mb-1">
+            <p className="text-xs text-slate-400 uppercase tracking-widest font-semibold mb-1">
               {c.label}
             </p>
             <p className="text-navy-800 font-bold text-base mb-1">{c.value}</p>
-            <p className="text-gray-400 text-xs">{c.sub}</p>
+            <p className="text-slate-400 text-xs">{c.sub}</p>
 
             {/* Bottom hover line */}
             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />

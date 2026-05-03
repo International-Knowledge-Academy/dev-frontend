@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 
 interface EmptyStateProps {
   icon?: React.ReactNode;
@@ -32,7 +32,7 @@ const EmptyState = ({
 
       <h3 className="text-sm font-bold text-navy-700 mb-1">{title}</h3>
 
-      <p className="text-xs text-gray-400 max-w-[220px] text-center leading-relaxed">
+      <p className="text-xs text-slate-400 max-w-[220px] text-center leading-relaxed">
         {description}
       </p>
 

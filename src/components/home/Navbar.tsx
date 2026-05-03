@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -51,14 +51,14 @@ function CategoriesDropdown({ link, visible }) {
         }`}
       >
         <div className="px-4 pt-4 pb-3 border-b border-slate-50">
-          <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">
+          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest">
             Browse Categories
           </p>
         </div>
 
         <div className="p-2 max-h-72 overflow-y-auto">
           {link.children.length === 0 ? (
-            <p className="text-xs text-gray-400 px-4 py-3">No categories yet</p>
+            <p className="text-xs text-slate-400 px-4 py-3">No categories yet</p>
           ) : (
             link.children.map((item) => (
               <Link
@@ -74,14 +74,14 @@ function CategoriesDropdown({ link, visible }) {
                     {item.label}
                   </p>
                   {item.description && (
-                    <p className="text-xs text-gray-400 mt-0.5 leading-tight truncate">
+                    <p className="text-xs text-slate-400 mt-0.5 leading-tight truncate">
                       {item.description}
                     </p>
                   )}
                 </div>
                 <MdArrowForward
                   size={14}
-                  className="flex-shrink-0 text-gray-300 group-hover:text-gold-500 group-hover:translate-x-0.5 transition-all duration-150"
+                  className="flex-shrink-0 text-slate-300 group-hover:text-gold-500 group-hover:translate-x-0.5 transition-all duration-150"
                 />
               </Link>
             ))
@@ -282,7 +282,7 @@ const Navbar = () => {
                                 {child.label}
                               </p>
                               {child.description && (
-                                <p className="text-xs text-gray-400 leading-tight mt-0.5 truncate max-w-[200px]">
+                                <p className="text-xs text-slate-400 leading-tight mt-0.5 truncate max-w-[200px]">
                                   {child.description}
                                 </p>
                               )}

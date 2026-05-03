@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 import { MdVerified, MdHandshake } from "react-icons/md";
 
@@ -61,7 +61,7 @@ const Certifications = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             Certifications & Partnerships
           </h2>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
             IKA is backed by internationally recognized accreditations and a strong network
             of global partners — ensuring every certificate carries real-world value.
           </p>
@@ -99,7 +99,7 @@ const Certifications = () => {
                 <div>
                   <p className="text-navy-800 font-bold text-sm">{cert.name}</p>
                   <p className="text-gold-500 text-xs font-medium mt-0.5">{cert.body}</p>
-                  <p className="text-gray-500 text-sm mt-2 leading-relaxed">{cert.description}</p>
+                  <p className="text-slate-500 text-sm mt-2 leading-relaxed">{cert.description}</p>
                 </div>
               </motion.div>
             ))}

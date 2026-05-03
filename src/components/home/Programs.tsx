@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 import { MdSchool, MdWorkspacePremium, MdHandshake } from "react-icons/md";
 
@@ -58,7 +58,7 @@ const Programs = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             Three Ways to Learn
           </h2>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
             Choose the format that best fits your team's goals, timeline, and learning style.
           </p>
         </motion.div>
@@ -110,7 +110,7 @@ const Programs = () => {
                 <p className={`text-sm font-medium mt-1 ${i === 0 ? "text-gold-400" : "text-gold-500"}`}>
                   {p.duration}
                 </p>
-                <p className={`text-sm mt-3 leading-relaxed ${i === 0 ? "text-navy-200" : "text-gray-500"}`}>
+                <p className={`text-sm mt-3 leading-relaxed ${i === 0 ? "text-navy-200" : "text-slate-500"}`}>
                   {p.description}
                 </p>
               </div>

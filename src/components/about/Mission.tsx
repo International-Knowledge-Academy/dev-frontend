@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 import { MdVisibility, MdFlag, MdTrackChanges } from "react-icons/md";
 
@@ -114,7 +114,7 @@ const Mission = () => {
                 <span className="w-6 h-6 rounded-full bg-gold-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
                   {idx + 1}
                 </span>
-                <p className="text-gray-600 text-sm leading-relaxed">{goal}</p>
+                <p className="text-slate-600 text-sm leading-relaxed">{goal}</p>
               </motion.div>
             ))}
           </motion.div>

@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 const Radio = (props) => {
   const { color, id, name, ...rest } = props;
   return (
@@ -37,7 +37,7 @@ const Radio = (props) => {
            : color === "indigo"
            ? "checked:!border-indigo-500 checked:before:!bg-indigo-500"
            : color === "gray"
-           ? "checked:!border-slate-500 checked:before:!bg-gray-500"
+           ? "checked:!border-slate-500 checked:before:!bg-slate-500"
            : "checked:!border-brand-500 checked:before:!bg-brand-500"
        } `}
       {...rest}

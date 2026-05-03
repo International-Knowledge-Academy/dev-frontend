@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 import {
   MdDesignServices,
@@ -77,7 +77,7 @@ const Features = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             What Sets Us Apart
           </h2>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
             Invest in your employees and invest in the future of your institution — with training built for real impact.
           </p>
         </motion.div>
@@ -101,7 +101,7 @@ const Features = () => {
                 {feature.icon}
               </div>
               <h3 className="text-lg font-bold text-navy-800 mb-2">{feature.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{feature.description}</p>
+              <p className="text-slate-500 text-sm leading-relaxed">{feature.description}</p>
             </motion.div>
           ))}
         </motion.div>

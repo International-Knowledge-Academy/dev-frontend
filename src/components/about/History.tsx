@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 
 const milestones = [
@@ -47,7 +47,7 @@ const History = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             Background & History
           </h2>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
             From a focused regional academy to a globally recognized training institution —
             rooted in a commitment to excellence.
           </p>
@@ -56,7 +56,7 @@ const History = () => {
         {/* Timeline */}
         <div className="relative">
           {/* Vertical line */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gray-200 hidden md:block" />
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-slate-200 hidden md:block" />
 
           <div className="space-y-12">
             {milestones.map((item, idx) => {
@@ -81,7 +81,7 @@ const History = () => {
                         {item.year}
                       </p>
                       <h3 className="text-lg font-bold text-navy-800 mb-2">{item.title}</h3>
-                      <p className="text-gray-500 text-sm leading-relaxed">{item.description}</p>
+                      <p className="text-slate-500 text-sm leading-relaxed">{item.description}</p>
                     </div>
                   </motion.div>
 

@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -57,9 +57,9 @@ const CategoriesPage = () => {
             onClick={refetch}
             icon={<MdRefresh size={18} />}
             bgColor="bg-white"
-            textColor="text-gray-500"
+            textColor="text-slate-500"
             borderColor="border-slate-200"
-            hoverTextColor="hover:text-gray-700"
+            hoverTextColor="hover:text-slate-700"
             hoverBorderColor="hover:border-slate-300"
             className="p-2.5"
           />
@@ -72,7 +72,7 @@ const CategoriesPage = () => {
             icon={<MdAdd />}
             onClick={() => navigate("/admin/categories/create")}
           />
-          <p className="text-sm text-gray-400 mt-0.5">{count} categories</p>
+          <p className="text-sm text-slate-400 mt-0.5">{count} categories</p>
         </div>
       </div>
 
@@ -86,7 +86,7 @@ const CategoriesPage = () => {
           ) : error ? (
             <div className="flex items-center justify-center py-16 text-sm text-red-500">{error}</div>
           ) : categories.length === 0 ? (
-            <div className="flex items-center justify-center py-16 text-sm text-gray-400">No categories found.</div>
+            <div className="flex items-center justify-center py-16 text-sm text-slate-400">No categories found.</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -97,7 +97,7 @@ const CategoriesPage = () => {
                       { label: "Summary", icon: <MdCategory size={14} /> },
                       { label: "Actions", icon: <MdSettings  size={14} /> },
                     ].map(({ label, icon }) => (
-                      <th key={label} className="px-5 py-3.5 text-left text-xs font-bold tracking-widest uppercase text-gray-400">
+                      <th key={label} className="px-5 py-3.5 text-left text-xs font-bold tracking-widest uppercase text-slate-400">
                         <span className="flex items-center gap-1.5">{icon}{label}</span>
                       </th>
                     ))}
@@ -108,7 +108,7 @@ const CategoriesPage = () => {
                     <tr
                       key={cat.uid}
                       onClick={() => navigate(`/admin/categories/${cat.uid}`)}
-                      className="hover:bg-gray-50 transition cursor-pointer"
+                      className="hover:bg-slate-50 transition cursor-pointer"
                     >
                       {/* Name */}
                       <td className="px-5 py-3.5">
@@ -121,8 +121,8 @@ const CategoriesPage = () => {
                       </td>
                       {/* Summary */}
                       <td className="px-5 py-3.5 max-w-xs">
-                        <span className="text-sm text-gray-500 truncate block" title={cat.summary ?? ""}>
-                          {cat.summary || <span className="text-gray-300 italic">—</span>}
+                        <span className="text-sm text-slate-500 truncate block" title={cat.summary ?? ""}>
+                          {cat.summary || <span className="text-slate-300 italic">—</span>}
                         </span>
                       </td>
                       {/* Actions */}
@@ -137,7 +137,7 @@ const CategoriesPage = () => {
                           </button>
                           <button
                             onClick={() => openDelete(cat)}
-                            className="p-1.5 rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-500 transition"
+                            className="p-1.5 rounded-lg text-slate-400 hover:bg-red-50 hover:text-red-500 transition"
                             title="Delete"
                           >
                             <MdDelete size={16} />
@@ -154,7 +154,7 @@ const CategoriesPage = () => {
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex items-center justify-between px-6 py-5 border-t border-slate-100">
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-slate-400">
                 Page {params.page ?? 1} of {totalPages}
               </p>
               <div className="flex gap-2">

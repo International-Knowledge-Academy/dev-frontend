@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState } from "react";
 import { MdClose, MdLock, MdVisibility, MdVisibilityOff, MdCheckCircle } from "react-icons/md";
 import useChangePassword from "hooks/auth/useChangePassword";
@@ -13,7 +13,7 @@ const PasswordField = ({ label, value, onChange, show, onToggle, placeholder }) 
   <div className="flex flex-col gap-1.5">
     <label className="text-xs font-semibold text-navy-700">{label}</label>
     <div className="relative">
-      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
         <MdLock size={15} />
       </div>
       <input
@@ -26,7 +26,7 @@ const PasswordField = ({ label, value, onChange, show, onToggle, placeholder }) 
       <button
         type="button"
         onClick={onToggle}
-        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-navy-600 transition"
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-navy-600 transition"
       >
         {show ? <MdVisibilityOff size={15} /> : <MdVisibility size={15} />}
       </button>
@@ -82,7 +82,7 @@ const ChangePasswordModal = ({ open, onClose }: Props) => {
             </div>
             <h2 className="text-base font-bold text-navy-800">Change Password</h2>
           </div>
-          <button onClick={handleClose} className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 transition">
+          <button onClick={handleClose} className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 transition">
             <MdClose size={20} />
           </button>
         </div>
@@ -141,9 +141,9 @@ const ChangePasswordModal = ({ open, onClose }: Props) => {
                   onClick={handleClose}
                   className="flex-1 rounded-xl py-2.5"
                   bgColor="bg-white"
-                  textColor="text-gray-600"
+                  textColor="text-slate-600"
                   borderColor="border-slate-200"
-                  hoverBgColor="hover:bg-gray-50"
+                  hoverBgColor="hover:bg-slate-50"
                   hoverTextColor=""
                   hoverBorderColor=""
                 />

@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import React from "react";
 
 export default function FilterSelectField({
@@ -17,7 +17,7 @@ export default function FilterSelectField({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full cursor-pointer rounded-md bg-gray-50 border border-slate-200 py-2.5 pl-10 pr-8 text-sm text-slate-700 outline-none focus:ring-1 focus:ring-blue-500"
+        className="w-full cursor-pointer rounded-md bg-slate-50 border border-slate-200 py-2.5 pl-10 pr-8 text-sm text-slate-700 outline-none focus:ring-1 focus:ring-blue-500"
       >
         <option value="all" className="bg-white text-slate-700">
           {defaultOption}

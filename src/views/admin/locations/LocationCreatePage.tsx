@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "context/ToastContext";
@@ -156,7 +156,7 @@ const LocationCreatePage = () => {
               bgColor="bg-white"
               textColor="text-slate-600"
               borderColor="border-slate-200"
-              hoverBgColor="hover:bg-gray-50"
+              hoverBgColor="hover:bg-slate-50"
               hoverTextColor=""
               hoverBorderColor=""
             />

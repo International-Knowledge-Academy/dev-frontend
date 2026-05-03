@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 import { MdCheckCircle } from "react-icons/md";
 
@@ -44,12 +44,12 @@ const About = () => {
             International Knowledge Academy
             <span className="block text-gold-500 mt-1">for Training & Management Development</span>
           </h2>
-          <p className="text-gray-500 mt-6 text-base leading-relaxed">
+          <p className="text-slate-500 mt-6 text-base leading-relaxed">
             IKA provides high-quality training programs that blend deep theoretical knowledge with
             practical experience. We believe that effective training is the cornerstone of
             organizational excellence — empowering individuals and transforming institutions.
           </p>
-          <p className="text-gray-500 mt-4 text-base leading-relaxed italic border-l-4 border-gold-500 pl-4">
+          <p className="text-slate-500 mt-4 text-base leading-relaxed italic border-l-4 border-gold-500 pl-4">
             "Invest in Your Employees and Invest in the Future of Your Institution."
           </p>
 
@@ -65,7 +65,7 @@ const About = () => {
                 key={item}
                 custom={i}
                 variants={fadeUp}
-                className="flex items-start gap-3 text-gray-600 text-sm"
+                className="flex items-start gap-3 text-slate-600 text-sm"
               >
                 <MdCheckCircle size={20} className="text-gold-500 flex-shrink-0 mt-0.5" />
                 {item}
@@ -105,12 +105,12 @@ const About = () => {
                   viewport={{ once: true }}
                 >
                   <p className="text-3xl font-extrabold text-gold-500">{s.value}</p>
-                  <p className="text-gray-400 text-sm mt-1">{s.label}</p>
+                  <p className="text-slate-400 text-sm mt-1">{s.label}</p>
                 </motion.div>
               ))}
             </div>
             <div className="border-t border-slate-100 pt-5 text-center">
-              <p className="text-gray-400 text-xs">
+              <p className="text-slate-400 text-xs">
                 Operating across the UAE, UK, Europe, Asia & the Middle East
               </p>
             </div>

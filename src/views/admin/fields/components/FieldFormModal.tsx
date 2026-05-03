@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import useCreateField from "hooks/fields/useCreateField";
@@ -65,7 +65,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
 
   const inputCls = (key: string) =>
     `w-full rounded-xl border px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:ring-2 focus:ring-navy-300 ${
-      fieldErrors[key] ? "border-red-400 bg-red-50" : "border-slate-200 bg-gray-50"
+      fieldErrors[key] ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50"
     }`;
 
   const handleSubmit = async (e) => {
@@ -102,7 +102,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
           <h2 className="text-base font-bold text-navy-800">
             {isEdit ? "Edit Field" : "Add Field"}
           </h2>
-          <button onClick={onClose} className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition">
+          <button onClick={onClose} className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition">
             <MdClose size={18} />
           </button>
         </div>
@@ -167,7 +167,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
                 type="color"
                 value={form.hex_color}
                 onChange={(e) => set("hex_color", e.target.value)}
-                className="w-10 h-10 rounded-lg border border-slate-200 cursor-pointer p-0.5 bg-gray-50 flex-shrink-0"
+                className="w-10 h-10 rounded-lg border border-slate-200 cursor-pointer p-0.5 bg-slate-50 flex-shrink-0"
               />
               <input
                 type="text"
@@ -188,7 +188,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
                 type="color"
                 value={form.text_color}
                 onChange={(e) => set("text_color", e.target.value)}
-                className="w-10 h-10 rounded-lg border border-slate-200 cursor-pointer p-0.5 bg-gray-50 flex-shrink-0"
+                className="w-10 h-10 rounded-lg border border-slate-200 cursor-pointer p-0.5 bg-slate-50 flex-shrink-0"
               />
               <input
                 type="text"
@@ -220,12 +220,12 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
           />
 
           {/* is_active toggle */}
-          <div className="flex items-center justify-between rounded-xl bg-gray-50 border border-slate-200 px-4 py-3">
+          <div className="flex items-center justify-between rounded-xl bg-slate-50 border border-slate-200 px-4 py-3">
             <span className="text-sm font-medium text-navy-700">Active</span>
             <button
               type="button"
               onClick={() => set("is_active", !form.is_active)}
-              className={`relative w-10 h-5 rounded-full transition-colors ${form.is_active ? "bg-navy-700" : "bg-gray-300"}`}
+              className={`relative w-10 h-5 rounded-full transition-colors ${form.is_active ? "bg-navy-700" : "bg-slate-300"}`}
             >
               <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${form.is_active ? "translate-x-5" : ""}`} />
             </button>
@@ -236,7 +236,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
+              className="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition"
             >
               Cancel
             </button>

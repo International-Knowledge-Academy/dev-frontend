@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 
 import Navbar from "components/home/Navbar";
@@ -36,7 +36,7 @@ const CategoriesHubPage = () => {
           <h2 className="text-3xl font-extrabold text-navy-800 mb-3">
             Our Training Categories
           </h2>
-          <p className="text-gray-500 text-sm max-w-xl mx-auto">
+          <p className="text-slate-500 text-sm max-w-xl mx-auto">
             Explore our specialized categories and discover programs tailored to your professional goals.
           </p>
         </motion.div>
@@ -46,9 +46,9 @@ const CategoriesHubPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="bg-white rounded-2xl border border-slate-100 p-6 animate-pulse">
-                <div className="w-11 h-11 bg-gray-100 rounded-xl mb-4" />
-                <div className="h-5 bg-gray-100 rounded w-3/4 mb-2" />
-                <div className="h-4 bg-gray-100 rounded w-1/2" />
+                <div className="w-11 h-11 bg-slate-100 rounded-xl mb-4" />
+                <div className="h-5 bg-slate-100 rounded w-3/4 mb-2" />
+                <div className="h-4 bg-slate-100 rounded w-1/2" />
               </div>
             ))}
           </div>
@@ -61,7 +61,7 @@ const CategoriesHubPage = () => {
 
         {/* Empty */}
         {!loading && !error && categories.length === 0 && (
-          <div className="text-center py-20 text-gray-400">No categories available yet.</div>
+          <div className="text-center py-20 text-slate-400">No categories available yet.</div>
         )}
 
         {/* Grid */}

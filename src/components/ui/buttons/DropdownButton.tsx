@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState, useRef, useEffect } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
 
@@ -31,7 +31,7 @@ const DropdownButton = ({ label, icon, items, variant = "primary" }: DropdownBut
   const triggerClass =
     variant === "primary"
       ? "bg-navy-800 text-white hover:bg-navy-700 border-navy-800"
-      : "bg-white text-gray-700 hover:bg-gray-50 border-slate-200";
+      : "bg-white text-slate-700 hover:bg-slate-50 border-slate-200";
 
   return (
     <div ref={ref} className="relative inline-block">

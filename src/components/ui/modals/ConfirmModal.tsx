@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import React from "react";
 import { MdClose } from "react-icons/md";
 import Button from "components/ui/buttons/Button";
@@ -44,7 +44,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <h2 className="text-lg font-bold text-navy-800">{title}</h2>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:bg-gray-100 transition"
+            className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 transition"
           >
             <MdClose size={20} />
           </button>
@@ -74,7 +74,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
               bgColor="bg-white"
               textColor="text-slate-600"
               borderColor="border-slate-200"
-              hoverBgColor="hover:bg-gray-50"
+              hoverBgColor="hover:bg-slate-50"
               hoverTextColor=""
               hoverBorderColor=""
             />

@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MdSearch, MdLocationOn, MdCategory, MdTune, MdFilterList } from "react-icons/md";
@@ -47,7 +47,7 @@ const FilterBar = ({
       {/* Search row — always visible */}
       <div className="flex items-center gap-3">
         <div className="relative flex-1">
-          <MdSearch size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+          <MdSearch size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
             placeholder="Search course title..."
@@ -63,7 +63,7 @@ const FilterBar = ({
           className={`md:hidden flex items-center gap-1.5 px-3 py-2.5 text-sm font-medium border rounded-md lg:rounded-lg transition-colors ${
             hasActive
               ? "bg-gold-50 border-gold-300 text-gold-700"
-              : "bg-slate-50 border-slate-200 text-gray-500 hover:text-navy-700"
+              : "bg-slate-50 border-slate-200 text-slate-500 hover:text-navy-700"
           }`}
         >
           <MdFilterList size={18} />
@@ -86,7 +86,7 @@ const FilterBar = ({
 
               {/* Category filter */}
               <div className="relative md:w-52">
-                <MdCategory size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                <MdCategory size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                 <select
                   value={categoryUid}
                   onChange={(e) => onCategoryChange(e.target.value)}
@@ -101,7 +101,7 @@ const FilterBar = ({
 
               {/* Location filter */}
               <div className="relative md:w-52">
-                <MdLocationOn size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                <MdLocationOn size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                 <select
                   value={locationUid}
                   onChange={(e) => onLocationChange(e.target.value)}
@@ -120,7 +120,7 @@ const FilterBar = ({
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   onClick={clearAll}
-                  className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-gray-500 hover:text-red-500 bg-slate-50 border border-slate-200 rounded-md lg:rounded-lg transition-colors"
+                  className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-slate-500 hover:text-red-500 bg-slate-50 border border-slate-200 rounded-md lg:rounded-lg transition-colors"
                 >
                   <MdTune size={15} />
                   Clear
@@ -133,7 +133,7 @@ const FilterBar = ({
 
       {/* Results count */}
       <div className="mt-3 flex items-center justify-between">
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-slate-400">
           <span className="font-semibold text-navy-700">{totalResults}</span>{" "}
           {totalResults === 1 ? "program" : "programs"} found
         </p>

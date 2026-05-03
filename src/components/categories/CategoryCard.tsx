@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { MdArrowForward, MdMenuBook } from "react-icons/md";
@@ -30,7 +30,7 @@ const CategoryCard = ({ category }: Props) => {
 
         {/* Summary */}
         {category.summary && (
-          <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 flex-1 mb-2">
+          <p className="text-slate-500 text-sm leading-relaxed line-clamp-3 flex-1 mb-2">
             {category.summary}
           </p>
         )}

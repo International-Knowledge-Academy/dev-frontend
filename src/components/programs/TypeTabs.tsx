@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useRef } from "react";
 import { motion } from "framer-motion";
 import { MdSchool, MdWorkspacePremium, MdHandshake } from "react-icons/md";
@@ -40,7 +40,7 @@ const TypeTabs = ({ selected, counts, total, onSelect }: Props) => {
                 className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-200 flex-shrink-0 ${
                   isActive
                     ? "bg-navy-800 text-white shadow-md"
-                    : "text-gray-500 hover:text-navy-700 hover:bg-gray-50"
+                    : "text-slate-500 hover:text-navy-700 hover:bg-slate-50"
                 }`}
               >
                 {isActive && (

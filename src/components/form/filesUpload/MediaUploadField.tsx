@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useRef } from "react";
 import { MdUpload, MdClose, MdVideoFile, MdImage } from "react-icons/md";
 import usePresignedUpload from "hooks/storage/usePresignedUpload";
@@ -33,7 +33,7 @@ const MediaUploadField = ({
 
     const result = await upload(file, {
       folder,
-      file_type: "file",
+      file_type: type === "image" ? "image" : "file",
     });
 
     if (result) {
@@ -48,7 +48,7 @@ const MediaUploadField = ({
 
       {/* Preview */}
       {value && !uploading && (
-        <div className="relative rounded-lg border border-slate-200 overflow-hidden bg-gray-50">
+        <div className="relative rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
           {type === "image" ? (
             <img
               src={value}
@@ -61,7 +61,7 @@ const MediaUploadField = ({
           <button
             type="button"
             onClick={() => onChange("")}
-            className="absolute top-2 right-2 w-7 h-7 bg-white rounded-full border border-slate-200 flex items-center justify-center text-gray-500 hover:text-red-500 hover:border-red-300 transition shadow-sm"
+            className="absolute top-2 right-2 w-7 h-7 bg-white rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-red-500 hover:border-red-300 transition shadow-sm"
           >
             <MdClose size={14} />
           </button>
@@ -73,26 +73,26 @@ const MediaUploadField = ({
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          className="w-full flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-slate-200 bg-gray-50 py-8 hover:border-navy-400 hover:bg-navy-50 transition"
+          className="w-full flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-slate-200 bg-slate-50 py-8 hover:border-navy-400 hover:bg-navy-50 transition"
         >
           {type === "video" ? (
-            <MdVideoFile size={24} className="text-gray-400" />
+            <MdVideoFile size={24} className="text-slate-400" />
           ) : (
-            <MdImage size={24} className="text-gray-400" />
+            <MdImage size={24} className="text-slate-400" />
           )}
-          <span className="text-sm text-gray-500">Click to upload {label}</span>
-          <span className="text-xs text-gray-400">{accepted.label}</span>
+          <span className="text-sm text-slate-500">Click to upload {label}</span>
+          <span className="text-xs text-slate-400">{accepted.label}</span>
         </button>
       )}
 
       {/* Upload progress */}
       {uploading && (
-        <div className="rounded-lg border border-slate-200 bg-gray-50 px-4 py-4 space-y-2">
+        <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-4 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-navy-700">Uploading...</span>
             <span className="text-sm font-semibold text-navy-600">{progress}%</span>
           </div>
-          <div className="h-1.5 w-full rounded-full bg-gray-200">
+          <div className="h-1.5 w-full rounded-full bg-slate-200">
             <div
               className="h-full rounded-full bg-navy-500 transition-all duration-300"
               style={{ width: `${progress}%` }}

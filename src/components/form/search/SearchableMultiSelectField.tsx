@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 "use client";
 
 import React, { useState, useRef, useEffect, useMemo } from "react";
@@ -131,7 +131,7 @@ const SearchableMultiSelectField = ({
               <li
                 key={opt.value}
                 onClick={() => handleSelect(opt)}
-                className="mt-1 flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 hover:bg-gray-50"
+                className="mt-1 flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 hover:bg-slate-50"
               >
                 <input
                   type="checkbox"

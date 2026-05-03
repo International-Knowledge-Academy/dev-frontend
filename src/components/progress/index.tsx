@@ -1,11 +1,11 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 const Progress = (props) => {
   const { value, color, width } = props;
   return (
     <div
       className={`h-2 ${
         width ? width : "w-full"
-      } rounded-full bg-gray-200`}
+      } rounded-full bg-slate-200`}
     >
       <div
         className={`flex h-full items-center justify-center rounded-full ${
@@ -36,7 +36,7 @@ const Progress = (props) => {
             : color === "indigo"
             ? "bg-indigo-500"
             : color === "gray"
-            ? "bg-gray-500"
+            ? "bg-slate-500"
             : "bg-brand-500"
         }`}
         style={{ width: `${value}%` }}

@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 import { MdVerified } from "react-icons/md";
 
@@ -76,7 +76,7 @@ const Team = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             Trainers & Instructors
           </h2>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
             A carefully selected group of seasoned professionals and subject-matter experts
             who bring deep knowledge and real-world field experience to every program.
           </p>
@@ -107,14 +107,14 @@ const Team = () => {
                     <p className="text-navy-800 font-bold text-sm">{trainer.name}</p>
                     <MdVerified size={15} className="text-gold-500 flex-shrink-0" />
                   </div>
-                  <p className="text-gray-400 text-xs mt-0.5">{trainer.role}</p>
+                  <p className="text-slate-400 text-xs mt-0.5">{trainer.role}</p>
                 </div>
               </div>
 
               {/* Specialty */}
               <div className="border-t border-slate-100 pt-4">
-                <p className="text-xs text-gray-400 uppercase tracking-wider mb-2 font-medium">Specialization</p>
-                <p className="text-gray-600 text-sm leading-relaxed">{trainer.specialty}</p>
+                <p className="text-xs text-slate-400 uppercase tracking-wider mb-2 font-medium">Specialization</p>
+                <p className="text-slate-600 text-sm leading-relaxed">{trainer.specialty}</p>
               </div>
 
               {/* Experience badge */}
@@ -130,7 +130,7 @@ const Team = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center text-gray-400 text-sm mt-10"
+          className="text-center text-slate-400 text-sm mt-10"
         >
           All IKA trainers hold internationally recognized credentials and are vetted for both academic and field expertise.
         </motion.p>

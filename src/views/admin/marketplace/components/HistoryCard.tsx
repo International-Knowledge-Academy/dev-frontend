@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import React from "react";
 import Nft2 from "assets/img/nfts/Nft2.png";
 import Nft1 from "assets/img/nfts/Nft1.png";
@@ -63,7 +63,7 @@ const HistoryCard = () => {
         <div className="text-lg font-bold text-navy-700">
           History
         </div>
-        <button className="linear rounded-3xl bg-lightPrimary px-4 py-2 text-base font-medium text-brand-500 transition duration-200 hover:bg-gray-100 active:bg-gray-200">
+        <button className="linear rounded-md lg:rounded-lg bg-lightPrimary px-4 py-2 text-base font-medium text-brand-500 transition duration-200 hover:bg-slate-100 active:bg-slate-200">
           See all
         </button>
       </div>
@@ -85,7 +85,7 @@ const HistoryCard = () => {
                 {" "}
                 {data.title}
               </h5>
-              <p className="mt-1 text-sm font-normal text-gray-600">
+              <p className="mt-1 text-sm font-normal text-slate-600">
                 {" "}
                 {data.owner}{" "}
               </p>
@@ -100,7 +100,7 @@ const HistoryCard = () => {
               <p> {} </p>
               {data.price} <p className="ml-1">ETH</p>
             </div>
-            <div className="ml-2 flex items-center text-sm font-normal text-gray-600">
+            <div className="ml-2 flex items-center text-sm font-normal text-slate-600">
               <p>{data.time}</p>
               <p className="ml-1">ago</p>
             </div>

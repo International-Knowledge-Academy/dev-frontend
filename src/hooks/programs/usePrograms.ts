@@ -38,6 +38,8 @@ const usePrograms = (initialParams: ProgramsParams = {}): UseProgramsReturn => {
           ...(params.level        && { level:        params.level }),
           ...(params.mode         && { mode:         params.mode }),
           ...(params.status       && { status:       params.status }),
+          ...(params.start_date_from && { start_date_from: params.start_date_from }),
+          ...(params.start_date_to   && { start_date_to:   params.start_date_to }),
           ...(params.is_active !== undefined && { is_active: params.is_active }),
         },
       });
@@ -70,7 +72,9 @@ const usePrograms = (initialParams: ProgramsParams = {}): UseProgramsReturn => {
         updates.level        !== undefined ||
         updates.mode         !== undefined ||
         updates.status       !== undefined ||
-        updates.is_active    !== undefined
+        updates.start_date_from !== undefined ||
+        updates.start_date_to   !== undefined ||
+        updates.is_active       !== undefined
           ? 1
           : (updates.page ?? prev.page),
     }));

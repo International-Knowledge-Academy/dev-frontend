@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 // Custom components
 import React from "react";
 
@@ -23,7 +23,7 @@ function InputField(props) {
         placeholder={placeholder}
         className={`mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none ${
           disabled === true
-            ? "!border-none !bg-gray-100"
+            ? "!border-none !bg-slate-100"
             : state === "error"
             ? "border-red-500 text-red-500 placeholder:text-red-500"
             : state === "success"

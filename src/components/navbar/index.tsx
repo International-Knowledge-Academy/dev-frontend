@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiAlignJustify } from "react-icons/fi";
@@ -26,7 +26,7 @@ const Navbar = (props) => {
           </button>
 
           <div>
-            <p className="text-xs text-gray-400 leading-none mb-0.5">
+            <p className="text-xs text-slate-400 leading-none mb-0.5">
               Pages / <span className="capitalize">{brandText}</span>
             </p>
             <h1 className="text-lg font-bold capitalize sm:text-2xl lg:text-3xl text-navy-800 leading-none">
@@ -37,7 +37,7 @@ const Navbar = (props) => {
 
         <Dropdown
           button={
-            <button className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-navy-50 transition-all group">
+            <button className="flex items-center gap-3 px-3 py-2 rounded-md lg:rounded-lg hover:bg-navy-50 transition-all group">
               <div className="relative">
                 <div className="w-9 h-9 rounded-full bg-navy-500 border-1 flex items-center justify-center text-white font-bold text-sm">
                   {user?.name?.[0]?.toUpperCase() ?? "?"}
@@ -54,7 +54,7 @@ const Navbar = (props) => {
               </div>
               <MdKeyboardArrowDown
                 size={16}
-                className="hidden md:block text-gray-400 group-hover:text-navy-600 transition"
+                className="hidden md:block text-slate-400 group-hover:text-navy-600 transition"
               />
             </button>
           }
@@ -73,7 +73,7 @@ const Navbar = (props) => {
                   </p>
                 </div>
               </div>
-              <div className="h-px bg-gray-100" />
+              <div className="h-px bg-slate-100" />
 
               <div className="p-2 flex flex-col gap-0.5">
                 <button
@@ -90,7 +90,7 @@ const Navbar = (props) => {
                   <MdLock size={16} />
                   Change Password
                 </button>
-                <div className="h-px bg-gray-100 my-1" />
+                <div className="h-px bg-slate-100 my-1" />
                 <button
                   onClick={logout}
                   className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition text-left"

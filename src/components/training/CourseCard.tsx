@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 import { MdLocationOn, MdAccessTime, MdSchool, MdArrowForward } from "react-icons/md";
 import type { Course } from "types/course";
@@ -39,7 +39,7 @@ const CourseCard = ({ course }: Props) => {
             {badge.label}
           </span>
           {course.code && (
-            <span className="text-xs text-gray-300 font-mono">{course.code}</span>
+            <span className="text-xs text-slate-300 font-mono">{course.code}</span>
           )}
         </div>
 
@@ -60,7 +60,7 @@ const CourseCard = ({ course }: Props) => {
 
         {/* Short description */}
         {course.short_description && (
-          <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-4 flex-1">
+          <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4 flex-1">
             {course.short_description}
           </p>
         )}
@@ -68,14 +68,14 @@ const CourseCard = ({ course }: Props) => {
         {/* Meta row */}
         <div className="flex items-center gap-4 mt-auto pt-4 border-t border-slate-100">
           {/* Duration */}
-          <div className="flex items-center gap-1.5 text-xs text-gray-400">
+          <div className="flex items-center gap-1.5 text-xs text-slate-400">
             <MdAccessTime size={13} className="flex-shrink-0" />
             <span>{course.duration_days} {course.duration_days === 1 ? "Day" : "Days"}</span>
           </div>
 
           {/* Location */}
           {course.location && (
-            <div className="flex items-center gap-1 text-xs text-gray-400 truncate">
+            <div className="flex items-center gap-1 text-xs text-slate-400 truncate">
               <span className="text-sm">{flag}</span>
               <MdLocationOn size={12} className="flex-shrink-0" />
               <span className="truncate">{course.location.city}</span>

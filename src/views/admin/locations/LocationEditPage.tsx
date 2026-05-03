@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "context/ToastContext";
@@ -190,7 +190,7 @@ const LocationEditPage = () => {
               bgColor="bg-white"
               textColor="text-slate-600"
               borderColor="border-slate-200"
-              hoverBgColor="hover:bg-gray-50"
+              hoverBgColor="hover:bg-slate-50"
               hoverTextColor=""
               hoverBorderColor=""
             />

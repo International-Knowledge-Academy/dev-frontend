@@ -17,12 +17,13 @@ interface AssignTrainerModalProps {
 const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainerModalProps) => {
   const { addToast } = useToast();
   const { users: trainers, loading: loadingTrainers } = useUsers({ role: "trainer" });
-  const { assign, loading, error, fieldErrors, reset } = useAssignTrainer();
+  const { assign, loading, error, reset } = useAssignTrainer();
 
-  const [search, setSearch]             = useState("");
-  const [selected, setSelected]         = useState<User | null>(null);
-  const [isLead, setIsLead]             = useState(false);
-  const [notes, setNotes]               = useState("");
+  const [search, setSearch]     = useState("");
+  const [selected, setSelected] = useState<User[]>([]);
+  const [isLead, setIsLead]     = useState(false);
+  const [notes, setNotes]       = useState("");
+  const [progress, setProgress] = useState<string | null>(null);
 
   const filtered = useMemo(() =>
     trainers.filter((t) =>
@@ -32,29 +33,55 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
     [trainers, search]
   );
 
+  const toggleTrainer = (trainer: User) => {
+    setSelected((prev) =>
+      prev.some((t) => t.uid === trainer.uid)
+        ? prev.filter((t) => t.uid !== trainer.uid)
+        : [...prev, trainer]
+    );
+  };
+
   const handleClose = () => {
     setSearch("");
-    setSelected(null);
+    setSelected([]);
     setIsLead(false);
     setNotes("");
+    setProgress(null);
     reset();
     onClose();
   };
 
   const handleSubmit = async () => {
-    if (!selected || !program) return;
-    if (!selected.profile?.uid) {
-      addToast("This trainer has no profile set up yet.", "error");
+    if (!selected.length || !program) return;
+
+    const missing = selected.filter((t) => !t.profile?.uid);
+    if (missing.length) {
+      addToast(`${missing.map((t) => t.name).join(", ")} ${missing.length === 1 ? "has" : "have"} no profile set up.`, "error");
       return;
     }
-    const result = await assign({
-      trainer_profile:    selected.profile.uid,
-      program:            program.uid,
-      is_lead_instructor: isLead,
-      notes:              notes.trim() || undefined,
-    });
-    if (result) {
-      addToast(`${selected.name} assigned to "${program.name}"`, "success");
+
+    let successCount = 0;
+    for (let i = 0; i < selected.length; i++) {
+      const trainer = selected[i];
+      setProgress(`Assigning ${i + 1} of ${selected.length}...`);
+      const result = await assign({
+        trainer_profile:    trainer.profile.uid,
+        program:            program.uid,
+        is_lead_instructor: isLead,
+        notes:              notes.trim() || undefined,
+      });
+      if (result) successCount++;
+    }
+
+    setProgress(null);
+
+    if (successCount > 0) {
+      addToast(
+        successCount === 1
+          ? `${selected[0].name} assigned to "${program.name}"`
+          : `${successCount} trainers assigned to "${program.name}"`,
+        "success"
+      );
       handleClose();
       onSuccess();
     }
@@ -75,13 +102,13 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
               <MdSchool size={18} />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-navy-800">Assign Trainer</h2>
-              <p className="text-xs text-gray-400 truncate max-w-[260px]" title={program.name}>
+              <h2 className="text-sm font-bold text-navy-800">Assign Trainers</h2>
+              <p className="text-xs text-slate-400 truncate max-w-[260px]" title={program.name}>
                 {program.name}
               </p>
             </div>
           </div>
-          <button onClick={handleClose} className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 transition">
+          <button onClick={handleClose} className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 transition">
             <MdClose size={18} />
           </button>
         </div>
@@ -91,37 +118,45 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
 
           {/* Trainer search */}
           <div>
-            <label className="block text-xs font-semibold text-navy-700 mb-2">
-              Select Trainer <span className="text-red-500">*</span>
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs font-semibold text-navy-700">
+                Select Trainers <span className="text-red-500">*</span>
+              </label>
+              {selected.length > 0 && (
+                <span className="text-xs font-semibold text-green-600 bg-green-50 border border-green-200 px-2 py-0.5 rounded-md">
+                  {selected.length} selected
+                </span>
+              )}
+            </div>
+
             <div className="relative mb-2">
-              <MdSearch size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <MdSearch size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by name or email..."
-                className="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-slate-200 bg-gray-50 outline-none focus:ring-1 focus:ring-navy-400 focus:border-navy-400"
+                className="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-slate-200 bg-slate-50 outline-none focus:ring-1 focus:ring-navy-400 focus:border-navy-400"
               />
             </div>
 
             <div className="rounded-xl border border-slate-100 overflow-y-auto max-h-52">
               {loadingTrainers ? (
-                <p className="text-xs text-gray-400 text-center py-6">Loading trainers...</p>
+                <p className="text-xs text-slate-400 text-center py-6">Loading trainers...</p>
               ) : filtered.length === 0 ? (
-                <p className="text-xs text-gray-400 text-center py-6">No trainers found.</p>
+                <p className="text-xs text-slate-400 text-center py-6">No trainers found.</p>
               ) : (
                 filtered.map((trainer) => {
-                  const isSelected = selected?.uid === trainer.uid;
+                  const isSelected = selected.some((t) => t.uid === trainer.uid);
                   const initials   = trainer.name
                     ?.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2) ?? "?";
                   return (
                     <button
                       key={trainer.uid}
                       type="button"
-                      onClick={() => setSelected(isSelected ? null : trainer)}
+                      onClick={() => toggleTrainer(trainer)}
                       className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition border-b border-slate-50 last:border-0 ${
-                        isSelected ? "bg-green-50" : "hover:bg-gray-50"
+                        isSelected ? "bg-green-50" : "hover:bg-slate-50"
                       }`}
                     >
                       {trainer.profile?.profile_picture ? (
@@ -137,34 +172,37 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
                       )}
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-navy-800 truncate">{trainer.name}</p>
-                        <p className="text-xs text-gray-400 truncate">{trainer.profile?.title || trainer.email}</p>
+                        <p className="text-xs text-slate-400 truncate">{trainer.profile?.title || trainer.email}</p>
                       </div>
-                      {isSelected && (
-                        <MdCheck size={16} className="text-green-600 flex-shrink-0" />
-                      )}
+                      <div className={`w-5 h-5 rounded-md border flex items-center justify-center flex-shrink-0 transition ${
+                        isSelected
+                          ? "bg-green-600 border-green-600 text-white"
+                          : "border-slate-300"
+                      }`}>
+                        {isSelected && <MdCheck size={13} />}
+                      </div>
                     </button>
                   );
                 })
               )}
             </div>
-            {fieldErrors?.trainer_profile && (
-              <p className="mt-1 text-xs text-red-600">{fieldErrors.trainer_profile}</p>
-            )}
           </div>
 
           {/* Lead instructor toggle */}
           <div className="flex items-center justify-between rounded-xl border border-slate-100 px-4 py-3">
             <div className="flex items-center gap-2">
-              <MdStar size={16} className={isLead ? "text-gold-500" : "text-gray-300"} />
+              <MdStar size={16} className={isLead ? "text-gold-500" : "text-slate-300"} />
               <div>
                 <p className="text-sm font-medium text-navy-800">Lead Instructor</p>
-                <p className="text-xs text-gray-400">Mark as the primary trainer for this program</p>
+                <p className="text-xs text-slate-400">
+                  {selected.length > 1 ? "Apply to all selected trainers" : "Mark as the primary trainer"}
+                </p>
               </div>
             </div>
             <button
               type="button"
               onClick={() => setIsLead((v) => !v)}
-              className={`relative w-10 h-5.5 rounded-full transition-colors flex-shrink-0 ${isLead ? "bg-navy-600" : "bg-gray-300"}`}
+              className={`relative w-10 rounded-full transition-colors flex-shrink-0 ${isLead ? "bg-navy-600" : "bg-slate-300"}`}
               style={{ height: "22px" }}
             >
               <span
@@ -176,14 +214,14 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
           {/* Notes */}
           <div>
             <label className="block text-xs font-semibold text-navy-700 mb-2">
-              Notes <span className="font-normal text-gray-400">(optional)</span>
+              Notes <span className="font-normal text-slate-400">(optional)</span>
             </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Any notes about this assignment..."
               rows={2}
-              className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 bg-gray-50 outline-none focus:ring-1 focus:ring-navy-400 focus:border-navy-400 resize-none"
+              className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 bg-slate-50 outline-none focus:ring-1 focus:ring-navy-400 focus:border-navy-400 resize-none"
             />
           </div>
 
@@ -200,17 +238,17 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
           <button
             type="button"
             onClick={handleClose}
-            className="flex-1 py-2.5 rounded-md lg:rounded-lg border border-slate-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
+            className="flex-1 py-2.5 rounded-md lg:rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition"
           >
             Cancel
           </button>
           <button
             type="button"
             onClick={handleSubmit}
-            disabled={loading || !selected}
+            disabled={loading || !selected.length}
             className="flex-1 py-2.5 rounded-md lg:rounded-lg bg-navy-800 text-sm font-medium text-white hover:bg-navy-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Assigning..." : "Assign Trainer"}
+            {progress ?? (selected.length > 1 ? `Assign ${selected.length} Trainers` : "Assign Trainer")}
           </button>
         </div>
       </div>

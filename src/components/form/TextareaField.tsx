@@ -23,7 +23,7 @@ const TextareaField = ({ label, field, required = true, placeholder = "", rows =
         rows={rows}
         onChange={(e) => updateFormData(field, e.target.value)}
         placeholder={placeholder}
-        className={`mt-2 flex w-full items-center justify-start bg-gray-50 rounded-md border px-3 py-2 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-navy-500 resize-none ${
+        className={`mt-2 flex w-full items-center justify-start bg-slate-50 rounded-md border px-3 py-2 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-navy-500 resize-none ${
           getNestedValue(errors, field) ? "border-red-500" : "border-default"
         }`}
       />

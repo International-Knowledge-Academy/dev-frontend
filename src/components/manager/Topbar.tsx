@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdMenu, MdLogout, MdKeyboardArrowDown, MdPerson, MdLock } from "react-icons/md";
@@ -22,7 +22,7 @@ const ManagerTopbar = ({ onOpenSidebar, pageTitle }: TopbarProps) => {
         <div className="flex items-center gap-4">
           <button
             onClick={onOpenSidebar}
-            className="xl:hidden text-gray-500 hover:text-navy-700 transition"
+            className="xl:hidden text-slate-500 hover:text-navy-700 transition"
           >
             <MdMenu size={24} />
           </button>
@@ -31,7 +31,7 @@ const ManagerTopbar = ({ onOpenSidebar, pageTitle }: TopbarProps) => {
 
         <Dropdown
           button={
-            <button className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-navy-50 transition-all group">
+            <button className="flex items-center gap-3 px-3 py-2 rounded-md lg:rounded-lg hover:bg-navy-50 transition-all group">
               <div className="relative">
                 <div className="w-9 h-9 rounded-full bg-navy-500 flex items-center justify-center text-white font-bold text-sm">
                   {user?.name?.[0]?.toUpperCase() ?? "?"}
@@ -42,7 +42,7 @@ const ManagerTopbar = ({ onOpenSidebar, pageTitle }: TopbarProps) => {
                 <p className="text-sm font-semibold text-navy-800 leading-tight">{user?.name ?? "..."}</p>
                 <p className="text-[10px] font-bold tracking-widest uppercase text-gold-500 leading-tight">{user?.role ?? ""}</p>
               </div>
-              <MdKeyboardArrowDown size={16} className="hidden md:block text-gray-400 group-hover:text-navy-600 transition" />
+              <MdKeyboardArrowDown size={16} className="hidden md:block text-slate-400 group-hover:text-navy-600 transition" />
             </button>
           }
           children={
@@ -56,7 +56,7 @@ const ManagerTopbar = ({ onOpenSidebar, pageTitle }: TopbarProps) => {
                   <p className="text-[10px] font-bold tracking-widest uppercase text-gold-500">{user?.role ?? ""}</p>
                 </div>
               </div>
-              <div className="h-px bg-gray-100" />
+              <div className="h-px bg-slate-100" />
               <div className="p-2 flex flex-col gap-0.5">
                 <button
                   onClick={() => navigate("/account-manager/profile")}
@@ -72,7 +72,7 @@ const ManagerTopbar = ({ onOpenSidebar, pageTitle }: TopbarProps) => {
                   <MdLock size={16} />
                   Change Password
                 </button>
-                <div className="h-px bg-gray-100 my-1" />
+                <div className="h-px bg-slate-100 my-1" />
                 <button
                   onClick={logout}
                   className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition text-left"

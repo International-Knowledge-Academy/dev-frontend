@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { MdArrowForward } from "react-icons/md";
@@ -35,7 +35,7 @@ const TypeCard = ({ icon: Icon, title, description, href, delay = 0 }: Props) =>
         </h3>
 
         {/* Description */}
-        <p className="text-gray-500 text-sm leading-relaxed flex-1 mb-6">
+        <p className="text-slate-500 text-sm leading-relaxed flex-1 mb-6">
           {description}
         </p>
 

@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { MdLocationOn, MdAccessTime, MdWorkspacePremium, MdArrowForward, MdSchool, MdHandshake } from "react-icons/md";
@@ -20,7 +20,7 @@ const typeConfig: Record<string, { label: string; cls: string; icon: React.React
 const statusDot: Record<string, string> = {
   upcoming:  "bg-blue-400",
   ongoing:   "bg-green-400",
-  completed: "bg-gray-400",
+  completed: "bg-slate-400",
   cancelled: "bg-red-400",
 };
 
@@ -51,8 +51,8 @@ const ProgramCard = ({ program }: Props) => {
             {type.label}
           </span>
           {program.status && (
-            <span className="flex items-center gap-1.5 text-xs text-gray-400">
-              <span className={`w-1.5 h-1.5 rounded-full ${statusDot[program.status] ?? "bg-gray-400"}`} />
+            <span className="flex items-center gap-1.5 text-xs text-slate-400">
+              <span className={`w-1.5 h-1.5 rounded-full ${statusDot[program.status] ?? "bg-slate-400"}`} />
               {program.status_display ?? program.status}
             </span>
           )}
@@ -75,7 +75,7 @@ const ProgramCard = ({ program }: Props) => {
 
         {/* Description */}
         {program.description && (
-          <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-4 flex-1">
+          <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4 flex-1">
             {program.description}
           </p>
         )}
@@ -83,13 +83,13 @@ const ProgramCard = ({ program }: Props) => {
         {/* Meta row */}
         <div className="flex items-center gap-4 mt-auto pt-4 border-t border-slate-100">
           {program.duration && (
-            <div className="flex items-center gap-1.5 text-xs text-gray-400">
+            <div className="flex items-center gap-1.5 text-xs text-slate-400">
               <MdAccessTime size={13} className="flex-shrink-0" />
               <span>{program.duration}</span>
             </div>
           )}
           {program.location && (
-            <div className="flex items-center gap-1 text-xs text-gray-400 truncate">
+            <div className="flex items-center gap-1 text-xs text-slate-400 truncate">
               <span className="text-sm">{flag}</span>
               <MdLocationOn size={12} className="flex-shrink-0" />
               <span className="truncate">{program.location.city}</span>

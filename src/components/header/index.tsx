@@ -51,16 +51,16 @@ const Navbar = (props) => {
       <div className="relative mt-[3px] flex h-[61px] w-[355px] flex-grow items-center justify-around gap-2 rounded-full bg-white px-2 py-2 shadow-xl shadow-shadow-500 md:w-[365px] md:flex-grow-0 md:gap-1 xl:w-[365px] xl:gap-2">
         <div className="flex h-full items-center rounded-full bg-lightPrimary text-navy-700 xl:w-[225px]">
           <p className="pl-3 pr-2 text-xl">
-            <FiSearch className="h-4 w-4 text-gray-400" />
+            <FiSearch className="h-4 w-4 text-slate-400" />
           </p>
           <input
             type="text"
             placeholder="Search..."
-            class="block h-full w-full rounded-full bg-lightPrimary text-sm font-medium text-navy-700 outline-none placeholder:!text-gray-400 sm:w-fit"
+            class="block h-full w-full rounded-full bg-lightPrimary text-sm font-medium text-navy-700 outline-none placeholder:!text-slate-400 sm:w-fit"
           />
         </div>
         <span
-          className="flex cursor-pointer text-xl text-gray-600 xl:hidden"
+          className="flex cursor-pointer text-xl text-slate-600 xl:hidden"
           onClick={onOpenSidenav}
         >
           <FiAlignJustify className="h-5 w-5" />
@@ -69,7 +69,7 @@ const Navbar = (props) => {
         <Dropdown
           button={
             <p className="cursor-pointer">
-              <IoMdNotificationsOutline className="h-4 w-4 text-gray-600" />
+              <IoMdNotificationsOutline className="h-4 w-4 text-slate-600" />
             </p>
           }
           animation="origin-[65%_0%] md:origin-top-right transition-all duration-300 ease-in-out"
@@ -89,10 +89,10 @@ const Navbar = (props) => {
                   <BsArrowBarUp />
                 </div>
                 <div className="ml-2 flex h-full w-full flex-col justify-center rounded-lg px-1 text-sm">
-                  <p className="mb-1 text-left text-base font-bold text-gray-900">
+                  <p className="mb-1 text-left text-base font-bold text-slate-900">
                     New Update: Horizon UI Dashboard PRO
                   </p>
-                  <p className="font-base text-left text-xs text-gray-900">
+                  <p className="font-base text-left text-xs text-slate-900">
                     A new update for your downloaded item is available!
                   </p>
                 </div>
@@ -103,10 +103,10 @@ const Navbar = (props) => {
                   <BsArrowBarUp />
                 </div>
                 <div className="ml-2 flex h-full w-full flex-col justify-center rounded-lg px-1 text-sm">
-                  <p className="mb-1 text-left text-base font-bold text-gray-900">
+                  <p className="mb-1 text-left text-base font-bold text-slate-900">
                     New Update: Horizon UI Dashboard PRO
                   </p>
-                  <p className="font-base text-left text-xs text-gray-900">
+                  <p className="font-base text-left text-xs text-slate-900">
                     A new update for your downloaded item is available!
                   </p>
                 </div>
@@ -119,7 +119,7 @@ const Navbar = (props) => {
         <Dropdown
           button={
             <p className="cursor-pointer">
-              <IoMdInformationCircleOutline className="h-4 w-4 text-gray-600" />
+              <IoMdInformationCircleOutline className="h-4 w-4 text-slate-600" />
             </p>
           }
           children={
@@ -135,21 +135,21 @@ const Navbar = (props) => {
               <a
                 target="blank"
                 href="https://horizon-ui.com/pro?ref=live-free-tailwind-react"
-                className="px-full linear flex cursor-pointer items-center justify-center rounded-xl bg-brand-500 py-[11px] font-bold text-white transition duration-200 hover:bg-brand-600 hover:text-white active:bg-brand-700"
+                className="px-full linear flex cursor-pointer items-center justify-center rounded-md lg:rounded-lg bg-brand-500 py-[11px] font-bold text-white transition duration-200 hover:bg-brand-600 hover:text-white active:bg-brand-700"
               >
                 Buy Horizon UI PRO
               </a>
               <a
                 target="blank"
                 href="https://horizon-ui.com/docs-tailwind/docs/react/installation?ref=live-free-tailwind-react"
-                className="px-full linear flex cursor-pointer items-center justify-center rounded-xl border py-[11px] font-bold text-navy-700 transition duration-200 hover:bg-gray-200 hover:text-navy-700"
+                className="px-full linear flex cursor-pointer items-center justify-center rounded-md lg:rounded-lg border py-[11px] font-bold text-navy-700 transition duration-200 hover:bg-slate-200 hover:text-navy-700"
               >
                 See Documentation
               </a>
               <a
                 target="blank"
                 href="https://horizon-ui.com/?ref=live-free-tailwind-react"
-                className="hover:bg-black px-full linear flex cursor-pointer items-center justify-center rounded-xl py-[11px] font-bold text-navy-700 transition duration-200 hover:text-navy-700"
+                className="hover:bg-black px-full linear flex cursor-pointer items-center justify-center rounded-md lg:rounded-lg py-[11px] font-bold text-navy-700 transition duration-200 hover:text-navy-700"
               >
                 Try Horizon Free
               </a>
@@ -159,7 +159,7 @@ const Navbar = (props) => {
           animation="origin-[75%_0%] md:origin-top-right transition-all duration-300 ease-in-out"
         />
         <div
-          className="cursor-pointer text-gray-600"
+          className="cursor-pointer text-slate-600"
           onClick={() => {
             if (darkmode) {
               document.body.classList.remove("dark");
@@ -171,9 +171,9 @@ const Navbar = (props) => {
           }}
         >
           {darkmode ? (
-            <RiSunFill className="h-4 w-4 text-gray-600" />
+            <RiSunFill className="h-4 w-4 text-slate-600" />
           ) : (
-            <RiMoonFill className="h-4 w-4 text-gray-600" />
+            <RiMoonFill className="h-4 w-4 text-slate-600" />
           )}
         </div>
         {/* Profile & Dropdown */}
@@ -194,18 +194,18 @@ const Navbar = (props) => {
                   </p>{" "}
                 </div>
               </div>
-              <div className="h-px w-full bg-gray-200 " />
+              <div className="h-px w-full bg-slate-200 " />
 
               <div className="flex flex-col p-4">
                 <a
                   href=" "
-                  className="text-sm text-gray-800 hover:"
+                  className="text-sm text-slate-800 hover:"
                 >
                   Profile Settings
                 </a>
                 <a
                   href=" "
-                  className="mt-3 text-sm text-gray-800 hover:"
+                  className="mt-3 text-sm text-slate-800 hover:"
                 >
                   Newsletter Settings
                 </a>
