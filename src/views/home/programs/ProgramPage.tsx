@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
+import Loading from "components/loading/Loading";
 import useGetProgram from "hooks/programs/useGetProgram";
 import usePrograms from "hooks/programs/usePrograms";
 import ProgramCard from "components/programs/ProgramCard";
@@ -54,57 +55,6 @@ const handleShare = async (title: string) => {
     await navigator.clipboard.writeText(window.location.href).catch(() => {});
   }
 };
-
-/* ─── Skeleton ───────────────────────────────────────────────────────────── */
-
-const SkeletonPage = () => (
-  <div className="min-h-screen bg-slate-50 flex flex-col">
-    <Navbar />
-    <div className="bg-navy-800 px-6 pt-8 pb-16">
-      <div className="max-w-6xl mx-auto space-y-4 animate-pulse">
-        <div className="h-4 w-24 rounded bg-navy-600" />
-        <div className="flex gap-2 pt-1">
-          <div className="h-6 w-28 rounded-full bg-navy-600" />
-          <div className="h-6 w-20 rounded-full bg-navy-600" />
-        </div>
-        <div className="h-10 w-2/3 rounded-xl bg-navy-600" />
-        <div className="h-4 w-1/2 rounded bg-navy-600" />
-        <div className="flex flex-wrap gap-3 pt-2">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-16 w-36 rounded-xl bg-navy-700" />
-          ))}
-        </div>
-        <div className="flex gap-3 pt-1">
-          <div className="h-11 w-36 rounded-md bg-gold-600/40" />
-          <div className="h-11 w-32 rounded-md bg-navy-700" />
-        </div>
-      </div>
-    </div>
-    <div className="max-w-6xl mx-auto w-full px-6 py-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div className="lg:col-span-2 space-y-6">
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="bg-white rounded-2xl border border-slate-100 p-6 space-y-3 animate-pulse">
-            <div className="h-4 w-36 rounded bg-slate-100" />
-            <div className="h-3 w-full rounded bg-slate-100" />
-            <div className="h-3 w-5/6 rounded bg-slate-100" />
-            <div className="h-3 w-4/6 rounded bg-slate-100" />
-          </div>
-        ))}
-      </div>
-      <div className="space-y-5">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="bg-white rounded-2xl border border-slate-100 p-6 space-y-3 animate-pulse">
-            <div className="h-4 w-24 rounded bg-slate-100" />
-            <div className="h-10 w-full rounded-lg bg-slate-100" />
-            <div className="h-3 w-full rounded bg-slate-100" />
-            <div className="h-3 w-3/4 rounded bg-slate-100" />
-          </div>
-        ))}
-      </div>
-    </div>
-    <Footer />
-  </div>
-);
 
 /* ─── Section card ───────────────────────────────────────────────────────── */
 
@@ -263,7 +213,15 @@ const ProgramPage = () => {
   const navigate = useNavigate();
   const { program, loading, error } = useGetProgram(uid);
 
-  if (loading) return <SkeletonPage />;
+  if (loading) return (
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+      <Navbar />
+      <div className="flex-1 flex items-center justify-center">
+        <Loading text="Loading program..." />
+      </div>
+      <Footer />
+    </div>
+  );
 
   if (error || !program) {
     return (

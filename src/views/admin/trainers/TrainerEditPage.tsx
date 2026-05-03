@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { MdPhotoCamera } from "react-icons/md";
+import { Camera } from "lucide-react";
 import useGetUser from "hooks/users/useGetUser";
 import useUpdateUser from "hooks/users/useUpdateUser";
 import useUpdateProfile from "hooks/users/useUpdateProfile";
@@ -13,9 +13,18 @@ import InputField from "components/form/InputField";
 import ToggleInput from "components/form/toggle/ToggleInput";
 import Button from "components/ui/buttons/Button";
 import FileUploadField from "components/form/filesUpload/FileUploadField";
+import type { PresignedUploadResult } from "hooks/storage/usePresignedUpload";
 
 // ── Avatar upload widget ───────────────────────────────────────────────────
-const AvatarUpload = ({ value, name, onChange }) => {
+const AvatarUpload = ({
+  displayUrl,
+  name,
+  onChange,
+}: {
+  displayUrl: string;
+  name: string;
+  onChange: (result: PresignedUploadResult) => void;
+}) => {
   const { upload, uploading, progress, error, reset } = usePresignedUpload();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -27,8 +36,8 @@ const AvatarUpload = ({ value, name, onChange }) => {
     const file = e.target.files?.[0];
     if (!file) return;
     e.target.value = "";
-    const result = await upload(file, { folder: "users/profiles", file_type: "image" });
-    if (result) { onChange(result.public_url); reset(); }
+    const result = await upload(file, { folder: "images/profiles", file_type: "image" });
+    if (result) { onChange(result); reset(); }
   };
 
   return (
@@ -40,24 +49,24 @@ const AvatarUpload = ({ value, name, onChange }) => {
           className="relative w-24 h-24 rounded-full overflow-hidden ring-4 ring-slate-100 focus:outline-none focus:ring-navy-200 transition"
           disabled={uploading}
         >
-          {value ? (
-            <img src={value} alt="Profile" className="w-full h-full object-cover" />
+          {displayUrl ? (
+            <img src={displayUrl} alt="Profile" className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full bg-green-600 flex items-center justify-center text-white text-2xl font-bold select-none">
+            <div className="w-full h-full bg-navy-600 flex items-center justify-center text-white text-2xl font-bold select-none">
               {initials}
             </div>
           )}
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition rounded-full">
-            <MdPhotoCamera size={22} className="text-white" />
+            <Camera size={22} className="text-white" />
           </div>
         </button>
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
-          className="absolute bottom-0.5 right-0.5 w-7 h-7 bg-green-600 hover:bg-green-700 rounded-full flex items-center justify-center text-white border-2 border-white shadow-sm transition"
+          className="absolute bottom-0.5 right-0.5 w-7 h-7 bg-navy-600 hover:bg-navy-700 rounded-full flex items-center justify-center text-white border-2 border-white shadow-sm transition"
         >
-          <MdPhotoCamera size={12} />
+          <Camera size={12} />
         </button>
       </div>
 
@@ -65,7 +74,7 @@ const AvatarUpload = ({ value, name, onChange }) => {
         <div className="w-28 space-y-1">
           <div className="h-1 rounded-full bg-slate-100 overflow-hidden">
             <div
-              className="h-full rounded-full bg-green-500 transition-all duration-300"
+              className="h-full rounded-full bg-gold-500 transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -79,7 +88,7 @@ const AvatarUpload = ({ value, name, onChange }) => {
           onClick={() => inputRef.current?.click()}
           className="text-xs text-navy-600 hover:text-navy-800 transition font-medium"
         >
-          {value ? "Change photo" : "Upload photo"}
+          {displayUrl ? "Change photo" : "Upload photo"}
         </button>
       )}
 
@@ -108,17 +117,17 @@ const TrainerEditPage = () => {
   const { deleteProfilePicture, loading: deletingPic }            = useDeleteProfilePicture();
   const { upload: uploadCvFile, uploading: uploadingCvFile }      = usePresignedUpload();
 
-  const [cvFile,  setCvFile]            = useState<File | null>(null);
-  const [profilePicture, setProfilePicture] = useState("");
+  const [cvFile,            setCvFile]            = useState<File | null>(null);
+  const [profilePictureUrl, setProfilePictureUrl] = useState("");
 
   const cvBusy = uploadingCvFile || deletingCV;
 
   const handleCvFileChange = async (file: File) => {
     setCvFile(file);
-    const uploaded = await uploadCvFile(file, { folder: "users/cvs", file_type: "file" });
+    const uploaded = await uploadCvFile(file, { folder: "documents/cvs", file_type: "pdf" });
     setCvFile(null);
     if (uploaded) {
-      const result = await updateProfile(uid, { cv: uploaded.public_url });
+      const result = await updateProfile(uid, { cv: uploaded.file_key });
       if (result) { addToast("CV updated successfully", "success"); refetch(); }
     }
   };
@@ -129,16 +138,16 @@ const TrainerEditPage = () => {
     if (ok) { addToast("CV removed", "success"); refetch(); }
   };
 
-  const handlePicChange = async (url: string) => {
-    setProfilePicture(url);
-    const result = await updateProfile(uid, { profile_picture: url });
+  const handlePicChange = async ({ file_key, public_url }: PresignedUploadResult) => {
+    setProfilePictureUrl(public_url);
+    const result = await updateProfile(uid, { profile_picture: file_key });
     if (result) { addToast("Profile picture updated", "success"); refetch(); }
   };
 
   const handlePicDelete = async () => {
     if (!user) return;
     const ok = await deleteProfilePicture(user.uid);
-    if (ok) { setProfilePicture(""); addToast("Profile picture removed", "success"); refetch(); }
+    if (ok) { setProfilePictureUrl(""); addToast("Profile picture removed", "success"); refetch(); }
   };
 
   const [form, setForm] = useState({
@@ -156,7 +165,7 @@ const TrainerEditPage = () => {
         password:  "",
         is_active: user.is_active ?? true,
       });
-      setProfilePicture(user.profile?.profile_picture ?? "");
+      setProfilePictureUrl(user.profile?.profile_picture ?? "");
     }
   }, [user]);
 
@@ -199,12 +208,12 @@ const TrainerEditPage = () => {
 
         {/* Avatar */}
         <AvatarUpload
-          value={profilePicture}
+          displayUrl={profilePictureUrl}
           name={form.name}
           onChange={handlePicChange}
         />
 
-        {profilePicture && (
+        {profilePictureUrl && (
           <div className="flex justify-center pb-2">
             <button
               type="button"
