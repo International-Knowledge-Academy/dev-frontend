@@ -1,10 +1,11 @@
 import { useState } from "react";
 import axiosInstance from "api/axiosInstance";
 
+export type UploadFileType = "thumbnail" | "image" | "video" | "document" | "pdf" | "file";
+
 interface PresignedUploadOptions {
   folder: string;
-  file_type?: "file" | "image";
-  max_file_size?: number;
+  file_type?: UploadFileType;
 }
 
 export interface PresignedUploadResult {
@@ -38,11 +39,10 @@ const usePresignedUpload = (): UsePresignedUploadReturn => {
       const { data } = await axiosInstance.post("/storage/presigned-upload-urls", {
         files: [
           {
-            file_name:     file.name,
-            content_type:  file.type,
-            file_type:     options.file_type ?? "file",
-            folder:        options.folder,
-            max_file_size: options.max_file_size ?? file.size,
+            file_name:    file.name,
+            content_type: file.type,
+            file_type:    options.file_type ?? "file",
+            folder:       options.folder,
           },
         ],
       });

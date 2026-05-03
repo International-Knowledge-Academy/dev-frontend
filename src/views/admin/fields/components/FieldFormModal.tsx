@@ -1,6 +1,6 @@
 ﻿// @ts-nocheck
 import { useState, useEffect } from "react";
-import { MdClose } from "react-icons/md";
+import { X } from "lucide-react";
 import useCreateField from "hooks/fields/useCreateField";
 import useUpdateField from "hooks/fields/useUpdateField";
 import useCategories from "hooks/categories/useCategories";
@@ -33,28 +33,36 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
     category_uid: "",
     hex_color:    "#000000",
     text_color:   "#ffffff",
-    thumbnail:    "",
-    video:        "",
     is_active:    true,
   };
 
   const [form, setForm] = useState(defaultForm);
 
+  // Media: file_key for submission, url for display
+  const [thumbnailKey, setThumbnailKey] = useState("");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [videoKey,     setVideoKey]     = useState("");
+  const [videoUrl,     setVideoUrl]     = useState("");
+
   useEffect(() => {
     if (!open) return;
     if (field) {
       setForm({
-        name:         field.name ?? "",
-        description:  field.description ?? "",
+        name:         field.name         ?? "",
+        description:  field.description  ?? "",
         category_uid: field.category?.uid ?? "",
-        hex_color:    field.hex_color ?? "#000000",
-        text_color:   field.text_color ?? "#ffffff",
-        thumbnail:    field.thumbnail ?? "",
-        video:        field.video ?? "",
-        is_active:    field.is_active ?? true,
+        hex_color:    field.hex_color    ?? "#000000",
+        text_color:   field.text_color   ?? "#ffffff",
+        is_active:    field.is_active    ?? true,
       });
+      setThumbnailKey(field.thumbnail?.file_key   ?? "");
+      setThumbnailUrl(field.thumbnail?.public_url ?? "");
+      setVideoKey(field.video?.file_key   ?? "");
+      setVideoUrl(field.video?.public_url ?? "");
     } else {
       setForm(defaultForm);
+      setThumbnailKey(""); setThumbnailUrl("");
+      setVideoKey("");     setVideoUrl("");
     }
     reset?.();
   }, [open, field]);
@@ -78,8 +86,8 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
     if (form.category_uid) payload.category_uid = form.category_uid;
     if (form.hex_color)    payload.hex_color    = form.hex_color;
     if (form.text_color)   payload.text_color   = form.text_color;
-    if (form.thumbnail)    payload.thumbnail    = form.thumbnail;
-    if (form.video)        payload.video        = form.video;
+    if (thumbnailKey)      payload.thumbnail    = thumbnailKey;
+    if (videoKey)          payload.video        = videoKey;
 
     let result;
     if (isEdit) {
@@ -103,7 +111,7 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
             {isEdit ? "Edit Field" : "Add Field"}
           </h2>
           <button onClick={onClose} className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition">
-            <MdClose size={18} />
+            <X size={18} />
           </button>
         </div>
 
@@ -204,18 +212,24 @@ const FieldFormModal = ({ open, onClose, onSuccess, field }: FieldFormModalProps
           <MediaUploadField
             label="Thumbnail"
             type="image"
-            folder="fields/thumbnails"
-            value={form.thumbnail}
-            onChange={(url) => set("thumbnail", url)}
+            folder="thumbnails"
+            displayUrl={thumbnailUrl}
+            onChange={(result) => {
+              if (result) { setThumbnailKey(result.file_key); setThumbnailUrl(result.public_url); }
+              else        { setThumbnailKey(""); setThumbnailUrl(""); }
+            }}
             error={fieldErrors.thumbnail}
           />
 
           <MediaUploadField
             label="Video"
             type="video"
-            folder="fields/videos"
-            value={form.video}
-            onChange={(url) => set("video", url)}
+            folder="videos"
+            displayUrl={videoUrl}
+            onChange={(result) => {
+              if (result) { setVideoKey(result.file_key); setVideoUrl(result.public_url); }
+              else        { setVideoKey(""); setVideoUrl(""); }
+            }}
             error={fieldErrors.video}
           />
 

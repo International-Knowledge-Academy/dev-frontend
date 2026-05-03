@@ -65,16 +65,16 @@ const usePrograms = (initialParams: ProgramsParams = {}): UseProgramsReturn => {
       ...prev,
       ...updates,
       page:
-        updates.search       !== undefined ||
-        updates.field        !== undefined ||
-        updates.location     !== undefined ||
-        updates.program_type !== undefined ||
-        updates.level        !== undefined ||
-        updates.mode         !== undefined ||
-        updates.status       !== undefined ||
-        updates.start_date_from !== undefined ||
-        updates.start_date_to   !== undefined ||
-        updates.is_active       !== undefined
+        "search"          in updates ||
+        "field"           in updates ||
+        "location"        in updates ||
+        "program_type"    in updates ||
+        "level"           in updates ||
+        "mode"            in updates ||
+        "status"          in updates ||
+        "start_date_from" in updates ||
+        "start_date_to"   in updates ||
+        "is_active"       in updates
           ? 1
           : (updates.page ?? prev.page),
     }));

@@ -182,7 +182,7 @@ const Navbar = () => {
       children: categories.map((c) => ({
         label: c.name,
         description: c.summary || "Explore programs in this category",
-        to: `/categories`,
+        to: `/category/${c.uid}`,
       })),
     },
     { label: "Programs", to: "/programs" },

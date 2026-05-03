@@ -29,19 +29,30 @@ const useFields = (initialParams: FieldsParams = {}): UseFieldsReturn => {
     setError(null);
 
     try {
-      const { data } = await axiosInstance.get<PaginatedFields>("/fields", {
+      // Use nested endpoint when filtering by category (flat endpoint doesn't support it)
+      const endpoint = params.category
+        ? `/categories/${params.category}/fields`
+        : "/fields";
+
+      const { data } = await axiosInstance.get<PaginatedFields>(endpoint, {
         params: {
-          ...(params.page      && { page:      params.page }),
-          ...(params.search    && { search:    params.search }),
-          ...(params.ordering  && { ordering:  params.ordering }),
+          ...(params.page      && { page:     params.page }),
+          ...(params.search    && { search:   params.search }),
+          ...(params.ordering  && { ordering: params.ordering }),
           ...(params.is_active !== undefined && { is_active: params.is_active }),
         },
       });
 
-      setFields(Array.isArray(data.results) ? data.results : []);
-      setCount(data.count ?? 0);
-      setNext(data.next ?? null);
-      setPrevious(data.previous ?? null);
+      const raw = data as unknown;
+      const results = Array.isArray(raw)
+        ? (raw as Field[])
+        : Array.isArray((raw as PaginatedFields).results)
+          ? (raw as PaginatedFields).results
+          : [];
+      setFields(results);
+      setCount(Array.isArray(raw) ? results.length : ((raw as PaginatedFields).count ?? results.length));
+      setNext(Array.isArray(raw) ? null : ((raw as PaginatedFields).next ?? null));
+      setPrevious(Array.isArray(raw) ? null : ((raw as PaginatedFields).previous ?? null));
     } catch (err: unknown) {
       const message =
         (err as { response?: { data?: { detail?: string; message?: string } } })
@@ -63,11 +74,12 @@ const useFields = (initialParams: FieldsParams = {}): UseFieldsReturn => {
     setParamsState((prev) => ({
       ...prev,
       ...updates,
-      // Reset to page 1 when filters change
+      // Reset to page 1 when any filter changes (including clearing to undefined)
       page:
-        updates.search    !== undefined ||
-        updates.ordering  !== undefined ||
-        updates.is_active !== undefined
+        "search"    in updates ||
+        "ordering"  in updates ||
+        "is_active" in updates ||
+        "category"  in updates
           ? 1
           : (updates.page ?? prev.page),
     }));

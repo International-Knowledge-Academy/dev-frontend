@@ -15,6 +15,7 @@ import ProgramsPublicPage from "views/home/programs";
 import ProgramPage from "views/home/programs/ProgramPage";
 import CategoriesHubPage from "views/home/categories";
 import CategoryTypePage from "views/home/categories/CategoryTypePage";
+import CategoryDetailPage from "views/home/categories/CategoryDetailPage";
 
 import ProtectedRoute from "components/auth/ProtectedRoute";
 
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/programs/:uid" element={<ProgramPage />} />
         <Route path="/categories" element={<CategoriesHubPage />} />
         <Route path="/categories/:typeSlug" element={<CategoryTypePage />} />
+        <Route path="/category/:uid" element={<CategoryDetailPage />} />
         <Route path="/contact" element={<ContactPage />} />
       </Route>
 

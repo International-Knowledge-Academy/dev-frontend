@@ -27,10 +27,14 @@ const FieldCreatePage = () => {
     category_uid: "",
     hex_color:    "#1e3a5f",
     text_color:   "#ffffff",
-    thumbnail:    "",
-    video:        "",
     is_active:    true,
   });
+
+  // Media: file_key for submission, url for display
+  const [thumbnailKey, setThumbnailKey] = useState("");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [videoKey,     setVideoKey]     = useState("");
+  const [videoUrl,     setVideoUrl]     = useState("");
 
   const set = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
@@ -42,8 +46,8 @@ const FieldCreatePage = () => {
     if (form.category_uid) payload.category_uid = form.category_uid;
     if (form.hex_color)    payload.hex_color    = form.hex_color;
     if (form.text_color)   payload.text_color   = form.text_color;
-    if (form.thumbnail)    payload.thumbnail    = form.thumbnail;
-    if (form.video)        payload.video        = form.video;
+    if (thumbnailKey)      payload.thumbnail    = thumbnailKey;
+    if (videoKey)          payload.video        = videoKey;
 
     const created = await createField(payload);
     if (created) {
@@ -161,17 +165,23 @@ const FieldCreatePage = () => {
             <MediaUploadField
               label="Thumbnail"
               type="image"
-              folder="fields/thumbnails"
-              value={form.thumbnail}
-              onChange={(url) => set("thumbnail", url)}
+              folder="thumbnails"
+              displayUrl={thumbnailUrl}
+              onChange={(result) => {
+                if (result) { setThumbnailKey(result.file_key); setThumbnailUrl(result.public_url); }
+                else        { setThumbnailKey(""); setThumbnailUrl(""); }
+              }}
               error={fieldErrors.thumbnail}
             />
             <MediaUploadField
               label="Video"
               type="video"
-              folder="fields/videos"
-              value={form.video}
-              onChange={(url) => set("video", url)}
+              folder="videos"
+              displayUrl={videoUrl}
+              onChange={(result) => {
+                if (result) { setVideoKey(result.file_key); setVideoUrl(result.public_url); }
+                else        { setVideoKey(""); setVideoUrl(""); }
+              }}
               error={fieldErrors.video}
             />
           </div>
