@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { motion } from "framer-motion";
 
 import Navbar from "components/home/Navbar";

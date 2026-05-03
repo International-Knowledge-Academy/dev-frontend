@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { motion } from "framer-motion";
 import { MdLocationOn, MdAccessTime, MdSchool, MdArrowForward } from "react-icons/md";
 import type { Course } from "types/course";

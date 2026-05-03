@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { useState } from "react";
 import { MdClose, MdLock, MdVisibility, MdVisibilityOff, MdCheckCircle } from "react-icons/md";
 import useChangePassword from "hooks/auth/useChangePassword";

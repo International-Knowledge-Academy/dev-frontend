@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import React from "react";
 import { MdClose } from "react-icons/md";
 import Button from "components/ui/buttons/Button";

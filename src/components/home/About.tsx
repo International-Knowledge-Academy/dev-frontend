@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { motion } from "framer-motion";
 import { MdCheckCircle } from "react-icons/md";
 

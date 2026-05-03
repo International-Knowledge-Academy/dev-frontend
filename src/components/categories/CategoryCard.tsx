@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { MdArrowForward, MdMenuBook } from "react-icons/md";

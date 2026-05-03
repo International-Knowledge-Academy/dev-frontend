@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { useRef } from "react";
 import { motion } from "framer-motion";
 import type { Category } from "types/category";

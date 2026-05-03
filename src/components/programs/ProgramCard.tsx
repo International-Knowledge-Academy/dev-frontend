@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { MdLocationOn, MdAccessTime, MdWorkspacePremium, MdArrowForward, MdSchool, MdHandshake } from "react-icons/md";

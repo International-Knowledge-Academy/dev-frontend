@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import useAuth from "hooks/auth/useAuth";
 
 const ManagerProfile = () => {

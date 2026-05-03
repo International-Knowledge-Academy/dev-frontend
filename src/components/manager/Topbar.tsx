@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdMenu, MdLogout, MdKeyboardArrowDown, MdPerson, MdLock } from "react-icons/md";

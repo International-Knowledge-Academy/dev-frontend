@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { motion } from "framer-motion";
 import { MdCategory } from "react-icons/md";
 import useCategories from "hooks/categories/useCategories";

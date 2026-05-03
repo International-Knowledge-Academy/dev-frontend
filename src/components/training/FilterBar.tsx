@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MdSearch, MdLocationOn, MdCategory, MdTune, MdFilterList } from "react-icons/md";

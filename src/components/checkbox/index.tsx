@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 const Checkbox = (props) => {
   const { extra, color, ...rest } = props;
   return (

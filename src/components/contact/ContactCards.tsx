@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { motion } from "framer-motion";
 import { MdEmail, MdLanguage, MdLocationOn } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";

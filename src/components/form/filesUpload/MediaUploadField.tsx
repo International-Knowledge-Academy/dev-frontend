@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { useRef } from "react";
 import { MdUpload, MdClose, MdVideoFile, MdImage } from "react-icons/md";
 import usePresignedUpload from "hooks/storage/usePresignedUpload";

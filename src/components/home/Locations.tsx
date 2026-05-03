@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { motion } from "framer-motion";
 import { MdLocationOn } from "react-icons/md";
 import useLocations from "hooks/locations/useLocations";

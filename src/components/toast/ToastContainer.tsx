@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { useEffect, useState } from "react";
 import { MdCheckCircle, MdError, MdInfo, MdClose } from "react-icons/md";
 import { useToast } from "context/ToastContext";
