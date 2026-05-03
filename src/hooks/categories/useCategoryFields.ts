@@ -80,7 +80,8 @@ const useCategoryFields = (
       ...prev,
       ...updates,
       page:
-        updates.search !== undefined || updates.ordering !== undefined
+        "search"   in updates ||
+        "ordering" in updates
           ? 1
           : (updates.page ?? prev.page),
     }));

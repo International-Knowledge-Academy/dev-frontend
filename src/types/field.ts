@@ -26,8 +26,15 @@ export interface Field {
   trainers: FieldTrainer[];
 }
 
-/** Extract the usable URL from a media field (API returns an object, not a plain string) */
+/** Extract the display URL from a media field */
 export const getMediaUrl = (media: FieldMedia | string | null | undefined): string => {
+  if (!media) return "";
+  if (typeof media === "string") return media;
+  return media.public_url;
+};
+
+/** Extract the file_key from a media field (for API submission) */
+export const getMediaKey = (media: FieldMedia | string | null | undefined): string => {
   if (!media) return "";
   if (typeof media === "string") return media;
   return media.file_key;
@@ -45,6 +52,7 @@ export interface FieldsParams {
   search?: string;
   ordering?: string;
   is_active?: boolean;
+  category?: string;
 }
 
 export interface CreateFieldPayload {

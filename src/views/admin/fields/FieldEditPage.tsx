@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import useGetField from "hooks/fields/useGetField";
 import useUpdateField from "hooks/fields/useUpdateField";
 import useAllCategories from "hooks/categories/useAllCategories";
-import { getMediaUrl } from "types/field";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import TextareaField from "components/form/TextareaField";
@@ -32,10 +31,14 @@ const FieldEditPage = () => {
     category_uid: "",
     hex_color:    "#1e3a5f",
     text_color:   "#ffffff",
-    thumbnail:    "",
-    video:        "",
     is_active:    true,
   });
+
+  // Media: file_key for submission, url for display
+  const [thumbnailKey, setThumbnailKey] = useState("");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [videoKey,     setVideoKey]     = useState("");
+  const [videoUrl,     setVideoUrl]     = useState("");
 
   useEffect(() => {
     if (field) {
@@ -45,10 +48,12 @@ const FieldEditPage = () => {
         category_uid: field.category?.uid ?? "",
         hex_color:    field.hex_color    ?? "#1e3a5f",
         text_color:   field.text_color   ?? "#ffffff",
-        thumbnail:    getMediaUrl(field.thumbnail),
-        video:        getMediaUrl(field.video),
         is_active:    field.is_active    ?? true,
       });
+      setThumbnailKey(field.thumbnail?.file_key   ?? "");
+      setThumbnailUrl(field.thumbnail?.public_url ?? "");
+      setVideoKey(field.video?.file_key   ?? "");
+      setVideoUrl(field.video?.public_url ?? "");
     }
   }, [field]);
 
@@ -62,8 +67,8 @@ const FieldEditPage = () => {
     if (form.category_uid)              payload.category_uid = form.category_uid;
     if (form.hex_color)                 payload.hex_color    = form.hex_color;
     if (form.text_color)                payload.text_color   = form.text_color;
-    payload.thumbnail = form.thumbnail || "";
-    payload.video     = form.video     || "";
+    payload.thumbnail = thumbnailKey || "";
+    payload.video     = videoKey     || "";
 
     const updated = await updateField(uid, payload);
     if (updated) {
@@ -191,17 +196,23 @@ const FieldEditPage = () => {
             <MediaUploadField
               label="Thumbnail"
               type="image"
-              folder="fields/thumbnails"
-              value={form.thumbnail}
-              onChange={(url) => set("thumbnail", url)}
+              folder="thumbnails"
+              displayUrl={thumbnailUrl}
+              onChange={(result) => {
+                if (result) { setThumbnailKey(result.file_key); setThumbnailUrl(result.public_url); }
+                else        { setThumbnailKey(""); setThumbnailUrl(""); }
+              }}
               error={fieldErrors.thumbnail}
             />
             <MediaUploadField
               label="Video"
               type="video"
-              folder="fields/videos"
-              value={form.video}
-              onChange={(url) => set("video", url)}
+              folder="videos"
+              displayUrl={videoUrl}
+              onChange={(result) => {
+                if (result) { setVideoKey(result.file_key); setVideoUrl(result.public_url); }
+                else        { setVideoKey(""); setVideoUrl(""); }
+              }}
               error={fieldErrors.video}
             />
           </div>

@@ -1,24 +1,9 @@
 import { useState } from "react";
 import axiosInstance from "api/axiosInstance";
 import type { User } from "types/auth";
+import type { UpdateProfilePayload } from "types/user";
 
-export interface UpdateProfilePayload {
-  profile_picture?: string;
-  cv?: string;
-  title?: string;
-  bio?: string;
-  years_experience?: number | null;
-  certifications?: string;
-  linkedin_url?: string;
-  primary_email?: string;
-  secondary_email?: string;
-  address?: string;
-  country?: string;
-  city?: string;
-  postal_code?: string;
-  phone?: string;
-  whatsapp?: string;
-}
+export type { UpdateProfilePayload };
 
 type FieldErrors = Partial<Record<keyof UpdateProfilePayload, string>>;
 
@@ -42,21 +27,22 @@ const useUpdateProfile = (): UseUpdateProfileReturn => {
     try {
       const { data } = await axiosInstance.patch<User>(
         `/auth/users/${uid}`,
-        payload
+        { profile: payload }
       );
       return data;
     } catch (err: unknown) {
       const responseData = (err as { response?: { data?: any } })?.response?.data;
+      const profileErrors = responseData?.profile ?? responseData;
 
       const fields: (keyof UpdateProfilePayload)[] = [
-        "profile_picture", "title", "bio", "years_experience", "certifications",
+        "profile_picture", "cv", "title", "bio", "years_experience", "certifications",
         "linkedin_url", "primary_email", "secondary_email", "address", "country",
-        "city", "postal_code", "phone", "whatsapp",
+        "city", "postal_code", "phone", "whatsapp", "specializations",
       ];
 
       const extracted: FieldErrors = {};
       fields.forEach((field) => {
-        const val = responseData?.[field];
+        const val = profileErrors?.[field];
         if (Array.isArray(val) && val[0]) extracted[field] = val[0];
       });
 

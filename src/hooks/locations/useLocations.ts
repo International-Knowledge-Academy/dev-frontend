@@ -64,13 +64,12 @@ const useLocations = (initialParams: LocationsParams = {}): UseLocationsReturn =
     setParamsState((prev) => ({
       ...prev,
       ...updates,
-      // Reset to page 1 when filters change
       page:
-        updates.search    !== undefined ||
-        updates.ordering  !== undefined ||
-        updates.city      !== undefined ||
-        updates.country   !== undefined ||
-        updates.is_active !== undefined
+        "search"    in updates ||
+        "ordering"  in updates ||
+        "city"      in updates ||
+        "country"   in updates ||
+        "is_active" in updates
           ? 1
           : (updates.page ?? prev.page),
     }));

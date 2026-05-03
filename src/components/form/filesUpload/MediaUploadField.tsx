@@ -1,15 +1,16 @@
 // @ts-nocheck
 import { useRef } from "react";
-import { MdUpload, MdClose, MdVideoFile, MdImage } from "react-icons/md";
+import { Upload, X, Video, Image } from "lucide-react";
 import usePresignedUpload from "hooks/storage/usePresignedUpload";
+import type { PresignedUploadResult } from "hooks/storage/usePresignedUpload";
 import { IMAGE_TYPES, VIDEO_TYPES } from "constants/upload";
 
 interface MediaUploadFieldProps {
   label: string;
   type: "image" | "video";
   folder: string;
-  value: string;
-  onChange: (url: string) => void;
+  displayUrl: string;
+  onChange: (result: PresignedUploadResult | null) => void;
   error?: string;
 }
 
@@ -17,7 +18,7 @@ const MediaUploadField = ({
   label,
   type,
   folder,
-  value,
+  displayUrl,
   onChange,
   error,
 }: MediaUploadFieldProps) => {
@@ -33,11 +34,11 @@ const MediaUploadField = ({
 
     const result = await upload(file, {
       folder,
-      file_type: type === "image" ? "image" : "file",
+      file_type: type === "image" ? "image" : "video",
     });
 
     if (result) {
-      onChange(result.public_url);
+      onChange(result);
       reset();
     }
   };
@@ -47,38 +48,38 @@ const MediaUploadField = ({
       <label className="block text-sm font-medium text-navy-800">{label}</label>
 
       {/* Preview */}
-      {value && !uploading && (
+      {displayUrl && !uploading && (
         <div className="relative rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
           {type === "image" ? (
             <img
-              src={value}
+              src={displayUrl}
               alt={label}
               className="w-full h-40 object-cover"
             />
           ) : (
-            <video src={value} controls className="w-full h-40 rounded-lg" />
+            <video src={displayUrl} controls className="w-full h-40 rounded-lg" />
           )}
           <button
             type="button"
-            onClick={() => onChange("")}
+            onClick={() => onChange(null)}
             className="absolute top-2 right-2 w-7 h-7 bg-white rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-red-500 hover:border-red-300 transition shadow-sm"
           >
-            <MdClose size={14} />
+            <X size={14} />
           </button>
         </div>
       )}
 
       {/* Drop zone */}
-      {!value && !uploading && (
+      {!displayUrl && !uploading && (
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
           className="w-full flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-slate-200 bg-slate-50 py-8 hover:border-navy-400 hover:bg-navy-50 transition"
         >
           {type === "video" ? (
-            <MdVideoFile size={24} className="text-slate-400" />
+            <Video size={24} className="text-slate-400" />
           ) : (
-            <MdImage size={24} className="text-slate-400" />
+            <Image size={24} className="text-slate-400" />
           )}
           <span className="text-sm text-slate-500">Click to upload {label}</span>
           <span className="text-xs text-slate-400">{accepted.label}</span>
@@ -94,7 +95,7 @@ const MediaUploadField = ({
           </div>
           <div className="h-1.5 w-full rounded-full bg-slate-200">
             <div
-              className="h-full rounded-full bg-navy-500 transition-all duration-300"
+              className="h-full rounded-full bg-gold-500 transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -102,13 +103,13 @@ const MediaUploadField = ({
       )}
 
       {/* Replace link */}
-      {value && !uploading && (
+      {displayUrl && !uploading && (
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
           className="flex items-center gap-1.5 text-xs text-navy-600 hover:text-navy-800 transition"
         >
-          <MdUpload size={14} />
+          <Upload size={14} />
           Replace {label}
         </button>
       )}
