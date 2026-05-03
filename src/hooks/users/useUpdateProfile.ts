@@ -41,7 +41,7 @@ const useUpdateProfile = (): UseUpdateProfileReturn => {
 
     try {
       const { data } = await axiosInstance.patch<User>(
-        `/auth/users/${uid}/update_profile`,
+        `/auth/users/${uid}`,
         payload
       );
       return data;
