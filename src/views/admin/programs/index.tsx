@@ -158,7 +158,7 @@ const ProgramsPage = () => {
       {/* Filter bar */}
       <div className="bg-white border border-slate-100 rounded-xl px-4 py-3 mb-4">
 
-        {/* Main row — always visible */}
+        {/* Row 1 — search + actions */}
         <div className="flex items-center gap-2">
 
           {/* Desktop: label + badge */}
@@ -179,58 +179,8 @@ const ProgramsPage = () => {
             value={params.search ?? ""}
             onChange={(val) => setParams({ search: val })}
             placeholder="Search programs..."
-            className="flex-1 max-w-xs"
+            className="flex-1"
           />
-
-          {/* Desktop filters */}
-          <div className="hidden sm:block">
-            <FilterSelectField
-              value={params.program_type ?? "all"}
-              onChange={(val) => setParams({ program_type: val === "all" ? undefined : val })}
-              icon={Award}
-              defaultOption="All Types"
-              options={TYPE_OPTIONS}
-            />
-          </div>
-          <div className="hidden sm:block">
-            <FilterSelectField
-              value={params.status ?? "all"}
-              onChange={(val) => setParams({ status: val === "all" ? undefined : val })}
-              icon={Activity}
-              defaultOption="All Status"
-              options={STATUS_OPTIONS}
-            />
-          </div>
-          <div className="hidden sm:block">
-            <FilterSelectField
-              value={params.level ?? "all"}
-              onChange={(val) => setParams({ level: val === "all" ? undefined : val })}
-              icon={Layers}
-              defaultOption="All Levels"
-              options={LEVEL_OPTIONS}
-            />
-          </div>
-          <div className="hidden sm:block">
-            <FilterSelectField
-              value={params.mode ?? "all"}
-              onChange={(val) => setParams({ mode: val === "all" ? undefined : val })}
-              icon={Monitor}
-              defaultOption="All Modes"
-              options={MODE_OPTIONS}
-            />
-          </div>
-          <div className="hidden sm:block">
-            <FilterSelectField
-              value={params.is_active === undefined ? "all" : String(params.is_active)}
-              onChange={(val) => setParams({ is_active: val === "all" ? undefined : val === "true" })}
-              icon={ToggleLeft}
-              defaultOption="All"
-              options={[
-                { value: "true",  label: "Active"   },
-                { value: "false", label: "Inactive" },
-              ]}
-            />
-          </div>
 
           <div className="hidden sm:block w-px h-5 bg-slate-200" />
 
@@ -258,8 +208,7 @@ const ProgramsPage = () => {
             </button>
           )}
 
-          {/* Desktop: spacer + showing */}
-          <div className="flex-1 hidden sm:block" />
+          {/* Desktop: showing */}
           {!loading && (
             <span className="hidden sm:block text-xs text-slate-400 whitespace-nowrap flex-shrink-0">
               Showing{" "}
@@ -282,6 +231,48 @@ const ProgramsPage = () => {
               </span>
             )}
           </button>
+        </div>
+
+        {/* Row 2 — desktop filter selects (always visible) */}
+        <div className="hidden sm:flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-slate-100">
+          <FilterSelectField
+            value={params.program_type ?? "all"}
+            onChange={(val) => setParams({ program_type: val === "all" ? undefined : val })}
+            icon={Award}
+            defaultOption="All Types"
+            options={TYPE_OPTIONS}
+          />
+          <FilterSelectField
+            value={params.status ?? "all"}
+            onChange={(val) => setParams({ status: val === "all" ? undefined : val })}
+            icon={Activity}
+            defaultOption="All Status"
+            options={STATUS_OPTIONS}
+          />
+          <FilterSelectField
+            value={params.level ?? "all"}
+            onChange={(val) => setParams({ level: val === "all" ? undefined : val })}
+            icon={Layers}
+            defaultOption="All Levels"
+            options={LEVEL_OPTIONS}
+          />
+          <FilterSelectField
+            value={params.mode ?? "all"}
+            onChange={(val) => setParams({ mode: val === "all" ? undefined : val })}
+            icon={Monitor}
+            defaultOption="All Modes"
+            options={MODE_OPTIONS}
+          />
+          <FilterSelectField
+            value={params.is_active === undefined ? "all" : String(params.is_active)}
+            onChange={(val) => setParams({ is_active: val === "all" ? undefined : val === "true" })}
+            icon={ToggleLeft}
+            defaultOption="All"
+            options={[
+              { value: "true",  label: "Active"   },
+              { value: "false", label: "Inactive" },
+            ]}
+          />
         </div>
 
         {/* Mobile: expanded filter panel */}

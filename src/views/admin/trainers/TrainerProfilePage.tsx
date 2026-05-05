@@ -11,6 +11,8 @@ import useGetUser from "hooks/users/useGetUser";
 import useUpdateProfile from "hooks/users/useUpdateProfile";
 import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import useTrainerAssignments from "hooks/trainers/useTrainerAssignments";
+import Loading from "components/loading/Loading";
+import { useToast } from "context/ToastContext";
 
 const formatDate = (s?: string | null) => {
   if (!s) return "—";
@@ -55,6 +57,7 @@ const TrainerProfilePage = () => {
   const { updateProfile }                                                = useUpdateProfile();
   const { upload, uploading, progress }                                  = usePresignedUpload();
   const { assignments, loading: loadingPrograms, count: programCount }   = useTrainerAssignments(user?.profile?.uid);
+  const { addToast }                                                     = useToast();
 
   const handleAvatarChange = async (e) => {
     const file = e.target.files?.[0];
@@ -62,14 +65,17 @@ const TrainerProfilePage = () => {
     e.target.value = "";
     const result = await upload(file, { folder: "users/profiles", file_type: "image" });
     if (result) {
-      await updateProfile(user.uid, { profile_picture: result.public_url });
-      refetch();
+      const updated = await updateProfile(user.uid, { profile_picture: result.file_key });
+      if (updated) {
+        addToast("Profile picture updated", "success");
+        refetch();
+      } else {
+        addToast("Failed to update profile picture", "error");
+      }
     }
   };
 
-  if (loading) return (
-    <div className="flex items-center justify-center py-20 text-sm text-slate-400">Loading profile...</div>
-  );
+  if (loading) return <Loading text="Loading profile..." />;
   if (error || !user) return (
     <div className="flex items-center justify-center py-20 text-sm text-red-500">{error ?? "Trainer not found."}</div>
   );

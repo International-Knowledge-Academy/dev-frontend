@@ -77,9 +77,9 @@ const ProgramDetailPage = () => {
 
           {/* Icon */}
           <div className="flex-shrink-0">
-            {program.thumbnail ? (
+            {program.thumbnail?.public_url ? (
               <img
-                src={program.thumbnail}
+                src={program.thumbnail.public_url}
                 alt={program.name}
                 className="w-16 h-16 rounded-xl object-cover border border-slate-100"
               />

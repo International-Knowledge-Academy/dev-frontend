@@ -174,7 +174,7 @@ const ProgramEditPage = () => {
         is_active:        program.is_active,
         price:            program.price ?? "",
         currency:         program.currency ?? "MYR",
-        thumbnail:        program.thumbnail ?? "",
+        thumbnail:        program.thumbnail?.public_url ?? "",
       });
     }
   }, [program]);
