@@ -354,9 +354,9 @@ const ProgramDetailPage = () => {
                   onClick={() => trainer.user?.uid && navigate(`/admin/trainers/${trainer.user.uid}`)}
                   className="flex items-center gap-3 p-3 rounded-xl border border-slate-100 hover:bg-slate-50 transition cursor-pointer"
                 >
-                  {trainer.profile_picture ? (
+                  {trainer.profile_picture?.public_url ? (
                     <img
-                      src={trainer.profile_picture}
+                      src={trainer.profile_picture.public_url}
                       alt={trainer.user?.name}
                       className="w-10 h-10 rounded-full object-cover flex-shrink-0"
                     />

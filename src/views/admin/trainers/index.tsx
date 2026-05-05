@@ -174,9 +174,9 @@ const TrainersPage = () => {
                         {/* Trainer */}
                         <td className="px-5 py-3.5">
                           <div className="flex items-center gap-3">
-                            {trainer.profile?.profile_picture ? (
+                            {trainer.profile?.profile_picture?.public_url ? (
                               <img
-                                src={trainer.profile.profile_picture}
+                                src={trainer.profile.profile_picture.public_url}
                                 alt={trainer.name}
                                 className="w-8 h-8 rounded-full object-cover flex-shrink-0 ring-1 ring-slate-100 group-hover:ring-gold-200 transition-all"
                               />

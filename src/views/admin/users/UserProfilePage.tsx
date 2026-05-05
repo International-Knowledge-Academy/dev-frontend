@@ -86,8 +86,8 @@ const UserProfilePage = () => {
               disabled={uploading}
               className="relative group block w-16 h-16 rounded-full ring-4 ring-slate-100 focus:outline-none"
             >
-              {p?.profile_picture ? (
-                <img src={p.profile_picture} alt={user.name}
+              {p?.profile_picture?.public_url ? (
+                <img src={p.profile_picture.public_url} alt={user.name}
                   className="w-16 h-16 rounded-full object-cover" />
               ) : (
                 <div className="w-16 h-16 rounded-full bg-navy-700 text-white flex items-center justify-center text-xl font-bold select-none">
@@ -228,12 +228,12 @@ const UserProfilePage = () => {
           </>
         )}
 
-        {p?.cv && (
+        {p?.cv?.public_url && (
           <>
             <Divider />
             <Section title="Documents">
               <Field label="CV / Resume" value={
-                <a href={p.cv} target="_blank" rel="noreferrer"
+                <a href={p.cv.public_url} target="_blank" rel="noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-200 bg-slate-50 text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
                   <MdOpenInNew size={12} className="text-slate-400" /> View CV
                 </a>

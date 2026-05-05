@@ -165,7 +165,7 @@ const TrainerEditPage = () => {
         password:  "",
         is_active: user.is_active ?? true,
       });
-      setProfilePictureUrl(user.profile?.profile_picture ?? "");
+      setProfilePictureUrl(user.profile?.profile_picture?.public_url ?? "");
     }
   }, [user]);
 
@@ -282,7 +282,7 @@ const TrainerEditPage = () => {
               onSimpleFileChange={handleCvFileChange}
               onSimpleRemove={() => setCvFile(null)}
               simpleUploading={cvBusy}
-              existingFileUrl={user?.profile?.cv || null}
+              existingFileUrl={user?.profile?.cv?.public_url || null}
               existingFileName="Current CV"
               onExistingRemove={handleCvDelete}
             />

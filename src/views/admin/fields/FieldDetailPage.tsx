@@ -138,9 +138,9 @@ const FieldDetailPage = () => {
             <div className="px-4 sm:px-6 pb-4 flex flex-col gap-3">
               {field.trainers.map((trainer) => (
                 <div key={trainer.uid} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  {trainer.profile_picture ? (
+                  {trainer.profile_picture?.public_url ? (
                     <img
-                      src={trainer.profile_picture}
+                      src={trainer.profile_picture.public_url}
                       alt={trainer.user?.name}
                       className="w-10 h-10 rounded-full object-cover border border-slate-200 flex-shrink-0"
                     />

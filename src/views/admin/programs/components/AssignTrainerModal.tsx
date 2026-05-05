@@ -159,9 +159,9 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
                         isSelected ? "bg-green-50" : "hover:bg-slate-50"
                       }`}
                     >
-                      {trainer.profile?.profile_picture ? (
+                      {trainer.profile?.profile_picture?.public_url ? (
                         <img
-                          src={trainer.profile.profile_picture}
+                          src={trainer.profile.profile_picture.public_url}
                           alt={trainer.name}
                           className="w-8 h-8 rounded-full object-cover flex-shrink-0"
                         />

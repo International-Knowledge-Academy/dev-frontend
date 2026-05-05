@@ -79,9 +79,9 @@ const SectionCard = ({
 
 const TrainerCard = ({ trainer }: { trainer: ProgramTrainer }) => (
   <div className="flex gap-4 p-4 rounded-xl border border-slate-100 hover:border-gold-200 hover:shadow-sm transition-all duration-200 group">
-    {trainer.profile_picture ? (
+    {trainer.profile_picture?.public_url ? (
       <img
-        src={trainer.profile_picture}
+        src={trainer.profile_picture.public_url}
         alt={trainer.user.name}
         className="w-12 h-12 rounded-full object-cover flex-shrink-0 ring-2 ring-slate-100 group-hover:ring-gold-200 transition-all duration-200"
       />

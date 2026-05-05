@@ -190,7 +190,7 @@ const UserEditPage = () => {
       country:          p?.country          ?? "",
       postal_code:      p?.postal_code      ?? "",
     });
-    setProfilePictureUrl(p?.profile_picture ?? "");
+    setProfilePictureUrl(p?.profile_picture?.public_url ?? "");
   }, [user]);
 
   // ── CV (immediate upload, not tied to submit) ─────────────────────────
@@ -515,7 +515,7 @@ const UserEditPage = () => {
               onSimpleFileChange={handleCvChange}
               onSimpleRemove={() => setCvFile(null)}
               simpleUploading={cvBusy}
-              existingFileUrl={user?.profile?.cv || null}
+              existingFileUrl={user?.profile?.cv?.public_url || null}
               existingFileName="Current CV"
               onExistingRemove={handleCvDelete}
             />
