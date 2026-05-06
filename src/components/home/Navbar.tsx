@@ -187,6 +187,7 @@ const Navbar = () => {
     },
     { label: "Programs", to: "/programs" },
     { label: "Contact",  to: "/contact" },
+    { label: "Register", to: "/register" },
   ];
 
   useEffect(() => {

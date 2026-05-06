@@ -412,7 +412,7 @@ const ProgramPage = () => {
             className="flex flex-wrap items-center gap-3"
           >
             <button
-              onClick={() => navigate("/contact")}
+              onClick={() => navigate(`/register?uid=${program.uid}`)}
               className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-8 py-3 rounded-md lg:rounded-lg text-sm transition-all duration-200 shadow-lg hover:shadow-gold-500/25 hover:-translate-y-0.5"
             >
               Enroll Now
@@ -608,7 +608,7 @@ const ProgramPage = () => {
               )}
 
               <button
-                onClick={() => navigate("/contact")}
+                onClick={() => navigate(`/register?uid=${program.uid}`)}
                 className="w-full bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold py-3 rounded-md lg:rounded-lg text-sm transition-all duration-200 mb-2.5"
               >
                 Register Now
