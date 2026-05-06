@@ -3,8 +3,9 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Pencil, CheckCircle, XCircle, GraduationCap, UserCheck,
-  CalendarDays, FileText, DollarSign, AlertTriangle, Loader2, UserPlus,
+  CalendarDays, FileText, DollarSign, AlertTriangle, Loader2, UserPlus, ChevronDown,
 } from "lucide-react";
+import Dropdown from "components/dropdown";
 import useGetRegistration from "hooks/registrations/useGetRegistration";
 import useRegistrationActions from "hooks/registrations/useRegistrationActions";
 import useDeleteRegistration from "hooks/registrations/useDeleteRegistration";
@@ -225,72 +226,85 @@ const RegistrationDetailPage = () => {
         </div>
 
         {/* Actions */}
-        <div className="px-4 sm:px-6 py-4 border-t border-slate-100 mt-2 space-y-3">
-          {/* Status actions */}
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={handleApprove}
-              disabled={anyActionLoading || registration.status === "approved"}
-              className="flex items-center gap-2 px-4 py-2 rounded-md lg:rounded-lg bg-green-600 text-white text-sm font-semibold hover:bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition"
-            >
-              {approveState.loading ? <Loader2 size={14} className="animate-spin" /> : <CheckCircle size={14} />}
-              Approve
-            </button>
-            <button
-              type="button"
-              onClick={handleEnroll}
-              disabled={anyActionLoading || registration.status === "completed"}
-              className="flex items-center gap-2 px-4 py-2 rounded-md lg:rounded-lg bg-navy-700 text-white text-sm font-semibold hover:bg-navy-600 disabled:opacity-50 disabled:cursor-not-allowed transition"
-            >
-              {enrollState.loading ? <Loader2 size={14} className="animate-spin" /> : <GraduationCap size={14} />}
-              Enroll
-            </button>
-            <button
-              type="button"
-              onClick={() => setRejectOpen(true)}
-              disabled={anyActionLoading || registration.status === "rejected"}
-              className="flex items-center gap-2 px-4 py-2 rounded-md lg:rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition"
-            >
-              {rejectState.loading ? <Loader2 size={14} className="animate-spin" /> : <XCircle size={14} />}
-              Reject
-            </button>
-            <button
-              type="button"
-              onClick={() => setAssignOpen(true)}
-              disabled={anyActionLoading}
-              className="flex items-center gap-2 px-4 py-2 rounded-md lg:rounded-lg bg-gold-500 text-white text-sm font-semibold hover:bg-gold-400 disabled:opacity-50 disabled:cursor-not-allowed transition"
-            >
-              {assignManagerState.loading ? <Loader2 size={14} className="animate-spin" /> : <UserPlus size={14} />}
-              Assign Manager
-            </button>
-          </div>
-
-          {/* Nav actions */}
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => navigate("/admin/registrations")}
-              className="flex-1 rounded-md lg:rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition"
-            >
-              Back
-            </button>
-            <button
-              type="button"
-              onClick={() => navigate(`/admin/registrations/${id}/edit`)}
-              className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition flex items-center justify-center gap-2"
-            >
-              <Pencil size={16} />
-              Edit
-            </button>
-            <button
-              type="button"
-              onClick={() => setDeleteOpen(true)}
-              className="px-4 rounded-md lg:rounded-lg border border-red-200 text-red-500 text-sm font-semibold hover:bg-red-50 transition"
-            >
-              Delete
-            </button>
-          </div>
+        <div className="px-4 sm:px-6 py-4 border-t border-slate-100 mt-2 flex gap-2">
+          <button
+            type="button"
+            onClick={() => navigate("/admin/registrations")}
+            className="flex-1 rounded-md lg:rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition"
+          >
+            Back
+          </button>
+          <Dropdown
+            button={
+              <button
+                type="button"
+                disabled={anyActionLoading}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md lg:rounded-lg bg-navy-800 text-sm font-semibold text-white hover:bg-navy-700 disabled:opacity-50 transition"
+              >
+                {anyActionLoading ? <Loader2 size={14} className="animate-spin" /> : <ChevronDown size={14} />}
+                Actions
+              </button>
+            }
+            classNames="bottom-full right-0 mb-1 w-52"
+            animation="origin-bottom-right transition-all duration-300 ease-in-out"
+          >
+            <div className="bg-white rounded-xl border border-slate-100 shadow-lg py-1">
+              <button
+                type="button"
+                onClick={() => navigate(`/admin/registrations/${id}/edit`)}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-navy-700 hover:bg-slate-50 transition text-left"
+              >
+                <Pencil size={14} className="text-slate-400 flex-shrink-0" />
+                Edit
+              </button>
+              <div className="my-1 border-t border-slate-100" />
+              <button
+                type="button"
+                onClick={handleApprove}
+                disabled={anyActionLoading || registration.status === "approved"}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-green-600 hover:bg-green-50 transition disabled:opacity-40 disabled:cursor-not-allowed text-left"
+              >
+                <CheckCircle size={14} className="flex-shrink-0" />
+                Approve
+              </button>
+              <button
+                type="button"
+                onClick={handleEnroll}
+                disabled={anyActionLoading || registration.status === "completed"}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-navy-700 hover:bg-navy-50 transition disabled:opacity-40 disabled:cursor-not-allowed text-left"
+              >
+                <GraduationCap size={14} className="flex-shrink-0" />
+                Enroll
+              </button>
+              <button
+                type="button"
+                onClick={() => setRejectOpen(true)}
+                disabled={anyActionLoading || registration.status === "rejected"}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-amber-600 hover:bg-amber-50 transition disabled:opacity-40 disabled:cursor-not-allowed text-left"
+              >
+                <XCircle size={14} className="flex-shrink-0" />
+                Reject
+              </button>
+              <button
+                type="button"
+                onClick={() => setAssignOpen(true)}
+                disabled={anyActionLoading}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-navy-700 hover:bg-navy-50 transition disabled:opacity-40 disabled:cursor-not-allowed text-left"
+              >
+                <UserPlus size={14} className="flex-shrink-0" />
+                Assign Manager
+              </button>
+              <div className="my-1 border-t border-slate-100" />
+              <button
+                type="button"
+                onClick={() => setDeleteOpen(true)}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition text-left"
+              >
+                <AlertTriangle size={14} className="flex-shrink-0" />
+                Delete
+              </button>
+            </div>
+          </Dropdown>
         </div>
       </div>
 
