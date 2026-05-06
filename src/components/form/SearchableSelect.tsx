@@ -62,7 +62,7 @@ const SearchableSelect = ({
   };
 
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} className="relative mb-4">
       <label className="block text-sm font-medium text-navy-800 mb-2">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
@@ -71,9 +71,11 @@ const SearchableSelect = ({
       <button
         type="button"
         onClick={() => setIsOpen((v) => !v)}
-        className={`w-full flex items-center justify-between gap-2 rounded-md lg:rounded-lg border bg-slate-50 px-4 py-2.5 text-sm text-left outline-none transition focus:ring-2 focus:ring-navy-300 ${
+        className={`w-full flex items-center justify-between gap-2 rounded-md lg:rounded-lg border px-4 py-2.5 text-sm text-left outline-none transition ${isOpen ? "bg-white" : "bg-slate-50"} ${
           hasError
-            ? "border-red-400"
+            ? isOpen
+              ? "border-red-400 ring-2 ring-red-200"
+              : "border-red-400"
             : isOpen
             ? "border-navy-400 ring-2 ring-navy-300"
             : "border-slate-200"
