@@ -278,7 +278,7 @@ const RegistrationsPage = () => {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-slate-100 bg-slate-50/60">
-                      {["#", "Participant", "Program", "Type", "Price", "Status", "Date", "Actions"].map((label) => (
+                      {["Participant", "Program", "Type", "Price", "Status", "Date", "Actions"].map((label) => (
                         <th key={label} className="px-5 py-3 text-left text-xs font-bold tracking-widest uppercase text-slate-400">
                           {label}
                         </th>
@@ -289,10 +289,9 @@ const RegistrationsPage = () => {
                     {registrations.map((reg) => (
                       <tr
                         key={reg.id}
-                        onClick={() => navigate(`/admin/registrations/${reg.id}`)}
+                        onClick={() => navigate(`/admin/registrations/${reg.uid}`)}
                         className="hover:bg-slate-50 transition cursor-pointer group"
                       >
-                        <td className="px-5 py-3.5 text-slate-400 tabular-nums text-xs">#{reg.id}</td>
                         <td className="px-5 py-3.5">
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 rounded-lg bg-navy-50 border border-navy-100 flex items-center justify-center text-navy-600 font-bold text-xs flex-shrink-0 group-hover:bg-navy-100 transition-colors">
