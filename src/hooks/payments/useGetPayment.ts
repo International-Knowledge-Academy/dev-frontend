@@ -32,6 +32,7 @@ const useGetPayment = (id: number | string | undefined): UseGetPaymentReturn => 
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { fetch(); }, [id]);
 
   return { payment, loading, error, refetch: fetch };

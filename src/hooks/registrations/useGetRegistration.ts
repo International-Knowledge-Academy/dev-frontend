@@ -32,6 +32,7 @@ const useGetRegistration = (id: number | string | undefined): UseGetRegistration
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { fetch(); }, [id]);
 
   return { registration, loading, error, refetch: fetch };
