@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ClipboardList, UserCheck, Clock, Plus, RefreshCw,
+  ClipboardList, UserCheck, UserX, Clock, Plus, RefreshCw,
   Pencil, Trash2, AlertTriangle, X, Filter,
 } from "lucide-react";
 import useRegistrations from "hooks/registrations/useRegistrations";
@@ -278,7 +278,7 @@ const RegistrationsPage = () => {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-slate-100 bg-slate-50/60">
-                      {["Participant", "Program", "Type", "Price", "Status", "Date", "Actions"].map((label) => (
+                      {["Participant", "Program", "Type", "Price", "Status", "Manager", "Date", "Actions"].map((label) => (
                         <th key={label} className="px-5 py-3 text-left text-xs font-bold tracking-widest uppercase text-slate-400">
                           {label}
                         </th>
@@ -321,6 +321,25 @@ const RegistrationsPage = () => {
                             <span className={`w-1.5 h-1.5 rounded-full ${DOT_COLORS[reg.status] ?? "bg-slate-300"}`} />
                             <span className="capitalize">{reg.status}</span>
                           </span>
+                        </td>
+                        <td className="px-5 py-3.5">
+                          {reg.manager ? (
+                            <span
+                              title={`Manager #${reg.manager}`}
+                              className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium bg-green-50 text-green-600 border border-green-200"
+                            >
+                              <UserCheck size={13} />
+                              Assigned
+                            </span>
+                          ) : (
+                            <span
+                              title="No manager assigned"
+                              className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium bg-slate-50 text-slate-400 border border-slate-200"
+                            >
+                              <UserX size={13} />
+                              None
+                            </span>
+                          )}
                         </td>
                         <td className="px-5 py-3.5 text-slate-400 text-xs whitespace-nowrap">
                           {reg.registration_date
