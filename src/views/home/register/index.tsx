@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
-import Loading from "components/loading/Loading";
 import useGetProgram from "hooks/programs/useGetProgram";
 import useAllCategories from "hooks/categories/useAllCategories";
 import useFields from "hooks/fields/useFields";
