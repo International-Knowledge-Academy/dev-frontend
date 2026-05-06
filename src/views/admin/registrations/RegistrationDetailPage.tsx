@@ -8,6 +8,7 @@ import {
 import useGetRegistration from "hooks/registrations/useGetRegistration";
 import useRegistrationActions from "hooks/registrations/useRegistrationActions";
 import useDeleteRegistration from "hooks/registrations/useDeleteRegistration";
+import useAllPrograms from "hooks/programs/useAllPrograms";
 import { useToast } from "context/ToastContext";
 import Loading from "components/loading/Loading";
 import ConfirmModal from "components/ui/modals/ConfirmModal";
@@ -57,6 +58,11 @@ const RegistrationDetailPage = () => {
   const { registration, loading, error, refetch } = useGetRegistration(id);
   const { approve, enroll, reject, assignManager, approveState, enrollState, rejectState, assignManagerState } = useRegistrationActions();
   const { deleteRegistration, loading: deleting } = useDeleteRegistration();
+  const { programs } = useAllPrograms();
+
+  const linkedProgram = registration
+    ? programs.find((p) => p.id === registration.program)
+    : null;
 
   const [rejectOpen, setRejectOpen]         = useState(false);
   const [rejectReason, setRejectReason]     = useState("");
@@ -155,8 +161,25 @@ const RegistrationDetailPage = () => {
         {/* Program */}
         <SectionTitle title="Program" />
         <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
-          <InfoRow icon={GraduationCap} label="Program ID"    value={registration.program ? `#${registration.program}` : "—"} />
-          <InfoRow icon={DollarSign}    label="Program Price" value={registration.program_price ? `$${registration.program_price}` : "—"} />
+          <InfoRow
+            icon={GraduationCap}
+            label="Program"
+            value={
+              linkedProgram ? (
+                <button
+                  type="button"
+                  onClick={() => navigate(`/admin/programs/${linkedProgram.uid}`)}
+                  className="flex items-center gap-1.5 text-navy-600 font-semibold hover:text-navy-500 hover:underline underline-offset-2 transition"
+                >
+                  <GraduationCap size={13} />
+                  {linkedProgram.name}
+                </button>
+              ) : registration.program ? (
+                `#${registration.program}`
+              ) : "—"
+            }
+          />
+          <InfoRow icon={DollarSign} label="Program Price" value={registration.program_price ? `$${registration.program_price}` : "—"} />
         </div>
 
         {/* Status & Assignment */}

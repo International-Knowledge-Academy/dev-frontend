@@ -15,6 +15,8 @@ import LocationsPage from "views/admin/locations";
 import CategoriesPage from "views/admin/categories";
 import ProgramsPage from "views/admin/programs";
 import FieldsPage from "views/admin/fields";
+import RegistrationsPage from "views/admin/registrations";
+import PaymentsPage from "views/admin/payments";
 
 // Account Manager Imports
 import ManagerDashboard from "views/manager/dashboard";
@@ -33,6 +35,8 @@ import {
   MdSchool,
   MdWorkspacePremium,
   MdLayers,
+  MdAssignment,
+  MdPayment,
 } from "react-icons/md";
 
 const routes = [
@@ -68,6 +72,22 @@ const routes = [
     path: "programs",
     icon: <MdWorkspacePremium className="h-6 w-6" />,
     component: <ProgramsPage />,
+    group: "Manage",
+  },
+  {
+    name: "Registrations",
+    layout: "/admin",
+    path: "registrations",
+    icon: <MdAssignment className="h-6 w-6" />,
+    component: <RegistrationsPage />,
+    group: "Manage",
+  },
+  {
+    name: "Payments",
+    layout: "/admin",
+    path: "payments",
+    icon: <MdPayment className="h-6 w-6" />,
+    component: <PaymentsPage />,
     group: "Manage",
   },
   {
