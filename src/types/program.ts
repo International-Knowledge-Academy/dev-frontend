@@ -30,6 +30,7 @@ export interface ProgramTrainer {
 }
 
 export interface Program {
+  id?: number;
   uid: string;
   name: string;
   description: string;
