@@ -1,12 +1,15 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { useState, useRef, useEffect } from "react";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { Loader2 } from "lucide-react";
 
 interface DropdownItem {
-  label: string;
+  label?: string;
   icon?: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   danger?: boolean;
+  disabled?: boolean;
+  divider?: boolean;
 }
 
 interface DropdownButtonProps {
@@ -14,9 +17,18 @@ interface DropdownButtonProps {
   icon?: React.ReactNode;
   items: DropdownItem[];
   variant?: "primary" | "outline";
+  loading?: boolean;
+  disabled?: boolean;
 }
 
-const DropdownButton = ({ label, icon, items, variant = "primary" }: DropdownButtonProps) => {
+const DropdownButton = ({
+  label,
+  icon,
+  items,
+  variant = "primary",
+  loading = false,
+  disabled = false,
+}: DropdownButtonProps) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -31,40 +43,59 @@ const DropdownButton = ({ label, icon, items, variant = "primary" }: DropdownBut
   const triggerClass =
     variant === "primary"
       ? "bg-navy-800 text-white hover:bg-navy-700 border-navy-800"
-      : "bg-white text-slate-700 hover:bg-slate-50 border-slate-200";
+      : "bg-white text-slate-700 hover:bg-slate-50 border-slate-200 shadow-sm";
 
   return (
     <div ref={ref} className="relative inline-block">
       <button
         type="button"
         onClick={() => setOpen((p) => !p)}
-        className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-semibold transition ${triggerClass}`}
+        disabled={disabled || loading}
+        className={`inline-flex items-center gap-2 px-4 py-2 rounded-md lg:rounded-lg border text-sm font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed ${triggerClass}`}
       >
-        {icon && <span className="flex items-center">{icon}</span>}
+        {loading ? (
+          <Loader2 size={14} className="animate-spin" />
+        ) : (
+          icon && <span className="flex items-center">{icon}</span>
+        )}
         {label}
-        <MdKeyboardArrowDown
-          size={16}
-          className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-        />
+        {!loading && (
+          <MdKeyboardArrowDown
+            size={16}
+            className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          />
+        )}
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white border border-slate-100 shadow-lg z-50 overflow-hidden">
-          {items.map((item, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => { item.onClick(); setOpen(false); }}
-              className={`flex items-center gap-2.5 w-full px-4 py-2.5 text-sm font-medium transition text-left
-                ${item.danger
-                  ? "text-red-500 hover:bg-red-50"
-                  : "text-navy-700 hover:bg-navy-50"
+        <div className="absolute right-0 mt-2 w-52 rounded-xl bg-white border border-slate-100 shadow-xl z-50 overflow-hidden py-1.5">
+          {items.map((item, i) =>
+            item.divider ? (
+              <div key={i} className="my-1.5 border-t border-slate-100" />
+            ) : (
+              <button
+                key={i}
+                type="button"
+                disabled={item.disabled}
+                onClick={() => {
+                  if (!item.disabled) {
+                    item.onClick?.();
+                    setOpen(false);
+                  }
+                }}
+                className={`flex items-center gap-2.5 w-full px-4 py-2.5 text-sm font-medium transition text-left disabled:opacity-40 disabled:cursor-not-allowed ${
+                  item.danger
+                    ? "text-red-500 hover:bg-red-50"
+                    : "text-navy-700 hover:bg-navy-50"
                 }`}
-            >
-              {item.icon && <span className="flex items-center text-current">{item.icon}</span>}
-              {item.label}
-            </button>
-          ))}
+              >
+                {item.icon && (
+                  <span className="flex items-center text-current flex-shrink-0">{item.icon}</span>
+                )}
+                {item.label}
+              </button>
+            )
+          )}
         </div>
       )}
     </div>

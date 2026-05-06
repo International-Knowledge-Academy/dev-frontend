@@ -3,9 +3,9 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Pencil, CheckCircle, XCircle, GraduationCap, UserCheck,
-  CalendarDays, FileText, DollarSign, AlertTriangle, Loader2, UserPlus, ChevronDown,
+  CalendarDays, FileText, DollarSign, AlertTriangle, Loader2, UserPlus,
 } from "lucide-react";
-import Dropdown from "components/dropdown";
+import DropdownButton from "components/ui/buttons/DropdownButton";
 import useGetRegistration from "hooks/registrations/useGetRegistration";
 import useRegistrationActions from "hooks/registrations/useRegistrationActions";
 import useDeleteRegistration from "hooks/registrations/useDeleteRegistration";
@@ -142,10 +142,25 @@ const RegistrationDetailPage = () => {
             <h1 className="text-base font-bold text-navy-800 truncate leading-snug">{registration.full_name}</h1>
             <p className="text-xs text-slate-400 mt-0.5 truncate">{registration.email}</p>
           </div>
-          <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold border flex-shrink-0 capitalize ${STATUS_COLORS[registration.status] ?? "bg-slate-50 text-slate-400 border-slate-200"}`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${DOT_COLORS[registration.status] ?? "bg-slate-300"}`} />
-            {registration.status}
-          </span>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold border capitalize ${STATUS_COLORS[registration.status] ?? "bg-slate-50 text-slate-400 border-slate-200"}`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${DOT_COLORS[registration.status] ?? "bg-slate-300"}`} />
+              {registration.status}
+            </span>
+            <DropdownButton
+              label="Actions"
+              variant="outline"
+              loading={anyActionLoading}
+              items={[
+                { label: "Approve",        icon: <CheckCircle size={14} />,  onClick: handleApprove,              disabled: anyActionLoading || registration.status === "approved"  },
+                { label: "Enroll",         icon: <GraduationCap size={14} />, onClick: handleEnroll,              disabled: anyActionLoading || registration.status === "completed" },
+                { label: "Reject",         icon: <XCircle size={14} />,      onClick: () => setRejectOpen(true),  disabled: anyActionLoading || registration.status === "rejected"  },
+                { label: "Assign Manager", icon: <UserPlus size={14} />,     onClick: () => setAssignOpen(true),  disabled: anyActionLoading },
+                { divider: true },
+                { label: "Delete Registration", icon: <AlertTriangle size={14} />, onClick: () => setDeleteOpen(true), danger: true },
+              ]}
+            />
+          </div>
         </div>
 
         {/* Participant */}
@@ -225,7 +240,7 @@ const RegistrationDetailPage = () => {
           <InfoRow icon={CalendarDays} label="Last Updated"      value={formatDate(registration.updated_at)} />
         </div>
 
-        {/* Actions */}
+        {/* Footer actions */}
         <div className="px-4 sm:px-6 py-4 border-t border-slate-100 mt-2 flex gap-2">
           <button
             type="button"
@@ -234,77 +249,14 @@ const RegistrationDetailPage = () => {
           >
             Back
           </button>
-          <Dropdown
-            button={
-              <button
-                type="button"
-                disabled={anyActionLoading}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md lg:rounded-lg bg-navy-800 text-sm font-semibold text-white hover:bg-navy-700 disabled:opacity-50 transition"
-              >
-                {anyActionLoading ? <Loader2 size={14} className="animate-spin" /> : <ChevronDown size={14} />}
-                Actions
-              </button>
-            }
-            classNames="bottom-full right-0 mb-1 w-52"
-            animation="origin-bottom-right transition-all duration-300 ease-in-out"
+          <button
+            type="button"
+            onClick={() => navigate(`/admin/registrations/${id}/edit`)}
+            className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition flex items-center justify-center gap-2"
           >
-            <div className="bg-white rounded-xl border border-slate-100 shadow-lg py-1">
-              <button
-                type="button"
-                onClick={() => navigate(`/admin/registrations/${id}/edit`)}
-                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-navy-700 hover:bg-slate-50 transition text-left"
-              >
-                <Pencil size={14} className="text-slate-400 flex-shrink-0" />
-                Edit
-              </button>
-              <div className="my-1 border-t border-slate-100" />
-              <button
-                type="button"
-                onClick={handleApprove}
-                disabled={anyActionLoading || registration.status === "approved"}
-                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-green-600 hover:bg-green-50 transition disabled:opacity-40 disabled:cursor-not-allowed text-left"
-              >
-                <CheckCircle size={14} className="flex-shrink-0" />
-                Approve
-              </button>
-              <button
-                type="button"
-                onClick={handleEnroll}
-                disabled={anyActionLoading || registration.status === "completed"}
-                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-navy-700 hover:bg-navy-50 transition disabled:opacity-40 disabled:cursor-not-allowed text-left"
-              >
-                <GraduationCap size={14} className="flex-shrink-0" />
-                Enroll
-              </button>
-              <button
-                type="button"
-                onClick={() => setRejectOpen(true)}
-                disabled={anyActionLoading || registration.status === "rejected"}
-                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-amber-600 hover:bg-amber-50 transition disabled:opacity-40 disabled:cursor-not-allowed text-left"
-              >
-                <XCircle size={14} className="flex-shrink-0" />
-                Reject
-              </button>
-              <button
-                type="button"
-                onClick={() => setAssignOpen(true)}
-                disabled={anyActionLoading}
-                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-navy-700 hover:bg-navy-50 transition disabled:opacity-40 disabled:cursor-not-allowed text-left"
-              >
-                <UserPlus size={14} className="flex-shrink-0" />
-                Assign Manager
-              </button>
-              <div className="my-1 border-t border-slate-100" />
-              <button
-                type="button"
-                onClick={() => setDeleteOpen(true)}
-                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition text-left"
-              >
-                <AlertTriangle size={14} className="flex-shrink-0" />
-                Delete
-              </button>
-            </div>
-          </Dropdown>
+            <Pencil size={15} />
+            Edit
+          </button>
         </div>
       </div>
 
