@@ -3,12 +3,11 @@ import ReactApexChart from "react-apexcharts";
 import {
   MdWorkspacePremium, MdAssignment, MdSchool, MdLocationOn,
   MdCategory, MdPeople, MdPayment, MdLayers, MdTrendingUp,
-  MdPending, MdAccessTime, MdCheckCircle, MdCancel, MdRefresh,
+  MdPending, MdCheckCircle, MdRefresh,
 } from "react-icons/md";
 import { DollarSign, Clock } from "lucide-react";
 import useDashboard from "hooks/dashboard/useDashboard";
 import useAuth from "hooks/auth/useAuth";
-import Loading from "components/loading/Loading";
 
 /* ─── Config maps ─────────────────────────────────────────────────────────── */
 
