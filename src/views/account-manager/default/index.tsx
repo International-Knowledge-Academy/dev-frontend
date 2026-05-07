@@ -5,7 +5,7 @@ import {
   MdCategory, MdPeople, MdPayment, MdLayers, MdTrendingUp,
   MdPending, MdCheckCircle, MdRefresh,
 } from "react-icons/md";
-import { DollarSign, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
 import useDashboard from "hooks/dashboard/useDashboard";
 
 /* ─── Config ──────────────────────────────────────────────────────────────── */

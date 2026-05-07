@@ -33,6 +33,8 @@ import PaymentsPage from "views/admin/payments";
 import PaymentCreatePage from "views/admin/payments/PaymentCreatePage";
 import PaymentDetailPage from "views/admin/payments/PaymentDetailPage";
 import PaymentEditPage from "views/admin/payments/PaymentEditPage";
+import ContactsPage from "views/admin/contact";
+import ContactDetailPage from "views/admin/contact/ContactDetailPage";
 
 export default function Admin(props) {
   const { ...rest } = props;
@@ -135,6 +137,8 @@ export default function Admin(props) {
                 <Route path="/payments/create"            element={<PaymentCreatePage />} />
                 <Route path="/payments/:id"               element={<PaymentDetailPage />} />
                 <Route path="/payments/:id/edit"          element={<PaymentEditPage />} />
+                <Route path="/contact"                    element={<ContactsPage />} />
+                <Route path="/contact/:uid"               element={<ContactDetailPage />} />
 
                 <Route
                   path="/"

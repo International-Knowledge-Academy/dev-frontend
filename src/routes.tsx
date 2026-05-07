@@ -17,6 +17,7 @@ import ProgramsPage     from "views/admin/programs";
 import FieldsPage       from "views/admin/fields";
 import RegistrationsPage from "views/admin/registrations";
 import PaymentsPage     from "views/admin/payments";
+import ContactsPage     from "views/admin/contact";
 
 // Account Manager Imports
 import ManagerDashboard      from "views/account-manager/default";
@@ -44,6 +45,7 @@ import {
   MdLayers,
   MdAssignment,
   MdPayment,
+  MdContactMail,
 } from "react-icons/md";
 
 const routes = [
@@ -130,6 +132,15 @@ const routes = [
     icon: <MdLocationOn className="h-6 w-6" />,
     component: <LocationsPage />,
     group: "Configure",
+  },
+
+  {
+    name: "Contact",
+    layout: "/admin",
+    path: "contact",
+    icon: <MdContactMail className="h-6 w-6" />,
+    component: <ContactsPage />,
+    group: "Admin",
   },
 
   // Admin

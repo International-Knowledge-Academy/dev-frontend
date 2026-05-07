@@ -4,44 +4,45 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MdSend, MdCheckCircle } from "react-icons/md";
 import { InputField, SelectField, TextareaField } from "components/form";
 import useCategories from "hooks/categories/useCategories";
+import useCreateContact from "hooks/contact/useCreateContact";
 
 const programTypeOptions = [
-  { value: "course",     label: "Training Course (5 Days)" },
-  { value: "diploma",    label: "Training Diploma (10 Days)" },
+  { value: "course",     label: "Training Course (5 Days)"    },
+  { value: "diploma",    label: "Training Diploma (10 Days)"  },
   { value: "contracted", label: "Contracted / Custom Program" },
 ];
 
 const initialForm = {
-  name:         "",
-  organization: "",
-  email:        "",
-  phone:        "",
-  category:     "",
-  program_type: "",
-  message:      "",
+  full_name:        "",
+  organization:     "",
+  email:            "",
+  phone_whatsapp:   "",
+  program_category: "",
+  program_type:     "",
+  message:          "",
 };
 
 const ContactForm = () => {
   const [formData, setFormData]   = useState(initialForm);
-  const [errors, setErrors]       = useState<Record<string, string>>({});
+  const [errors,   setErrors]     = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading]     = useState(false);
 
   const { categories } = useCategories({ is_active: true, ordering: "display_order" });
+  const { submitContact, loading, error, fieldErrors } = useCreateContact();
 
-  const categoryOptions = categories.map((c) => ({ value: c.uid, label: c.name }));
+  const categoryOptions = categories.map((c) => ({ value: c.name, label: c.name }));
 
-  const updateFormData = (field: string, value: string) => {
+  const update = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: "" }));
   };
 
   const validate = () => {
     const e: Record<string, string> = {};
-    if (!formData.name.trim())    e.name    = "Full name is required";
-    if (!formData.email.trim())   e.email   = "Email address is required";
+    if (!formData.full_name.trim())  e.full_name = "Full name is required";
+    if (!formData.email.trim())      e.email     = "Email address is required";
     else if (!/\S+@\S+\.\S+/.test(formData.email)) e.email = "Invalid email format";
-    if (!formData.message.trim()) e.message = "Please write a message";
+    if (!formData.message.trim())    e.message   = "Please write a message";
     return e;
   };
 
@@ -50,12 +51,12 @@ const ContactForm = () => {
     const errs = validate();
     if (Object.keys(errs).length) { setErrors(errs); return; }
 
-    setLoading(true);
-    // Simulate API call — wire to real endpoint later
-    await new Promise((r) => setTimeout(r, 1400));
-    setLoading(false);
-    setSubmitted(true);
+    const result = await submitContact(formData);
+    if (result) setSubmitted(true);
   };
+
+  /* Merge API field errors into local errors for display */
+  const displayErrors = { ...errors, ...fieldErrors };
 
   return (
     <motion.div
@@ -75,9 +76,15 @@ const ContactForm = () => {
       </div>
 
       <div className="px-8 py-8">
+        {/* General error */}
+        {error && (
+          <div className="mb-5 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
+            {error}
+          </div>
+        )}
+
         <AnimatePresence mode="wait">
           {submitted ? (
-            /* Success state */
             <motion.div
               key="success"
               initial={{ opacity: 0, scale: 0.92 }}
@@ -100,93 +107,57 @@ const ContactForm = () => {
               </button>
             </motion.div>
           ) : (
-            <motion.form
-              key="form"
-              onSubmit={handleSubmit}
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              {/* Row 1: Name + Organization */}
+            <motion.form key="form" onSubmit={handleSubmit} initial={{ opacity: 1 }} exit={{ opacity: 0 }}>
+
+              {/* Row 1 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
                 <InputField
-                  label="Full Name"
-                  field="name"
-                  required
+                  label="Full Name" field="full_name" required
                   placeholder="Your full name"
-                  formData={formData}
-                  errors={errors}
-                  updateFormData={updateFormData}
+                  formData={formData} errors={displayErrors} updateFormData={update}
                 />
                 <InputField
-                  label="Organization"
-                  field="organization"
-                  required={false}
+                  label="Organization" field="organization" required={false}
                   placeholder="Company or institution"
-                  formData={formData}
-                  errors={errors}
-                  updateFormData={updateFormData}
+                  formData={formData} errors={displayErrors} updateFormData={update}
                 />
               </div>
 
-              {/* Row 2: Email + Phone */}
+              {/* Row 2 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
                 <InputField
-                  label="Email Address"
-                  field="email"
-                  type="email"
-                  required
+                  label="Email Address" field="email" type="email" required
                   placeholder="you@example.com"
-                  formData={formData}
-                  errors={errors}
-                  updateFormData={updateFormData}
+                  formData={formData} errors={displayErrors} updateFormData={update}
                 />
                 <InputField
-                  label="Phone / WhatsApp"
-                  field="phone"
-                  type="tel"
-                  required={false}
+                  label="Phone / WhatsApp" field="phone_whatsapp" type="tel" required={false}
                   placeholder="+1 234 567 890"
-                  formData={formData}
-                  errors={errors}
-                  updateFormData={updateFormData}
+                  formData={formData} errors={displayErrors} updateFormData={update}
                 />
               </div>
 
-              {/* Row 3: Category + Program Type */}
+              {/* Row 3 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
                 <SelectField
-                  label="Program Category"
-                  field="category"
-                  required={false}
+                  label="Program Category" field="program_category" required={false}
                   options={categoryOptions}
-                  formData={formData}
-                  errors={errors}
-                  updateFormData={updateFormData}
+                  formData={formData} errors={displayErrors} updateFormData={update}
                 />
                 <SelectField
-                  label="Program Type"
-                  field="program_type"
-                  required={false}
+                  label="Program Type" field="program_type" required={false}
                   options={programTypeOptions}
-                  formData={formData}
-                  errors={errors}
-                  updateFormData={updateFormData}
+                  formData={formData} errors={displayErrors} updateFormData={update}
                 />
               </div>
 
               {/* Message */}
               <TextareaField
-                label="Message"
-                field="message"
-                required
-                rows={5}
+                label="Message" field="message" required rows={5}
                 placeholder="Tell us about your training needs..."
-                formData={formData}
-                errors={errors}
-                updateFormData={updateFormData}
+                formData={formData} errors={displayErrors} updateFormData={update}
               />
 
-              {/* Submit */}
               <motion.button
                 type="submit"
                 disabled={loading}
