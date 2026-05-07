@@ -39,6 +39,7 @@ export interface RegistrationsParams {
 }
 
 export interface CreateRegistrationPayload {
+  program_uid: string;
   registration_type: RegistrationType;
   full_name: string;
   email: string;
@@ -48,8 +49,6 @@ export interface CreateRegistrationPayload {
   admin_notes?: string;
   certificate_issued?: boolean;
   certificate_issue_date?: string | null;
-  program_price?: string;
-  program: number;
 }
 
 export type UpdateRegistrationPayload = Partial<CreateRegistrationPayload>;

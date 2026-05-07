@@ -27,9 +27,8 @@ const useCreateRegistration = (): UseCreateRegistrationReturn => {
       const responseData = (err as any)?.response?.data;
 
       const fields: (keyof CreateRegistrationPayload)[] = [
-        "registration_type", "full_name", "email", "phone", "job_title",
-        "address", "admin_notes", "certificate_issued", "certificate_issue_date",
-        "program_price", "program",
+        "program_uid", "registration_type", "full_name", "email", "phone",
+        "job_title", "address", "admin_notes", "certificate_issued", "certificate_issue_date",
       ];
 
       const extracted: RegistrationFieldErrors = {};

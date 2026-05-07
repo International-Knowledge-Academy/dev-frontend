@@ -1,7 +1,6 @@
 // @ts-nocheck
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link2, PenLine } from "lucide-react";
 import { useToast } from "context/ToastContext";
 import useCreateRegistration from "hooks/registrations/useCreateRegistration";
 import useAllPrograms from "hooks/programs/useAllPrograms";
@@ -21,17 +20,14 @@ const RegistrationCreatePage = () => {
   const { createRegistration, loading, error, fieldErrors } = useCreateRegistration();
   const { programs, loading: loadingPrograms } = useAllPrograms();
 
-  const [mode, setMode] = useState<"program" | "manual">("program");
-
   const [form, setForm] = useState({
+    program_uid:       "",
     full_name:         "",
     email:             "",
     phone:             "",
     job_title:         "",
     address:           "",
     registration_type: "personal",
-    program:           "",
-    program_price:     "",
     admin_notes:       "",
   });
 
@@ -39,32 +35,19 @@ const RegistrationCreatePage = () => {
     setForm((p) => ({ ...p, [key]: value }));
 
   const programOptions = programs.map((p) => ({
-    value: String(p.id ?? p.uid),
+    value: p.uid,
     label: p.name,
-    _price: p.price ?? "",
-    _id: p.id,
   }));
 
-  const handleProgramSelect = (val: string) => {
-    const found = programs.find((p) => String(p.id ?? p.uid) === val);
-    update("program", val);
-    if (found?.price) update("program_price", found.price);
-  };
-
   const isValid =
-    form.full_name.trim() !== "" &&
-    form.email.trim() !== "" &&
-    form.phone.trim() !== "" &&
-    (mode === "manual" ? form.program.trim() !== "" : form.program !== "");
+    form.program_uid.trim() !== "" &&
+    form.full_name.trim()   !== "" &&
+    form.email.trim()       !== "" &&
+    form.phone.trim()       !== "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = {
-      ...form,
-      program: Number(form.program),
-      program_price: form.program_price || undefined,
-    };
-    const created = await createRegistration(payload);
+    const created = await createRegistration(form);
     if (created) {
       addToast("Registration created successfully", "success");
       navigate("/admin/registrations");
@@ -80,41 +63,6 @@ const RegistrationCreatePage = () => {
           bordered
         />
 
-        {/* Mode toggle */}
-        <div className="px-6 pt-5">
-          <div className="inline-flex rounded-lg border border-slate-200 p-1 bg-slate-50 gap-1">
-            <button
-              type="button"
-              onClick={() => setMode("program")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition ${
-                mode === "program"
-                  ? "bg-navy-800 text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
-              }`}
-            >
-              <Link2 size={14} />
-              Link to Program
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode("manual")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition ${
-                mode === "manual"
-                  ? "bg-navy-800 text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
-              }`}
-            >
-              <PenLine size={14} />
-              Manual Entry
-            </button>
-          </div>
-          <p className="text-xs text-slate-400 mt-1.5">
-            {mode === "program"
-              ? "Search and select a program — price will be auto-filled."
-              : "Enter all details manually, including program ID and price."}
-          </p>
-        </div>
-
         <form onSubmit={handleSubmit} className="px-6 py-5 grid grid-cols-1 gap-4">
           {error && (
             <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-2.5 text-sm text-red-600">
@@ -122,8 +70,22 @@ const RegistrationCreatePage = () => {
             </div>
           )}
 
-          {/* Participant Info */}
+          {/* Program */}
           <p className="text-xs font-bold uppercase tracking-widest text-slate-400 border-b border-slate-100 pb-2">
+            Program
+          </p>
+          <SearchableDropdown
+            label="Program"
+            field="program_uid"
+            options={programOptions}
+            formData={form}
+            errors={fieldErrors}
+            updateFormData={update}
+            placeholder={loadingPrograms ? "Loading programs..." : "Search and select a program..."}
+          />
+
+          {/* Participant Info */}
+          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 border-b border-slate-100 pb-2 mt-2">
             Participant Details
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -174,45 +136,6 @@ const RegistrationCreatePage = () => {
               label="Address"
               field="address"
               placeholder="123 Main St, Dubai"
-              required={false}
-              formData={form}
-              errors={fieldErrors}
-              updateFormData={update}
-            />
-          </div>
-
-          {/* Program */}
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 border-b border-slate-100 pb-2 mt-2">
-            Program & Pricing
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {mode === "program" ? (
-              <div className="md:col-span-2">
-                <SearchableDropdown
-                  label="Program"
-                  field="program"
-                  options={programOptions}
-                  formData={form}
-                  errors={fieldErrors}
-                  updateFormData={(_, val) => handleProgramSelect(val)}
-                  placeholder={loadingPrograms ? "Loading programs..." : "Search programs..."}
-                />
-              </div>
-            ) : (
-              <InputField
-                label="Program ID"
-                field="program"
-                type="number"
-                placeholder="e.g. 42"
-                formData={form}
-                errors={fieldErrors}
-                updateFormData={update}
-              />
-            )}
-            <InputField
-              label="Program Price"
-              field="program_price"
-              placeholder="e.g. 2500.00"
               required={false}
               formData={form}
               errors={fieldErrors}
