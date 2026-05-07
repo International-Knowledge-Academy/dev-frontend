@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useToast } from "context/ToastContext";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
 import InputField from "components/form/InputField";
@@ -20,6 +21,7 @@ const TYPE_OPTIONS = [
 const RegisterPage = () => {
   const navigate       = useNavigate();
   const [searchParams] = useSearchParams();
+  const { addToast }   = useToast();
   const preselectedUid = searchParams.get("uid") ?? undefined;
 
   /* Pre-selected program via ?uid= */
@@ -100,7 +102,10 @@ const RegisterPage = () => {
       address:           form.address,
     };
     const created = await createRegistration(payload);
-    if (created) navigate("/register/success");
+    if (created) {
+      addToast("Registration submitted successfully! We'll be in touch shortly.", "success");
+      navigate("/register/success");
+    }
   };
 
   return (
