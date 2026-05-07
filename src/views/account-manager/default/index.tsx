@@ -93,7 +93,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="space-y-5">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-28" />)}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -129,34 +129,33 @@ const Dashboard = () => {
   const totalByStatus  = statusEntries.reduce((s, [, v]) => s + v, 0);
   const approvedCount  = data.registrations_by_status?.approved ?? 0;
   const approvalRate   = totalByStatus > 0 ? Math.round((approvedCount / totalByStatus) * 100) : 0;
-  const maxStatusVal   = Math.max(...statusEntries.map(([, v]) => v), 0);
-
-  /* ── Bar chart ── */
+  /* ── Horizontal bar chart ── */
   const barSeries = [{
     name: "Registrations",
     data: statusEntries.map(([k, v]) => ({
       x: STATUS_LABELS[k] ?? formatKey(k),
       y: v,
-      fillColor: v === maxStatusVal
-        ? (STATUS_COLORS[k] ?? "#1E3A5F")
-        : "#E2E8F0",
     })),
   }];
   const barOptions = {
     chart:       { type: "bar", toolbar: { show: false }, background: "transparent" },
-    plotOptions: { bar: { borderRadius: 6, columnWidth: "48%", distributed: true } },
-    dataLabels:  { enabled: false },
+    plotOptions: { bar: { borderRadius: 6, barHeight: "52%", horizontal: true, distributed: true } },
+    dataLabels: {
+      enabled:    true,
+      textAnchor: "start",
+      formatter:  (val) => val.toString(),
+      offsetX:    8,
+      style:      { fontSize: "12px", fontWeight: 700, colors: ["#1e3a5f"] },
+      dropShadow: { enabled: false },
+    },
     xaxis: {
-      type: "category",
       axisBorder: { show: false },
       axisTicks:  { show: false },
-      labels:     { style: { colors: "#94a3b8", fontSize: "12px", fontWeight: 500 } },
+      labels:     { style: { colors: "#94a3b8", fontSize: "11px" } },
     },
-    yaxis:  { labels: { style: { colors: "#94a3b8", fontSize: "12px" } }, min: 0 },
-    grid:   { borderColor: "#f1f5f9", strokeDashArray: 4, xaxis: { lines: { show: false } } },
-    colors: statusEntries.map(([k, v]) =>
-      v === maxStatusVal ? (STATUS_COLORS[k] ?? "#1E3A5F") : "#E2E8F0"
-    ),
+    yaxis: { labels: { style: { colors: "#64748b", fontSize: "13px", fontWeight: 500 }, maxWidth: 90 } },
+    grid:  { borderColor: "#f1f5f9", strokeDashArray: 4, yaxis: { lines: { show: false } } },
+    colors: statusEntries.map(([k]) => STATUS_COLORS[k] ?? "#94A3B8"),
     tooltip: { theme: "light", y: { formatter: (v) => `${v} registrations` } },
     legend:  { show: false },
   };
@@ -199,34 +198,50 @@ const Dashboard = () => {
             />
           );
         })}
-
-        {data.revenue != null && (
-          <div className="bg-emerald-600 rounded-xl shadow-sm p-5 hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between mb-4">
-              <p className="text-sm font-medium text-emerald-100">Total Revenue</p>
-              <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
-                <DollarSign size={18} className="text-white" />
-              </div>
-            </div>
-            <p className="text-3xl font-extrabold text-white tabular-nums leading-none">
-              ${Number(data.revenue).toLocaleString()}
-            </p>
-          </div>
-        )}
-      </div>
+        
+        </div>
 
       {/* ── Charts row ── */}
       {statusEntries.length > 0 && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
-          {/* Column bar chart */}
+          {/* Horizontal bar chart */}
           <div className="lg:col-span-2 bg-white rounded-xl border border-slate-100 shadow-sm p-6">
-            <div className="flex items-start justify-between mb-1">
-              <p className="text-base font-bold text-navy-800">Registrations by Status</p>
-              <span className="text-xs text-slate-400 tabular-nums">{totalByStatus.toLocaleString()} total</span>
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <p className="text-base font-bold text-navy-800">Registrations by Status</p>
+                <p className="text-xs text-slate-400 mt-0.5">Distribution across all stages</p>
+              </div>
+              <span className="text-2xl font-extrabold text-navy-800 tabular-nums leading-none">
+                {totalByStatus.toLocaleString()}
+                <span className="text-xs font-normal text-slate-400 ml-1">total</span>
+              </span>
             </div>
-            <p className="text-xs text-slate-400 mb-5">Breakdown across all registration stages</p>
-            <ReactApexChart type="bar" series={barSeries} options={barOptions} height={230} />
+            <ReactApexChart
+              type="bar"
+              series={barSeries}
+              options={barOptions}
+              height={Math.max(statusEntries.length * 54, 180)}
+            />
+            {/* Color chips */}
+            <div className="flex flex-wrap gap-2 mt-3 pt-4 border-t border-slate-100">
+              {statusEntries.map(([k, v]) => (
+                <span
+                  key={k}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold"
+                  style={{
+                    backgroundColor: `${STATUS_COLORS[k] ?? "#94A3B8"}18`,
+                    color: STATUS_COLORS[k] ?? "#94A3B8",
+                  }}
+                >
+                  <span
+                    className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                    style={{ backgroundColor: STATUS_COLORS[k] ?? "#94A3B8" }}
+                  />
+                  {STATUS_LABELS[k] ?? formatKey(k)}: {v}
+                </span>
+              ))}
+            </div>
           </div>
 
           {/* Registration pipeline panel */}

@@ -195,19 +195,6 @@ const Dashboard = () => {
           );
         })}
 
-        {data.revenue != null && (
-          <div className="bg-emerald-600 rounded-xl shadow-sm p-5 hover:shadow-md transition-shadow">
-            <div className="flex items-start justify-between mb-4">
-              <p className="text-sm font-medium text-emerald-100">Total Revenue</p>
-              <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
-                <DollarSign size={18} className="text-white" />
-              </div>
-            </div>
-            <p className="text-3xl font-extrabold text-white tabular-nums leading-none">
-              ${Number(data.revenue).toLocaleString()}
-            </p>
-          </div>
-        )}
       </div>
 
       {/* ── Charts row ── */}
