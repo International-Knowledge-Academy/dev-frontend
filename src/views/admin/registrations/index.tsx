@@ -2,12 +2,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ClipboardList, UserCheck, UserX, Clock, Plus, RefreshCw,
+  ClipboardList, UserCheck, UserX, UserPlus, Clock, Plus, RefreshCw,
   Pencil, Trash2, AlertTriangle, X, Filter,
 } from "lucide-react";
 import useRegistrations from "hooks/registrations/useRegistrations";
 import useDeleteRegistration from "hooks/registrations/useDeleteRegistration";
 import { useToast } from "context/ToastContext";
+import AssignManagerModal from "./components/AssignManagerModal";
 import Loading from "components/loading/Loading";
 import Button from "components/ui/buttons/Button";
 import IconButton from "components/ui/buttons/IconButton";
@@ -81,8 +82,10 @@ const RegistrationsPage = () => {
   const { registrations, count, loading, error, params, setParams, refetch } = useRegistrations();
   const { deleteRegistration, loading: deleting } = useDeleteRegistration();
 
-  const [deleteTarget, setDeleteTarget] = useState<Registration | null>(null);
-  const [filtersOpen, setFiltersOpen]   = useState(false);
+  const [deleteTarget, setDeleteTarget]   = useState<Registration | null>(null);
+  const [assignTarget, setAssignTarget]   = useState<Registration | null>(null);
+  const [assignOpen, setAssignOpen]       = useState(false);
+  const [filtersOpen, setFiltersOpen]     = useState(false);
 
   const totalApproved = registrations.filter((r) => r.status === "approved").length;
   const totalPending  = registrations.filter((r) => r.status === "pending").length;
@@ -349,6 +352,13 @@ const RegistrationsPage = () => {
                         <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                           <div className="flex items-center gap-1">
                             <button
+                              onClick={() => { setAssignTarget(reg); setAssignOpen(true); }}
+                              className="p-1.5 rounded-md text-slate-400 hover:bg-navy-50 hover:text-navy-600 transition"
+                              title="Assign Manager"
+                            >
+                              <UserPlus size={14} />
+                            </button>
+                            <button
                               onClick={() => navigate(`/admin/registrations/${reg.uid}/edit`)}
                               className="p-1.5 rounded-md text-slate-400 hover:bg-navy-50 hover:text-navy-700 transition"
                               title="Edit"
@@ -391,6 +401,13 @@ const RegistrationsPage = () => {
           </div>
         </div>
       </div>
+
+      <AssignManagerModal
+        open={assignOpen}
+        registration={assignTarget}
+        onClose={() => { setAssignOpen(false); setAssignTarget(null); }}
+        onSuccess={refetch}
+      />
 
       <ConfirmModal
         open={!!deleteTarget}

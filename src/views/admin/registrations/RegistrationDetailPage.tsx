@@ -3,11 +3,16 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Pencil, CheckCircle, XCircle, GraduationCap, UserCheck,
-  CalendarDays, FileText, DollarSign, AlertTriangle, Loader2, UserPlus,
+  CalendarDays, FileText, DollarSign, AlertTriangle, UserPlus,
 } from "lucide-react";
+import { MdClose } from "react-icons/md";
 import DropdownButton from "components/ui/buttons/DropdownButton";
+import Button from "components/ui/buttons/Button";
+import DangerButton from "components/ui/buttons/DangerButton";
+import AssignManagerModal from "./components/AssignManagerModal";
 import useGetRegistration from "hooks/registrations/useGetRegistration";
-import useRegistrationActions from "hooks/registrations/useRegistrationActions";
+import useApproveRegistration from "hooks/registrations/useApproveRegistration";
+import useRejectRegistration from "hooks/registrations/useRejectRegistration";
 import useDeleteRegistration from "hooks/registrations/useDeleteRegistration";
 import useAllPrograms from "hooks/programs/useAllPrograms";
 import { useToast } from "context/ToastContext";
@@ -57,7 +62,8 @@ const RegistrationDetailPage = () => {
   const { addToast } = useToast();
 
   const { registration, loading, error, refetch } = useGetRegistration(id);
-  const { approve, reject, assignManager, approveState, rejectState, assignManagerState } = useRegistrationActions();
+  const { approve, loading: approving, error: approveError } = useApproveRegistration();
+  const { reject, loading: rejecting, error: rejectError }   = useRejectRegistration();
   const { deleteRegistration, loading: deleting } = useDeleteRegistration();
   const { programs } = useAllPrograms();
 
@@ -65,11 +71,10 @@ const RegistrationDetailPage = () => {
     ? programs.find((p) => p.id === registration.program)
     : null;
 
-  const [rejectOpen, setRejectOpen]         = useState(false);
-  const [rejectReason, setRejectReason]     = useState("");
-  const [deleteOpen, setDeleteOpen]         = useState(false);
-  const [assignOpen, setAssignOpen]         = useState(false);
-  const [managerIdInput, setManagerIdInput] = useState("");
+  const [rejectOpen, setRejectOpen]     = useState(false);
+  const [rejectReason, setRejectReason] = useState("");
+  const [deleteOpen, setDeleteOpen]     = useState(false);
+  const [assignOpen, setAssignOpen]     = useState(false);
 
   if (loading) return <Loading text="Loading registration..." />;
   if (error || !registration) {
@@ -83,7 +88,7 @@ const RegistrationDetailPage = () => {
   const handleApprove = async () => {
     const ok = await approve(id);
     if (ok) { addToast("Registration approved", "success"); refetch(); }
-    else { addToast(approveState.error ?? "Failed to approve", "error"); }
+    else { addToast(approveError ?? "Failed to approve", "error"); }
   };
 
   const handleReject = async () => {
@@ -94,21 +99,7 @@ const RegistrationDetailPage = () => {
       setRejectReason("");
       refetch();
     } else {
-      addToast(rejectState.error ?? "Failed to reject", "error");
-    }
-  };
-
-  const handleAssignManager = async () => {
-    const mid = Number(managerIdInput);
-    if (!mid) return;
-    const ok = await assignManager(id, mid);
-    if (ok) {
-      addToast("Manager assigned", "success");
-      setAssignOpen(false);
-      setManagerIdInput("");
-      refetch();
-    } else {
-      addToast(assignManagerState.error ?? "Failed to assign manager", "error");
+      addToast(rejectError ?? "Failed to reject", "error");
     }
   };
 
@@ -122,7 +113,7 @@ const RegistrationDetailPage = () => {
     }
   };
 
-  const anyActionLoading = approveState.loading || rejectState.loading || assignManagerState.loading;
+  const anyActionLoading = approving || rejecting;
 
   return (
     <div className="space-y-4 max-w-5xl mx-auto">
@@ -255,85 +246,62 @@ const RegistrationDetailPage = () => {
 
       {/* Reject modal */}
       {rejectOpen && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-200 flex items-center justify-center">
-                <XCircle size={18} className="text-red-500" />
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-navy-800">Reject Registration</h3>
-                <p className="text-xs text-slate-400">Optionally provide a rejection reason.</p>
-              </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-navy-overlay-20 backdrop-blur-sm" onClick={() => { setRejectOpen(false); setRejectReason(""); }} />
+          <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl z-10">
+            <div className="flex items-center justify-between px-8 py-5 border-b border-slate-100">
+              <h2 className="text-lg font-bold text-navy-800">Reject Registration</h2>
+              <button onClick={() => { setRejectOpen(false); setRejectReason(""); }} className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 transition">
+                <MdClose size={20} />
+              </button>
             </div>
-            <textarea
-              value={rejectReason}
-              onChange={(e) => setRejectReason(e.target.value)}
-              placeholder="Reason for rejection (optional)..."
-              rows={3}
-              className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-navy-800 placeholder-slate-400 focus:outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-100 resize-none"
-            />
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => { setRejectOpen(false); setRejectReason(""); }}
-                className="flex-1 rounded-md lg:rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleReject}
-                disabled={rejectState.loading}
-                className="flex-1 rounded-md lg:rounded-lg bg-red-600 py-2.5 text-sm font-semibold text-white hover:bg-red-500 disabled:opacity-50 transition"
-              >
-                {rejectState.loading ? "Rejecting..." : "Confirm Reject"}
-              </button>
+            <div className="px-8 py-6">
+              <div className="flex items-start gap-4 mb-5">
+                <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0">
+                  <XCircle size={20} className="text-red-500" />
+                </div>
+                <p className="text-sm text-slate-600 pt-3">
+                  Optionally provide a reason for rejecting{" "}
+                  <span className="font-semibold text-navy-800">{registration.full_name}</span>'s registration.
+                </p>
+              </div>
+              <textarea
+                value={rejectReason}
+                onChange={(e) => setRejectReason(e.target.value)}
+                placeholder="Reason for rejection (optional)..."
+                rows={3}
+                className="w-full mb-5 rounded-md lg:rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-navy-800 placeholder-slate-400 outline-none focus:ring-2 focus:ring-navy-300 focus:border-navy-400 transition resize-none"
+              />
+              <div className="flex gap-3">
+                <Button
+                  text="Cancel"
+                  onClick={() => { setRejectOpen(false); setRejectReason(""); }}
+                  className="flex-1 py-2.5"
+                  bgColor="bg-white"
+                  textColor="text-slate-600"
+                  borderColor="border-slate-200"
+                  hoverBgColor="hover:bg-slate-50"
+                  hoverTextColor=""
+                  hoverBorderColor=""
+                />
+                <DangerButton
+                  text={rejecting ? "Rejecting..." : "Confirm Reject"}
+                  onClick={handleReject}
+                  disabled={rejecting}
+                  className="flex-1 py-2.5"
+                />
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Assign manager modal */}
-      {assignOpen && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-navy-50 border border-navy-100 flex items-center justify-center">
-                <UserPlus size={18} className="text-navy-600" />
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-navy-800">Assign Manager</h3>
-                <p className="text-xs text-slate-400">Enter the manager's user ID.</p>
-              </div>
-            </div>
-            <input
-              type="number"
-              value={managerIdInput}
-              onChange={(e) => setManagerIdInput(e.target.value)}
-              placeholder="Manager user ID (e.g. 3)"
-              className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-navy-800 placeholder-slate-400 focus:outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-100"
-            />
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => { setAssignOpen(false); setManagerIdInput(""); }}
-                className="flex-1 rounded-md lg:rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleAssignManager}
-                disabled={assignManagerState.loading || !managerIdInput}
-                className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 disabled:opacity-50 transition"
-              >
-                {assignManagerState.loading ? "Assigning..." : "Assign"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <AssignManagerModal
+        open={assignOpen}
+        registration={registration}
+        onClose={() => setAssignOpen(false)}
+        onSuccess={refetch}
+      />
 
       <ConfirmModal
         open={deleteOpen}
