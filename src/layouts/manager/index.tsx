@@ -28,7 +28,6 @@ import FieldCreatePage         from "views/account-manager/fields/FieldCreatePag
 import FieldEditPage           from "views/account-manager/fields/FieldEditPage";
 import FieldDetailPage         from "views/account-manager/fields/FieldDetailPage";
 import RegistrationsPage       from "views/account-manager/registrations";
-import RegistrationCreatePage  from "views/account-manager/registrations/RegistrationCreatePage";
 import RegistrationDetailPage  from "views/account-manager/registrations/RegistrationDetailPage";
 import RegistrationEditPage    from "views/account-manager/registrations/RegistrationEditPage";
 import PaymentsPage            from "views/account-manager/payments";
@@ -73,7 +72,6 @@ const ManagerLayout = () => {
 
             {/* Registrations */}
             <Route path="registrations"            element={<RegistrationsPage />} />
-            <Route path="registrations/create"     element={<RegistrationCreatePage />} />
             <Route path="registrations/:id"        element={<RegistrationDetailPage />} />
             <Route path="registrations/:id/edit"   element={<RegistrationEditPage />} />
 

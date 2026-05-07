@@ -26,7 +26,6 @@ import FieldCreatePage from "views/admin/fields/FieldCreatePage";
 import FieldEditPage from "views/admin/fields/FieldEditPage";
 import FieldDetailPage from "views/admin/fields/FieldDetailPage";
 import RegistrationsPage from "views/admin/registrations";
-import RegistrationCreatePage from "views/admin/registrations/RegistrationCreatePage";
 import RegistrationDetailPage from "views/admin/registrations/RegistrationDetailPage";
 import RegistrationEditPage from "views/admin/registrations/RegistrationEditPage";
 import PaymentsPage from "views/admin/payments";
@@ -131,7 +130,6 @@ export default function Admin(props) {
                 <Route path="/fields/:uid"          element={<FieldDetailPage />} />
                 <Route path="/fields/:uid/edit"       element={<FieldEditPage />} />
                 <Route path="/registrations"              element={<RegistrationsPage />} />
-                <Route path="/registrations/create"       element={<RegistrationCreatePage />} />
                 <Route path="/registrations/:id"          element={<RegistrationDetailPage />} />
                 <Route path="/registrations/:id/edit"     element={<RegistrationEditPage />} />
                 <Route path="/payments"                   element={<PaymentsPage />} />

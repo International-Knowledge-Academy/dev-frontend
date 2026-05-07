@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Mail, Phone, Building2, RefreshCw, AlertTriangle,
-  X, Filter, MessageSquare, Calendar, Tag, Trash2,
+  X, Filter, MessageSquare, Calendar, Tag, Trash2, Pencil,
 } from "lucide-react";
 import useContacts from "hooks/contact/useContacts";
 import useDeleteContact from "hooks/contact/useDeleteContact";
@@ -261,13 +261,22 @@ const ContactsPage = () => {
 
                         {/* Actions */}
                         <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
-                          <button
-                            onClick={() => setDeleteTarget(contact)}
-                            className="p-1.5 rounded-md text-slate-400 hover:bg-red-50 hover:text-red-500 transition"
-                            title="Delete"
-                          >
-                            <Trash2 size={14} />
-                          </button>
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => navigate(`/admin/contact/${contact.uid}/edit`)}
+                              className="p-1.5 rounded-md text-slate-400 hover:bg-navy-50 hover:text-navy-700 transition"
+                              title="Edit"
+                            >
+                              <Pencil size={14} />
+                            </button>
+                            <button
+                              onClick={() => setDeleteTarget(contact)}
+                              className="p-1.5 rounded-md text-slate-400 hover:bg-red-50 hover:text-red-500 transition"
+                              title="Delete"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}

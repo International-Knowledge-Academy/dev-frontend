@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ClipboardList, UserCheck, UserX, UserPlus, Clock, Plus, RefreshCw,
+  ClipboardList, UserCheck, UserX, UserPlus, Clock, RefreshCw,
   Pencil, Trash2, AlertTriangle, X, Filter,
 } from "lucide-react";
 import useRegistrations from "hooks/registrations/useRegistrations";
@@ -11,7 +11,6 @@ import useDeleteRegistration from "hooks/registrations/useDeleteRegistration";
 import { useToast } from "context/ToastContext";
 import AssignManagerModal from "./components/AssignManagerModal";
 import Loading from "components/loading/Loading";
-import Button from "components/ui/buttons/Button";
 import IconButton from "components/ui/buttons/IconButton";
 import PageHeader from "components/ui/PageHeader";
 import PrevButton from "components/ui/buttons/PrevButton";
@@ -123,14 +122,6 @@ const RegistrationsPage = () => {
       <PageHeader
         title="Registrations"
         subtitle="Manage program registrations"
-        actions={
-          <Button
-            variant="dark-navy"
-            text="New Registration"
-            icon={<Plus size={15} />}
-            onClick={() => navigate("/admin/registrations/create")}
-          />
-        }
         className="mb-4 px-0 sm:px-0"
       />
 

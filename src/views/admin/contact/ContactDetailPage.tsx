@@ -1,15 +1,10 @@
 // @ts-nocheck
-import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   MdEmail, MdPhone, MdBusiness, MdCategory, MdMessage,
-  MdCalendarToday, MdDelete, MdArrowBack, MdEdit,
+  MdCalendarToday, MdArrowBack, MdEdit,
 } from "react-icons/md";
-import { AlertTriangle } from "lucide-react";
 import useContact from "hooks/contact/useContact";
-import useDeleteContact from "hooks/contact/useDeleteContact";
-import { useToast } from "context/ToastContext";
-import ConfirmModal from "components/ui/modals/ConfirmModal";
 
 /* ─── Sub-components ─────────────────────────────────────────────────────── */
 const InfoRow = ({ icon, label, value }) => (
@@ -35,20 +30,9 @@ const formatDate = (d: string) =>
 
 /* ─── Page ───────────────────────────────────────────────────────────────── */
 const ContactDetailPage = () => {
-  const { uid }    = useParams<{ uid: string }>();
-  const navigate   = useNavigate();
-  const { addToast } = useToast();
+  const { uid }  = useParams<{ uid: string }>();
+  const navigate = useNavigate();
   const { contact, loading, error } = useContact(uid);
-  const { deleteContact, loading: deleting } = useDeleteContact();
-  const [confirmDelete, setConfirmDelete] = useState(false);
-
-  const handleDelete = async () => {
-    const ok = await deleteContact(uid!);
-    if (ok) {
-      addToast("Contact deleted", "success");
-      navigate("/admin/contact");
-    }
-  };
 
   if (loading) {
     return (
@@ -151,35 +135,9 @@ const ContactDetailPage = () => {
             <MdEdit size={16} />
             Edit
           </button>
-          <button
-            type="button"
-            onClick={() => setConfirmDelete(true)}
-            className="flex-1 rounded-md lg:rounded-lg bg-red-50 border border-red-200 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-100 transition flex items-center justify-center gap-2"
-          >
-            <MdDelete size={16} />
-            Delete
-          </button>
         </div>
 
       </div>
-
-      <ConfirmModal
-        open={confirmDelete}
-        title="Delete Submission"
-        message={
-          <>
-            Are you sure you want to delete the submission from{" "}
-            <span className="font-semibold text-navy-800">{contact.full_name}</span>?
-            {" "}This action cannot be undone.
-          </>
-        }
-        confirmText="Delete"
-        cancelText="Cancel"
-        loading={deleting}
-        icon={<AlertTriangle size={20} className="text-red-500" />}
-        onClose={() => setConfirmDelete(false)}
-        onConfirm={handleDelete}
-      />
     </div>
   );
 };
