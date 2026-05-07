@@ -2,7 +2,6 @@
 import {
   MdWorkspacePremium, MdLocationOn, MdLayers,
   MdPeople, MdSchool,
-  MdCheckCircle, MdPending, MdCancel, MdAccessTime,
 } from "react-icons/md";
 
 const statCards = [
