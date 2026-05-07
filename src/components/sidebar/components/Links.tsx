@@ -53,6 +53,9 @@ export function SidebarLinks({ routes, layout = "/admin" }) {
       {/* Grouped routes */}
       {groups.map((group) => (
         <div key={group} className="mt-4">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 px-4 mb-1">
+            {group}
+          </p>
           {visible
             .filter((r) => r.group === group)
             .map((route, i) => renderLink(route, `${group}-${i}`))}
