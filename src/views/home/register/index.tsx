@@ -1,7 +1,6 @@
 // @ts-nocheck
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { GraduationCap, Calendar, Clock, MapPin, DollarSign } from "lucide-react";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
 import InputField from "components/form/InputField";
@@ -12,9 +11,6 @@ import useAllCategories from "hooks/categories/useAllCategories";
 import useFields from "hooks/fields/useFields";
 import usePrograms from "hooks/programs/usePrograms";
 import useCreateRegistration from "hooks/registrations/useCreateRegistration";
-
-const formatDate = (d) =>
-  d ? new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : null;
 
 const TYPE_OPTIONS = [
   { value: "personal",  label: "Personal"  },
@@ -62,7 +58,7 @@ const RegisterPage = () => {
   /* Pre-fill when arriving from program page */
   useEffect(() => {
     if (preProgram) {
-      update("program", String(preProgram.id ?? ""));
+      update("program", preProgram.uid ?? "");
       if (preProgram.field?.uid) {
         setSelectedFieldUid(preProgram.field.uid);
         update("field", preProgram.field.uid);
@@ -86,12 +82,6 @@ const RegisterPage = () => {
     update("program", "");
   };
 
-  /* Resolve selected program object for preview */
-  const selectedProgramObj =
-    (preProgram && String(preProgram.id) === form.program)
-      ? preProgram
-      : programs.find((p) => String(p.id) === form.program) ?? null;
-
   const isValid =
     form.program !== "" &&
     form.full_name.trim() !== "" &&
@@ -101,14 +91,13 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
+      program_uid:       form.program,
       registration_type: form.registration_type,
       full_name:         form.full_name,
       email:             form.email,
       phone:             form.phone,
       job_title:         form.job_title,
       address:           form.address,
-      program:           Number(form.program),
-      program_price:     selectedProgramObj?.price ?? undefined,
     };
     const created = await createRegistration(payload);
     if (created) navigate("/register/success");
@@ -188,9 +177,9 @@ const RegisterPage = () => {
                 required={true}
                 options={
                   selectedFieldUid
-                    ? programs.map((p) => ({ value: String(p.id ?? ""), label: p.name }))
+                    ? programs.map((p) => ({ value: p.uid, label: p.name }))
                     : preProgram
-                    ? [{ value: String(preProgram.id ?? ""), label: preProgram.name }]
+                    ? [{ value: preProgram.uid, label: preProgram.name }]
                     : []
                 }
                 formData={form}
