@@ -198,47 +198,6 @@ const RegisterPage = () => {
                 updateFormData={update}
               />
 
-              {/* Selected program preview card */}
-              {selectedProgramObj && (
-                <div className="mb-5 flex items-start gap-4 bg-navy-800 text-white rounded-xl p-4 relative overflow-hidden">
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-300" />
-                  <div className="w-10 h-10 rounded-lg bg-gold-500/20 flex items-center justify-center flex-shrink-0">
-                    <GraduationCap size={18} className="text-gold-400" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-sm leading-tight">{selectedProgramObj.name}</p>
-                    <div className="flex flex-wrap gap-3 mt-1.5 text-xs text-navy-300">
-                      {selectedProgramObj.field?.name && (
-                        <span className="flex items-center gap-1">
-                          <GraduationCap size={10} />{selectedProgramObj.field.name}
-                        </span>
-                      )}
-                      {formatDate(selectedProgramObj.start_date) && (
-                        <span className="flex items-center gap-1">
-                          <Calendar size={10} />{formatDate(selectedProgramObj.start_date)}
-                        </span>
-                      )}
-                      {selectedProgramObj.duration && (
-                        <span className="flex items-center gap-1">
-                          <Clock size={10} />{selectedProgramObj.duration}
-                        </span>
-                      )}
-                      {selectedProgramObj.location?.city && (
-                        <span className="flex items-center gap-1">
-                          <MapPin size={10} />{selectedProgramObj.location.city}
-                        </span>
-                      )}
-                    </div>
-                    {selectedProgramObj.price && (
-                      <p className="text-gold-400 font-bold text-sm mt-1.5 flex items-center gap-1">
-                        <DollarSign size={12} />
-                        {selectedProgramObj.currency ?? ""}{selectedProgramObj.price}
-                        <span className="text-navy-400 font-normal text-xs">/ person</span>
-                      </p>
-                    )}
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* ── Participant Details ── */}

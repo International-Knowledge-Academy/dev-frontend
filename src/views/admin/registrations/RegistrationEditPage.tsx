@@ -8,7 +8,7 @@ import useAllPrograms from "hooks/programs/useAllPrograms";
 import PageHeader from "components/ui/PageHeader";
 import InputField from "components/form/InputField";
 import Button from "components/ui/buttons/Button";
-import SearchableDropdown from "components/form/search/SearchableDropdown";
+import SearchableSelect from "components/form/SearchableSelect";
 import ToggleInput from "components/form/toggle/ToggleInput";
 import Loading from "components/loading/Loading";
 
@@ -107,7 +107,7 @@ const RegistrationEditPage = () => {
           <p className="text-xs font-bold uppercase tracking-widest text-slate-400 border-b border-slate-100 pb-2">
             Program
           </p>
-          <SearchableDropdown
+          <SearchableSelect
             label="Program"
             field="program_uid"
             options={programOptions}
@@ -122,11 +122,11 @@ const RegistrationEditPage = () => {
             Participant Details
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InputField label="Full Name" field="full_name" placeholder="John Doe"                     formData={form} errors={fieldErrors} updateFormData={update} />
+            <InputField label="Full Name" field="full_name" placeholder="John Doe"                      formData={form} errors={fieldErrors} updateFormData={update} />
             <InputField label="Email"     field="email"     type="email" placeholder="john@example.com" formData={form} errors={fieldErrors} updateFormData={update} />
-            <InputField label="Phone"     field="phone"     placeholder="+971 50 000 0000"              formData={form} errors={fieldErrors} updateFormData={update} />
+            <InputField label="Phone"     field="phone"     placeholder="+971 50 000 0000"               formData={form} errors={fieldErrors} updateFormData={update} />
             <InputField label="Job Title" field="job_title" placeholder="Software Engineer" required={false} formData={form} errors={fieldErrors} updateFormData={update} />
-            <SearchableDropdown label="Registration Type" field="registration_type" options={TYPE_OPTIONS} formData={form} errors={fieldErrors} updateFormData={update} placeholder="Select type..." />
+            <SearchableSelect label="Registration Type" field="registration_type" options={TYPE_OPTIONS} formData={form} errors={fieldErrors} updateFormData={update} placeholder="Select type..." />
             <InputField label="Address" field="address" placeholder="123 Main St" required={false} formData={form} errors={fieldErrors} updateFormData={update} />
           </div>
 

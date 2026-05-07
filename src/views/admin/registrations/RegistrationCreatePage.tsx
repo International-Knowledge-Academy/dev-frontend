@@ -1,13 +1,14 @@
 // @ts-nocheck
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link2, PenLine } from "lucide-react";
 import { useToast } from "context/ToastContext";
 import useCreateRegistration from "hooks/registrations/useCreateRegistration";
 import useAllPrograms from "hooks/programs/useAllPrograms";
 import PageHeader from "components/ui/PageHeader";
 import InputField from "components/form/InputField";
 import Button from "components/ui/buttons/Button";
-import SearchableDropdown from "components/form/search/SearchableDropdown";
+import SearchableSelect from "components/form/SearchableSelect";
 
 const TYPE_OPTIONS = [
   { value: "personal",  label: "Personal"  },
@@ -19,6 +20,8 @@ const RegistrationCreatePage = () => {
   const { addToast } = useToast();
   const { createRegistration, loading, error, fieldErrors } = useCreateRegistration();
   const { programs, loading: loadingPrograms } = useAllPrograms();
+
+  const [mode, setMode] = useState<"program" | "manual">("program");
 
   const [form, setForm] = useState({
     program_uid:       "",
@@ -63,6 +66,37 @@ const RegistrationCreatePage = () => {
           bordered
         />
 
+        {/* Mode toggle */}
+        <div className="px-6 pt-5">
+          <div className="inline-flex rounded-lg border border-slate-200 p-1 bg-slate-50 gap-1">
+            <button
+              type="button"
+              onClick={() => { setMode("program"); update("program_uid", ""); }}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition ${
+                mode === "program" ? "bg-navy-800 text-white shadow-sm" : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              <Link2 size={14} />
+              Link to Program
+            </button>
+            <button
+              type="button"
+              onClick={() => { setMode("manual"); update("program_uid", ""); }}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition ${
+                mode === "manual" ? "bg-navy-800 text-white shadow-sm" : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              <PenLine size={14} />
+              Manual Entry
+            </button>
+          </div>
+          <p className="text-xs text-slate-400 mt-1.5">
+            {mode === "program"
+              ? "Search and select a program from the list."
+              : "Enter the program UID manually."}
+          </p>
+        </div>
+
         <form onSubmit={handleSubmit} className="px-6 py-5 grid grid-cols-1 gap-4">
           {error && (
             <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-2.5 text-sm text-red-600">
@@ -74,15 +108,26 @@ const RegistrationCreatePage = () => {
           <p className="text-xs font-bold uppercase tracking-widest text-slate-400 border-b border-slate-100 pb-2">
             Program
           </p>
-          <SearchableDropdown
-            label="Program"
-            field="program_uid"
-            options={programOptions}
-            formData={form}
-            errors={fieldErrors}
-            updateFormData={update}
-            placeholder={loadingPrograms ? "Loading programs..." : "Search and select a program..."}
-          />
+          {mode === "program" ? (
+            <SearchableSelect
+              label="Program"
+              field="program_uid"
+              options={programOptions}
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={update}
+              placeholder={loadingPrograms ? "Loading programs..." : "Search and select a program..."}
+            />
+          ) : (
+            <InputField
+              label="Program UID"
+              field="program_uid"
+              placeholder="e.g. 3fa85f64-5717-4562-b3fc-2c963f66afa6"
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={update}
+            />
+          )}
 
           {/* Participant Info */}
           <p className="text-xs font-bold uppercase tracking-widest text-slate-400 border-b border-slate-100 pb-2 mt-2">
@@ -123,7 +168,7 @@ const RegistrationCreatePage = () => {
               errors={fieldErrors}
               updateFormData={update}
             />
-            <SearchableDropdown
+            <SearchableSelect
               label="Registration Type"
               field="registration_type"
               options={TYPE_OPTIONS}
