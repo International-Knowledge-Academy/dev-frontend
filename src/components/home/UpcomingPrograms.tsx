@@ -78,14 +78,7 @@ const ProgramCard = ({ program }: { program: Program }) => {
       {/* Badges row */}
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         {program.field ? (
-          <span
-            className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border"
-            style={{
-              backgroundColor: program.field.hex_color ? `${program.field.hex_color}18` : "#f8fafc",
-              borderColor:     program.field.hex_color ?? "#e2e8f0",
-              color:           program.field.text_color ?? program.field.hex_color ?? "#475569",
-            }}
-          >
+          <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-navy-100 bg-navy-50 text-navy-600">
             {program.field.name}
           </span>
         ) : (
