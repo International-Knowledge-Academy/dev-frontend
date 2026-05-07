@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdLock, MdVisibility, MdVisibilityOff, MdCheckCircle } from "react-icons/md";

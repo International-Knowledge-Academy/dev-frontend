@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import useCreateField from "hooks/fields/useCreateField";

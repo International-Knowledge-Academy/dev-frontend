@@ -1,7 +1,7 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import {
   MdWorkspacePremium, MdLocationOn, MdLayers,
-  MdPeople, MdSchool, MdTrendingUp, MdCalendarToday,
+  MdPeople, MdSchool,
   MdCheckCircle, MdPending, MdCancel, MdAccessTime,
 } from "react-icons/md";
 
@@ -48,33 +48,6 @@ const statCards = [
   },
 ];
 
-const programStatusStats = [
-  { label: "Upcoming",  value: 14, icon: <MdPending    size={16} />, cls: "bg-blue-50 text-blue-600 border-blue-600" },
-  { label: "Ongoing",   value: 9,  icon: <MdAccessTime size={16} />, cls: "bg-green-50 text-green-600 border-green-600" },
-  { label: "Completed", value: 21, icon: <MdCheckCircle size={16} />, cls: "bg-slate-100 text-slate-500 border-slate-500" },
-  { label: "Cancelled", value: 4,  icon: <MdCancel     size={16} />, cls: "bg-red-50 text-red-500 border-red-500" },
-];
-
-const recentPrograms = [
-  { name: "Advanced Project Management",   field: "Management",     location: "Dubai, UAE",     status: "ongoing",   type: "course" },
-  { name: "Digital Marketing Diploma",     field: "Marketing",      location: "London, UK",     status: "upcoming",  type: "diploma" },
-  { name: "Data Analysis Fundamentals",    field: "Technology",     location: "Cairo, Egypt",   status: "upcoming",  type: "course" },
-  { name: "Leadership Excellence Program", field: "Leadership",     location: "Riyadh, KSA",    status: "completed", type: "diploma" },
-  { name: "Agile & Scrum Certification",   field: "Technology",     location: "Online",         status: "ongoing",   type: "contracted" },
-];
-
-const statusBadge: Record<string, string> = {
-  upcoming:  "bg-blue-50 text-blue-600 border-blue-600",
-  ongoing:   "bg-green-50 text-green-600 border-green-600",
-  completed: "bg-slate-100 text-slate-500 border-slate-500",
-  cancelled: "bg-red-50 text-red-500 border-red-500",
-};
-
-const typeBadge: Record<string, string> = {
-  course:     "bg-navy-50 text-navy-600 border-navy-600",
-  diploma:    "bg-gold-50 text-gold-600 border-gold-600",
-  contracted: "bg-purple-50 text-purple-600 border-purple-600",
-};
 
 const Dashboard = () => {
   return (

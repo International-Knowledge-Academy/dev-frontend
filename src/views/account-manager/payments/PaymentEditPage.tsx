@@ -24,13 +24,6 @@ const METHOD_OPTIONS = [
   { value: "online",        label: "Online"         },
 ];
 
-const STATUS_OPTIONS = [
-  { value: "pending",   label: "Pending"   },
-  { value: "approved",  label: "Approved"  },
-  { value: "cancelled", label: "Cancelled" },
-  { value: "refunded",  label: "Refunded"  },
-];
-
 const PaymentEditPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();

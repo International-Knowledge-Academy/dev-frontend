@@ -2,7 +2,7 @@
 import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  MdEdit, MdOpenInNew, MdSchool, MdVerified, MdWorkspacePremium,
+  MdEdit, MdOpenInNew, MdSchool, MdWorkspacePremium,
   MdCalendarToday, MdLayers, MdSettings, MdLocationOn, MdPhotoCamera,
   MdArrowBack,
 } from "react-icons/md";

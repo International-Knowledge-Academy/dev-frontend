@@ -9,7 +9,6 @@ import {
 import useLocations from "hooks/locations/useLocations";
 import useDeleteLocation from "hooks/locations/useDeleteLocation";
 import { useToast } from "context/ToastContext";
-import { COUNTRIES } from "constants/lists";
 import Loading from "components/loading/Loading";
 import Button from "components/ui/buttons/Button";
 import IconButton from "components/ui/buttons/IconButton";
@@ -18,15 +17,9 @@ import PrevButton from "components/ui/buttons/PrevButton";
 import NextButton from "components/ui/buttons/NextButton";
 import SearchInput from "components/form/SearchInput";
 import FilterSelectField from "components/form/filter/FilterSelectField";
-import SearchableDropdown from "components/form/search/SearchableDropdown";
 import ConfirmModal from "components/ui/modals/ConfirmModal";
 import EmptyState from "components/empty/empty";
 import type { Location } from "types/location";
-
-const COUNTRY_OPTIONS = [
-  { value: "", label: "All Countries" },
-  ...COUNTRIES.map((c) => ({ value: c.name, label: c.name })),
-];
 
 /* ─── Stat card ─────────────────────────────────────────────────────────── */
 
