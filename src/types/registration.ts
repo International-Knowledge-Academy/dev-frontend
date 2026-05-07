@@ -36,6 +36,9 @@ export interface RegistrationsParams {
   page?: number;
   search?: string;
   ordering?: string;
+  manager?: string;
+  status?: RegistrationStatus | "";
+  program?: number | string;
 }
 
 export interface CreateRegistrationPayload {

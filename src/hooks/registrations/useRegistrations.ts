@@ -32,6 +32,9 @@ const useRegistrations = (initialParams: RegistrationsParams = {}): UseRegistrat
           ...(params.page     && { page:     params.page }),
           ...(params.search   && { search:   params.search }),
           ...(params.ordering && { ordering: params.ordering }),
+          ...(params.manager  && { manager:  params.manager }),
+          ...(params.status   && { status:   params.status }),
+          ...(params.program  && { program:  params.program }),
         },
       });
       setRegistrations(Array.isArray(data.results) ? data.results : []);
@@ -55,7 +58,7 @@ const useRegistrations = (initialParams: RegistrationsParams = {}): UseRegistrat
     setParamsState((prev) => ({
       ...prev,
       ...updates,
-      page: "search" in updates || "ordering" in updates
+      page: "search" in updates || "ordering" in updates || "status" in updates || "program" in updates
         ? 1
         : (updates.page ?? prev.page),
     }));

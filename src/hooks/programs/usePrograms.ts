@@ -41,6 +41,7 @@ const usePrograms = (initialParams: ProgramsParams = {}): UseProgramsReturn => {
           ...(params.start_date_from && { start_date_from: params.start_date_from }),
           ...(params.start_date_to   && { start_date_to:   params.start_date_to }),
           ...(params.is_active !== undefined && { is_active: params.is_active }),
+          ...(params.trainer         && { trainer:         params.trainer }),
         },
       });
       setPrograms(Array.isArray(data.results) ? data.results : []);
