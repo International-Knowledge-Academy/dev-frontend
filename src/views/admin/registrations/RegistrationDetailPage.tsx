@@ -57,7 +57,7 @@ const RegistrationDetailPage = () => {
   const { addToast } = useToast();
 
   const { registration, loading, error, refetch } = useGetRegistration(id);
-  const { approve, enroll, reject, assignManager, approveState, enrollState, rejectState, assignManagerState } = useRegistrationActions();
+  const { approve, reject, assignManager, approveState, rejectState, assignManagerState } = useRegistrationActions();
   const { deleteRegistration, loading: deleting } = useDeleteRegistration();
   const { programs } = useAllPrograms();
 
@@ -81,19 +81,13 @@ const RegistrationDetailPage = () => {
   }
 
   const handleApprove = async () => {
-    const ok = await approve(registration.id);
+    const ok = await approve(id);
     if (ok) { addToast("Registration approved", "success"); refetch(); }
     else { addToast(approveState.error ?? "Failed to approve", "error"); }
   };
 
-  const handleEnroll = async () => {
-    const ok = await enroll(registration.id);
-    if (ok) { addToast("Participant enrolled", "success"); refetch(); }
-    else { addToast(enrollState.error ?? "Failed to enroll", "error"); }
-  };
-
   const handleReject = async () => {
-    const ok = await reject(registration.id, rejectReason || undefined);
+    const ok = await reject(id, rejectReason || undefined);
     if (ok) {
       addToast("Registration rejected", "success");
       setRejectOpen(false);
@@ -107,7 +101,7 @@ const RegistrationDetailPage = () => {
   const handleAssignManager = async () => {
     const mid = Number(managerIdInput);
     if (!mid) return;
-    const ok = await assignManager(registration.id, mid);
+    const ok = await assignManager(id, mid);
     if (ok) {
       addToast("Manager assigned", "success");
       setAssignOpen(false);
@@ -119,7 +113,7 @@ const RegistrationDetailPage = () => {
   };
 
   const handleDelete = async () => {
-    const ok = await deleteRegistration(registration.id);
+    const ok = await deleteRegistration(id);
     if (ok) {
       addToast("Registration deleted", "success");
       navigate("/admin/registrations");
@@ -128,7 +122,7 @@ const RegistrationDetailPage = () => {
     }
   };
 
-  const anyActionLoading = approveState.loading || enrollState.loading || rejectState.loading || assignManagerState.loading;
+  const anyActionLoading = approveState.loading || rejectState.loading || assignManagerState.loading;
 
   return (
     <div className="space-y-4 max-w-5xl mx-auto">
@@ -153,7 +147,6 @@ const RegistrationDetailPage = () => {
               loading={anyActionLoading}
               items={[
                 { label: "Approve",        icon: <CheckCircle size={14} />,  onClick: handleApprove,              disabled: anyActionLoading || registration.status === "approved"  },
-                { label: "Enroll",         icon: <GraduationCap size={14} />, onClick: handleEnroll,              disabled: anyActionLoading || registration.status === "completed" },
                 { label: "Reject",         icon: <XCircle size={14} />,      onClick: () => setRejectOpen(true),  disabled: anyActionLoading || registration.status === "rejected"  },
                 { label: "Assign Manager", icon: <UserPlus size={14} />,     onClick: () => setAssignOpen(true),  disabled: anyActionLoading },
                 { divider: true },

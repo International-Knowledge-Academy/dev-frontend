@@ -8,11 +8,9 @@ interface ActionState {
 
 interface UseRegistrationActionsReturn {
   approve:       (id: number | string) => Promise<boolean>;
-  enroll:        (id: number | string) => Promise<boolean>;
   reject:        (id: number | string, reason?: string) => Promise<boolean>;
   assignManager: (id: number | string, managerId: number) => Promise<boolean>;
   approveState:       ActionState;
-  enrollState:        ActionState;
   rejectState:        ActionState;
   assignManagerState: ActionState;
 }
@@ -21,7 +19,6 @@ const defaultState = (): ActionState => ({ loading: false, error: null });
 
 const useRegistrationActions = (): UseRegistrationActionsReturn => {
   const [approveState,       setApproveState]       = useState<ActionState>(defaultState());
-  const [enrollState,        setEnrollState]        = useState<ActionState>(defaultState());
   const [rejectState,        setRejectState]        = useState<ActionState>(defaultState());
   const [assignManagerState, setAssignManagerState] = useState<ActionState>(defaultState());
 
@@ -52,13 +49,6 @@ const useRegistrationActions = (): UseRegistrationActionsReturn => {
       "Failed to approve registration."
     );
 
-  const enroll = (id: number | string) =>
-    runAction(
-      setEnrollState,
-      () => axiosInstance.post(`/registrations/${id}/enroll`),
-      "Failed to enroll registration."
-    );
-
   const reject = (id: number | string, reason?: string) =>
     runAction(
       setRejectState,
@@ -75,11 +65,9 @@ const useRegistrationActions = (): UseRegistrationActionsReturn => {
 
   return {
     approve,
-    enroll,
     reject,
     assignManager,
     approveState,
-    enrollState,
     rejectState,
     assignManagerState,
   };
