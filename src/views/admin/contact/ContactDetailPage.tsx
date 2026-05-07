@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   MdEmail, MdPhone, MdBusiness, MdCategory, MdMessage,
-  MdCalendarToday, MdDelete, MdArrowBack,
+  MdCalendarToday, MdDelete, MdArrowBack, MdEdit,
 } from "react-icons/md";
 import { AlertTriangle } from "lucide-react";
 import useContact from "hooks/contact/useContact";
@@ -142,6 +142,14 @@ const ContactDetailPage = () => {
           >
             <MdArrowBack size={16} />
             Back
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate(`/admin/contact/${uid}/edit`)}
+            className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition flex items-center justify-center gap-2"
+          >
+            <MdEdit size={16} />
+            Edit
           </button>
           <button
             type="button"

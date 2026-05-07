@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Mail, Phone, Building2, RefreshCw, AlertTriangle,
-  X, Filter, MessageSquare, Calendar, Tag,
+  X, Filter, MessageSquare, Calendar, Tag, Trash2,
 } from "lucide-react";
 import useContacts from "hooks/contact/useContacts";
 import useDeleteContact from "hooks/contact/useDeleteContact";
@@ -246,8 +246,8 @@ const ContactsPage = () => {
                         {/* Category */}
                         <td className="px-5 py-3.5">
                           {contact.program_category ? (
-                            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-navy-50 text-navy-700 border border-navy-100">
-                              {contact.program_category}
+                            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-navy-50 text-navy-700 border border-navy-100 max-w-[140px]">
+                              <span className="truncate">{contact.program_category}</span>
                             </span>
                           ) : (
                             <span className="text-slate-300">—</span>
@@ -266,7 +266,7 @@ const ContactsPage = () => {
                             className="p-1.5 rounded-md text-slate-400 hover:bg-red-50 hover:text-red-500 transition"
                             title="Delete"
                           >
-                            <X size={14} />
+                            <Trash2 size={14} />
                           </button>
                         </td>
                       </tr>
