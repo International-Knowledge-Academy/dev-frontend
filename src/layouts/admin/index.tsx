@@ -111,13 +111,13 @@ export default function Admin(props) {
               {...rest}
             />
             <div className="pt-6 mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode="popLayout">
                 <motion.div
                   key={location.pathname}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{    opacity: 0 }}
-                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                  transition={{ duration: 0.15, ease: "easeInOut" }}
                 >
               <Routes>
                 {getRoutes(routes)}
