@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import DashIcon from "components/icons/DashIcon";
 
 export function SidebarLinks({ routes, layout = "/admin" }) {
@@ -79,29 +80,39 @@ export function SidebarLinks({ routes, layout = "/admin" }) {
           </button>
 
           {/* Children */}
-          {open && (
-            <div className="ml-6 mt-1 flex flex-col gap-1">
-              {route.children.map((child: any, ci: number) => {
-                const childActive = isActive(child.path);
-                return (
-                  <Link key={ci} to={`${route.layout}/${child.path}`}>
-                    <div className={`flex items-center gap-2.5 py-2 pr-3 text-sm font-medium transition-all duration-150 group border-l-2 pl-[10px] ${
-                      childActive
-                        ? "border-gold-400 text-navy-800"
-                        : "border-transparent text-slate-400 hover:border-slate-200 hover:text-slate-700"
-                    }`}>
-                      <span className={`flex-shrink-0 ${
-                        childActive ? "text-gold-500" : "text-slate-300 group-hover:text-slate-500"
-                      }`}>
-                        {child.icon ?? <DashIcon />}
-                      </span>
-                      <span className="truncate">{child.name}</span>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
+          <AnimatePresence initial={false}>
+            {open && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.22, ease: [0.25, 0.1, 0.25, 1] }}
+                style={{ overflow: "hidden" }}
+              >
+                <div className="ml-6 mt-1 flex flex-col gap-1 pb-1">
+                  {route.children.map((child: any, ci: number) => {
+                    const childActive = isActive(child.path);
+                    return (
+                      <Link key={ci} to={`${route.layout}/${child.path}`}>
+                        <div className={`flex items-center gap-2.5 py-2 pr-3 text-sm font-medium transition-colors duration-150 group border-l-2 pl-[10px] ${
+                          childActive
+                            ? "border-gold-400 text-navy-800"
+                            : "border-transparent text-slate-400 hover:border-slate-200 hover:text-slate-700"
+                        }`}>
+                          <span className={`flex-shrink-0 ${
+                            childActive ? "text-gold-500" : "text-slate-300 group-hover:text-slate-500"
+                          }`}>
+                            {child.icon ?? <DashIcon />}
+                          </span>
+                          <span className="truncate">{child.name}</span>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       );
     }
