@@ -23,22 +23,22 @@ export function SidebarLinks({ routes, layout = "/admin" }) {
     return (
       <Link key={index} to={route.layout + "/" + route.path}>
         <div
-          className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group ${
+          className={`relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group ${
             active
-              ? "bg-navy-50 text-navy-800"
-              : "text-slate-500 hover:bg-slate-50 hover:text-navy-900"
+              ? "bg-navy-800 text-white shadow-sm"
+              : "text-slate-500 hover:bg-slate-100 hover:text-slate-800"
           }`}
         >
           <span
-            className={`flex-shrink-0 ${
-              active ? "text-gold-400" : "text-slate-400 group-hover:text-navy-500"
+            className={`flex-shrink-0 transition-colors ${
+              active ? "text-gold-400" : "text-slate-400 group-hover:text-slate-600"
             }`}
           >
             {route.icon ?? <DashIcon />}
           </span>
-          <span className="truncate">{route.name}</span>
+          <span className="truncate flex-1">{route.name}</span>
           {active && (
-            <span className="ml-auto w-1.5 h-1.5 rounded-full bg-navy-800 flex-shrink-0" />
+            <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0" />
           )}
         </div>
       </Link>
@@ -47,13 +47,11 @@ export function SidebarLinks({ routes, layout = "/admin" }) {
 
   return (
     <nav className="flex flex-col gap-0.5">
-      {/* Ungrouped routes (e.g. Dashboard) */}
       {ungrouped.map((route, i) => renderLink(route, `ug-${i}`))}
 
-      {/* Grouped routes */}
       {groups.map((group) => (
-        <div key={group} className="mt-4">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 px-4 mb-1">
+        <div key={group} className="mt-5">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-300 px-3 mb-1.5">
             {group}
           </p>
           {visible
