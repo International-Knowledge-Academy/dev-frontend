@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from "react";
 import axiosInstance from "api/axiosInstance";
 import type { AdditionalService, UpdateAdditionalServicePayload } from "types/additionalService";

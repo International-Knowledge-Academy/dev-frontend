@@ -49,7 +49,7 @@ import {
   MdContactMail,
   MdMiscellaneousServices,
   MdExtension,
-  MdCategory as MdServiceCategory,
+  MdTune,
   MdEventNote,
 } from "react-icons/md";
 
@@ -148,7 +148,7 @@ const routes = [
     group: "Manage",
     children: [
       { name: "Additional Services", path: "services",         icon: <MdExtension       className="h-4 w-4" /> },
-      { name: "Service Types",       path: "service-types",    icon: <MdServiceCategory  className="h-4 w-4" /> },
+      { name: "Service Types",       path: "service-types",    icon: <MdTune             className="h-4 w-4" /> },
       { name: "Service Bookings",    path: "service-bookings", icon: <MdEventNote        className="h-4 w-4" /> },
     ],
   },
