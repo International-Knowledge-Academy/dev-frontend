@@ -81,14 +81,14 @@ const ManagerLayout = () => {
 
             {/* Registrations */}
             <Route path="registrations"            element={<RegistrationsPage />} />
-            <Route path="registrations/:id"        element={<RegistrationDetailPage />} />
+            <Route path="registrations/:uid"        element={<RegistrationDetailPage />} />
             <Route path="registrations/:id/edit"   element={<RegistrationEditPage />} />
 
             {/* Payments */}
             <Route path="payments"           element={<PaymentsPage />} />
             <Route path="payments/create"    element={<PaymentCreatePage />} />
-            <Route path="payments/:id"       element={<PaymentDetailPage />} />
-            <Route path="payments/:id/edit"  element={<PaymentEditPage />} />
+            <Route path="payments/:uid"      element={<PaymentDetailPage />} />
+            <Route path="payments/:uid/edit" element={<PaymentEditPage />} />
 
             {/* Trainers */}
             <Route path="trainers"             element={<TrainersPage />} />

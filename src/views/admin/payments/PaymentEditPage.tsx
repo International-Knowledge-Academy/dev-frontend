@@ -32,7 +32,8 @@ const STATUS_OPTIONS = [
 ];
 
 const PaymentEditPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { uid } = useParams<{ uid: string }>();
+  const id = uid;
   const navigate = useNavigate();
   const { addToast } = useToast();
 

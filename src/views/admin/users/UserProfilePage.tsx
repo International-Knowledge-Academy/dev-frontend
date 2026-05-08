@@ -37,7 +37,7 @@ const Section = ({ title, children }) => (
 const Divider = () => <div className="border-t border-slate-100 my-6" />;
 
 const UserProfilePage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { uid } = useParams<{ uid: string }>(); const id = uid;;
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
 

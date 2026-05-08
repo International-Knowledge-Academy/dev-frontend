@@ -63,7 +63,8 @@ const formatDate = (d: string | null) =>
   d ? new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "—";
 
 const PaymentDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { uid } = useParams<{ uid: string }>();
+  const id = uid;
   const navigate = useNavigate();
   const { addToast } = useToast();
 
@@ -83,19 +84,19 @@ const PaymentDetailPage = () => {
   }
 
   const handleMarkPaid = async () => {
-    const ok = await markPaid(payment.id);
+    const ok = await markPaid(payment.uuid);
     if (ok) { addToast("Payment marked as paid", "success"); refetch(); }
     else { addToast(markPaidState.error ?? "Failed to mark as paid", "error"); }
   };
 
   const handleMarkFailed = async () => {
-    const ok = await markFailed(payment.id);
+    const ok = await markFailed(payment.uuid);
     if (ok) { addToast("Payment marked as failed", "success"); refetch(); }
     else { addToast(markFailedState.error ?? "Failed to mark as failed", "error"); }
   };
 
   const handleDelete = async () => {
-    const ok = await deletePayment(payment.id);
+    const ok = await deletePayment(payment.uuid);
     if (ok) {
       addToast("Payment deleted", "success");
       navigate("/admin/payments");
@@ -116,7 +117,7 @@ const PaymentDetailPage = () => {
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-bold text-navy-800 truncate leading-snug">
-              Payment #{payment.id}
+              Payment #{payment.uuid?.slice(0, 8)}
             </h1>
             <p className="text-xs text-slate-400 mt-0.5">
               Registration #{payment.registration}
@@ -193,7 +194,7 @@ const PaymentDetailPage = () => {
             </button>
             <button
               type="button"
-              onClick={() => navigate(`/admin/payments/${id}/edit`)}
+              onClick={() => navigate(`/admin/payments/${uid}/edit`)}
               className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition flex items-center justify-center gap-2"
             >
               <Pencil size={16} />

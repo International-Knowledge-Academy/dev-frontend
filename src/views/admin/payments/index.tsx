@@ -111,7 +111,7 @@ const PaymentsPage = () => {
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
-    const ok = await deletePayment(deleteTarget.id);
+    const ok = await deletePayment(deleteTarget.uuid);
     if (ok) {
       addToast("Payment deleted", "success");
       setDeleteTarget(null);
@@ -300,8 +300,8 @@ const PaymentsPage = () => {
                   <tbody className="divide-y divide-slate-50">
                     {payments.map((payment) => (
                       <tr
-                        key={payment.id}
-                        onClick={() => navigate(`/admin/payments/${payment.id}`)}
+                        key={payment.uuid}
+                        onClick={() => navigate(`/admin/payments/${payment.uuid}`)}
                         className="hover:bg-slate-50 transition cursor-pointer group"
                       >
                         <td className="px-5 py-3.5 text-slate-400 tabular-nums text-xs">#{payment.id}</td>
@@ -330,7 +330,7 @@ const PaymentsPage = () => {
                         <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                           <div className="flex items-center gap-1">
                             <button
-                              onClick={() => navigate(`/admin/payments/${payment.id}/edit`)}
+                              onClick={() => navigate(`/admin/payments/${payment.uuid}/edit`)}
                               className="p-1.5 rounded-md text-slate-400 hover:bg-navy-50 hover:text-navy-700 transition"
                               title="Edit"
                             >

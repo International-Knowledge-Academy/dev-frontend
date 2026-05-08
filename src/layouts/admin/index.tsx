@@ -122,8 +122,8 @@ export default function Admin(props) {
               <Routes>
                 {getRoutes(routes)}
                 <Route path="/users/create"          element={<UserCreatePage />} />
-                <Route path="/users/:id/edit"        element={<UserEditPage />} />
-                <Route path="/users/:id"             element={<UserProfilePage />} />
+                <Route path="/users/:uid/edit"        element={<UserEditPage />} />
+                <Route path="/users/:uid"             element={<UserProfilePage />} />
                 <Route path="/trainers"              element={<TrainersPage />} />
                 <Route path="/trainers/create"       element={<TrainerCreatePage />} />
                 <Route path="/trainers/:uid/edit"    element={<TrainerEditPage />} />
@@ -142,12 +142,12 @@ export default function Admin(props) {
                 <Route path="/fields/:uid"          element={<FieldDetailPage />} />
                 <Route path="/fields/:uid/edit"       element={<FieldEditPage />} />
                 <Route path="/registrations"              element={<RegistrationsPage />} />
-                <Route path="/registrations/:id"          element={<RegistrationDetailPage />} />
+                <Route path="/registrations/:uid"          element={<RegistrationDetailPage />} />
                 <Route path="/registrations/:id/edit"     element={<RegistrationEditPage />} />
                 <Route path="/payments"                   element={<PaymentsPage />} />
-                <Route path="/payments/create"            element={<PaymentCreatePage />} />
-                <Route path="/payments/:id"               element={<PaymentDetailPage />} />
-                <Route path="/payments/:id/edit"          element={<PaymentEditPage />} />
+                <Route path="/payments/create"              element={<PaymentCreatePage />} />
+                <Route path="/payments/:uid"             element={<PaymentDetailPage />} />
+                <Route path="/payments/:uid/edit"        element={<PaymentEditPage />} />
                 <Route path="/contact"                    element={<ContactsPage />} />
                 <Route path="/contact/:uid"               element={<ContactDetailPage />} />
                 <Route path="/contact/:uid/edit"          element={<ContactEditPage />} />

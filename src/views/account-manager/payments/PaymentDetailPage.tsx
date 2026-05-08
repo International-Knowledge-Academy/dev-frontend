@@ -63,7 +63,7 @@ const formatDate = (d: string | null) =>
   d ? new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "—";
 
 const PaymentDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { uid } = useParams<{ uid: string }>(); const id = uid;;
   const navigate = useNavigate();
   const { addToast } = useToast();
 
