@@ -58,14 +58,14 @@ export function SidebarLinks({ routes, layout = "/admin" }) {
           <button
             type="button"
             onClick={() => toggle(route.path)}
-            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group ${
+            className={`w-full flex items-center gap-3 py-2.5 pr-3 rounded-xl text-sm font-medium transition-all duration-150 group border-l-2 pl-[10px] ${
               anyChildActive
-                ? "bg-navy-800 text-white shadow-sm"
-                : "text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+                ? "border-navy-800 text-navy-800"
+                : "border-transparent text-slate-500 hover:border-slate-200 hover:text-slate-800"
             }`}
           >
             <span className={`flex-shrink-0 transition-colors ${
-              anyChildActive ? "text-gold-400" : "text-slate-400 group-hover:text-slate-600"
+              anyChildActive ? "text-navy-700" : "text-slate-400 group-hover:text-slate-600"
             }`}>
               {route.icon ?? <DashIcon />}
             </span>
@@ -73,32 +73,29 @@ export function SidebarLinks({ routes, layout = "/admin" }) {
             <ChevronDown
               size={14}
               className={`flex-shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""} ${
-                anyChildActive ? "text-white/50" : "text-slate-300"
+                anyChildActive ? "text-navy-400" : "text-slate-300"
               }`}
             />
           </button>
 
           {/* Children */}
           {open && (
-            <div className="ml-4 mt-0.5 pl-3 flex flex-col gap-0.5 border-l-2 border-slate-100">
+            <div className="ml-6 mt-0.5 flex flex-col gap-0.5">
               {route.children.map((child: any, ci: number) => {
                 const childActive = isActive(child.path);
                 return (
                   <Link key={ci} to={`${route.layout}/${child.path}`}>
-                    <div className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 group ${
+                    <div className={`flex items-center gap-2.5 py-2 pr-3 rounded-lg text-sm font-medium transition-all duration-150 group border-l-2 pl-[10px] ${
                       childActive
-                        ? "bg-navy-50 text-navy-800"
-                        : "text-slate-400 hover:bg-slate-50 hover:text-slate-700"
+                        ? "border-gold-400 text-navy-800"
+                        : "border-transparent text-slate-400 hover:border-slate-200 hover:text-slate-700"
                     }`}>
                       <span className={`flex-shrink-0 ${
-                        childActive ? "text-gold-400" : "text-slate-300 group-hover:text-slate-500"
+                        childActive ? "text-gold-500" : "text-slate-300 group-hover:text-slate-500"
                       }`}>
                         {child.icon ?? <DashIcon />}
                       </span>
-                      <span className="truncate flex-1">{child.name}</span>
-                      {childActive && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-navy-600 flex-shrink-0" />
-                      )}
+                      <span className="truncate">{child.name}</span>
                     </div>
                   </Link>
                 );
@@ -112,20 +109,17 @@ export function SidebarLinks({ routes, layout = "/admin" }) {
     /* ── Regular link ─────────────────────────────────────────────────── */
     return (
       <Link key={index} to={route.layout + "/" + route.path}>
-        <div className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group ${
+        <div className={`flex items-center gap-3 py-2.5 pr-3 rounded-xl text-sm font-medium transition-all duration-150 group border-l-2 pl-[10px] ${
           active
-            ? "bg-navy-800 text-white shadow-sm"
-            : "text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+            ? "border-navy-800 text-navy-800"
+            : "border-transparent text-slate-500 hover:border-slate-200 hover:text-slate-800"
         }`}>
           <span className={`flex-shrink-0 transition-colors ${
-            active ? "text-gold-400" : "text-slate-400 group-hover:text-slate-600"
+            active ? "text-navy-700" : "text-slate-400 group-hover:text-slate-600"
           }`}>
             {route.icon ?? <DashIcon />}
           </span>
           <span className="truncate flex-1">{route.name}</span>
-          {active && (
-            <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0" />
-          )}
         </div>
       </Link>
     );

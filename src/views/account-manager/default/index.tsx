@@ -184,7 +184,7 @@ const Dashboard = () => {
     <div className="space-y-5">
 
       {/* ── KPI row ── */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {summaryEntries.map(([key, value]) => {
           const cfg = SUMMARY_CONFIG[key];
           return (
