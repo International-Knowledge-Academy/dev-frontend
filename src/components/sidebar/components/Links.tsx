@@ -58,7 +58,7 @@ export function SidebarLinks({ routes, layout = "/admin" }) {
           <button
             type="button"
             onClick={() => toggle(route.path)}
-            className={`w-full flex items-center gap-3 py-2.5 pr-3 rounded-xl text-sm font-medium transition-all duration-150 group border-l-2 pl-[10px] ${
+            className={`w-full flex items-center gap-3 py-2.5 pr-3 text-sm font-medium transition-all duration-150 group border-l-2 pl-[10px] ${
               anyChildActive
                 ? "border-navy-800 text-navy-800"
                 : "border-transparent text-slate-500 hover:border-slate-200 hover:text-slate-800"
@@ -80,7 +80,7 @@ export function SidebarLinks({ routes, layout = "/admin" }) {
 
           {/* Children */}
           {open && (
-            <div className="ml-6 mt-0.5 flex flex-col gap-0.5">
+            <div className="ml-6 mt-1 flex flex-col gap-1">
               {route.children.map((child: any, ci: number) => {
                 const childActive = isActive(child.path);
                 return (
@@ -109,7 +109,7 @@ export function SidebarLinks({ routes, layout = "/admin" }) {
     /* ── Regular link ─────────────────────────────────────────────────── */
     return (
       <Link key={index} to={route.layout + "/" + route.path}>
-        <div className={`flex items-center gap-3 py-2.5 pr-3 rounded-xl text-sm font-medium transition-all duration-150 group border-l-2 pl-[10px] ${
+        <div className={`flex items-center gap-3 py-2.5 pr-3 text-sm font-medium transition-all duration-150 group border-l-2 pl-[10px] ${
           active
             ? "border-navy-800 text-navy-800"
             : "border-transparent text-slate-500 hover:border-slate-200 hover:text-slate-800"
@@ -126,7 +126,7 @@ export function SidebarLinks({ routes, layout = "/admin" }) {
   };
 
   return (
-    <nav className="flex flex-col gap-0.5">
+    <nav className="flex flex-col gap-1">
       {ungrouped.map((route, i) => renderLink(route, `ug-${i}`))}
 
       {groups.map((group) => (
