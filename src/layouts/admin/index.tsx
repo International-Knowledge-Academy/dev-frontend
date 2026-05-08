@@ -35,6 +35,9 @@ import PaymentEditPage from "views/admin/payments/PaymentEditPage";
 import ContactsPage from "views/admin/contact";
 import ContactDetailPage from "views/admin/contact/ContactDetailPage";
 import ContactEditPage from "views/admin/contact/ContactEditPage";
+import AdditionalServicesPage from "views/admin/services";
+import ServiceDetailPage from "views/admin/services/ServiceDetailPage";
+import ServiceEditPage from "views/admin/services/ServiceEditPage";
 
 export default function Admin(props) {
   const { ...rest } = props;
@@ -139,6 +142,9 @@ export default function Admin(props) {
                 <Route path="/contact"                    element={<ContactsPage />} />
                 <Route path="/contact/:uid"               element={<ContactDetailPage />} />
                 <Route path="/contact/:uid/edit"          element={<ContactEditPage />} />
+                <Route path="/services"                   element={<AdditionalServicesPage />} />
+                <Route path="/services/:uid"              element={<ServiceDetailPage />} />
+                <Route path="/services/:uid/edit"         element={<ServiceEditPage />} />
 
                 <Route
                   path="/"

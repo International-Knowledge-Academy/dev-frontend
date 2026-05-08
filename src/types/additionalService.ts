@@ -80,6 +80,14 @@ export interface ServiceBookingsParams {
   ordering?: string;
 }
 
+export interface UpdateAdditionalServicePayload {
+  name?: string;
+  service_type?: number;
+  price?: string;
+  currency?: string;
+  is_active?: boolean;
+}
+
 export interface CreateServiceBookingPayload {
   quantity: number;
   total_price: string;

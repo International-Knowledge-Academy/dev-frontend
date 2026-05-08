@@ -17,7 +17,8 @@ import ProgramsPage     from "views/admin/programs";
 import FieldsPage       from "views/admin/fields";
 import RegistrationsPage from "views/admin/registrations";
 import PaymentsPage     from "views/admin/payments";
-import ContactsPage     from "views/admin/contact";
+import ContactsPage          from "views/admin/contact";
+import AdditionalServicesPage from "views/admin/services";
 
 // Account Manager Imports
 import ManagerDashboard      from "views/account-manager/default";
@@ -46,6 +47,10 @@ import {
   MdAssignment,
   MdPayment,
   MdContactMail,
+  MdMiscellaneousServices,
+  MdExtension,
+  MdCategory as MdServiceCategory,
+  MdEventNote,
 } from "react-icons/md";
 
 const routes = [
@@ -134,6 +139,19 @@ const routes = [
     group: "Configure",
   },
 
+  {
+    name: "Services",
+    layout: "/admin",
+    path: "services",
+    icon: <MdMiscellaneousServices className="h-6 w-6" />,
+    component: <AdditionalServicesPage />,
+    group: "Manage",
+    children: [
+      { name: "Additional Services", path: "services",         icon: <MdExtension       className="h-4 w-4" /> },
+      { name: "Service Types",       path: "service-types",    icon: <MdServiceCategory  className="h-4 w-4" /> },
+      { name: "Service Bookings",    path: "service-bookings", icon: <MdEventNote        className="h-4 w-4" /> },
+    ],
+  },
   {
     name: "Contact",
     layout: "/admin",
