@@ -4,7 +4,7 @@ export type PaymentMethod  = "cash" | "bank_transfer" | "credit_card" | "cheque"
 
 export interface Payment {
   id: number;
-  uuid: string;
+  uid: string;
   sponsorship_type: SponsorshipType;
   amount: string;
   status: PaymentStatus;

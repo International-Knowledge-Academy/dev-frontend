@@ -84,19 +84,19 @@ const PaymentDetailPage = () => {
   }
 
   const handleMarkPaid = async () => {
-    const ok = await markPaid(payment.uuid);
+    const ok = await markPaid(payment.uid);
     if (ok) { addToast("Payment marked as paid", "success"); refetch(); }
     else { addToast(markPaidState.error ?? "Failed to mark as paid", "error"); }
   };
 
   const handleMarkFailed = async () => {
-    const ok = await markFailed(payment.uuid);
+    const ok = await markFailed(payment.uid);
     if (ok) { addToast("Payment marked as failed", "success"); refetch(); }
     else { addToast(markFailedState.error ?? "Failed to mark as failed", "error"); }
   };
 
   const handleDelete = async () => {
-    const ok = await deletePayment(payment.uuid);
+    const ok = await deletePayment(payment.uid);
     if (ok) {
       addToast("Payment deleted", "success");
       navigate("/admin/payments");
@@ -117,7 +117,7 @@ const PaymentDetailPage = () => {
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-bold text-navy-800 truncate leading-snug">
-              Payment #{payment.uuid?.slice(0, 8)}
+              Payment #{payment.uid?.slice(0, 8)}
             </h1>
             <p className="text-xs text-slate-400 mt-0.5">
               Registration #{payment.registration}
