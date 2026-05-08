@@ -62,6 +62,12 @@ const SectionTitle = ({ title }) => (
 const formatDate = (d: string | null) =>
   d ? new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "—";
 
+const getRegistrationLabel = (reg) => {
+  if (!reg) return "—";
+  if (typeof reg === "object") return reg.full_name;
+  return `#${reg}`;
+};
+
 const PaymentDetailPage = () => {
   const { uid } = useParams<{ uid: string }>();
   const id = uid;
@@ -120,7 +126,7 @@ const PaymentDetailPage = () => {
               Payment #{payment.uid?.slice(0, 8)}
             </h1>
             <p className="text-xs text-slate-400 mt-0.5">
-              Registration #{payment.registration}
+              Registration {getRegistrationLabel(payment.registration)}
             </p>
           </div>
           <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold border flex-shrink-0 capitalize ${STATUS_COLORS[payment.status] ?? "bg-slate-50 text-slate-400 border-slate-200"}`}>
@@ -135,7 +141,7 @@ const PaymentDetailPage = () => {
           <InfoRow icon={DollarSign}    label="Amount"          value={payment.amount ? `$${payment.amount}` : "—"} />
           <InfoRow icon={CreditCard}    label="Payment Method"  value={METHOD_LABELS[payment.payment_method] ?? payment.payment_method} />
           <InfoRow icon={FileText}      label="Sponsorship"     value={SPONSORSHIP_LABELS[payment.sponsorship_type] ?? payment.sponsorship_type} />
-          <InfoRow icon={ClipboardList} label="Registration ID" value={payment.registration ? `#${payment.registration}` : "—"} />
+          <InfoRow icon={ClipboardList} label="Registration" value={getRegistrationLabel(payment.registration)} />
         </div>
 
         {/* Status */}

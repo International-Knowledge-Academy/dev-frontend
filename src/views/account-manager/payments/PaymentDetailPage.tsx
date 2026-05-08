@@ -62,6 +62,12 @@ const SectionTitle = ({ title }) => (
 const formatDate = (d: string | null) =>
   d ? new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "—";
 
+const getRegistrationLabel = (reg) => {
+  if (!reg) return "—";
+  if (typeof reg === "object") return reg.full_name;
+  return `#${reg}`;
+};
+
 const PaymentDetailPage = () => {
   const { uid } = useParams<{ uid: string }>(); const id = uid;;
   const navigate = useNavigate();
@@ -83,22 +89,22 @@ const PaymentDetailPage = () => {
   }
 
   const handleMarkPaid = async () => {
-    const ok = await markPaid(payment.id);
+    const ok = await markPaid(payment.uid);
     if (ok) { addToast("Payment marked as paid", "success"); refetch(); }
     else { addToast(markPaidState.error ?? "Failed to mark as paid", "error"); }
   };
 
   const handleMarkFailed = async () => {
-    const ok = await markFailed(payment.id);
+    const ok = await markFailed(payment.uid);
     if (ok) { addToast("Payment marked as failed", "success"); refetch(); }
     else { addToast(markFailedState.error ?? "Failed to mark as failed", "error"); }
   };
 
   const handleDelete = async () => {
-    const ok = await deletePayment(payment.id);
+    const ok = await deletePayment(payment.uid);
     if (ok) {
       addToast("Payment deleted", "success");
-      navigate("/admin/payments");
+      navigate("/account-manager/payments");
     } else {
       addToast("Failed to delete payment", "error");
     }
@@ -116,10 +122,10 @@ const PaymentDetailPage = () => {
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-bold text-navy-800 truncate leading-snug">
-              Payment #{payment.id}
+              Payment #{payment.uid?.slice(0, 8)}
             </h1>
             <p className="text-xs text-slate-400 mt-0.5">
-              Registration #{payment.registration}
+              Registration {getRegistrationLabel(payment.registration)}
             </p>
           </div>
           <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold border flex-shrink-0 capitalize ${STATUS_COLORS[payment.status] ?? "bg-slate-50 text-slate-400 border-slate-200"}`}>
@@ -134,7 +140,7 @@ const PaymentDetailPage = () => {
           <InfoRow icon={DollarSign}    label="Amount"          value={payment.amount ? `$${payment.amount}` : "—"} />
           <InfoRow icon={CreditCard}    label="Payment Method"  value={METHOD_LABELS[payment.payment_method] ?? payment.payment_method} />
           <InfoRow icon={FileText}      label="Sponsorship"     value={SPONSORSHIP_LABELS[payment.sponsorship_type] ?? payment.sponsorship_type} />
-          <InfoRow icon={ClipboardList} label="Registration ID" value={payment.registration ? `#${payment.registration}` : "—"} />
+          <InfoRow icon={ClipboardList} label="Registration" value={getRegistrationLabel(payment.registration)} />
         </div>
 
         {/* Status */}
@@ -186,7 +192,7 @@ const PaymentDetailPage = () => {
           <div className="flex gap-2">
             <button
               type="button"
-              onClick={() => navigate("/admin/payments")}
+              onClick={() => navigate("/account-manager/payments")}
               className="flex-1 rounded-md lg:rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition"
             >
               Back
@@ -216,7 +222,7 @@ const PaymentDetailPage = () => {
         message={
           <>
             Are you sure you want to delete payment{" "}
-            <span className="font-semibold text-navy-800">#{payment.id}</span>?{" "}
+            <span className="font-semibold text-navy-800">#{payment.uid?.slice(0, 8)}</span>?{" "}
             This cannot be undone.
           </>
         }

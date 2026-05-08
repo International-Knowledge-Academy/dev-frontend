@@ -2,6 +2,14 @@ export type SponsorshipType = "self_funded" | "company_sponsored" | "government_
 export type PaymentStatus  = "pending" | "approved" | "cancelled" | "refunded";
 export type PaymentMethod  = "cash" | "bank_transfer" | "credit_card" | "cheque" | "online";
 
+export interface RegistrationBrief {
+  uid: string;
+  full_name: string;
+  email: string;
+  phone: string;
+  status: string;
+}
+
 export interface Payment {
   id: number;
   uid: string;
@@ -13,7 +21,7 @@ export interface Payment {
   payment_method: PaymentMethod;
   cancelled_at: string | null;
   cancelled_reason: string;
-  registration: number;
+  registration: RegistrationBrief | number | null;
   approved_by: number | null;
   cancelled_by: number | null;
 }
