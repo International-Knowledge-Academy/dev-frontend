@@ -85,7 +85,7 @@ export function SidebarLinks({ routes, layout = "/admin" }) {
                 const childActive = isActive(child.path);
                 return (
                   <Link key={ci} to={`${route.layout}/${child.path}`}>
-                    <div className={`flex items-center gap-2.5 py-2 pr-3 rounded-lg text-sm font-medium transition-all duration-150 group border-l-2 pl-[10px] ${
+                    <div className={`flex items-center gap-2.5 py-2 pr-3 text-sm font-medium transition-all duration-150 group border-l-2 pl-[10px] ${
                       childActive
                         ? "border-gold-400 text-navy-800"
                         : "border-transparent text-slate-400 hover:border-slate-200 hover:text-slate-700"
@@ -134,9 +134,11 @@ export function SidebarLinks({ routes, layout = "/admin" }) {
           <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-300 px-3 mb-1.5">
             {group}
           </p>
-          {visible
-            .filter((r) => r.group === group)
-            .map((route, i) => renderLink(route, `${group}-${i}`))}
+          <div className="flex flex-col gap-1">
+            {visible
+              .filter((r) => r.group === group)
+              .map((route, i) => renderLink(route, `${group}-${i}`))}
+          </div>
         </div>
       ))}
     </nav>
