@@ -4,14 +4,17 @@ import { Link, useLocation } from "react-router-dom";
 import {
   MdMenu, MdClose, MdKeyboardArrowDown,
   MdArrowForward, MdGridView, MdMenuBook,
+  MdSchool,
+  MdWorkspacePremium,
 } from "react-icons/md";
+  
 import useCategories from "hooks/categories/useCategories";
 
 /* ── Plain dropdown (generic) ─────────────────────────────────────────────── */
 function Dropdown({ items, visible }) {
   return (
     <div
-      className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 w-52 z-50 ${
+      className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[320px] z-50 ${
         visible ? "pointer-events-auto" : "pointer-events-none"
       }`}
     >
@@ -20,15 +23,33 @@ function Dropdown({ items, visible }) {
           visible ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
       >
-        <div className="p-1.5">
+        <div className="p-2">
           {items.map((item) => (
             <Link
               key={item.to}
               to={item.to}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-navy-800 hover:bg-navy-50 hover:text-navy-600 transition-colors"
+              className="group flex items-center gap-3.5 px-3 py-3 rounded-xl hover:bg-navy-50 transition-colors duration-150"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0" />
-              {item.label}
+              <div className="w-9 h-9 rounded-lg bg-navy-50 text-navy-500 flex items-center justify-center flex-shrink-0 group-hover:bg-gold-50 group-hover:text-gold-600 transition-colors duration-150">
+                {item.icon || <MdMenuBook size={18} />}
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-semibold text-navy-800 group-hover:text-navy-600 leading-tight">
+                  {item.label}
+                </p>
+
+                {item.description && (
+                  <p className="text-xs text-slate-400 mt-0.5 leading-tight">
+                    {item.description}
+                  </p>
+                )}
+              </div>
+
+              <MdArrowForward
+                size={14}
+                className="flex-shrink-0 text-slate-300 group-hover:text-gold-500 group-hover:translate-x-0.5 transition-all duration-150"
+              />
             </Link>
           ))}
         </div>
@@ -187,7 +208,24 @@ const Navbar = () => {
     },
     { label: "Programs", to: "/programs" },
     { label: "Contact",  to: "/contact" },
-    { label: "Register", to: "/register" },
+    {
+      label: "Register",
+      to: "/register",
+      children: [
+        {
+          label: "Register for Programs",
+          description: "Apply for available programs and training opportunities.",
+          icon: <MdSchool size={18} />,
+          to: "/register/program",
+        },
+        {
+          label: "Become a Trainer",
+          description: "Join our trainer network and share your expertise.",
+          icon: <MdWorkspacePremium size={18} />,
+          to: "/register/trainer",
+        },
+      ],
+    },
   ];
 
   useEffect(() => {

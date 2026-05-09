@@ -7,6 +7,7 @@ import Programs         from "components/home/Programs";
 import UpcomingPrograms from "components/home/UpcomingPrograms";
 import TrainingFields   from "components/home/TrainingFields";
 import HowToEnroll      from "components/home/HowToEnroll";
+import HowToBeTrainer   from "components/home/HowToBeTrainer";
 import Locations        from "components/home/Locations";
 import Features         from "components/home/Features";
 import Footer           from "components/home/Footer";
@@ -22,6 +23,7 @@ const HomePage = () => {
       <UpcomingPrograms />
       <TrainingFields />
       <HowToEnroll />
+      <HowToBeTrainer />
       <Locations />
       <Features />
       <Footer />

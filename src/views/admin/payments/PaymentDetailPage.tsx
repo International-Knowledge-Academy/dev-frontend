@@ -206,13 +206,6 @@ const PaymentDetailPage = () => {
               <Pencil size={16} />
               Edit
             </button>
-            <button
-              type="button"
-              onClick={() => setDeleteOpen(true)}
-              className="px-4 rounded-md lg:rounded-lg border border-red-200 text-red-500 text-sm font-semibold hover:bg-red-50 transition"
-            >
-              Delete
-            </button>
           </div>
         </div>
       </div>

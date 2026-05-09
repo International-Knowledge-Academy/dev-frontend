@@ -16,8 +16,10 @@ import ProgramPage from "views/home/programs/ProgramPage";
 import CategoriesHubPage from "views/home/categories";
 import CategoryTypePage from "views/home/categories/CategoryTypePage";
 import CategoryDetailPage from "views/home/categories/CategoryDetailPage";
-import RegisterPage from "views/home/register";
-import RegisterSuccessPage from "views/home/register/SuccessPage";
+import RegisterPage from "views/home/register/program";
+import RegisterSuccessPage from "views/home/register/program/SuccessPage";
+import RegisterTrainerPage from "views/home/register/trainer";
+import TrainerApplicationSuccessPage from "views/home/register/trainer/SuccessPage";
 
 import ProtectedRoute from "components/auth/ProtectedRoute";
 
@@ -36,7 +38,10 @@ const App = () => {
         <Route path="/category/:uid" element={<CategoryDetailPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/register/program" element={<RegisterPage />} />
         <Route path="/register/success" element={<RegisterSuccessPage />} />
+        <Route path="/register/trainer" element={<RegisterTrainerPage />} />
+        <Route path="/register/trainer/success" element={<TrainerApplicationSuccessPage />} />
       </Route>
 
       {/* Auth */}
