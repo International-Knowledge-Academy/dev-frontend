@@ -134,7 +134,7 @@ const Footer = () => {
               {[
                 { icon: <MdEmail size={16} />, label: "Email",   text: "info@ika-edu.com",     href: "mailto:info@ika-edu.com" },
                 { icon: <MdPhone size={16} />, label: "Phone",   text: "+601139936766",         href: "https://wa.me/601139936766" },
-                { icon: <MdLanguage size={16} />, label: "Web",  text: "https://ika-edu.com",       href: "https://www.ika-edu.com" },
+                { icon: <MdLanguage size={16} />, label: "Web",  text: "www.ika-edu.com",       href: "https://ika-edu.com" },
               ].map((c) => (
                 <li key={c.text}>
                   <a href={c.href} target="_blank" rel="noreferrer"
