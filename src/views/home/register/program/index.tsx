@@ -21,9 +21,8 @@ const TYPE_OPTIONS = [
 ];
 
 const STEPS = [
-  { number: 1, label: "Select Program" },
-  { number: 2, label: "Your Details"   },
-  { number: 3, label: "Review"         },
+  { number: 1, label: "Your Details" },
+  { number: 2, label: "Review"        },
 ];
 
 const initialForm = {
@@ -61,7 +60,7 @@ const StepIndicator = ({ current }: { current: number }) => (
             </span>
           </div>
           {i < STEPS.length - 1 && (
-            <div className={`w-16 sm:w-24 h-0.5 mb-5 mx-2 rounded-full transition-all duration-500 ${
+            <div className={`w-20 sm:w-32 h-0.5 mb-5 mx-2 rounded-full transition-all duration-500 ${
               current > step.number ? "bg-gold-400" : "bg-slate-200"
             }`} />
           )}
@@ -80,10 +79,15 @@ const variants = {
 
 /* ── Summary row ── */
 const SummaryRow = ({ label, value }) => (
-  <div className="flex items-center justify-between text-sm py-2 border-b border-slate-100 last:border-0">
-    <span className="text-slate-400">{label}</span>
-    <span className="text-navy-800 font-medium text-right max-w-[60%] truncate">{value || "—"}</span>
+  <div className="flex items-start justify-between gap-4 text-sm py-2.5 border-b border-slate-100 last:border-0">
+    <span className="text-slate-400 flex-shrink-0">{label}</span>
+    <span className="text-navy-800 font-medium text-right break-words min-w-0">{value || "—"}</span>
   </div>
+);
+
+/* ── Section label ── */
+const SectionLabel = ({ children }) => (
+  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">{children}</p>
 );
 
 /* ── Page ── */
@@ -101,11 +105,11 @@ const RegisterPage = () => {
   const [selectedCategoryUid, setSelectedCategoryUid] = useState("");
   const [selectedFieldUid,    setSelectedFieldUid]    = useState("");
 
-  const { categories, loading: loadingCats }     = useAllCategories();
-  const { fields,    loading: loadingFields }    = useFields(
+  const { categories, loading: loadingCats }    = useAllCategories();
+  const { fields,     loading: loadingFields }  = useFields(
     selectedCategoryUid ? { category: selectedCategoryUid, is_active: true } : {}
   );
-  const { programs,  loading: loadingPrograms }  = usePrograms(
+  const { programs,   loading: loadingPrograms } = usePrograms(
     selectedFieldUid ? { field: selectedFieldUid, is_active: true } : {}
   );
 
@@ -119,6 +123,7 @@ const RegisterPage = () => {
     if (errors[field]) setErrors((p) => ({ ...p, [field]: "" }));
   };
 
+  /* Pre-populate from URL param */
   useEffect(() => {
     if (preProgram) {
       setFormData((p) => ({ ...p, program: preProgram.uid ?? "" }));
@@ -145,9 +150,7 @@ const RegisterPage = () => {
   const validateStep = (s: number) => {
     const e: Record<string, string> = {};
     if (s === 1) {
-      if (!formData.program) e.program = "Please select a program";
-    }
-    if (s === 2) {
+      if (!formData.program)          e.program   = "Please select a program";
       if (!formData.full_name.trim()) e.full_name = "Full name is required";
       if (!formData.email.trim())     e.email     = "Email is required";
       else if (!/\S+@\S+\.\S+/.test(formData.email)) e.email = "Invalid email";
@@ -172,34 +175,42 @@ const RegisterPage = () => {
     e.preventDefault();
     const created = await createRegistration({
       program_uid:       formData.program,
-      category_uid:      formData.category  || undefined,
-      field_uid:         formData.field     || undefined,
+      category_uid:      formData.category || undefined,
+      field_uid:         formData.field    || undefined,
       registration_type: formData.registration_type,
       full_name:         formData.full_name,
       email:             formData.email,
       phone:             formData.phone,
-      job_title:         formData.job_title  || undefined,
-      address:           formData.address    || undefined,
+      job_title:         formData.job_title || undefined,
+      address:           formData.address   || undefined,
     });
     if (created) {
-      addToast("Registration submitted successfully! We'll be in touch shortly.", "success");
+      addToast("Registration submitted! We'll confirm your enrollment within 24 hours.", "success");
       navigate("/register/success");
     }
   };
 
-  /* Labels for review step */
+  /* Labels for review */
   const selectedProgram  = programs.find((p) => p.uid === formData.program) ?? preProgram;
-  const selectedField    = fields.find((f) => f.uid === formData.field);
+  const selectedField    = fields.find((f) => f.uid === formData.field)
+    ?? (preProgram?.field?.uid === formData.field ? preProgram?.field : null);
   const selectedCategory = categories.find((c) => c.uid === formData.category);
 
   const displayErrors = { ...errors, ...fieldErrors };
+
+  /* Continue disabled */
+  const step1Disabled =
+    !formData.program        ||
+    !formData.full_name.trim() ||
+    !formData.email.trim()     ||
+    !formData.phone.trim();
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
 
       {/* Hero */}
-      <section className="bg-navy-800 pt-28 pb-12 relative overflow-hidden">
+      <section className="bg-navy-800 pt-24 sm:pt-28 pb-10 sm:pb-12 relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{
@@ -209,33 +220,33 @@ const RegisterPage = () => {
           }}
         />
         <div className="absolute top-0 right-0 w-96 h-96 bg-gold-500 opacity-[0.06] rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-        <div className="max-w-3xl mx-auto px-6 relative text-center">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-3">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 relative text-center">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-3">
             Register for a Program
           </h1>
-          <p className="text-navy-300 text-base max-w-xl mx-auto">
-            Select a program, fill in your details, and we'll confirm your enrollment within 24 hours.
+          <p className="text-navy-300 text-sm sm:text-base max-w-xl mx-auto">
+            Fill in your details and we'll confirm your enrollment within 24 hours.
           </p>
         </div>
       </section>
 
-      <div className="max-w-3xl mx-auto w-full px-6 py-12">
+      <div className="max-w-3xl mx-auto w-full px-3 sm:px-6 py-8 sm:py-12">
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="bg-white border border-slate-100 rounded-3xl shadow-sm overflow-hidden"
+          className="bg-white border border-slate-100 rounded-2xl sm:rounded-3xl shadow-sm"
         >
           {/* Card header */}
-          <div className="bg-navy-600 px-8 py-7 relative overflow-hidden">
+          <div className="bg-navy-600 px-4 sm:px-8 py-5 sm:py-7 relative overflow-hidden rounded-t-2xl sm:rounded-t-3xl">
             <div className="absolute top-0 right-0 w-40 h-40 bg-gold-500 opacity-10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
-            <h3 className="text-white font-extrabold text-xl relative">Program Registration</h3>
-            <p className="text-navy-200 text-sm mt-1 relative">
-              Fill in the details below and we'll confirm your enrollment within 24 hours.
+            <h3 className="text-white font-extrabold text-lg sm:text-xl relative">Program Registration</h3>
+            <p className="text-navy-200 text-xs sm:text-sm mt-1 relative">
+              No account required · Enrollment confirmed within 24 hours
             </p>
           </div>
 
-          <div className="px-8 py-8">
+          <div className="px-4 sm:px-8 py-6 sm:py-8">
             <StepIndicator current={step} />
 
             {error && (
@@ -245,127 +256,132 @@ const RegisterPage = () => {
             )}
 
             <form onSubmit={handleSubmit}>
-              <div className="overflow-hidden">
-                <AnimatePresence mode="wait" custom={dir}>
-                  <motion.div
-                    key={step}
-                    custom={dir}
-                    variants={variants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                  >
+              <AnimatePresence mode="wait" custom={dir}>
+                <motion.div
+                  key={step}
+                  custom={dir}
+                  variants={variants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                >
 
-                    {/* ── Step 1: Select Program ── */}
-                    {step === 1 && (
-                      <div>
+                  {/* ── Step 1: Details ── */}
+                  {step === 1 && (
+                    <div>
+                      {/* Program selection */}
+                      <SectionLabel>Program Selection</SectionLabel>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
                         <SearchableSelect
-                          label={loadingCats ? "Loading categories…" : "Category"}
+                          label="Category"
                           field="category"
                           required={false}
                           placeholder="Search categories…"
+                          loading={loadingCats}
                           options={categories.map((c) => ({ value: c.uid, label: c.name }))}
                           formData={formData} errors={displayErrors} updateFormData={handleCategoryChange}
                         />
                         <SearchableSelect
-                          label={loadingFields && selectedCategoryUid ? "Loading fields…" : "Field"}
+                          label="Field"
                           field="field"
                           required={false}
                           placeholder={selectedCategoryUid ? "Search fields…" : "Select a category first"}
-                          options={selectedCategoryUid ? fields.map((f) => ({ value: f.uid, label: f.name })) : []}
+                          loading={loadingFields && !!selectedCategoryUid}
+                          disabled={!selectedCategoryUid}
+                          options={fields.map((f) => ({ value: f.uid, label: f.name }))}
                           formData={formData} errors={displayErrors} updateFormData={handleFieldChange}
                         />
-                        <SearchableSelect
-                          label={loadingPrograms && selectedFieldUid ? "Loading programs…" : "Program"}
-                          field="program"
-                          required
-                          placeholder={selectedFieldUid ? "Search programs…" : "Select a field first"}
-                          options={
-                            selectedFieldUid
-                              ? programs.map((p) => ({ value: p.uid, label: p.name }))
-                              : preProgram
-                              ? [{ value: preProgram.uid, label: preProgram.name }]
-                              : []
-                          }
+                      </div>
+
+                      <SearchableSelect
+                        label="Program"
+                        field="program"
+                        required
+                        placeholder={selectedFieldUid ? "Search programs…" : "Select a field first"}
+                        loading={loadingPrograms && !!selectedFieldUid}
+                        disabled={!selectedFieldUid && !preProgram}
+                        options={
+                          selectedFieldUid
+                            ? programs.map((p) => ({ value: p.uid, label: p.name }))
+                            : preProgram
+                            ? [{ value: preProgram.uid, label: preProgram.name }]
+                            : []
+                        }
+                        formData={formData} errors={displayErrors} updateFormData={update}
+                      />
+
+                      {/* Divider */}
+                      <div className="border-t border-slate-100 my-5" />
+
+                      {/* Personal details */}
+                      <SectionLabel>Personal Details</SectionLabel>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                        <InputField
+                          label="Full Name" field="full_name" required
+                          placeholder="John Doe"
+                          formData={formData} errors={displayErrors} updateFormData={update}
+                        />
+                        <InputField
+                          label="Email Address" field="email" type="email" required
+                          placeholder="john@example.com"
                           formData={formData} errors={displayErrors} updateFormData={update}
                         />
                       </div>
-                    )}
-
-                    {/* ── Step 2: Your Details ── */}
-                    {step === 2 && (
-                      <div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
-                          <InputField
-                            label="Full Name" field="full_name" required
-                            placeholder="John Doe"
-                            formData={formData} errors={displayErrors} updateFormData={update}
-                          />
-                          <InputField
-                            label="Email Address" field="email" type="email" required
-                            placeholder="john@example.com"
-                            formData={formData} errors={displayErrors} updateFormData={update}
-                          />
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
-                          <InputField
-                            label="Phone / WhatsApp" field="phone" type="tel" required
-                            placeholder="+971 50 000 0000"
-                            formData={formData} errors={displayErrors} updateFormData={update}
-                          />
-                          <InputField
-                            label="Job Title" field="job_title" required={false}
-                            placeholder="Software Engineer"
-                            formData={formData} errors={displayErrors} updateFormData={update}
-                          />
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
-                          <InputField
-                            label="Address" field="address" required={false}
-                            placeholder="123 Main St, Dubai, UAE"
-                            formData={formData} errors={displayErrors} updateFormData={update}
-                          />
-                          <SearchableSelect
-                            label="Registration Type" field="registration_type"
-                            options={TYPE_OPTIONS}
-                            placeholder="Select type…"
-                            formData={formData} errors={displayErrors} updateFormData={update}
-                          />
-                        </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                        <InputField
+                          label="Phone / WhatsApp" field="phone" type="tel" required
+                          placeholder="+601 10 000 0000"
+                          formData={formData} errors={displayErrors} updateFormData={update}
+                        />
+                        <InputField
+                          label="Job Title" field="job_title" required={false}
+                          placeholder="Software Engineer"
+                          formData={formData} errors={displayErrors} updateFormData={update}
+                        />
                       </div>
-                    )}
-
-                    {/* ── Step 3: Review ── */}
-                    {step === 3 && (
-                      <div className="space-y-4">
-                        {/* Program summary */}
-                        <div className="bg-slate-50 border border-slate-100 rounded-xl px-5 py-4">
-                          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">
-                            Selected Program
-                          </p>
-                          <SummaryRow label="Program"  value={selectedProgram?.name} />
-                          <SummaryRow label="Field"    value={selectedField?.name} />
-                          <SummaryRow label="Category" value={selectedCategory?.name} />
-                        </div>
-
-                        {/* Participant summary */}
-                        <div className="bg-slate-50 border border-slate-100 rounded-xl px-5 py-4">
-                          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">
-                            Participant Details
-                          </p>
-                          <SummaryRow label="Full Name"          value={formData.full_name} />
-                          <SummaryRow label="Email"              value={formData.email} />
-                          <SummaryRow label="Phone"              value={formData.phone} />
-                          <SummaryRow label="Job Title"          value={formData.job_title} />
-                          <SummaryRow label="Registration Type"  value={formData.registration_type === "personal" ? "Personal" : "Corporate"} />
-                        </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                        <InputField
+                          label="Address" field="address" required={false}
+                          placeholder="123 Main St, Kuala Lumpur"
+                          formData={formData} errors={displayErrors} updateFormData={update}
+                        />
+                        <SearchableSelect
+                          label="Registration Type" field="registration_type"
+                          options={TYPE_OPTIONS}
+                          placeholder="Select type…"
+                          formData={formData} errors={displayErrors} updateFormData={update}
+                        />
                       </div>
-                    )}
+                    </div>
+                  )}
 
-                  </motion.div>
-                </AnimatePresence>
-              </div>
+                  {/* ── Step 2: Review ── */}
+                  {step === 2 && (
+                    <div className="space-y-4">
+                      <div className="bg-slate-50 border border-slate-100 rounded-xl px-4 sm:px-5 py-4">
+                        <SectionLabel>Selected Program</SectionLabel>
+                        <SummaryRow label="Program"  value={selectedProgram?.name} />
+                        <SummaryRow label="Field"    value={selectedField?.name} />
+                        <SummaryRow label="Category" value={selectedCategory?.name} />
+                      </div>
+
+                      <div className="bg-slate-50 border border-slate-100 rounded-xl px-4 sm:px-5 py-4">
+                        <SectionLabel>Participant Details</SectionLabel>
+                        <SummaryRow label="Full Name"         value={formData.full_name} />
+                        <SummaryRow label="Email"             value={formData.email} />
+                        <SummaryRow label="Phone"             value={formData.phone} />
+                        {formData.job_title && <SummaryRow label="Job Title" value={formData.job_title} />}
+                        {formData.address   && <SummaryRow label="Address"   value={formData.address} />}
+                        <SummaryRow label="Registration Type" value={formData.registration_type === "personal" ? "Personal" : "Corporate"} />
+                      </div>
+                    </div>
+                  )}
+
+                </motion.div>
+              </AnimatePresence>
 
               {/* Navigation */}
               <div className="flex gap-3 mt-6">
@@ -379,24 +395,16 @@ const RegisterPage = () => {
                   </button>
                 )}
 
-                {step < 3 ? (() => {
-                  const step1Disabled = !formData.program;
-                  const step2Disabled =
-                    !formData.full_name.trim() ||
-                    !formData.email.trim()     ||
-                    !formData.phone.trim();
-                  const continueDisabled = step === 1 ? step1Disabled : step2Disabled;
-                  return (
-                    <button
-                      type="button"
-                      onClick={goNext}
-                      disabled={continueDisabled}
-                      className="flex-1 py-3 rounded-md lg:rounded-lg bg-navy-700 hover:bg-navy-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition"
-                    >
-                      Continue
-                    </button>
-                  );
-                })() : (
+                {step < 2 ? (
+                  <button
+                    type="button"
+                    onClick={goNext}
+                    disabled={step1Disabled}
+                    className="flex-1 py-3 rounded-md lg:rounded-lg bg-navy-700 hover:bg-navy-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition"
+                  >
+                    Review & Submit
+                  </button>
+                ) : (
                   <motion.button
                     type="submit"
                     disabled={loading}
@@ -410,7 +418,7 @@ const RegisterPage = () => {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                         </svg>
-                        Submitting...
+                        Submitting…
                       </>
                     ) : (
                       <>
@@ -423,7 +431,7 @@ const RegisterPage = () => {
               </div>
 
               <p className="text-center text-slate-400 text-xs mt-3">
-                Step {step} of 3 · No account required
+                Step {step} of 2 · No account required
               </p>
             </form>
           </div>
