@@ -2,13 +2,13 @@
 import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  MdEdit, MdOpenInNew, MdSchool, MdVerified, MdWorkspacePremium,
+  MdEdit, MdOpenInNew, MdSchool, MdWorkspacePremium,
   MdCalendarToday, MdLayers, MdSettings, MdLocationOn, MdPhotoCamera,
   MdArrowBack,
 } from "react-icons/md";
 import { FaWhatsapp, FaLinkedin } from "react-icons/fa";
-import useGetUser from "hooks/users/useGetUser";
-import useUpdateProfile from "hooks/users/useUpdateProfile";
+import useTrainer from "hooks/trainers/useTrainer";
+import useUpdateTrainer from "hooks/trainers/useUpdateTrainer";
 import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import useTrainerAssignments from "hooks/trainers/useTrainerAssignments";
 import Loading from "components/loading/Loading";
@@ -49,23 +49,23 @@ const Section = ({ title, children }) => (
 const Divider = () => <div className="border-t border-slate-100 my-6" />;
 
 const TrainerProfilePage = () => {
-  const { uid } = useParams<{ uid: string }>();
+  const { uid }  = useParams<{ uid: string }>();
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { user, loading, error, refetch }                                = useGetUser(uid);
-  const { updateProfile }                                                = useUpdateProfile();
-  const { upload, uploading, progress }                                  = usePresignedUpload();
-  const { assignments, loading: loadingPrograms, count: programCount }   = useTrainerAssignments(user?.profile?.uid);
-  const { addToast }                                                     = useToast();
+  const { trainer, loading, error, refetch }                              = useTrainer(uid);
+  const { updateTrainer }                                                 = useUpdateTrainer();
+  const { upload, uploading, progress }                                   = usePresignedUpload();
+  const { assignments, loading: loadingPrograms, count: programCount }   = useTrainerAssignments(uid);
+  const { addToast }                                                      = useToast();
 
   const handleAvatarChange = async (e) => {
     const file = e.target.files?.[0];
-    if (!file || !user) return;
+    if (!file || !trainer) return;
     e.target.value = "";
-    const result = await upload(file, { folder: "users/profiles", file_type: "image" });
+    const result = await upload(file, { folder: "trainers/profile-pictures", file_type: "image" });
     if (result) {
-      const updated = await updateProfile(user.uid, { profile_picture: result.file_key });
+      const updated = await updateTrainer(trainer.uid, { profile_picture: result.public_url });
       if (updated) {
         addToast("Profile picture updated", "success");
         refetch();
@@ -75,25 +75,24 @@ const TrainerProfilePage = () => {
     }
   };
 
-  if (loading) return <Loading text="Loading profile..." />;
-  if (error || !user) return (
+  if (loading) return <Loading text="Loading trainer..." />;
+  if (error || !trainer) return (
     <div className="flex items-center justify-center py-20 text-sm text-red-500">{error ?? "Trainer not found."}</div>
   );
 
-  const p = user.profile;
-  const initials = user.name
-    ? user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
-    : user.email?.[0]?.toUpperCase() ?? "?";
-  const location = [p?.city, p?.country].filter(Boolean).join(", ");
+  const initials  = trainer.name
+    ? trainer.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+    : trainer.email?.[0]?.toUpperCase() ?? "?";
+  const location  = [trainer.city, trainer.country].filter(Boolean).join(", ");
 
-  const hasProfessional = p && (p.title || p.bio || p.years_experience != null || p.certifications || p.linkedin_url);
-  const hasContact      = p && (p.primary_email || p.secondary_email || p.phone || p.whatsapp);
-  const hasAddress      = p && (p.address || p.city || p.country || p.postal_code);
+  const hasProfessional = trainer.title || trainer.bio || trainer.years_experience != null || trainer.certifications || trainer.linkedin_url;
+  const hasContact      = trainer.primary_email || trainer.secondary_email || trainer.phone || trainer.whatsapp;
+  const hasAddress      = trainer.address || trainer.city || trainer.country || trainer.postal_code;
 
   return (
     <div className="max-w-5xl mx-auto space-y-4">
 
-      {/* ── Identity card ──────────────────────────────────────────────── */}
+      {/* ── Identity card ── */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
         <div className="flex items-start gap-4">
 
@@ -105,11 +104,11 @@ const TrainerProfilePage = () => {
               disabled={uploading}
               className="relative group block w-16 h-16 rounded-full ring-4 ring-slate-100 focus:outline-none"
             >
-              {p?.profile_picture?.public_url ? (
-                <img src={p.profile_picture.public_url} alt={user.name}
+              {trainer.profile_picture ? (
+                <img src={trainer.profile_picture} alt={trainer.name}
                   className="w-16 h-16 rounded-full object-cover" />
               ) : (
-                <div className="w-16 h-16 rounded-full bg-green-600 text-white flex items-center justify-center text-xl font-bold select-none">
+                <div className="w-16 h-16 rounded-full bg-navy-600 text-white flex items-center justify-center text-xl font-bold select-none">
                   {initials}
                 </div>
               )}
@@ -128,21 +127,13 @@ const TrainerProfilePage = () => {
 
           {/* Info */}
           <div className="flex-1 min-w-0">
-            <h1 className="text-lg font-bold text-navy-800 leading-tight">{user.name || "—"}</h1>
-            {p?.title && <p className="text-sm text-slate-500 mt-0.5">{p.title}</p>}
-            <p className="text-sm text-slate-400 mt-0.5 truncate">{user.email}</p>
+            <h1 className="text-lg font-bold text-navy-800 leading-tight">{trainer.name || "—"}</h1>
+            {trainer.title && <p className="text-sm text-slate-500 mt-0.5">{trainer.title}</p>}
+            <p className="text-sm text-slate-400 mt-0.5 truncate">{trainer.email}</p>
             {location && <p className="text-xs text-slate-400 mt-0.5">{location}</p>}
             <div className="flex flex-wrap items-center gap-1.5 mt-3">
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold border bg-green-50 text-green-700 border-green-200">
                 <MdSchool size={11} /> Trainer
-              </span>
-              <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold border ${
-                user.is_active
-                  ? "bg-green-50 text-green-700 border-green-200"
-                  : "bg-red-50 text-red-600 border-red-200"
-              }`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${user.is_active ? "bg-green-500" : "bg-red-400"}`} />
-                {user.is_active ? "Active" : "Inactive"}
               </span>
               {programCount > 0 && (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold border bg-navy-50 text-navy-600 border-navy-200">
@@ -169,13 +160,13 @@ const TrainerProfilePage = () => {
         </div>
       </div>
 
-      {/* ── Details card ───────────────────────────────────────────────── */}
+      {/* ── Details card ── */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
 
         <Section title="Account">
           <div className="grid grid-cols-2 gap-x-8 gap-y-5">
-            <Field label="Full Name" value={user.name} />
-            <Field label="Email"     value={user.email} />
+            <Field label="Full Name" value={trainer.name} />
+            <Field label="Email"     value={trainer.email} />
           </div>
         </Section>
 
@@ -184,27 +175,27 @@ const TrainerProfilePage = () => {
             <Divider />
             <Section title="Professional">
               <div className="grid grid-cols-2 gap-x-8 gap-y-5">
-                {p.title            && <Field label="Title"      value={p.title} />}
-                {p.years_experience != null && (
-                  <Field label="Experience" value={`${p.years_experience} year${p.years_experience !== 1 ? "s" : ""}`} />
+                {trainer.title && <Field label="Title" value={trainer.title} />}
+                {trainer.years_experience != null && (
+                  <Field label="Experience" value={`${trainer.years_experience} year${trainer.years_experience !== 1 ? "s" : ""}`} />
                 )}
-                {p.linkedin_url && (
+                {trainer.linkedin_url && (
                   <Field label="LinkedIn" value={
-                    <a href={p.linkedin_url} target="_blank" rel="noreferrer"
+                    <a href={trainer.linkedin_url} target="_blank" rel="noreferrer"
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-200 bg-slate-50 text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
                       <FaLinkedin size={12} className="text-[#0077b5]" /> LinkedIn <MdOpenInNew size={11} className="text-slate-400" />
                     </a>
                   } />
                 )}
               </div>
-              {p.bio && (
+              {trainer.bio && (
                 <div className="mt-5">
-                  <Field label="Bio" value={<span className="whitespace-pre-wrap font-normal text-slate-600">{p.bio}</span>} />
+                  <Field label="Bio" value={<span className="whitespace-pre-wrap font-normal text-slate-600">{trainer.bio}</span>} />
                 </div>
               )}
-              {p.certifications && (
+              {trainer.certifications && (
                 <div className="mt-5">
-                  <Field label="Certifications" value={<span className="whitespace-pre-wrap font-normal text-slate-600">{p.certifications}</span>} />
+                  <Field label="Certifications" value={<span className="whitespace-pre-wrap font-normal text-slate-600">{trainer.certifications}</span>} />
                 </div>
               )}
             </Section>
@@ -216,14 +207,14 @@ const TrainerProfilePage = () => {
             <Divider />
             <Section title="Contact">
               <div className="grid grid-cols-2 gap-x-8 gap-y-5">
-                {p.primary_email   && <Field label="Primary Email"   value={p.primary_email} />}
-                {p.secondary_email && <Field label="Secondary Email" value={p.secondary_email} />}
-                {p.phone           && <Field label="Phone"           value={p.phone} />}
-                {p.whatsapp        && (
+                {trainer.primary_email   && <Field label="Primary Email"   value={trainer.primary_email} />}
+                {trainer.secondary_email && <Field label="Secondary Email" value={trainer.secondary_email} />}
+                {trainer.phone           && <Field label="Phone"           value={trainer.phone} />}
+                {trainer.whatsapp        && (
                   <Field label="WhatsApp" value={
                     <span className="inline-flex items-center gap-1.5 font-normal">
                       <FaWhatsapp size={13} className="text-green-500 flex-shrink-0" />
-                      {p.whatsapp}
+                      {trainer.whatsapp}
                     </span>
                   } />
                 )}
@@ -237,21 +228,21 @@ const TrainerProfilePage = () => {
             <Divider />
             <Section title="Address">
               <div className="grid grid-cols-2 gap-x-8 gap-y-5">
-                {p.country     && <Field label="Country"     value={p.country} />}
-                {p.city        && <Field label="City"        value={p.city} />}
-                {p.address     && <Field label="Street"      value={p.address} />}
-                {p.postal_code && <Field label="Postal Code" value={p.postal_code} />}
+                {trainer.country     && <Field label="Country"     value={trainer.country} />}
+                {trainer.city        && <Field label="City"        value={trainer.city} />}
+                {trainer.address     && <Field label="Street"      value={trainer.address} />}
+                {trainer.postal_code && <Field label="Postal Code" value={trainer.postal_code} />}
               </div>
             </Section>
           </>
         )}
 
-        {p?.cv?.public_url && (
+        {trainer.cv && (
           <>
             <Divider />
             <Section title="Documents">
               <Field label="CV / Resume" value={
-                <a href={p.cv.public_url} target="_blank" rel="noreferrer"
+                <a href={trainer.cv} target="_blank" rel="noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-200 bg-slate-50 text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
                   <MdOpenInNew size={12} className="text-slate-400" /> View CV
                 </a>
@@ -261,7 +252,7 @@ const TrainerProfilePage = () => {
         )}
       </div>
 
-      {/* ── Assigned Programs ──────────────────────────────────────────── */}
+      {/* ── Assigned Programs ── */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
         <div className="px-5 sm:px-6 py-4 border-b border-slate-100 flex items-center gap-2">
           <p className="text-sm font-semibold text-navy-800">Assigned Programs</p>

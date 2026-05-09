@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   UserPlus, RefreshCw, Pencil, Trash2, AlertTriangle,
-  Users, MapPin, Briefcase, Mail,
+  Users, MapPin, Briefcase,
 } from "lucide-react";
 import useTrainers from "hooks/trainers/useTrainers";
 import useDeleteTrainer from "hooks/trainers/useDeleteTrainer";
