@@ -52,7 +52,7 @@ const useApplyAsTrainer = (): UseApplyAsTrainerReturn => {
       });
 
       await axiosInstance.post("/trainers", form, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { "Content-Type": undefined },
       });
       return true;
     } catch (err: unknown) {

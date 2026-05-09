@@ -101,8 +101,9 @@ const RegisterTrainerPage = () => {
       if (!formData.phone.trim()) e.phone = "Phone is required";
     }
     if (s === 2) {
-      if (!files.profile_picture) e.profile_picture = "Profile picture is required";
-      if (!files.cv)              e.cv              = "CV / Resume is required";
+      if (!files.profile_picture)      e.profile_picture = "Profile picture is required";
+      if (!files.cv)                   e.cv              = "CV / Resume is required";
+      if (!formData.title.trim())      e.title           = "Job title is required";
     }
     return e;
   };
@@ -271,7 +272,7 @@ const RegisterTrainerPage = () => {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
                           <InputField
-                            label="Current Job Title" field="title" required={false}
+                            label="Current Job Title" field="title" required
                             placeholder="Senior Consultant"
                             formData={formData} errors={displayErrors} updateFormData={update}
                           />
@@ -367,7 +368,7 @@ const RegisterTrainerPage = () => {
                     onClick={goNext}
                     disabled={
                       (step === 1 && (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim())) ||
-                      (step === 2 && (!files.profile_picture || !files.cv))
+                      (step === 2 && (!files.profile_picture || !files.cv || !formData.title.trim()))
                     }
                     className="flex-1 py-3 rounded-xl bg-navy-700 hover:bg-navy-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition"
                   >
