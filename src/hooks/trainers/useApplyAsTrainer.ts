@@ -17,8 +17,8 @@ export interface ApplyAsTrainerPayload {
   linkedin_url?: string;
   certifications?: string;
   bio?: string;
-  profile_picture?: File | null;
-  cv?: File | null;
+  profile_picture?: string;
+  cv?: string;
 }
 
 interface UseApplyAsTrainerReturn {
@@ -39,21 +39,15 @@ const useApplyAsTrainer = (): UseApplyAsTrainerReturn => {
     setFieldErrors({});
 
     try {
-      const form = new FormData();
-
+      const body: Partial<ApplyAsTrainerPayload> = {};
       (Object.keys(payload) as (keyof ApplyAsTrainerPayload)[]).forEach((key) => {
         const val = payload[key];
-        if (val === undefined || val === null || val === "") return;
-        if (val instanceof File) {
-          form.append(key, val);
-        } else {
-          form.append(key, String(val));
+        if (val !== undefined && val !== null && val !== "") {
+          (body as any)[key] = val;
         }
       });
 
-      await axiosInstance.post("/trainers", form, {
-        headers: { "Content-Type": undefined },
-      });
+      await axiosInstance.post("/trainers", body);
       return true;
     } catch (err: unknown) {
       const responseData = (err as any)?.response?.data;

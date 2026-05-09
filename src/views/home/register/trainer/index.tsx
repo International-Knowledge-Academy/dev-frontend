@@ -11,6 +11,7 @@ import { InputField, SelectField, TextareaField } from "components/form";
 import ImageUploadField from "components/form/images/ImageUploadField";
 import FileUploadField  from "components/form/filesUpload/FileUploadField";
 import useApplyAsTrainer from "hooks/trainers/useApplyAsTrainer";
+import usePresignedUpload from "hooks/storage/usePresignedUpload";
 
 const EXPERIENCE_OPTIONS = [
   { value: "1",  label: "1 – 2 years"  },
@@ -79,13 +80,23 @@ const RegisterTrainerPage = () => {
   const { addToast } = useToast();
   const { apply, loading, error, fieldErrors } = useApplyAsTrainer();
 
-  const [step, setStep]       = useState(1);
-  const [dir,  setDir]        = useState(1);
+  const {
+    upload: uploadImage, uploading: uploadingImage,
+    progress: imageProgress, reset: resetImage,
+  } = usePresignedUpload();
+  const {
+    upload: uploadCv, uploading: uploadingCv,
+    progress: cvProgress, reset: resetCv,
+  } = usePresignedUpload();
+
+  const [step, setStep]         = useState(1);
+  const [dir,  setDir]          = useState(1);
   const [formData, setFormData] = useState(initialForm);
-  const [files, setFiles]     = useState<{ profile_picture: File | null; cv: File | null }>({
-    profile_picture: null, cv: null,
-  });
-  const [errors, setErrors]   = useState<Record<string, string>>({});
+  const [profilePictureFile, setProfilePictureFile] = useState<File | null>(null);
+  const [cvFile,             setCvFile]             = useState<File | null>(null);
+  const [profilePictureUrl,  setProfilePictureUrl]  = useState<string | null>(null);
+  const [cvUrl,              setCvUrl]              = useState<string | null>(null);
+  const [errors, setErrors]     = useState<Record<string, string>>({});
 
   const update = (field: string, value: string) => {
     setFormData((p) => ({ ...p, [field]: value }));
@@ -101,9 +112,9 @@ const RegisterTrainerPage = () => {
       if (!formData.phone.trim()) e.phone = "Phone is required";
     }
     if (s === 2) {
-      if (!files.profile_picture)      e.profile_picture = "Profile picture is required";
-      if (!files.cv)                   e.cv              = "CV / Resume is required";
-      if (!formData.title.trim())      e.title           = "Job title is required";
+      if (!profilePictureUrl) e.profile_picture = "Profile picture is required";
+      if (!cvUrl)             e.cv              = "CV / Resume is required";
+      if (!formData.title.trim()) e.title       = "Job title is required";
     }
     return e;
   };
@@ -118,6 +129,34 @@ const RegisterTrainerPage = () => {
   const goBack = () => {
     setDir(-1);
     setStep((s) => s - 1);
+  };
+
+  const handleProfilePictureChange = async (file: File) => {
+    setProfilePictureFile(file);
+    setProfilePictureUrl(null);
+    if (errors.profile_picture) setErrors((p) => ({ ...p, profile_picture: "" }));
+    const result = await uploadImage(file, { folder: "trainers/profile-pictures", file_type: "image" });
+    if (result) setProfilePictureUrl(result.public_url);
+  };
+
+  const handleCvChange = async (file: File) => {
+    setCvFile(file);
+    setCvUrl(null);
+    if (errors.cv) setErrors((p) => ({ ...p, cv: "" }));
+    const result = await uploadCv(file, { folder: "trainers/cvs", file_type: "document" });
+    if (result) setCvUrl(result.public_url);
+  };
+
+  const handleProfilePictureRemove = () => {
+    setProfilePictureFile(null);
+    setProfilePictureUrl(null);
+    resetImage();
+  };
+
+  const handleCvRemove = () => {
+    setCvFile(null);
+    setCvUrl(null);
+    resetCv();
   };
 
   const handleSubmit = async (e) => {
@@ -137,8 +176,8 @@ const RegisterTrainerPage = () => {
       city:             formData.city             || undefined,
       postal_code:      formData.postal_code      || undefined,
       address:          formData.address          || undefined,
-      profile_picture:  files.profile_picture     ?? undefined,
-      cv:               files.cv                  ?? undefined,
+      profile_picture:  profilePictureUrl         || undefined,
+      cv:               cvUrl                     || undefined,
     });
     if (ok) {
       addToast("Application submitted! We'll be in touch soon.", "success");
@@ -249,24 +288,28 @@ const RegisterTrainerPage = () => {
                     {/* ── Step 2: Professional Details ── */}
                     {step === 2 && (
                       <div>
-                        <div className="grid grid-cols-1 gap-x-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
                           <ImageUploadField
                             label="Profile Picture"
                             field="profile_picture"
                             imageOnly
                             required
-                            simpleFile={files.profile_picture}
-                            onSimpleFileChange={(file) => setFiles((p) => ({ ...p, profile_picture: file }))}
-                            onSimpleRemove={() => setFiles((p) => ({ ...p, profile_picture: null }))}
+                            simpleFile={profilePictureFile}
+                            onSimpleFileChange={handleProfilePictureChange}
+                            onSimpleRemove={handleProfilePictureRemove}
+                            simpleUploading={uploadingImage}
+                            simpleProgress={imageProgress}
                             errors={displayErrors}
                           />
                           <FileUploadField
                             label="CV / Resume"
                             field="cv"
                             required
-                            simpleFile={files.cv}
-                            onSimpleFileChange={(file) => setFiles((p) => ({ ...p, cv: file }))}
-                            onSimpleRemove={() => setFiles((p) => ({ ...p, cv: null }))}
+                            simpleFile={cvFile}
+                            onSimpleFileChange={handleCvChange}
+                            onSimpleRemove={handleCvRemove}
+                            simpleUploading={uploadingCv}
+                            simpleProgress={cvProgress}
                             errors={displayErrors}
                           />
                         </div>
@@ -368,7 +411,7 @@ const RegisterTrainerPage = () => {
                     onClick={goNext}
                     disabled={
                       (step === 1 && (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim())) ||
-                      (step === 2 && (!files.profile_picture || !files.cv || !formData.title.trim()))
+                      (step === 2 && (!profilePictureUrl || !cvUrl || !formData.title.trim() || uploadingImage || uploadingCv))
                     }
                     className="flex-1 py-3 rounded-xl bg-navy-700 hover:bg-navy-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition"
                   >
