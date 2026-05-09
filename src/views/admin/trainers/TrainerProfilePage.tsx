@@ -2,35 +2,14 @@
 import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  MdEdit, MdOpenInNew, MdSchool, MdWorkspacePremium,
-  MdCalendarToday, MdLayers, MdSettings, MdLocationOn, MdPhotoCamera,
-  MdArrowBack,
+  MdEdit, MdOpenInNew, MdSchool, MdPhotoCamera, MdArrowBack,
 } from "react-icons/md";
 import { FaWhatsapp, FaLinkedin } from "react-icons/fa";
 import useTrainer from "hooks/trainers/useTrainer";
 import useUpdateTrainer from "hooks/trainers/useUpdateTrainer";
 import usePresignedUpload from "hooks/storage/usePresignedUpload";
-import useTrainerAssignments from "hooks/trainers/useTrainerAssignments";
 import Loading from "components/loading/Loading";
 import { useToast } from "context/ToastContext";
-
-const formatDate = (s?: string | null) => {
-  if (!s) return "—";
-  return new Date(s).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
-};
-
-const statusStyle: Record<string, string> = {
-  upcoming:  "bg-blue-50 text-blue-600 border-blue-600",
-  ongoing:   "bg-green-50 text-green-600 border-green-600",
-  completed: "bg-slate-100 text-slate-500 border-slate-400",
-  cancelled: "bg-red-50 text-red-500 border-red-500",
-};
-
-const modeStyle: Record<string, string> = {
-  online:  "bg-purple-50 text-purple-600 border-purple-600",
-  offline: "bg-orange-50 text-orange-600 border-orange-600",
-  hybrid:  "bg-teal-50 text-teal-600 border-teal-600",
-};
 
 const Field = ({ label, value }) => (
   <div className="space-y-1">
@@ -53,11 +32,10 @@ const TrainerProfilePage = () => {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { trainer, loading, error, refetch }                              = useTrainer(uid);
-  const { updateTrainer }                                                 = useUpdateTrainer();
-  const { upload, uploading, progress }                                   = usePresignedUpload();
-  const { assignments, loading: loadingPrograms, count: programCount }   = useTrainerAssignments(uid);
-  const { addToast }                                                      = useToast();
+  const { trainer, loading, error, refetch } = useTrainer(uid);
+  const { updateTrainer }                   = useUpdateTrainer();
+  const { upload, uploading, progress }     = usePresignedUpload();
+  const { addToast }                        = useToast();
 
   const handleAvatarChange = async (e) => {
     const file = e.target.files?.[0];
@@ -135,12 +113,6 @@ const TrainerProfilePage = () => {
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold border bg-green-50 text-green-700 border-green-200">
                 <MdSchool size={11} /> Trainer
               </span>
-              {programCount > 0 && (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold border bg-navy-50 text-navy-600 border-navy-200">
-                  <MdWorkspacePremium size={11} />
-                  {programCount} program{programCount !== 1 ? "s" : ""}
-                </span>
-              )}
             </div>
           </div>
 
@@ -249,88 +221,6 @@ const TrainerProfilePage = () => {
               } />
             </Section>
           </>
-        )}
-      </div>
-
-      {/* ── Assigned Programs ── */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div className="px-5 sm:px-6 py-4 border-b border-slate-100 flex items-center gap-2">
-          <p className="text-sm font-semibold text-navy-800">Assigned Programs</p>
-          {programCount > 0 && (
-            <span className="text-xs font-semibold bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded-md">{programCount}</span>
-          )}
-        </div>
-
-        {loadingPrograms ? (
-          <div className="px-6 py-8 text-sm text-slate-400">Loading programs...</div>
-        ) : assignments.length === 0 ? (
-          <div className="px-6 py-8 text-sm text-slate-400 italic">Not assigned to any programs yet.</div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-slate-100">
-                  {[
-                    { label: "Program",  icon: <MdWorkspacePremium size={14} /> },
-                    { label: "Field",    icon: <MdLayers           size={14} /> },
-                    { label: "Status",   icon: <MdSettings         size={14} /> },
-                    { label: "Mode",     icon: <MdSettings         size={14} /> },
-                    { label: "Location", icon: <MdLocationOn       size={14} /> },
-                    { label: "Dates",    icon: <MdCalendarToday    size={14} /> },
-                  ].map(({ label, icon }) => (
-                    <th key={label} className="px-5 py-3.5 text-left text-xs font-bold tracking-widest uppercase text-slate-400">
-                      <span className="flex items-center gap-1.5">{icon}{label}</span>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-50">
-                {assignments.map((a) => {
-                  const prog = a.program;
-                  return (
-                    <tr key={a.uid} onClick={() => navigate(`/admin/programs/${prog.uid}`)}
-                      className="hover:bg-slate-50 transition cursor-pointer">
-                      <td className="px-5 py-3.5">
-                        <div className="flex items-center gap-2.5">
-                          <span className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                            style={{ backgroundColor: prog.field?.hex_color ?? "#94a3b8" }} />
-                          <span className="font-medium text-navy-800 truncate max-w-[180px]" title={prog.name}>
-                            {prog.name}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-5 py-3.5 text-slate-500">
-                        {prog.field?.name ?? <span className="text-slate-300">—</span>}
-                      </td>
-                      <td className="px-5 py-3.5">
-                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border capitalize ${statusStyle[prog.status] ?? "bg-slate-100 text-slate-500 border-slate-400"}`}>
-                          <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                          {prog.status_display ?? prog.status}
-                        </span>
-                      </td>
-                      <td className="px-5 py-3.5">
-                        {prog.mode ? (
-                          <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold border capitalize ${modeStyle[prog.mode] ?? "bg-slate-100 text-slate-500 border-slate-400"}`}>
-                            {prog.mode_display ?? prog.mode}
-                          </span>
-                        ) : <span className="text-slate-300">—</span>}
-                      </td>
-                      <td className="px-5 py-3.5 text-slate-500">
-                        {prog.location
-                          ? `${prog.location.city}${prog.location.country ? `, ${prog.location.country}` : ""}`
-                          : <span className="text-slate-300">—</span>}
-                      </td>
-                      <td className="px-5 py-3.5 text-slate-500 text-xs whitespace-nowrap">
-                        {prog.start_date || prog.end_date
-                          ? <>{formatDate(prog.start_date)} → {formatDate(prog.end_date)}</>
-                          : <span className="text-slate-300">—</span>}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
         )}
       </div>
 
