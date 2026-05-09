@@ -65,7 +65,7 @@ const TrainerProfilePage = () => {
     e.target.value = "";
     const result = await upload(file, { folder: "trainers/profile-pictures", file_type: "image" });
     if (result) {
-      const updated = await updateTrainer(trainer.uid, { profile_picture: result.public_url });
+      const updated = await updateTrainer(trainer.uid, { profile_picture: result.file_key });
       if (updated) {
         addToast("Profile picture updated", "success");
         refetch();
@@ -104,8 +104,8 @@ const TrainerProfilePage = () => {
               disabled={uploading}
               className="relative group block w-16 h-16 rounded-full ring-4 ring-slate-100 focus:outline-none"
             >
-              {trainer.profile_picture ? (
-                <img src={trainer.profile_picture} alt={trainer.name}
+              {trainer.profile_picture?.public_url ? (
+                <img src={trainer.profile_picture.public_url} alt={trainer.name}
                   className="w-16 h-16 rounded-full object-cover" />
               ) : (
                 <div className="w-16 h-16 rounded-full bg-navy-600 text-white flex items-center justify-center text-xl font-bold select-none">
@@ -237,12 +237,12 @@ const TrainerProfilePage = () => {
           </>
         )}
 
-        {trainer.cv && (
+        {trainer.cv?.public_url && (
           <>
             <Divider />
             <Section title="Documents">
               <Field label="CV / Resume" value={
-                <a href={trainer.cv} target="_blank" rel="noreferrer"
+                <a href={trainer.cv.public_url} target="_blank" rel="noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-200 bg-slate-50 text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
                   <MdOpenInNew size={12} className="text-slate-400" /> View CV
                 </a>

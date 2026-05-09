@@ -9,17 +9,22 @@ export interface TrainerBrief {
   uid: string;
   name: string;
   email: string;
-  profile_picture: string;
+  profile_picture: TrainerFile | string | null;
   title: string;
   country: string;
   city: string;
   whatsapp: string;
 }
 
+export interface TrainerFile {
+  file_key: string;
+  public_url: string;
+}
+
 export interface Trainer {
   uid: string;
-  profile_picture: string;
-  cv: string;
+  profile_picture: TrainerFile | null;
+  cv: TrainerFile | null;
   specializations: TrainerSpecialization[];
   name: string;
   email: string;

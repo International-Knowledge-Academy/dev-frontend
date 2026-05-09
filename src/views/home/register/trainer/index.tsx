@@ -94,8 +94,8 @@ const RegisterTrainerPage = () => {
   const [formData, setFormData] = useState(initialForm);
   const [profilePictureFile, setProfilePictureFile] = useState<File | null>(null);
   const [cvFile,             setCvFile]             = useState<File | null>(null);
-  const [profilePictureUrl,  setProfilePictureUrl]  = useState<string | null>(null);
-  const [cvUrl,              setCvUrl]              = useState<string | null>(null);
+  const [profilePictureKey,  setProfilePictureKey]  = useState<string | null>(null);
+  const [cvKey,              setCvKey]              = useState<string | null>(null);
   const [errors, setErrors]     = useState<Record<string, string>>({});
 
   const update = (field: string, value: string) => {
@@ -112,8 +112,8 @@ const RegisterTrainerPage = () => {
       if (!formData.phone.trim()) e.phone = "Phone is required";
     }
     if (s === 2) {
-      if (!profilePictureUrl) e.profile_picture = "Profile picture is required";
-      if (!cvUrl)             e.cv              = "CV / Resume is required";
+      if (!profilePictureKey) e.profile_picture = "Profile picture is required";
+      if (!cvKey)             e.cv              = "CV / Resume is required";
       if (!formData.title.trim()) e.title       = "Job title is required";
     }
     return e;
@@ -136,7 +136,7 @@ const RegisterTrainerPage = () => {
     setProfilePictureUrl(null);
     if (errors.profile_picture) setErrors((p) => ({ ...p, profile_picture: "" }));
     const result = await uploadImage(file, { folder: "trainers/profile-pictures", file_type: "image" });
-    if (result) setProfilePictureUrl(result.public_url);
+    if (result) setProfilePictureKey(result.file_key);
   };
 
   const handleCvChange = async (file: File) => {
@@ -144,18 +144,18 @@ const RegisterTrainerPage = () => {
     setCvUrl(null);
     if (errors.cv) setErrors((p) => ({ ...p, cv: "" }));
     const result = await uploadCv(file, { folder: "trainers/cvs", file_type: "document" });
-    if (result) setCvUrl(result.public_url);
+    if (result) setCvKey(result.file_key);
   };
 
   const handleProfilePictureRemove = () => {
     setProfilePictureFile(null);
-    setProfilePictureUrl(null);
+    setProfilePictureKey(null);
     resetImage();
   };
 
   const handleCvRemove = () => {
     setCvFile(null);
-    setCvUrl(null);
+    setCvKey(null);
     resetCv();
   };
 
@@ -176,8 +176,8 @@ const RegisterTrainerPage = () => {
       city:             formData.city             || undefined,
       postal_code:      formData.postal_code      || undefined,
       address:          formData.address          || undefined,
-      profile_picture:  profilePictureUrl         || undefined,
-      cv:               cvUrl                     || undefined,
+      profile_picture:  profilePictureKey          || undefined,
+      cv:               cvKey                     || undefined,
     });
     if (ok) {
       addToast("Application submitted! We'll be in touch soon.", "success");
@@ -411,7 +411,7 @@ const RegisterTrainerPage = () => {
                     onClick={goNext}
                     disabled={
                       (step === 1 && (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim())) ||
-                      (step === 2 && (!profilePictureUrl || !cvUrl || !formData.title.trim() || uploadingImage || uploadingCv))
+                      (step === 2 && (!profilePictureKey || !cvKey || !formData.title.trim() || uploadingImage || uploadingCv))
                     }
                     className="flex-1 py-3 rounded-xl bg-navy-700 hover:bg-navy-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition"
                   >

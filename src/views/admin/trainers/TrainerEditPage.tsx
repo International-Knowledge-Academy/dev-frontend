@@ -135,7 +135,7 @@ const TrainerEditPage = () => {
         postal_code:      trainer.postal_code      ?? "",
         address:          trainer.address          ?? "",
       });
-      setProfilePictureUrl(trainer.profile_picture ?? "");
+      setProfilePictureUrl(trainer.profile_picture?.public_url ?? "");
     }
   }, [trainer]);
 
@@ -146,7 +146,7 @@ const TrainerEditPage = () => {
     const uploaded = await uploadCvFile(file, { folder: "trainers/cvs", file_type: "document" });
     setCvFile(null);
     if (uploaded) {
-      const result = await updateTrainer(uid, { cv: uploaded.public_url });
+      const result = await updateTrainer(uid, { cv: uploaded.file_key });
       if (result) { addToast("CV updated successfully", "success"); refetch(); }
     }
   };
@@ -156,9 +156,9 @@ const TrainerEditPage = () => {
     if (result) { addToast("CV removed", "success"); refetch(); }
   };
 
-  const handlePicChange = async ({ public_url }: PresignedUploadResult) => {
+  const handlePicChange = async ({ file_key, public_url }: PresignedUploadResult) => {
     setProfilePictureUrl(public_url);
-    const result = await updateTrainer(uid, { profile_picture: public_url });
+    const result = await updateTrainer(uid, { profile_picture: file_key });
     if (result) { addToast("Profile picture updated", "success"); refetch(); }
   };
 
@@ -269,7 +269,7 @@ const TrainerEditPage = () => {
               onSimpleFileChange={handleCvFileChange}
               onSimpleRemove={() => setCvFile(null)}
               simpleUploading={uploadingCv}
-              existingFileUrl={trainer?.cv || null}
+              existingFileUrl={trainer?.cv?.public_url || null}
               existingFileName="Current CV"
               onExistingRemove={handleCvRemove}
               errors={fieldErrors}
