@@ -60,10 +60,10 @@ const RegisterPage = () => {
 
   useEffect(() => {
     if (preProgram) {
-      update("program", preProgram.uid ?? "");
+      setFormData((p) => ({ ...p, program: preProgram.uid ?? "" }));
       if (preProgram.field?.uid) {
         setSelectedFieldUid(preProgram.field.uid);
-        update("field", preProgram.field.uid);
+        setFormData((p) => ({ ...p, field: preProgram.field.uid }));
       }
     }
   }, [preProgram]);
