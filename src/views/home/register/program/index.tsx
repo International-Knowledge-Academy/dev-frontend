@@ -1,12 +1,12 @@
 // @ts-nocheck
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import { MdSend } from "react-icons/md";
 import { useToast } from "context/ToastContext";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
-import InputField from "components/form/InputField";
-import SelectField from "components/form/SelectField";
-import Button from "components/ui/buttons/Button";
+import { InputField, SelectField } from "components/form";
 import useGetProgram from "hooks/programs/useGetProgram";
 import useAllCategories from "hooks/categories/useAllCategories";
 import useFields from "hooks/fields/useFields";
@@ -24,14 +24,11 @@ const RegisterPage = () => {
   const { addToast }   = useToast();
   const preselectedUid = searchParams.get("uid") ?? undefined;
 
-  /* Pre-selected program via ?uid= */
   const { program: preProgram } = useGetProgram(preselectedUid);
 
-  /* Cascade selects */
   const [selectedCategoryUid, setSelectedCategoryUid] = useState("");
   const [selectedFieldUid, setSelectedFieldUid]       = useState("");
 
-  /* Data hooks */
   const { categories, loading: loadingCats } = useAllCategories();
   const { fields, loading: loadingFields }   = useFields(
     selectedCategoryUid ? { category: selectedCategoryUid, is_active: true } : {}
@@ -40,10 +37,9 @@ const RegisterPage = () => {
     selectedFieldUid ? { field: selectedFieldUid, is_active: true } : {}
   );
 
-  const { createRegistration, loading: submitting, error, fieldErrors } = useCreateRegistration();
+  const { createRegistration, loading, error, fieldErrors } = useCreateRegistration();
 
-  /* Form */
-  const [form, setForm] = useState({
+  const [formData, setFormData] = useState({
     category:          "",
     field:             "",
     program:           "",
@@ -55,9 +51,13 @@ const RegisterPage = () => {
     address:           "",
   });
 
-  const update = (key, value) => setForm((p) => ({ ...p, [key]: value }));
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  /* Pre-fill when arriving from program page */
+  const update = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: "" }));
+  };
+
   useEffect(() => {
     if (preProgram) {
       update("program", preProgram.uid ?? "");
@@ -68,8 +68,7 @@ const RegisterPage = () => {
     }
   }, [preProgram]);
 
-  /* Category change — reset field + program */
-  const handleCategoryChange = (key, val) => {
+  const handleCategoryChange = (key: string, val: string) => {
     update(key, val);
     setSelectedCategoryUid(val);
     update("field", "");
@@ -77,36 +76,43 @@ const RegisterPage = () => {
     setSelectedFieldUid("");
   };
 
-  /* Field change — reset program */
-  const handleFieldChange = (key, val) => {
+  const handleFieldChange = (key: string, val: string) => {
     update(key, val);
     setSelectedFieldUid(val);
     update("program", "");
   };
 
-  const isValid =
-    form.program !== "" &&
-    form.full_name.trim() !== "" &&
-    form.email.trim() !== "" &&
-    form.phone.trim() !== "";
+  const validate = () => {
+    const e: Record<string, string> = {};
+    if (!formData.program)         e.program   = "Please select a program";
+    if (!formData.full_name.trim()) e.full_name = "Full name is required";
+    if (!formData.email.trim())    e.email     = "Email address is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) e.email = "Invalid email format";
+    if (!formData.phone.trim())    e.phone     = "Phone number is required";
+    return e;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = {
-      program_uid:       form.program,
-      registration_type: form.registration_type,
-      full_name:         form.full_name,
-      email:             form.email,
-      phone:             form.phone,
-      job_title:         form.job_title,
-      address:           form.address,
-    };
-    const created = await createRegistration(payload);
+    const errs = validate();
+    if (Object.keys(errs).length) { setErrors(errs); return; }
+
+    const created = await createRegistration({
+      program_uid:       formData.program,
+      registration_type: formData.registration_type,
+      full_name:         formData.full_name,
+      email:             formData.email,
+      phone:             formData.phone,
+      job_title:         formData.job_title,
+      address:           formData.address,
+    });
     if (created) {
       addToast("Registration submitted successfully! We'll be in touch shortly.", "success");
       navigate("/register/success");
     }
   };
+
+  const displayErrors = { ...errors, ...fieldErrors };
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
@@ -134,52 +140,54 @@ const RegisterPage = () => {
       </section>
 
       <div className="max-w-3xl mx-auto w-full px-6 py-12">
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-          <form onSubmit={handleSubmit}>
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="bg-white border border-slate-100 rounded-3xl shadow-sm overflow-hidden"
+        >
+          {/* Card header */}
+          <div className="bg-navy-600 px-8 py-7 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-gold-500 opacity-10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
+            <h3 className="text-white font-extrabold text-xl relative">Program Registration</h3>
+            <p className="text-navy-200 text-sm mt-1 relative">
+              Fill in the details below and we'll confirm your enrollment within 24 hours.
+            </p>
+          </div>
 
-            {/* ── Program Selection ── */}
-            <div className="px-6 pt-6 pb-2 border-b border-slate-100">
-              <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">
+          <div className="px-8 py-8">
+            {error && (
+              <div className="mb-5 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit}>
+              {/* Program selection */}
+              <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">
                 Select Program
               </p>
 
-              {error && (
-                <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600 mb-4">
-                  {error}
-                </div>
-              )}
-
-              {/* Category */}
               <SelectField
                 label={loadingCats ? "Loading..." : "Category"}
                 field="category"
                 required={false}
                 options={categories.map((c) => ({ value: c.uid, label: c.name }))}
-                formData={form}
-                errors={fieldErrors}
-                updateFormData={handleCategoryChange}
+                formData={formData} errors={displayErrors} updateFormData={handleCategoryChange}
               />
 
-              {/* Field — only after category picked */}
               <SelectField
                 label={loadingFields && selectedCategoryUid ? "Loading Fields..." : "Field"}
                 field="field"
                 required={false}
-                options={
-                  selectedCategoryUid
-                    ? fields.map((f) => ({ value: f.uid, label: f.name }))
-                    : []
-                }
-                formData={form}
-                errors={fieldErrors}
-                updateFormData={handleFieldChange}
+                options={selectedCategoryUid ? fields.map((f) => ({ value: f.uid, label: f.name })) : []}
+                formData={formData} errors={displayErrors} updateFormData={handleFieldChange}
               />
 
-              {/* Program — only after field picked */}
               <SelectField
                 label={loadingPrograms && selectedFieldUid ? "Loading Programs..." : "Program"}
                 field="program"
-                required={true}
+                required
                 options={
                   selectedFieldUid
                     ? programs.map((p) => ({ value: p.uid, label: p.name }))
@@ -187,89 +195,82 @@ const RegisterPage = () => {
                     ? [{ value: preProgram.uid, label: preProgram.name }]
                     : []
                 }
-                formData={form}
-                errors={fieldErrors}
-                updateFormData={update}
+                formData={formData} errors={displayErrors} updateFormData={update}
               />
 
-            </div>
-
-            {/* ── Participant Details ── */}
-            <div className="px-6 pt-6 pb-2 border-b border-slate-100">
-              <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">
+              {/* Participant details */}
+              <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3 mt-2">
                 Your Details
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
                 <InputField
-                  label="Full Name"
-                  field="full_name"
+                  label="Full Name" field="full_name" required
                   placeholder="John Doe"
-                  formData={form}
-                  errors={fieldErrors}
-                  updateFormData={update}
+                  formData={formData} errors={displayErrors} updateFormData={update}
                 />
                 <InputField
-                  label="Email"
-                  field="email"
-                  type="email"
+                  label="Email Address" field="email" type="email" required
                   placeholder="john@example.com"
-                  formData={form}
-                  errors={fieldErrors}
-                  updateFormData={update}
-                />
-                <InputField
-                  label="Phone"
-                  field="phone"
-                  placeholder="+971 50 000 0000"
-                  formData={form}
-                  errors={fieldErrors}
-                  updateFormData={update}
-                />
-                <InputField
-                  label="Job Title"
-                  field="job_title"
-                  placeholder="Software Engineer"
-                  required={false}
-                  formData={form}
-                  errors={fieldErrors}
-                  updateFormData={update}
+                  formData={formData} errors={displayErrors} updateFormData={update}
                 />
               </div>
-              <InputField
-                label="Address"
-                field="address"
-                placeholder="123 Main St, Dubai, UAE"
-                required={false}
-                formData={form}
-                errors={fieldErrors}
-                updateFormData={update}
-              />
-              <SelectField
-                label="Registration Type"
-                field="registration_type"
-                options={TYPE_OPTIONS}
-                formData={form}
-                errors={fieldErrors}
-                updateFormData={update}
-              />
-            </div>
 
-            {/* ── Submit ── */}
-            <div className="px-6 py-5 flex flex-col gap-3">
-              <Button
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                <InputField
+                  label="Phone / WhatsApp" field="phone" type="tel" required
+                  placeholder="+971 50 000 0000"
+                  formData={formData} errors={displayErrors} updateFormData={update}
+                />
+                <InputField
+                  label="Job Title" field="job_title" required={false}
+                  placeholder="Software Engineer"
+                  formData={formData} errors={displayErrors} updateFormData={update}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                <InputField
+                  label="Address" field="address" required={false}
+                  placeholder="123 Main St, Dubai, UAE"
+                  formData={formData} errors={displayErrors} updateFormData={update}
+                />
+                <SelectField
+                  label="Registration Type" field="registration_type"
+                  options={TYPE_OPTIONS}
+                  formData={formData} errors={displayErrors} updateFormData={update}
+                />
+              </div>
+
+              <motion.button
                 type="submit"
-                variant="primary"
-                text={submitting ? "Submitting..." : "Complete Registration"}
-                disabled={submitting || !isValid}
-                className="w-full py-3"
-              />
-              <p className="text-xs text-slate-400 text-center">
-                By registering you agree to our terms. We'll contact you to confirm your enrollment.
-              </p>
-            </div>
+                disabled={loading}
+                whileHover={{ scale: loading ? 1 : 1.02 }}
+                whileTap={{ scale: loading ? 1 : 0.98 }}
+                className="w-full flex items-center justify-center gap-2 bg-navy-600 hover:bg-navy-700 disabled:opacity-70 text-white font-bold py-3.5 rounded-xl transition-colors duration-200 text-sm mt-2"
+              >
+                {loading ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                    </svg>
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <MdSend size={16} />
+                    Complete Registration
+                  </>
+                )}
+              </motion.button>
 
-          </form>
-        </div>
+              <p className="text-center text-slate-400 text-xs mt-3">
+                No account required · We'll confirm your enrollment within 24 hours
+              </p>
+            </form>
+          </div>
+        </motion.div>
       </div>
 
       <Footer />

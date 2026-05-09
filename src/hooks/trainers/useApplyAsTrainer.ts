@@ -1,47 +1,69 @@
 import { useState } from "react";
 import axiosInstance from "api/axiosInstance";
+import type { TrainerFieldErrors } from "types/trainer";
 
-export interface TrainerApplicationPayload {
-  full_name: string;
+export interface ApplyAsTrainerPayload {
+  name: string;
   email: string;
-  phone: string;
-  job_title?: string;
-  years_of_experience?: string;
-  expertise_areas?: string;
-  bio?: string;
+  phone?: string;
+  whatsapp?: string;
+  title?: string;
+  years_experience?: number;
+  country?: string;
+  city?: string;
+  postal_code?: string;
+  address?: string;
+  primary_email?: string;
   linkedin_url?: string;
+  certifications?: string;
+  bio?: string;
+  profile_picture?: File | null;
+  cv?: File | null;
 }
 
-type FieldErrors = Partial<Record<keyof TrainerApplicationPayload, string>>;
-
 interface UseApplyAsTrainerReturn {
-  apply: (payload: TrainerApplicationPayload) => Promise<boolean>;
+  apply: (payload: ApplyAsTrainerPayload) => Promise<boolean>;
   loading: boolean;
   error: string | null;
-  fieldErrors: FieldErrors;
+  fieldErrors: TrainerFieldErrors;
 }
 
 const useApplyAsTrainer = (): UseApplyAsTrainerReturn => {
   const [loading, setLoading]         = useState(false);
   const [error, setError]             = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [fieldErrors, setFieldErrors] = useState<TrainerFieldErrors>({});
 
-  const apply = async (payload: TrainerApplicationPayload): Promise<boolean> => {
+  const apply = async (payload: ApplyAsTrainerPayload): Promise<boolean> => {
     setLoading(true);
     setError(null);
     setFieldErrors({});
 
     try {
-      await axiosInstance.post("/trainers/apply", payload);
+      const form = new FormData();
+
+      (Object.keys(payload) as (keyof ApplyAsTrainerPayload)[]).forEach((key) => {
+        const val = payload[key];
+        if (val === undefined || val === null || val === "") return;
+        if (val instanceof File) {
+          form.append(key, val);
+        } else {
+          form.append(key, String(val));
+        }
+      });
+
+      await axiosInstance.post("/trainers", form, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       return true;
     } catch (err: unknown) {
       const responseData = (err as any)?.response?.data;
 
-      const fields: (keyof TrainerApplicationPayload)[] = [
-        "full_name", "email", "phone", "job_title",
-        "years_of_experience", "expertise_areas", "bio", "linkedin_url",
+      const fields: (keyof TrainerFieldErrors)[] = [
+        "name", "email", "phone", "whatsapp", "title", "years_experience",
+        "country", "city", "postal_code", "address", "primary_email",
+        "linkedin_url", "certifications", "bio", "profile_picture", "cv",
       ];
-      const extracted: FieldErrors = {};
+      const extracted: TrainerFieldErrors = {};
       fields.forEach((f) => {
         const val = responseData?.[f];
         if (Array.isArray(val) && val[0]) extracted[f] = val[0];

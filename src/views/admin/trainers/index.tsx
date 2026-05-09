@@ -3,10 +3,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   UserPlus, RefreshCw, Pencil, Trash2, AlertTriangle,
-  Users, ToggleLeft, GraduationCap, Mail, Briefcase,
+  Users, MapPin, Briefcase, Mail,
 } from "lucide-react";
-import useUsers from "hooks/users/useUsers";
-import useDeleteUser from "hooks/users/useDeleteUser";
+import useTrainers from "hooks/trainers/useTrainers";
+import useDeleteTrainer from "hooks/trainers/useDeleteTrainer";
 import { useToast } from "context/ToastContext";
 import Loading from "components/loading/Loading";
 import EmptyState from "components/empty/empty";
@@ -17,9 +17,7 @@ import SearchInput from "components/form/SearchInput";
 import PrevButton from "components/ui/buttons/PrevButton";
 import NextButton from "components/ui/buttons/NextButton";
 import ConfirmModal from "components/ui/modals/ConfirmModal";
-import type { User } from "types/auth";
-
-/* ─── Stat card ──────────────────────────────────────────────────────────── */
+import type { TrainerBrief } from "types/trainer";
 
 const StatCard = ({
   icon: Icon,
@@ -45,25 +43,25 @@ const StatCard = ({
   </div>
 );
 
-/* ─── Page ───────────────────────────────────────────────────────────────── */
-
 const TrainersPage = () => {
   const navigate     = useNavigate();
   const { addToast } = useToast();
-  const { users: trainers, count, loading, error, params, setParams, refetch } = useUsers({ role: "trainer" });
-  const { deleteUser, loading: deleting } = useDeleteUser();
+  const { trainers, count, loading, error, params, setParams, refetch } = useTrainers();
+  const { deleteTrainer, loading: deleting } = useDeleteTrainer();
 
-  const [deleteTarget, setDeleteTarget] = useState<User | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<TrainerBrief | null>(null);
 
-  const activeCount = trainers.filter((t) => t.is_active).length;
+  const withLocation = trainers.filter((t) => t.country || t.city).length;
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
-    const ok = await deleteUser(deleteTarget.uid);
+    const ok = await deleteTrainer(deleteTarget.uid);
     if (ok) {
       addToast(`${deleteTarget.name} has been deleted`, "success");
       setDeleteTarget(null);
       refetch();
+    } else {
+      addToast("Failed to delete trainer", "error");
     }
   };
 
@@ -71,7 +69,6 @@ const TrainersPage = () => {
 
   return (
     <>
-      {/* Page header */}
       <PageHeader
         title="Trainers"
         subtitle="Manage trainer profiles and assignments"
@@ -86,26 +83,22 @@ const TrainersPage = () => {
         className="mb-4 px-0 sm:px-0"
       />
 
-      {/* Stats */}
       <div className="flex flex-col sm:flex-row gap-3 mb-4">
-        <StatCard icon={Users}          label="Total Trainers"  value={count}       />
-        <StatCard icon={ToggleLeft}     label="Active"          value={activeCount} accent />
-        <StatCard icon={GraduationCap}  label="Inactive"        value={count - activeCount} />
+        <StatCard icon={Users}   label="Total Trainers" value={count}        />
+        <StatCard icon={MapPin}  label="With Location"  value={withLocation} accent />
+        <StatCard icon={Briefcase} label="On This Page" value={trainers.length} />
       </div>
 
       {/* Filter bar */}
       <div className="bg-white border border-slate-100 rounded-xl px-4 py-3 mb-4">
         <div className="flex items-center gap-2">
-
           <SearchInput
             value={params.search ?? ""}
-            onChange={(val) => setParams({ search: val })}
-            placeholder="Search trainers..."
+            onChange={(val) => setParams({ search: val, page: 1 })}
+            placeholder="Search by name, title, location..."
             className="flex-1 max-w-xs"
           />
-
           <div className="flex-1" />
-
           <IconButton
             onClick={refetch}
             icon={<RefreshCw size={15} />}
@@ -116,7 +109,6 @@ const TrainersPage = () => {
             hoverBorderColor="hover:border-slate-300"
             className="p-2 flex-shrink-0"
           />
-
           {!loading && (
             <span className="text-xs text-slate-400 whitespace-nowrap flex-shrink-0">
               Showing{" "}
@@ -128,11 +120,10 @@ const TrainersPage = () => {
         </div>
       </div>
 
-      {/* Table card */}
+      {/* Table */}
       <div className="bg-white rounded-2xl border border-slate-100">
         <div className="p-4 sm:p-6">
           <div className="rounded-xl border border-slate-100 overflow-hidden">
-
             {loading ? (
               <Loading text="Fetching trainers..." />
             ) : error ? (
@@ -148,18 +139,9 @@ const TrainersPage = () => {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-slate-100 bg-slate-50/60">
-                      {[
-                        { label: "Trainer",  icon: <Users         size={13} /> },
-                        { label: "Email",    icon: <Mail          size={13} /> },
-                        { label: "Title",    icon: <Briefcase     size={13} /> },
-                        { label: "Status",   icon: <ToggleLeft    size={13} /> },
-                        { label: "Actions",  icon: null },
-                      ].map(({ label, icon }) => (
-                        <th
-                          key={label}
-                          className="px-5 py-3 text-left text-xs font-bold tracking-widest uppercase text-slate-400"
-                        >
-                          <span className="flex items-center gap-1.5">{icon}{label}</span>
+                      {["Trainer", "Email", "Title", "Location", "Actions"].map((label) => (
+                        <th key={label} className="px-5 py-3 text-left text-xs font-bold tracking-widest uppercase text-slate-400">
+                          {label}
                         </th>
                       ))}
                     </tr>
@@ -174,9 +156,9 @@ const TrainersPage = () => {
                         {/* Trainer */}
                         <td className="px-5 py-3.5">
                           <div className="flex items-center gap-3">
-                            {trainer.profile?.profile_picture?.public_url ? (
+                            {trainer.profile_picture ? (
                               <img
-                                src={trainer.profile.profile_picture.public_url}
+                                src={trainer.profile_picture}
                                 alt={trainer.name}
                                 className="w-8 h-8 rounded-full object-cover flex-shrink-0 ring-1 ring-slate-100 group-hover:ring-gold-200 transition-all"
                               />
@@ -198,25 +180,23 @@ const TrainersPage = () => {
 
                         {/* Title */}
                         <td className="px-5 py-3.5 text-slate-500 max-w-[180px]">
-                          {trainer.profile?.title ? (
-                            <span className="truncate block" title={trainer.profile.title}>
-                              {trainer.profile.title}
-                            </span>
+                          {trainer.title ? (
+                            <span className="truncate block" title={trainer.title}>{trainer.title}</span>
                           ) : (
-                            <span className="text-slate-300 italic">—</span>
+                            <span className="text-slate-300">—</span>
                           )}
                         </td>
 
-                        {/* Status */}
+                        {/* Location */}
                         <td className="px-5 py-3.5">
-                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border ${
-                            trainer.is_active
-                              ? "bg-green-50 text-green-600 border-green-200"
-                              : "bg-slate-50 text-slate-400 border-slate-200"
-                          }`}>
-                            <span className={`w-1.5 h-1.5 rounded-full ${trainer.is_active ? "bg-green-500" : "bg-slate-300"}`} />
-                            {trainer.is_active ? "Active" : "Inactive"}
-                          </span>
+                          {trainer.city || trainer.country ? (
+                            <span className="inline-flex items-center gap-1.5 text-slate-500 text-xs">
+                              <MapPin size={12} className="text-slate-400 flex-shrink-0" />
+                              {[trainer.city, trainer.country].filter(Boolean).join(", ")}
+                            </span>
+                          ) : (
+                            <span className="text-slate-300">—</span>
+                          )}
                         </td>
 
                         {/* Actions */}
@@ -245,12 +225,9 @@ const TrainersPage = () => {
               </div>
             )}
 
-            {/* Pagination */}
             {totalPages > 1 && (
               <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-t border-slate-100">
-                <p className="text-xs text-slate-400">
-                  Page {params.page ?? 1} of {totalPages}
-                </p>
+                <p className="text-xs text-slate-400">Page {params.page ?? 1} of {totalPages}</p>
                 <div className="flex gap-2">
                   <PrevButton
                     text="Previous"
@@ -265,7 +242,6 @@ const TrainersPage = () => {
                 </div>
               </div>
             )}
-
           </div>
         </div>
       </div>

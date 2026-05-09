@@ -40,10 +40,9 @@ const Hero = () => {
           animate="visible"
           custom={0}
           variants={fadeUp}
-          className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-gold-400 text-sm font-medium px-4 py-1.5 rounded-full mb-8"
+          className=""
         >
-          <span className="h-2 w-2 rounded-full bg-gold-400 animate-pulse" />
-          International Knowledge Academy
+
         </motion.div>
 
         {/* Heading */}
@@ -79,14 +78,14 @@ const Hero = () => {
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           <a
-            href="mailto:info@ika-edu.com"
+            href="/register/program"
             className="bg-gold-500 text-navy-900 font-bold px-10 py-4 rounded-full hover:bg-gold-400 transition-all duration-300 shadow-lg shadow-gold-500/30 text-base hover:-translate-y-0.5 hover:shadow-xl hover:shadow-gold-500/40"
           >
             Request a Program
           </a>
           <a
-            href="#about"
-            className="bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold px-10 py-4 rounded-full hover:bg-white/20 hover:border-gold-400 transition-all duration-300 text-base hover:-translate-y-0.5"
+            href="/about"
+            className="bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold px-10 py-4 rounded-full hover:bg-white/20 hover:border-white/30-400 transition-all duration-300 text-base"
           >
             Learn More
           </a>
