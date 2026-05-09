@@ -3,11 +3,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { MdSend } from "react-icons/md";
-import { Check, Upload } from "lucide-react";
+import { Check } from "lucide-react";
 import { useToast } from "context/ToastContext";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
 import { InputField, SelectField, TextareaField } from "components/form";
+import ImageUploadField from "components/form/images/ImageUploadField";
+import FileUploadField  from "components/form/filesUpload/FileUploadField";
 import useApplyAsTrainer from "hooks/trainers/useApplyAsTrainer";
 
 const EXPERIENCE_OPTIONS = [
@@ -30,23 +32,6 @@ const initialForm = {
   certifications:"", bio:           "",
   country:       "", city:          "", postal_code:  "", address: "",
 };
-
-/* ── File input ── */
-const FileInput = ({ label, accept, onChange, fileName, error }) => (
-  <div className="mb-4">
-    <label className="block text-sm font-medium text-navy-800 mb-1.5">
-      {label} <span className="text-slate-400 font-normal">(optional)</span>
-    </label>
-    <label className={`flex items-center gap-3 w-full rounded-md border ${error ? "border-red-400 bg-red-50" : "border-slate-200 bg-white"} px-3 py-2.5 cursor-pointer hover:border-navy-300 transition`}>
-      <Upload size={15} className="text-slate-400 flex-shrink-0" />
-      <span className={`text-sm truncate ${fileName ? "text-navy-800" : "text-slate-400"}`}>
-        {fileName ?? "Choose file…"}
-      </span>
-      <input type="file" accept={accept} className="sr-only" onChange={onChange} />
-    </label>
-    {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
-  </div>
-);
 
 /* ── Step indicator ── */
 const StepIndicator = ({ current }: { current: number }) => (
@@ -107,10 +92,6 @@ const RegisterTrainerPage = () => {
     if (errors[field]) setErrors((p) => ({ ...p, [field]: "" }));
   };
 
-  const handleFile = (key: "profile_picture" | "cv") => (e) => {
-    setFiles((p) => ({ ...p, [key]: e.target.files?.[0] ?? null }));
-  };
-
   const validateStep = (s: number) => {
     const e: Record<string, string> = {};
     if (s === 1) {
@@ -118,6 +99,10 @@ const RegisterTrainerPage = () => {
       if (!formData.email.trim()) e.email = "Email is required";
       else if (!/\S+@\S+\.\S+/.test(formData.email)) e.email = "Invalid email";
       if (!formData.phone.trim()) e.phone = "Phone is required";
+    }
+    if (s === 2) {
+      if (!files.profile_picture) e.profile_picture = "Profile picture is required";
+      if (!files.cv)              e.cv              = "CV / Resume is required";
     }
     return e;
   };
@@ -263,6 +248,27 @@ const RegisterTrainerPage = () => {
                     {/* ── Step 2: Professional Details ── */}
                     {step === 2 && (
                       <div>
+                        <div className="grid grid-cols-1 gap-x-4">
+                          <ImageUploadField
+                            label="Profile Picture"
+                            field="profile_picture"
+                            imageOnly
+                            required
+                            simpleFile={files.profile_picture}
+                            onSimpleFileChange={(file) => setFiles((p) => ({ ...p, profile_picture: file }))}
+                            onSimpleRemove={() => setFiles((p) => ({ ...p, profile_picture: null }))}
+                            errors={displayErrors}
+                          />
+                          <FileUploadField
+                            label="CV / Resume"
+                            field="cv"
+                            required
+                            simpleFile={files.cv}
+                            onSimpleFileChange={(file) => setFiles((p) => ({ ...p, cv: file }))}
+                            onSimpleRemove={() => setFiles((p) => ({ ...p, cv: null }))}
+                            errors={displayErrors}
+                          />
+                        </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
                           <InputField
                             label="Current Job Title" field="title" required={false}
@@ -290,22 +296,6 @@ const RegisterTrainerPage = () => {
                           placeholder="Tell us about your background, industry experience, and why you want to train with IKA..."
                           formData={formData} errors={displayErrors} updateFormData={update}
                         />
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
-                          <FileInput
-                            label="Profile Picture"
-                            accept="image/*"
-                            onChange={handleFile("profile_picture")}
-                            fileName={files.profile_picture?.name}
-                            error={displayErrors.profile_picture}
-                          />
-                          <FileInput
-                            label="CV / Resume"
-                            accept=".pdf,.doc,.docx"
-                            onChange={handleFile("cv")}
-                            fileName={files.cv?.name}
-                            error={displayErrors.cv}
-                          />
-                        </div>
                       </div>
                     )}
 
@@ -375,7 +365,11 @@ const RegisterTrainerPage = () => {
                   <button
                     type="button"
                     onClick={goNext}
-                    className="flex-1 py-3 rounded-xl bg-navy-700 hover:bg-navy-600 text-white text-sm font-bold transition"
+                    disabled={
+                      (step === 1 && (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim())) ||
+                      (step === 2 && (!files.profile_picture || !files.cv))
+                    }
+                    className="flex-1 py-3 rounded-xl bg-navy-700 hover:bg-navy-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition"
                   >
                     Continue
                   </button>
