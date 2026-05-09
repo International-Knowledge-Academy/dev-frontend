@@ -7,7 +7,8 @@ import { Check } from "lucide-react";
 import { useToast } from "context/ToastContext";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
-import { InputField, SelectField } from "components/form";
+import { InputField } from "components/form";
+import SearchableSelect from "components/form/SearchableSelect";
 import useGetProgram from "hooks/programs/useGetProgram";
 import useAllCategories from "hooks/categories/useAllCategories";
 import useFields from "hooks/fields/useFields";
@@ -171,6 +172,8 @@ const RegisterPage = () => {
     e.preventDefault();
     const created = await createRegistration({
       program_uid:       formData.program,
+      category_uid:      formData.category  || undefined,
+      field_uid:         formData.field     || undefined,
       registration_type: formData.registration_type,
       full_name:         formData.full_name,
       email:             formData.email,
@@ -257,24 +260,27 @@ const RegisterPage = () => {
                     {/* ── Step 1: Select Program ── */}
                     {step === 1 && (
                       <div>
-                        <SelectField
-                          label={loadingCats ? "Loading..." : "Category"}
+                        <SearchableSelect
+                          label={loadingCats ? "Loading categories…" : "Category"}
                           field="category"
                           required={false}
+                          placeholder="Search categories…"
                           options={categories.map((c) => ({ value: c.uid, label: c.name }))}
                           formData={formData} errors={displayErrors} updateFormData={handleCategoryChange}
                         />
-                        <SelectField
-                          label={loadingFields && selectedCategoryUid ? "Loading Fields..." : "Field"}
+                        <SearchableSelect
+                          label={loadingFields && selectedCategoryUid ? "Loading fields…" : "Field"}
                           field="field"
                           required={false}
+                          placeholder={selectedCategoryUid ? "Search fields…" : "Select a category first"}
                           options={selectedCategoryUid ? fields.map((f) => ({ value: f.uid, label: f.name })) : []}
                           formData={formData} errors={displayErrors} updateFormData={handleFieldChange}
                         />
-                        <SelectField
-                          label={loadingPrograms && selectedFieldUid ? "Loading Programs..." : "Program"}
+                        <SearchableSelect
+                          label={loadingPrograms && selectedFieldUid ? "Loading programs…" : "Program"}
                           field="program"
                           required
+                          placeholder={selectedFieldUid ? "Search programs…" : "Select a field first"}
                           options={
                             selectedFieldUid
                               ? programs.map((p) => ({ value: p.uid, label: p.name }))
@@ -320,9 +326,10 @@ const RegisterPage = () => {
                             placeholder="123 Main St, Dubai, UAE"
                             formData={formData} errors={displayErrors} updateFormData={update}
                           />
-                          <SelectField
+                          <SearchableSelect
                             label="Registration Type" field="registration_type"
                             options={TYPE_OPTIONS}
+                            placeholder="Select type…"
                             formData={formData} errors={displayErrors} updateFormData={update}
                           />
                         </div>
@@ -366,27 +373,36 @@ const RegisterPage = () => {
                   <button
                     type="button"
                     onClick={goBack}
-                    className="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 text-sm font-semibold hover:bg-slate-50 transition"
+                    className="flex-1 py-3 rounded-md lg:rounded-lg border border-slate-200 text-slate-600 text-sm font-semibold hover:bg-slate-50 transition"
                   >
                     Back
                   </button>
                 )}
 
-                {step < 3 ? (
-                  <button
-                    type="button"
-                    onClick={goNext}
-                    className="flex-1 py-3 rounded-xl bg-navy-700 hover:bg-navy-600 text-white text-sm font-bold transition"
-                  >
-                    Continue
-                  </button>
-                ) : (
+                {step < 3 ? (() => {
+                  const step1Disabled = !formData.program;
+                  const step2Disabled =
+                    !formData.full_name.trim() ||
+                    !formData.email.trim()     ||
+                    !formData.phone.trim();
+                  const continueDisabled = step === 1 ? step1Disabled : step2Disabled;
+                  return (
+                    <button
+                      type="button"
+                      onClick={goNext}
+                      disabled={continueDisabled}
+                      className="flex-1 py-3 rounded-md lg:rounded-lg bg-navy-700 hover:bg-navy-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition"
+                    >
+                      Continue
+                    </button>
+                  );
+                })() : (
                   <motion.button
                     type="submit"
                     disabled={loading}
                     whileHover={{ scale: loading ? 1 : 1.02 }}
                     whileTap={{ scale: loading ? 1 : 0.98 }}
-                    className="flex-1 flex items-center justify-center gap-2 bg-navy-600 hover:bg-navy-700 disabled:opacity-70 text-white font-bold py-3 rounded-xl transition-colors duration-200 text-sm"
+                    className="flex-1 flex items-center justify-center gap-2 bg-navy-600 hover:bg-navy-700 disabled:opacity-70 disabled:cursor-not-allowed text-white font-bold py-3 rounded-md lg:rounded-lg transition-colors duration-200 text-sm"
                   >
                     {loading ? (
                       <>
