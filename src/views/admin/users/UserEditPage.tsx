@@ -120,13 +120,13 @@ const UserEditPage = () => {
   const { addToast } = useToast();
 
   const { user, loading: loadingUser, error: loadError, refetch } = useGetUser(id);
-  const { updateUser,    loading: updating,        error: updateError,  fieldErrors,             getLastError: getAccountError }  = useUpdateUser();
-  const { updateProfile, loading: updatingProfile, error: profileError, fieldErrors: profileFieldErrors, getLastError: getProfileError } = useUpdateProfile();
-  const { deleteCV, loading: deletingCV }                = useDeleteCV();
+  const { updateUser, loading: updating, error: updateError, fieldErrors, profileFieldErrors, getLastError } = useUpdateUser();
+  const { updateProfile }                                    = useUpdateProfile();
+  const { deleteCV, loading: deletingCV }                    = useDeleteCV();
   const { upload: uploadCvFile, uploading: uploadingCvFile } = usePresignedUpload();
 
   const cvBusy = uploadingCvFile || deletingCV;
-  const isBusy = updating || updatingProfile;
+  const isBusy = updating;
 
   const [form, setForm] = useState({
     name:      "",
@@ -209,49 +209,41 @@ const UserEditPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const accountPayload: any = {
+    const payload: any = {
       name:      form.name,
       email:     form.email,
       role:      form.role,
       is_active: form.is_active,
+      profile: {
+        title:            form.title            || undefined,
+        bio:              form.bio              || undefined,
+        years_experience: form.years_experience !== "" ? Number(form.years_experience) : null,
+        certifications:   form.certifications   || undefined,
+        linkedin_url:     form.linkedin_url     || undefined,
+        primary_email:    form.primary_email    || undefined,
+        secondary_email:  form.secondary_email  || undefined,
+        phone:            form.phone            || undefined,
+        whatsapp:         form.whatsapp         || undefined,
+        address:          form.address          || undefined,
+        city:             form.city             || undefined,
+        country:          form.country          || undefined,
+        postal_code:      form.postal_code      || undefined,
+      },
     };
-    if (form.password) accountPayload.password = form.password;
+    if (form.password)          payload.password                  = form.password;
+    if (form.profile_picture)   payload.profile.profile_picture   = form.profile_picture;
 
-    const profilePayload: any = {
-      profile_picture:  form.profile_picture  || undefined,
-      title:            form.title            || undefined,
-      bio:              form.bio              || undefined,
-      years_experience: form.years_experience !== "" ? Number(form.years_experience) : null,
-      certifications:   form.certifications   || undefined,
-      linkedin_url:     form.linkedin_url     || undefined,
-      primary_email:    form.primary_email    || undefined,
-      secondary_email:  form.secondary_email  || undefined,
-      phone:            form.phone            || undefined,
-      whatsapp:         form.whatsapp         || undefined,
-      address:          form.address          || undefined,
-      city:             form.city             || undefined,
-      country:          form.country          || undefined,
-      postal_code:      form.postal_code      || undefined,
-    };
+    const result = await updateUser(id, payload);
 
-    const [accountResult, profileResult] = await Promise.all([
-      updateUser(id, accountPayload),
-      updateProfile(id, profilePayload),
-    ]);
-
-    refetch();
-
-    if (accountResult && profileResult) {
+    if (result) {
       addToast("User updated successfully", "success");
       navigate("/admin/users");
     } else {
-      const ae = getAccountError();
-      const pe = getProfileError();
+      const { fieldErrors: fe, profileFieldErrors: pe, error: ge } = getLastError();
       const firstError =
-        Object.values(ae.fieldErrors)[0] ??
-        ae.error ??
-        Object.values(pe.fieldErrors)[0] ??
-        pe.error ??
+        Object.values(fe)[0] ??
+        Object.values(pe)[0] ??
+        ge ??
         "Failed to save changes. Please try again.";
       addToast(firstError, "error");
     }
@@ -290,10 +282,9 @@ const UserEditPage = () => {
 
         <form onSubmit={handleSubmit} className="px-4 sm:px-6 py-6 space-y-6">
 
-          {(updateError || profileError) && (
-            <div className="rounded-md border border-red-200 bg-red-50 px-4 py-2.5 text-sm text-red-600 space-y-0.5">
-              {updateError  && <p>{updateError}</p>}
-              {profileError && <p>{profileError}</p>}
+          {updateError && (
+            <div className="rounded-md border border-red-200 bg-red-50 px-4 py-2.5 text-sm text-red-600">
+              {updateError}
             </div>
           )}
 
