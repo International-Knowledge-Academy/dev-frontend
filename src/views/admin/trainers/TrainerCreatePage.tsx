@@ -111,10 +111,6 @@ const TrainerCreatePage = () => {
   const update = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
 
-  const isFormValid =
-    form.name.trim()  !== "" &&
-    form.email.trim() !== "";
-
   const handlePicChange = ({ file_key, public_url }: PresignedUploadResult) => {
     setProfilePictureKey(file_key);
     setProfilePictureUrl(public_url);
@@ -259,7 +255,7 @@ const TrainerCreatePage = () => {
           </button>
           <button
             type="submit"
-            disabled={loading || !isFormValid}
+            disabled={loading}
             className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition disabled:opacity-60"
           >
             {loading ? "Creating..." : "Create Trainer"}
