@@ -1,36 +1,32 @@
-// @ts-nocheck
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axiosInstance from "api/axiosInstance";
-import type { Field, UpdateFieldPayload } from "types/field";
+import type { Field, UpdateFieldPayload, FieldFieldErrors } from "types/field";
 
-interface FieldErrors {
-  name?: string;
-  description?: string;
-  category_uid?: string;
-  is_active?: string;
-  hex_color?: string;
-  text_color?: string;
-  thumbnail?: string;
-  video?: string;
+interface LastError {
+  fieldErrors: FieldFieldErrors;
+  error: string | null;
 }
 
 interface UseUpdateFieldReturn {
-  updateField: (uid: string, payload: UpdateFieldPayload) => Promise<Field | void>;
+  updateField: (uid: string, payload: UpdateFieldPayload) => Promise<Field | null>;
   loading: boolean;
   error: string | null;
-  fieldErrors: FieldErrors;
+  fieldErrors: FieldFieldErrors;
   reset: () => void;
+  getLastError: () => LastError;
 }
 
 const useUpdateField = (): UseUpdateFieldReturn => {
   const [loading, setLoading]         = useState(false);
   const [error, setError]             = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [fieldErrors, setFieldErrors] = useState<FieldFieldErrors>({});
+  const lastErrorRef                  = useRef<LastError>({ fieldErrors: {}, error: null });
 
-  const updateField = async (uid: string, payload: UpdateFieldPayload): Promise<Field | void> => {
+  const updateField = async (uid: string, payload: UpdateFieldPayload): Promise<Field | null> => {
     setLoading(true);
     setError(null);
     setFieldErrors({});
+    lastErrorRef.current = { fieldErrors: {}, error: null };
 
     try {
       const { data } = await axiosInstance.patch<Field>(`/fields/${uid}`, payload);
@@ -38,37 +34,36 @@ const useUpdateField = (): UseUpdateFieldReturn => {
     } catch (err: unknown) {
       const responseData = (err as { response?: { data?: any } })?.response?.data;
 
-      const fields: (keyof FieldErrors)[] = [
+      const fields: (keyof UpdateFieldPayload)[] = [
         "name", "description", "category_uid", "is_active",
         "hex_color", "text_color", "thumbnail", "video",
       ];
-
-      const extracted: FieldErrors = {};
-      fields.forEach((field) => {
-        const val = responseData?.[field];
-        if (Array.isArray(val) && val[0]) extracted[field] = val[0];
+      const extracted: FieldFieldErrors = {};
+      fields.forEach((f) => {
+        const val = responseData?.[f];
+        if (Array.isArray(val) && val[0]) extracted[f] = val[0];
       });
 
       if (Object.keys(extracted).length) {
         setFieldErrors(extracted);
+        lastErrorRef.current = { fieldErrors: extracted, error: null };
       } else {
-        setError(
+        const generalError =
           responseData?.detail ??
           responseData?.message ??
-          "Failed to update field. Please try again."
-        );
+          "Failed to update field. Please try again.";
+        setError(generalError);
+        lastErrorRef.current = { fieldErrors: {}, error: generalError };
       }
+      return null;
     } finally {
       setLoading(false);
     }
   };
 
-  const reset = () => {
-    setError(null);
-    setFieldErrors({});
-  };
+  const reset = () => { setError(null); setFieldErrors({}); };
 
-  return { updateField, loading, error, fieldErrors, reset };
+  return { updateField, loading, error, fieldErrors, reset, getLastError: () => lastErrorRef.current };
 };
 
 export default useUpdateField;

@@ -1,68 +1,55 @@
-// @ts-nocheck
 import { useState } from "react";
 import axiosInstance from "api/axiosInstance";
-import type { Field, CreateFieldPayload } from "types/field";
+import type { Field, CreateFieldPayload, FieldFieldErrors } from "types/field";
 
-interface FieldErrors {
-  name?: string;
-  description?: string;
-  category_uid?: string;
-  is_active?: string;
-  hex_color?: string;
-  text_color?: string;
-  thumbnail?: string;
-  video?: string;
-}
+type CreateFieldResult = {
+  field: Field | null;
+  fieldErrors: FieldFieldErrors;
+  error: string | null;
+};
 
 interface UseCreateFieldReturn {
-  createField: (payload: CreateFieldPayload) => Promise<Field | void>;
+  createField: (payload: CreateFieldPayload) => Promise<CreateFieldResult>;
   loading: boolean;
-  error: string | null;
-  fieldErrors: FieldErrors;
 }
 
 const useCreateField = (): UseCreateFieldReturn => {
-  const [loading, setLoading]         = useState(false);
-  const [error, setError]             = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [loading, setLoading] = useState(false);
 
-  const createField = async (payload: CreateFieldPayload): Promise<Field | void> => {
+  const createField = async (payload: CreateFieldPayload): Promise<CreateFieldResult> => {
     setLoading(true);
-    setError(null);
-    setFieldErrors({});
 
     try {
       const { data } = await axiosInstance.post<Field>("/fields", payload);
-      return data;
+      return { field: data, fieldErrors: {}, error: null };
     } catch (err: unknown) {
       const responseData = (err as { response?: { data?: any } })?.response?.data;
 
-      const fields: (keyof FieldErrors)[] = [
+      const fields: (keyof CreateFieldPayload)[] = [
         "name", "description", "category_uid", "is_active",
         "hex_color", "text_color", "thumbnail", "video",
       ];
-
-      const extracted: FieldErrors = {};
-      fields.forEach((field) => {
-        const val = responseData?.[field];
-        if (Array.isArray(val) && val[0]) extracted[field] = val[0];
+      const extracted: FieldFieldErrors = {};
+      fields.forEach((f) => {
+        const val = responseData?.[f];
+        if (Array.isArray(val) && val[0]) extracted[f] = val[0];
       });
 
       if (Object.keys(extracted).length) {
-        setFieldErrors(extracted);
-      } else {
-        setError(
-          responseData?.detail ??
-          responseData?.message ??
-          "Failed to create field. Please try again."
-        );
+        return { field: null, fieldErrors: extracted, error: null };
       }
+
+      return {
+        field: null,
+        fieldErrors: {},
+        error: responseData?.detail ?? responseData?.message ?? "Failed to create field. Please try again.",
+      };
     } finally {
       setLoading(false);
     }
   };
 
-  return { createField, loading, error, fieldErrors };
+  return { createField, loading };
 };
 
 export default useCreateField;

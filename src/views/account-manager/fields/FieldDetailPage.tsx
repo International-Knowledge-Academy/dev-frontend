@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { MdEdit, MdLayers, MdPerson } from "react-icons/md";
 import useGetField from "hooks/fields/useGetField";
 import Button from "components/ui/buttons/Button";
+import Loading from "components/loading/Loading";
 import { getMediaUrl } from "types/field";
 
 const SectionLabel = ({ children }) => (
@@ -21,9 +22,7 @@ const FieldDetailPage = () => {
   const navigate = useNavigate();
   const { field, loading, error } = useGetField(uid);
 
-  if (loading) {
-    return <div className="flex items-center justify-center py-20 text-sm text-slate-400">Loading field...</div>;
-  }
+  if (loading) return <Loading text="Loading field..." />;
 
   if (error || !field) {
     return <div className="flex items-center justify-center py-20 text-sm text-red-500">{error ?? "Field not found."}</div>;
@@ -49,8 +48,8 @@ const FieldDetailPage = () => {
           </div>
           <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border flex-shrink-0 ${
             field.is_active
-              ? "bg-green-50 text-green-600 border-green-600"
-              : "bg-red-50 text-red-500 border-red-500"
+              ? "bg-green-50 text-green-600 border-green-200"
+              : "bg-slate-50 text-slate-400 border-slate-200"
           }`}>
             <span className={`w-1.5 h-1.5 rounded-full ${field.is_active ? "bg-green-500" : "bg-red-400"}`} />
             {field.is_active ? "Active" : "Inactive"}
@@ -165,7 +164,7 @@ const FieldDetailPage = () => {
           <Button
             type="button"
             text="Back"
-            onClick={() => navigate("/admin/fields")}
+            onClick={() => navigate("/account-manager/fields")}
             className="flex-1 py-2.5"
             bgColor="bg-white"
             textColor="text-slate-600"
@@ -179,7 +178,7 @@ const FieldDetailPage = () => {
             variant="primary"
             text="Edit Field"
             icon={<MdEdit size={15} />}
-            onClick={() => navigate(`/admin/fields/${uid}/edit`)}
+            onClick={() => navigate(`/account-manager/fields/${uid}/edit`)}
             className="flex-1 py-2.5"
           />
         </div>

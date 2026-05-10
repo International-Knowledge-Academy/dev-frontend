@@ -11,6 +11,7 @@ import SelectField from "components/form/SelectField";
 import ToggleInput from "components/form/toggle/ToggleInput";
 import Button from "components/ui/buttons/Button";
 import MediaUploadField from "components/form/filesUpload/MediaUploadField";
+import Loading from "components/loading/Loading";
 
 const SectionLabel = ({ children }) => (
   <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">{children}</p>
@@ -22,7 +23,7 @@ const FieldEditPage = () => {
   const { addToast } = useToast();
 
   const { field, loading: loadingField, error: loadError } = useGetField(uid);
-  const { updateField, loading: updating, error, fieldErrors }  = useUpdateField();
+  const { updateField, loading: updating, error, fieldErrors, getLastError } = useUpdateField();
   const { categories } = useAllCategories();
 
   const [form, setForm] = useState({
@@ -34,7 +35,6 @@ const FieldEditPage = () => {
     is_active:    true,
   });
 
-  // Media: file_key for submission, url for display
   const [thumbnailKey, setThumbnailKey] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [videoKey,     setVideoKey]     = useState("");
@@ -73,15 +73,16 @@ const FieldEditPage = () => {
     const updated = await updateField(uid, payload);
     if (updated) {
       addToast("Field updated successfully", "success");
-      navigate("/admin/fields");
+      navigate("/account-manager/fields");
+    } else {
+      const { fieldErrors: fe, error: ge } = getLastError();
+      addToast(Object.values(fe)[0] ?? ge ?? "Failed to update field. Please try again.", "error");
     }
   };
 
   const categoryOptions = categories.map((c) => ({ value: c.uid, label: c.name }));
 
-  if (loadingField) {
-    return <div className="flex items-center justify-center py-20 text-sm text-slate-400">Loading field...</div>;
-  }
+  if (loadingField) return <Loading text="Loading field..." />;
 
   if (loadError) {
     return <div className="flex items-center justify-center py-20 text-sm text-red-500">{loadError}</div>;
@@ -181,7 +182,6 @@ const FieldEditPage = () => {
               </div>
             </div>
 
-            {/* Color preview */}
             <div
               className="mt-3 rounded-xl px-4 py-3 flex items-center gap-2 text-sm font-semibold transition"
               style={{ backgroundColor: form.hex_color, color: form.text_color }}
@@ -233,7 +233,7 @@ const FieldEditPage = () => {
             <Button
               type="button"
               text="Cancel"
-              onClick={() => navigate("/admin/fields")}
+              onClick={() => navigate("/account-manager/fields")}
               className="flex-1 py-2.5"
               bgColor="bg-white"
               textColor="text-slate-600"

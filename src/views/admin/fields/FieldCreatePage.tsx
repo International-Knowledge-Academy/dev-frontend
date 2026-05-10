@@ -10,6 +10,7 @@ import SelectField from "components/form/SelectField";
 import ToggleInput from "components/form/toggle/ToggleInput";
 import Button from "components/ui/buttons/Button";
 import MediaUploadField from "components/form/filesUpload/MediaUploadField";
+import type { FieldFieldErrors } from "types/field";
 
 const SectionLabel = ({ children }) => (
   <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">{children}</p>
@@ -18,7 +19,7 @@ const SectionLabel = ({ children }) => (
 const FieldCreatePage = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
-  const { createField, loading, error, fieldErrors } = useCreateField();
+  const { createField, loading } = useCreateField();
   const { categories } = useAllCategories();
 
   const [form, setForm] = useState({
@@ -29,8 +30,8 @@ const FieldCreatePage = () => {
     text_color:   "#ffffff",
     is_active:    true,
   });
+  const [fieldErrors, setFieldErrors] = useState<FieldFieldErrors>({});
 
-  // Media: file_key for submission, url for display
   const [thumbnailKey, setThumbnailKey] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [videoKey,     setVideoKey]     = useState("");
@@ -49,10 +50,13 @@ const FieldCreatePage = () => {
     if (thumbnailKey)      payload.thumbnail    = thumbnailKey;
     if (videoKey)          payload.video        = videoKey;
 
-    const created = await createField(payload);
+    const { field: created, fieldErrors: fe, error: ge } = await createField(payload);
     if (created) {
       addToast("Field created successfully", "success");
       navigate("/admin/fields");
+    } else {
+      setFieldErrors(fe);
+      addToast(Object.values(fe)[0] ?? ge ?? "Failed to create field. Please try again.", "error");
     }
   };
 
@@ -67,11 +71,6 @@ const FieldCreatePage = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="px-4 sm:px-6 py-5 space-y-6">
-          {error && (
-            <div className="rounded-md border border-red-200 bg-red-50 px-4 py-2.5 text-sm text-red-600">
-              {error}
-            </div>
-          )}
 
           {/* Basic info */}
           <div className="space-y-4">
@@ -150,7 +149,6 @@ const FieldCreatePage = () => {
               </div>
             </div>
 
-            {/* Color preview */}
             <div
               className="mt-3 rounded-xl px-4 py-3 flex items-center gap-2 text-sm font-semibold transition"
               style={{ backgroundColor: form.hex_color, color: form.text_color }}
