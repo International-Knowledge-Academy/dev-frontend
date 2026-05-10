@@ -6,6 +6,7 @@ interface PasswordFieldProps {
   field?: string;
   required?: boolean;
   placeholder?: string;
+  hint?: string;
   formData: Record<string, any>;
   errors: Record<string, any>;
   updateFormData: (field: string, value: string) => void;
@@ -24,6 +25,7 @@ const PasswordField = ({
   field = "password",
   required = true,
   placeholder = "",
+  hint,
   formData,
   errors,
   updateFormData,
@@ -58,6 +60,7 @@ const PasswordField = ({
         </button>
       </div>
 
+      {hint && !error && <p className="mt-1 text-xs text-slate-400">{hint}</p>}
       {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
     </div>
   );

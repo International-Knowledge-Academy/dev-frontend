@@ -49,9 +49,8 @@ const StatCard = ({
 /* ─── Role config ────────────────────────────────────────────────────────── */
 
 const roleMeta: Record<string, { label: string; bg: string; text: string; border: string }> = {
-  admin:           { label: "Admin",           bg: "bg-navy-50",  text: "text-navy-700",  border: "border-navy-200"  },
-  account_manager: { label: "Account Manager", bg: "bg-gold-50",  text: "text-gold-700",  border: "border-gold-200"  },
-  trainer:         { label: "Trainer",          bg: "bg-green-50", text: "text-green-700", border: "border-green-200" },
+  admin:           { label: "Admin",           bg: "bg-navy-50", text: "text-navy-700", border: "border-navy-200" },
+  account_manager: { label: "Account Manager", bg: "bg-gold-50", text: "text-gold-700", border: "border-gold-200" },
 };
 
 /* ─── Main page ──────────────────────────────────────────────────────────── */

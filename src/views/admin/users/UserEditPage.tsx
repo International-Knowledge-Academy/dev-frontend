@@ -13,6 +13,7 @@ import TextareaField from "components/form/TextareaField";
 import SelectField from "components/form/SelectField";
 import CompactToggle from "components/form/toggle/CompactToggle";
 import Button from "components/ui/buttons/Button";
+import PasswordField from "components/form/PasswordField";
 import FileUploadField from "components/form/filesUpload/FileUploadField";
 import Loading from "components/loading/Loading";
 import { COUNTRIES } from "constants/lists";
@@ -111,7 +112,6 @@ const SectionLabel = ({ children }) => (
 const ROLES = [
   { value: "admin",           label: "Admin" },
   { value: "account_manager", label: "Account Manager" },
-  { value: "trainer",         label: "Trainer" },
 ];
 
 const UserEditPage = () => {
@@ -326,12 +326,10 @@ const UserEditPage = () => {
                 errors={fieldErrors}
                 updateFormData={set}
               />
-              <InputField
+              <PasswordField
                 label="Password"
-                field="password"
-                type="password"
-                placeholder="••••••••"
                 required={false}
+                placeholder="••••••••"
                 hint="Leave blank to keep current"
                 formData={form}
                 errors={fieldErrors}

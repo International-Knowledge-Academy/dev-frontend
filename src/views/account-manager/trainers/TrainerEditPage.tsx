@@ -10,6 +10,7 @@ import useDeleteProfilePicture from "hooks/users/profile/useDeleteProfilePicture
 import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
+import PasswordField from "components/form/PasswordField";
 import ToggleInput from "components/form/toggle/ToggleInput";
 import Button from "components/ui/buttons/Button";
 import FileUploadField from "components/form/filesUpload/FileUploadField";
@@ -252,12 +253,10 @@ const TrainerEditPage = () => {
               errors={fieldErrors}
               updateFormData={updateFormData}
             />
-            <InputField
+            <PasswordField
               label="Password"
-              field="password"
-              type="password"
-              placeholder="••••••••"
               required={false}
+              placeholder="••••••••"
               hint="Leave blank to keep current"
               formData={form}
               errors={fieldErrors}
