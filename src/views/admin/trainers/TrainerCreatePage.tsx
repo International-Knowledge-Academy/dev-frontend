@@ -259,7 +259,7 @@ const TrainerCreatePage = () => {
           </button>
           <button
             type="submit"
-            disabled={loading || !isFormValid || uploadingCv}
+            disabled={loading || !isFormValid}
             className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition disabled:opacity-60"
           >
             {loading ? "Creating..." : "Create Trainer"}

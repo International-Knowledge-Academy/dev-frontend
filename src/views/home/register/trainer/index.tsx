@@ -288,7 +288,7 @@ const RegisterTrainerPage = () => {
                     {/* ── Step 2: Professional Details ── */}
                     {step === 2 && (
                       <div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                        <div className="grid grid-cols-1 gap-x-4">
                           <ImageUploadField
                             label="Profile Picture"
                             field="profile_picture"
