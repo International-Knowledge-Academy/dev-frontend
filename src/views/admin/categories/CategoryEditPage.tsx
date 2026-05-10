@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useGetCategory from "hooks/categories/useGetCategory";
@@ -7,6 +7,7 @@ import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import TextareaField from "components/form/TextareaField";
 import Button from "components/ui/buttons/Button";
+import Loading from "components/loading/Loading";
 
 const CategoryEditPage = () => {
   const { uid } = useParams<{ uid: string }>();
@@ -14,12 +15,12 @@ const CategoryEditPage = () => {
   const { addToast } = useToast();
 
   const { category, loading: loadingCategory, error: loadError } = useGetCategory(uid);
-  const { updateCategory, loading: updating, error, fieldErrors } = useUpdateCategory();
+  const { updateCategory, loading: updating, error, fieldErrors, getLastError } = useUpdateCategory();
 
   const [form, setForm] = useState({ name: "", summary: "" });
 
   useEffect(() => {
-    if (category) setForm({ name: category.name, summary: category.summary ?? "" });
+    if (category) setForm({ name: category.name ?? "", summary: category.summary ?? "" });
   }, [category]);
 
   const updateFormData = (key: string, value: any) =>
@@ -31,16 +32,13 @@ const CategoryEditPage = () => {
     if (updated) {
       addToast("Category updated successfully", "success");
       navigate("/admin/categories");
+    } else {
+      const { fieldErrors: fe, error: ge } = getLastError();
+      addToast(Object.values(fe)[0] ?? ge ?? "Failed to update category. Please try again.", "error");
     }
   };
 
-  if (loadingCategory) {
-    return (
-      <div className="flex items-center justify-center py-20 text-sm text-slate-400">
-        Loading category...
-      </div>
-    );
-  }
+  if (loadingCategory) return <Loading text="Loading category..." />;
 
   if (loadError) {
     return (
@@ -62,7 +60,7 @@ const CategoryEditPage = () => {
 
         <form onSubmit={handleSubmit} className="px-6 py-5 flex flex-col gap-4">
           {error && (
-            <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-2.5 text-sm text-red-600">
+            <div className="rounded-md border border-red-200 bg-red-50 px-4 py-2.5 text-sm text-red-600">
               {error}
             </div>
           )}
@@ -83,6 +81,7 @@ const CategoryEditPage = () => {
             formData={form}
             errors={fieldErrors}
             updateFormData={updateFormData}
+            required={false}
           />
 
           <div className="flex gap-2 border-t border-slate-100 pt-4">
@@ -90,7 +89,7 @@ const CategoryEditPage = () => {
               type="button"
               text="Cancel"
               onClick={() => navigate("/admin/categories")}
-              className="flex-1 rounded-xl py-2.5"
+              className="flex-1 py-2.5"
               bgColor="bg-white"
               textColor="text-slate-600"
               borderColor="border-slate-200"
@@ -103,7 +102,7 @@ const CategoryEditPage = () => {
               variant="primary"
               text={updating ? "Saving..." : "Save Changes"}
               disabled={updating || !form.name.trim()}
-              className="flex-1 rounded-xl py-2.5"
+              className="flex-1 py-2.5"
             />
           </div>
         </form>

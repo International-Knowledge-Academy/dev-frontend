@@ -2,41 +2,31 @@ import { useState } from "react";
 import axiosInstance from "api/axiosInstance";
 import type { Category, CreateCategoryPayload, CategoryFieldErrors } from "types/category";
 
-interface UseCreateCategoryReturn {
-  createCategory: (payload: CreateCategoryPayload) => Promise<Category | void>;
-  loading: boolean;
-  error: string | null;
+type CreateCategoryResult = {
+  category: Category | null;
   fieldErrors: CategoryFieldErrors;
+  error: string | null;
+};
+
+interface UseCreateCategoryReturn {
+  createCategory: (payload: CreateCategoryPayload) => Promise<CreateCategoryResult>;
+  loading: boolean;
   reset: () => void;
 }
 
 const useCreateCategory = (): UseCreateCategoryReturn => {
-  const [loading, setLoading]         = useState(false);
-  const [error, setError]             = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<CategoryFieldErrors>({});
+  const [loading, setLoading] = useState(false);
 
-  const createCategory = async (payload: CreateCategoryPayload): Promise<Category | void> => {
+  const createCategory = async (payload: CreateCategoryPayload): Promise<CreateCategoryResult> => {
     setLoading(true);
-    setError(null);
-    setFieldErrors({});
 
     try {
       const { data } = await axiosInstance.post<Category>("/categories", payload);
-      return data;
+      return { category: data, fieldErrors: {}, error: null };
     } catch (err: unknown) {
-      const responseData = (
-        err as {
-          response?: {
-            data?: Partial<Record<keyof CreateCategoryPayload, string[]>> & {
-              detail?: string;
-              message?: string;
-            };
-          };
-        }
-      )?.response?.data;
+      const responseData = (err as { response?: { data?: any } })?.response?.data;
 
       const fields: (keyof CreateCategoryPayload)[] = ["name", "summary"];
-
       const extracted: CategoryFieldErrors = {};
       fields.forEach((field) => {
         const val = responseData?.[field];
@@ -44,22 +34,22 @@ const useCreateCategory = (): UseCreateCategoryReturn => {
       });
 
       if (Object.keys(extracted).length) {
-        setFieldErrors(extracted);
-      } else {
-        setError(
-          responseData?.detail ??
-          responseData?.message ??
-          "Failed to create category. Please try again."
-        );
+        return { category: null, fieldErrors: extracted, error: null };
       }
+
+      return {
+        category: null,
+        fieldErrors: {},
+        error: responseData?.detail ?? responseData?.message ?? "Failed to create category. Please try again.",
+      };
     } finally {
       setLoading(false);
     }
   };
 
-  const reset = () => { setError(null); setFieldErrors({}); };
+  const reset = () => {};
 
-  return { createCategory, loading, error, fieldErrors, reset };
+  return { createCategory, loading, reset };
 };
 
 export default useCreateCategory;

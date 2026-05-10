@@ -10,19 +10,23 @@ import Button from "components/ui/buttons/Button";
 const CategoryCreatePage = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
-  const { createCategory, loading, error, fieldErrors } = useCreateCategory();
+  const { createCategory, loading } = useCreateCategory();
 
-  const [form, setForm] = useState({ name: "", summary: "" });
+  const [form, setForm]               = useState({ name: "", summary: "" });
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const updateFormData = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const created = await createCategory(form);
+    const { category: created, fieldErrors: fe, error: ge } = await createCategory(form);
     if (created) {
       addToast("Category created successfully", "success");
-      navigate("/admin/categories");
+      navigate("/account-manager/categories");
+    } else {
+      setFieldErrors(fe);
+      addToast(Object.values(fe)[0] ?? ge ?? "Failed to create category. Please try again.", "error");
     }
   };
 
@@ -35,12 +39,6 @@ const CategoryCreatePage = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="px-6 py-5 flex flex-col gap-4">
-          {error && (
-            <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-2.5 text-sm text-red-600">
-              {error}
-            </div>
-          )}
-
           <InputField
             label="Category Name"
             field="name"
@@ -57,14 +55,15 @@ const CategoryCreatePage = () => {
             formData={form}
             errors={fieldErrors}
             updateFormData={updateFormData}
+            required={false}
           />
 
           <div className="flex gap-2 border-t border-slate-100 pt-4">
             <Button
               type="button"
               text="Cancel"
-              onClick={() => navigate("/admin/categories")}
-              className="flex-1 rounded-xl py-2.5"
+              onClick={() => navigate("/account-manager/categories")}
+              className="flex-1 py-2.5"
               bgColor="bg-white"
               textColor="text-slate-600"
               borderColor="border-slate-200"
@@ -77,7 +76,7 @@ const CategoryCreatePage = () => {
               variant="primary"
               text={loading ? "Creating..." : "Create Category"}
               disabled={loading || !form.name.trim()}
-              className="flex-1 rounded-xl py-2.5"
+              className="flex-1 py-2.5"
             />
           </div>
         </form>

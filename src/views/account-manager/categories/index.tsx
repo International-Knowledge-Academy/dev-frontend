@@ -61,6 +61,8 @@ const CategoriesPage = () => {
       addToast(`"${deleteTarget.name}" has been deleted`, "success");
       setDeleteTarget(null);
       refetch();
+    } else {
+      addToast("Failed to delete category. Please try again.", "error");
     }
   };
 
@@ -77,7 +79,7 @@ const CategoriesPage = () => {
             variant="dark-navy"
             text="Add Category"
             icon={<Plus size={15} />}
-            onClick={() => navigate("/admin/categories/create")}
+            onClick={() => navigate("/account-manager/categories/create")}
           />
         }
         className="mb-4 px-0 sm:px-0"
@@ -160,7 +162,7 @@ const CategoriesPage = () => {
                     {categories.map((cat) => (
                       <tr
                         key={cat.uid}
-                        onClick={() => navigate(`/admin/categories/${cat.uid}`)}
+                        onClick={() => navigate(`/account-manager/categories/${cat.uid}`)}
                         className="hover:bg-slate-50 transition cursor-pointer group"
                       >
                         {/* Name */}
@@ -186,7 +188,7 @@ const CategoriesPage = () => {
                         <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                           <div className="flex items-center gap-1">
                             <button
-                              onClick={() => navigate(`/admin/categories/${cat.uid}/edit`)}
+                              onClick={() => navigate(`/account-manager/categories/${cat.uid}/edit`)}
                               className="p-1.5 rounded-md text-slate-400 hover:bg-navy-50 hover:text-navy-700 transition"
                               title="Edit"
                             >

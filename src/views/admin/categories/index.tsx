@@ -61,6 +61,8 @@ const CategoriesPage = () => {
       addToast(`"${deleteTarget.name}" has been deleted`, "success");
       setDeleteTarget(null);
       refetch();
+    } else {
+      addToast("Failed to delete category. Please try again.", "error");
     }
   };
 
