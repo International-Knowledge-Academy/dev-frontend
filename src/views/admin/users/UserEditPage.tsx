@@ -15,6 +15,7 @@ import PasswordField from "components/form/PasswordField";
 import Loading from "components/loading/Loading";
 import { COUNTRIES } from "constants/lists";
 import SearchableSelect from "components/form/SearchableSelect";
+import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import type { PresignedUploadResult } from "hooks/storage/usePresignedUpload";
 
 // ── Avatar upload widget ───────────────────────────────────────────────────
