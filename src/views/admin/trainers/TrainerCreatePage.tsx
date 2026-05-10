@@ -14,7 +14,7 @@ import { COUNTRIES } from "constants/lists";
 
 const COUNTRY_OPTIONS = COUNTRIES.map((c) => ({ value: c.name, label: c.name }));
 
-const AvatarUpload = ({ displayUrl, name, onChange }) => {
+const AvatarUpload = ({ displayUrl, name, onChange, onUploadError }) => {
   const { upload, uploading, progress, error, reset } = usePresignedUpload();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -28,6 +28,7 @@ const AvatarUpload = ({ displayUrl, name, onChange }) => {
     e.target.value = "";
     const result = await upload(file, { folder: "trainers/profile-pictures", file_type: "image" });
     if (result) { onChange(result); reset(); }
+    else { onUploadError?.("Failed to upload profile picture. Please try again."); }
   };
 
   return (
@@ -157,7 +158,10 @@ const TrainerCreatePage = () => {
       cv:               cvKey                 || undefined,
     };
     const created = await createTrainer(payload);
-    if (!created) return;
+    if (!created) {
+      addToast("Failed to create trainer. Please check the form and try again.", "error");
+      return;
+    }
     addToast("Trainer created successfully", "success");
     navigate("/admin/trainers");
   };
@@ -173,6 +177,7 @@ const TrainerCreatePage = () => {
         displayUrl={profilePictureUrl}
         name={form.name}
         onChange={handlePicChange}
+        onUploadError={(msg) => addToast(msg, "error")}
       />
 
       <form onSubmit={handleSubmit} className="px-6 py-5">

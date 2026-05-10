@@ -27,10 +27,12 @@ const AvatarUpload = ({
   displayUrl,
   name,
   onChange,
+  onUploadError,
 }: {
   displayUrl: string;
   name: string;
   onChange: (result: PresignedUploadResult) => void;
+  onUploadError?: (msg: string) => void;
 }) => {
   const { upload, uploading, progress, error, reset } = usePresignedUpload();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -45,6 +47,7 @@ const AvatarUpload = ({
     e.target.value = "";
     const result = await upload(file, { folder: "trainers/profile-pictures", file_type: "image" });
     if (result) { onChange(result); reset(); }
+    else { onUploadError?.("Failed to upload profile picture. Please try again."); }
   };
 
   return (
@@ -153,18 +156,23 @@ const TrainerEditPage = () => {
     if (uploaded) {
       const result = await updateTrainer(uid, { cv: uploaded.file_key });
       if (result) { addToast("CV updated successfully", "success"); refetch(); }
+      else { addToast("Failed to update CV. Please try again.", "error"); }
+    } else {
+      addToast("Failed to upload CV. Please try again.", "error");
     }
   };
 
   const handleCvRemove = async () => {
     const result = await updateTrainer(uid, { cv: "" });
     if (result) { addToast("CV removed", "success"); refetch(); }
+    else { addToast("Failed to remove CV. Please try again.", "error"); }
   };
 
   const handlePicChange = async ({ file_key, public_url }: PresignedUploadResult) => {
     setProfilePictureUrl(public_url);
     const result = await updateTrainer(uid, { profile_picture: file_key });
     if (result) { addToast("Profile picture updated", "success"); refetch(); }
+    else { addToast("Failed to update profile picture. Please try again.", "error"); }
   };
 
   const handleSubmit = async (e) => {
@@ -189,6 +197,8 @@ const TrainerEditPage = () => {
     if (result) {
       addToast("Trainer updated successfully", "success");
       navigate("/admin/trainers");
+    } else {
+      addToast("Failed to save changes. Please try again.", "error");
     }
   };
 
@@ -210,7 +220,7 @@ const TrainerEditPage = () => {
         </div>
 
         {/* Avatar */}
-        <AvatarUpload displayUrl={profilePictureUrl} name={form.name} onChange={handlePicChange} />
+        <AvatarUpload displayUrl={profilePictureUrl} name={form.name} onChange={handlePicChange} onUploadError={(msg) => addToast(msg, "error")} />
 
         <form onSubmit={handleSubmit}>
           {/* ── Basic Info ── */}

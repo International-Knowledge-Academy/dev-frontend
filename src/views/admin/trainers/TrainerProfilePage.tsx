@@ -48,8 +48,10 @@ const TrainerProfilePage = () => {
         addToast("Profile picture updated", "success");
         refetch();
       } else {
-        addToast("Failed to update profile picture", "error");
+        addToast("Failed to update profile picture. Please try again.", "error");
       }
+    } else {
+      addToast("Failed to upload profile picture. Please try again.", "error");
     }
   };
 
