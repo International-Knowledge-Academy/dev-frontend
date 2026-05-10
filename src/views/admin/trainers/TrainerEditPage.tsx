@@ -303,7 +303,7 @@ const TrainerEditPage = () => {
             <Button
               type="submit" variant="primary"
               text={updating ? "Saving..." : "Save Changes"}
-              disabled={updating}
+              disabled={updating || !form.name.trim() || !form.email.trim()}
               className="flex-1 py-2.5"
             />
           </div>
