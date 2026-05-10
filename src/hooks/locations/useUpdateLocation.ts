@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axiosInstance from "api/axiosInstance";
 import type { Location } from "types/location";
 
@@ -15,23 +15,31 @@ interface FieldErrors {
   whatsapp_number?: string;
 }
 
+interface LastError {
+  fieldErrors: FieldErrors;
+  error: string | null;
+}
+
 interface UseUpdateLocationReturn {
-  updateLocation: (uid: string, payload: Partial<Location>) => Promise<Location | void>;
+  updateLocation: (uid: string, payload: Partial<Location>) => Promise<Location | null>;
   loading: boolean;
   error: string | null;
   fieldErrors: FieldErrors;
   reset: () => void;
+  getLastError: () => LastError;
 }
 
 const useUpdateLocation = (): UseUpdateLocationReturn => {
   const [loading, setLoading]         = useState(false);
   const [error, setError]             = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const lastErrorRef                  = useRef<LastError>({ fieldErrors: {}, error: null });
 
-  const updateLocation = async (uid: string, payload: Partial<Location>): Promise<Location | void> => {
+  const updateLocation = async (uid: string, payload: Partial<Location>): Promise<Location | null> => {
     setLoading(true);
     setError(null);
     setFieldErrors({});
+    lastErrorRef.current = { fieldErrors: {}, error: null };
 
     try {
       const { data } = await axiosInstance.patch<Location>(`/locations/${uid}`, payload);
@@ -43,7 +51,6 @@ const useUpdateLocation = (): UseUpdateLocationReturn => {
         "name", "city", "country", "address", "venue_details", "latitude", "longitude", "is_active",
         "contact_phone", "whatsapp_number",
       ];
-
       const extracted: FieldErrors = {};
       fields.forEach((field) => {
         const val = responseData?.[field];
@@ -52,24 +59,24 @@ const useUpdateLocation = (): UseUpdateLocationReturn => {
 
       if (Object.keys(extracted).length) {
         setFieldErrors(extracted);
+        lastErrorRef.current = { fieldErrors: extracted, error: null };
       } else {
-        setError(
+        const generalError =
           responseData?.detail ??
           responseData?.message ??
-          "Failed to update location. Please try again."
-        );
+          "Failed to update location. Please try again.";
+        setError(generalError);
+        lastErrorRef.current = { fieldErrors: {}, error: generalError };
       }
+      return null;
     } finally {
       setLoading(false);
     }
   };
 
-  const reset = () => {
-    setError(null);
-    setFieldErrors({});
-  };
+  const reset = () => { setError(null); setFieldErrors({}); };
 
-  return { updateLocation, loading, error, fieldErrors, reset };
+  return { updateLocation, loading, error, fieldErrors, reset, getLastError: () => lastErrorRef.current };
 };
 
 export default useUpdateLocation;

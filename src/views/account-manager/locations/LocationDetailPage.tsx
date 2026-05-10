@@ -7,9 +7,10 @@ import {
 } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
 import useGetLocation from "hooks/locations/useGetLocation";
+import Loading from "components/loading/Loading";
 
 const InfoRow = ({ icon, label, value }) => (
-  <div className="flex items-start gap-4 py-4 ">
+  <div className="flex items-start gap-4 py-4">
     <div className="w-9 h-9 rounded-xl bg-navy-50 flex items-center justify-center text-navy-400 flex-shrink-0">
       {icon}
     </div>
@@ -21,7 +22,9 @@ const InfoRow = ({ icon, label, value }) => (
 );
 
 const SectionTitle = ({ title }) => (
-  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1 px-4 sm:px-6 border-b border-slate-100 p-6">{title}</p>
+  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 px-4 sm:px-6 pt-5 pb-2 border-t border-slate-100">
+    {title}
+  </p>
 );
 
 const formatDate = (dateStr: string) =>
@@ -34,13 +37,7 @@ const LocationDetailPage = () => {
   const navigate = useNavigate();
   const { location, loading, error } = useGetLocation(uid);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20 text-sm text-slate-400">
-        Loading location...
-      </div>
-    );
-  }
+  if (loading) return <Loading text="Loading location..." />;
 
   if (error || !location) {
     return (
@@ -66,10 +63,10 @@ const LocationDetailPage = () => {
           <div className="flex items-center gap-2 flex-shrink-0">
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold border ${
               location.is_active
-                ? "bg-green-50 text-green-600 border-green-600"
-                : "bg-red-50 text-red-500 border-red-500"
+                ? "bg-green-50 text-green-600 border-green-200"
+                : "bg-slate-50 text-slate-400 border-slate-200"
             }`}>
-              <span className={`w-1.5 h-1.5 rounded-full ${location.is_active ? "bg-green-500" : "bg-red-400"}`} />
+              <span className={`w-1.5 h-1.5 rounded-full ${location.is_active ? "bg-green-500" : "bg-slate-300"}`} />
               {location.is_active ? "Active" : "Inactive"}
             </span>
           </div>
@@ -78,17 +75,17 @@ const LocationDetailPage = () => {
         {/* Location Info */}
         <SectionTitle title="Location" />
         <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
-          <InfoRow icon={<MdLocationCity size={18} />} label="City"         value={location.city          || "—"} />
-          <InfoRow icon={<MdPublic       size={18} />} label="Country"      value={location.country       || "—"} />
-          <InfoRow icon={<MdPlace        size={18} />} label="Address"      value={location.address       || "—"} />
+          <InfoRow icon={<MdLocationCity size={18} />} label="City"          value={location.city          || "—"} />
+          <InfoRow icon={<MdPublic       size={18} />} label="Country"       value={location.country       || "—"} />
+          <InfoRow icon={<MdPlace        size={18} />} label="Address"       value={location.address       || "—"} />
           <InfoRow icon={<MdInfo         size={18} />} label="Venue Details" value={location.venue_details || "—"} />
         </div>
 
         {/* Contact */}
         <SectionTitle title="Contact" />
         <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
-          <InfoRow icon={<MdPhone      size={18} />} label="Contact Phone"   value={location.contact_phone   || "—"} />
-          <InfoRow icon={<FaWhatsapp   size={18} />} label="WhatsApp Number" value={location.whatsapp_number || "—"} />
+          <InfoRow icon={<MdPhone    size={18} />} label="Contact Phone"   value={location.contact_phone   || "—"} />
+          <InfoRow icon={<FaWhatsapp size={18} />} label="WhatsApp Number" value={location.whatsapp_number || "—"} />
         </div>
 
         {/* Coordinates */}
@@ -114,7 +111,7 @@ const LocationDetailPage = () => {
             icon={<MdToggleOn size={18} />}
             label="Status"
             value={
-              <span className={`font-semibold ${location.is_active ? "text-green-500" : "text-red-500"}`}>
+              <span className={`font-semibold ${location.is_active ? "text-green-500" : "text-slate-400"}`}>
                 {location.is_active ? "Active" : "Inactive"}
               </span>
             }
@@ -132,14 +129,14 @@ const LocationDetailPage = () => {
         <div className="px-4 sm:px-6 py-4 border-t border-slate-100 flex gap-2 mt-2">
           <button
             type="button"
-            onClick={() => navigate("/admin/locations")}
+            onClick={() => navigate("/account-manager/locations")}
             className="flex-1 rounded-md lg:rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition"
           >
             Back
           </button>
           <button
             type="button"
-            onClick={() => navigate(`/admin/locations/${uid}/edit`)}
+            onClick={() => navigate(`/account-manager/locations/${uid}/edit`)}
             className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition flex items-center justify-center gap-2"
           >
             <MdEdit size={16} />

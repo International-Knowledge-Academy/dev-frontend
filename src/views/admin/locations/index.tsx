@@ -18,7 +18,6 @@ import PrevButton from "components/ui/buttons/PrevButton";
 import NextButton from "components/ui/buttons/NextButton";
 import SearchInput from "components/form/SearchInput";
 import FilterSelectField from "components/form/filter/FilterSelectField";
-import SearchableDropdown from "components/form/search/SearchableDropdown";
 import ConfirmModal from "components/ui/modals/ConfirmModal";
 import EmptyState from "components/empty/empty";
 import type { Location } from "types/location";
@@ -96,6 +95,8 @@ const LocationsPage = () => {
       addToast("Location deleted successfully", "success");
       setDeleteTarget(null);
       refetch();
+    } else {
+      addToast("Failed to delete location. Please try again.", "error");
     }
   };
 

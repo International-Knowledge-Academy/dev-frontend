@@ -18,14 +18,14 @@ const LocationCreatePage = () => {
   const { createLocation, loading, error, fieldErrors } = useCreateLocation();
 
   const [form, setForm] = useState({
-    name:          "",
-    city:          "",
-    country:       "",
-    address:       "",
-    venue_details: "",
-    latitude:      "",
-    longitude:     "",
-    is_active:     true,
+    name:            "",
+    city:            "",
+    country:         "",
+    address:         "",
+    venue_details:   "",
+    latitude:        "",
+    longitude:       "",
+    is_active:       true,
     contact_phone:   "",
     whatsapp_number: "",
   });
@@ -33,17 +33,15 @@ const LocationCreatePage = () => {
   const updateFormData = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
 
-  const isFormValid =
-    form.name.trim() !== "" &&
-    form.city.trim() !== "" &&
-    form.country.trim() !== "";
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const created = await createLocation(form);
+    const { location: created, fieldErrors: fe, error: ge } = await createLocation(form);
     if (created) {
       addToast("Location created successfully", "success");
-      navigate("/admin/locations");
+      navigate("/account-manager/locations");
+    } else {
+      const firstFieldError = Object.values(fe)[0];
+      addToast(firstFieldError ?? ge ?? "Failed to create location. Please try again.", "error");
     }
   };
 
@@ -158,8 +156,8 @@ const LocationCreatePage = () => {
             <Button
               type="button"
               text="Cancel"
-              onClick={() => navigate("/admin/locations")}
-              className="flex-1 rounded-xl py-2.5"
+              onClick={() => navigate("/account-manager/locations")}
+              className="flex-1 py-2.5"
               bgColor="bg-white"
               textColor="text-slate-600"
               borderColor="border-slate-200"
@@ -171,8 +169,8 @@ const LocationCreatePage = () => {
               type="submit"
               variant="primary"
               text={loading ? "Creating..." : "Create Location"}
-              disabled={loading || !isFormValid}
-              className="flex-1 rounded-xl py-2.5"
+              disabled={loading || !form.name.trim() || !form.city.trim() || !form.country.trim()}
+              className="flex-1 py-2.5"
             />
           </div>
         </form>

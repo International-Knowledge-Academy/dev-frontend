@@ -89,6 +89,8 @@ const LocationsPage = () => {
       addToast("Location deleted successfully", "success");
       setDeleteTarget(null);
       refetch();
+    } else {
+      addToast("Failed to delete location. Please try again.", "error");
     }
   };
 
@@ -105,7 +107,7 @@ const LocationsPage = () => {
             variant="dark-navy"
             text="Add Location"
             icon={<Plus size={15} />}
-            onClick={() => navigate("/admin/locations/create")}
+            onClick={() => navigate("/account-manager/locations/create")}
           />
         }
         className="mb-4 px-0 sm:px-0"
@@ -304,7 +306,7 @@ const LocationsPage = () => {
                     {locations.map((location) => (
                       <tr
                         key={location.uid}
-                        onClick={() => navigate(`/admin/locations/${location.uid}`)}
+                        onClick={() => navigate(`/account-manager/locations/${location.uid}`)}
                         className="hover:bg-slate-50 transition cursor-pointer group"
                       >
                         {/* Location */}
@@ -356,7 +358,7 @@ const LocationsPage = () => {
                         <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                           <div className="flex items-center gap-1">
                             <button
-                              onClick={() => navigate(`/admin/locations/${location.uid}/edit`)}
+                              onClick={() => navigate(`/account-manager/locations/${location.uid}/edit`)}
                               className="p-1.5 rounded-md text-slate-400 hover:bg-navy-50 hover:text-navy-700 transition"
                               title="Edit"
                             >

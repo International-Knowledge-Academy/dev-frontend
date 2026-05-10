@@ -1,4 +1,4 @@
-﻿// @ts-nocheck
+// @ts-nocheck
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "context/ToastContext";
@@ -9,6 +9,7 @@ import InputField from "components/form/InputField";
 import ToggleInput from "components/form/toggle/ToggleInput";
 import Button from "components/ui/buttons/Button";
 import SearchableDropdown from "components/form/search/SearchableDropdown";
+import Loading from "components/loading/Loading";
 import { COUNTRIES } from "constants/lists";
 
 const COUNTRY_OPTIONS = COUNTRIES.map((c) => ({ value: c.name, label: c.name }));
@@ -19,14 +20,14 @@ const LocationEditPage = () => {
   const { addToast } = useToast();
 
   const { location, loading: loadingLocation, error: loadError } = useGetLocation(uid);
-  const { updateLocation, loading: updating, error, fieldErrors } = useUpdateLocation();
+  const { updateLocation, loading: updating, error, fieldErrors, getLastError } = useUpdateLocation();
 
   const [form, setForm] = useState({
-    name:          "",
-    city:          "",
-    country:       "",
-    address:       "",
-    venue_details: "",
+    name:            "",
+    city:            "",
+    country:         "",
+    address:         "",
+    venue_details:   "",
     latitude:        "",
     longitude:       "",
     is_active:       true,
@@ -37,16 +38,16 @@ const LocationEditPage = () => {
   useEffect(() => {
     if (location) {
       setForm({
-        name:            location.name,
-        city:            location.city,
-        country:         location.country,
-        address:         location.address,
-        venue_details:   location.venue_details,
-        latitude:        location.latitude,
-        longitude:       location.longitude,
-        is_active:       location.is_active,
-        contact_phone:   location.contact_phone,
-        whatsapp_number: location.whatsapp_number,
+        name:            location.name            ?? "",
+        city:            location.city            ?? "",
+        country:         location.country         ?? "",
+        address:         location.address         ?? "",
+        venue_details:   location.venue_details   ?? "",
+        latitude:        location.latitude        ?? "",
+        longitude:       location.longitude       ?? "",
+        is_active:       location.is_active       ?? true,
+        contact_phone:   location.contact_phone   ?? "",
+        whatsapp_number: location.whatsapp_number ?? "",
       });
     }
   }, [location]);
@@ -60,16 +61,14 @@ const LocationEditPage = () => {
     if (updated) {
       addToast("Location updated successfully", "success");
       navigate(`/admin/locations/${uid}`);
+    } else {
+      const { fieldErrors: fe, error: ge } = getLastError();
+      const firstFieldError = Object.values(fe)[0];
+      addToast(firstFieldError ?? ge ?? "Failed to save changes. Please try again.", "error");
     }
   };
 
-  if (loadingLocation) {
-    return (
-      <div className="flex items-center justify-center py-20 text-sm text-slate-400">
-        Loading location...
-      </div>
-    );
-  }
+  if (loadingLocation) return <Loading text="Loading location..." />;
 
   if (loadError) {
     return (
@@ -191,7 +190,7 @@ const LocationEditPage = () => {
               type="button"
               text="Cancel"
               onClick={() => navigate(`/admin/locations/${uid}`)}
-              className="flex-1 rounded-xl py-2.5"
+              className="flex-1 py-2.5"
               bgColor="bg-white"
               textColor="text-slate-600"
               borderColor="border-slate-200"
@@ -203,8 +202,8 @@ const LocationEditPage = () => {
               type="submit"
               variant="primary"
               text={updating ? "Saving..." : "Save Changes"}
-              disabled={updating}
-              className="flex-1 rounded-xl py-2.5"
+              disabled={updating || !form.name.trim() || !form.city.trim() || !form.country.trim()}
+              className="flex-1 py-2.5"
             />
           </div>
         </form>
