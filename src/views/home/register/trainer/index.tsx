@@ -10,8 +10,12 @@ import Footer from "components/home/Footer";
 import { InputField, SelectField, TextareaField } from "components/form";
 import ImageUploadField from "components/form/images/ImageUploadField";
 import FileUploadField  from "components/form/filesUpload/FileUploadField";
+import SearchableDropdown from "components/form/search/SearchableDropdown";
 import useApplyAsTrainer from "hooks/trainers/useApplyAsTrainer";
 import usePresignedUpload from "hooks/storage/usePresignedUpload";
+import { COUNTRIES } from "constants/lists";
+
+const COUNTRY_OPTIONS = COUNTRIES.map((c) => ({ value: c.name, label: c.name }));
 
 const EXPERIENCE_OPTIONS = [
   { value: "1",  label: "1 – 2 years"  },
@@ -27,8 +31,7 @@ const STEPS = [
 ];
 
 const initialForm = {
-  name:          "", email:         "", phone:        "",
-  whatsapp:      "", primary_email: "",
+  name:          "", email:         "", phone:   "", whatsapp: "",
   title:         "", years_experience: "", linkedin_url: "",
   certifications:"", bio:           "",
   country:       "", city:          "", postal_code:  "", address: "",
@@ -109,12 +112,23 @@ const RegisterTrainerPage = () => {
       if (!formData.name.trim())  e.name  = "Full name is required";
       if (!formData.email.trim()) e.email = "Email is required";
       else if (!/\S+@\S+\.\S+/.test(formData.email)) e.email = "Invalid email";
-      if (!formData.phone.trim()) e.phone = "Phone is required";
+      if (!formData.phone.trim())    e.phone    = "Phone is required";
+      if (!formData.whatsapp.trim()) e.whatsapp = "WhatsApp is required";
     }
     if (s === 2) {
-      if (!profilePictureKey) e.profile_picture = "Profile picture is required";
-      if (!cvKey)             e.cv              = "CV / Resume is required";
-      if (!formData.title.trim()) e.title       = "Job title is required";
+      if (!profilePictureKey)              e.profile_picture  = "Profile picture is required";
+      if (!cvKey)                          e.cv               = "CV / Resume is required";
+      if (!formData.title.trim())          e.title            = "Job title is required";
+      if (!formData.years_experience)      e.years_experience = "Years of experience is required";
+      if (!formData.linkedin_url.trim())   e.linkedin_url     = "LinkedIn profile is required";
+      if (!formData.certifications.trim()) e.certifications   = "Certifications are required";
+      if (!formData.bio.trim())            e.bio              = "Bio is required";
+    }
+    if (s === 3) {
+      if (!formData.country.trim())     e.country     = "Country is required";
+      if (!formData.city.trim())        e.city        = "City is required";
+      if (!formData.postal_code.trim()) e.postal_code = "Postal code is required";
+      if (!formData.address.trim())     e.address     = "Address is required";
     }
     return e;
   };
@@ -162,20 +176,19 @@ const RegisterTrainerPage = () => {
     const ok = await apply({
       name:             formData.name,
       email:            formData.email,
-      phone:            formData.phone            || undefined,
-      whatsapp:         formData.whatsapp         || undefined,
-      primary_email:    formData.primary_email    || undefined,
-      title:            formData.title            || undefined,
-      years_experience: formData.years_experience ? Number(formData.years_experience) : undefined,
-      linkedin_url:     formData.linkedin_url     || undefined,
-      certifications:   formData.certifications   || undefined,
-      bio:              formData.bio              || undefined,
-      country:          formData.country          || undefined,
-      city:             formData.city             || undefined,
-      postal_code:      formData.postal_code      || undefined,
-      address:          formData.address          || undefined,
-      profile_picture:  profilePictureKey          || undefined,
-      cv:               cvKey                     || undefined,
+      phone:            formData.phone,
+      whatsapp:         formData.whatsapp,
+      title:            formData.title,
+      years_experience: Number(formData.years_experience),
+      linkedin_url:     formData.linkedin_url,
+      certifications:   formData.certifications,
+      bio:              formData.bio,
+      country:          formData.country,
+      city:             formData.city,
+      postal_code:      formData.postal_code,
+      address:          formData.address,
+      profile_picture:  profilePictureKey,
+      cv:               cvKey,
     });
     if (ok) {
       addToast("Application submitted! We'll be in touch soon.", "success");
@@ -270,16 +283,11 @@ const RegisterTrainerPage = () => {
                             formData={formData} errors={displayErrors} updateFormData={update}
                           />
                           <InputField
-                            label="WhatsApp" field="whatsapp" type="tel" required={false}
+                            label="WhatsApp" field="whatsapp" type="tel"
                             placeholder="+971 50 000 0000"
                             formData={formData} errors={displayErrors} updateFormData={update}
                           />
                         </div>
-                        <InputField
-                          label="Primary Email" field="primary_email" type="email" required={false}
-                          placeholder="primary@example.com"
-                          formData={formData} errors={displayErrors} updateFormData={update}
-                        />
                       </div>
                     )}
 
@@ -318,23 +326,23 @@ const RegisterTrainerPage = () => {
                             formData={formData} errors={displayErrors} updateFormData={update}
                           />
                           <SelectField
-                            label="Years of Experience" field="years_experience" required={false}
+                            label="Years of Experience" field="years_experience"
                             options={EXPERIENCE_OPTIONS}
                             formData={formData} errors={displayErrors} updateFormData={update}
                           />
                         </div>
                         <InputField
-                          label="LinkedIn Profile" field="linkedin_url" required={false}
+                          label="LinkedIn Profile" field="linkedin_url"
                           placeholder="https://linkedin.com/in/..."
                           formData={formData} errors={displayErrors} updateFormData={update}
                         />
                         <TextareaField
-                          label="Certifications & Areas of Expertise" field="certifications" required={false} rows={3}
+                          label="Certifications & Areas of Expertise" field="certifications" rows={3}
                           placeholder="e.g. PMP, Project Management, Leadership, Data Analysis..."
                           formData={formData} errors={displayErrors} updateFormData={update}
                         />
                         <TextareaField
-                          label="Brief Bio" field="bio" required={false} rows={4}
+                          label="Brief Bio" field="bio" rows={4}
                           placeholder="Tell us about your background, industry experience, and why you want to train with IKA..."
                           formData={formData} errors={displayErrors} updateFormData={update}
                         />
@@ -345,25 +353,29 @@ const RegisterTrainerPage = () => {
                     {step === 3 && (
                       <div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
-                          <InputField
-                            label="Country" field="country" required={false}
-                            placeholder="United Arab Emirates"
-                            formData={formData} errors={displayErrors} updateFormData={update}
+                          <SearchableDropdown
+                            label="Country"
+                            field="country"
+                            options={COUNTRY_OPTIONS}
+                            formData={formData}
+                            errors={displayErrors}
+                            updateFormData={update}
+                            placeholder="Select country..."
                           />
                           <InputField
-                            label="City" field="city" required={false}
+                            label="City" field="city"
                             placeholder="Dubai"
                             formData={formData} errors={displayErrors} updateFormData={update}
                           />
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
                           <InputField
-                            label="Postal Code" field="postal_code" required={false}
+                            label="Postal Code" field="postal_code"
                             placeholder="00000"
                             formData={formData} errors={displayErrors} updateFormData={update}
                           />
                           <InputField
-                            label="Address" field="address" required={false}
+                            label="Address" field="address"
                             placeholder="123 Main St"
                             formData={formData} errors={displayErrors} updateFormData={update}
                           />
@@ -408,8 +420,9 @@ const RegisterTrainerPage = () => {
                     type="button"
                     onClick={goNext}
                     disabled={
-                      (step === 1 && (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim())) ||
-                      (step === 2 && (!profilePictureKey || !cvKey || !formData.title.trim() || uploadingImage || uploadingCv))
+                      (step === 1 && (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.whatsapp.trim())) ||
+                      (step === 2 && (!profilePictureKey || !cvKey || !formData.title.trim() || !formData.years_experience || !formData.linkedin_url.trim() || !formData.certifications.trim() || !formData.bio.trim() || uploadingImage || uploadingCv)) ||
+                      (step === 3 && (!formData.country.trim() || !formData.city.trim() || !formData.postal_code.trim() || !formData.address.trim()))
                     }
                     className="flex-1 py-3 rounded-xl bg-navy-700 hover:bg-navy-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition"
                   >

@@ -14,6 +14,7 @@ export interface ApplyAsTrainerPayload {
   postal_code?: string;
   address?: string;
   primary_email?: string;
+  secondary_email?: string;
   linkedin_url?: string;
   certifications?: string;
   bio?: string;
@@ -54,7 +55,7 @@ const useApplyAsTrainer = (): UseApplyAsTrainerReturn => {
 
       const fields: (keyof TrainerFieldErrors)[] = [
         "name", "email", "phone", "whatsapp", "title", "years_experience",
-        "country", "city", "postal_code", "address", "primary_email",
+        "country", "city", "postal_code", "address", "primary_email", "secondary_email",
         "linkedin_url", "certifications", "bio", "profile_picture", "cv",
       ];
       const extracted: TrainerFieldErrors = {};

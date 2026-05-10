@@ -7,8 +7,12 @@ import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import TextareaField from "components/form/TextareaField";
+import SearchableDropdown from "components/form/search/SearchableDropdown";
 import FileUploadField from "components/form/filesUpload/FileUploadField";
 import type { PresignedUploadResult } from "hooks/storage/usePresignedUpload";
+import { COUNTRIES } from "constants/lists";
+
+const COUNTRY_OPTIONS = COUNTRIES.map((c) => ({ value: c.name, label: c.name }));
 
 const AvatarUpload = ({ displayUrl, name, onChange }) => {
   const { upload, uploading, progress, error, reset } = usePresignedUpload();
@@ -220,8 +224,9 @@ const TrainerCreatePage = () => {
             placeholder="secondary@example.com"
             required={false} formData={form} errors={fieldErrors} updateFormData={update} />
 
-          <InputField label="Country" field="country" placeholder="United Arab Emirates"
-            required={false} formData={form} errors={fieldErrors} updateFormData={update} />
+          <SearchableDropdown label="Country" field="country" required={false}
+            options={COUNTRY_OPTIONS} formData={form} errors={fieldErrors}
+            updateFormData={update} placeholder="Select country..." />
           <InputField label="City" field="city" placeholder="Dubai"
             required={false} formData={form} errors={fieldErrors} updateFormData={update} />
 

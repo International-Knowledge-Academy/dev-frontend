@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   UserPlus, RefreshCw, Pencil, Trash2, AlertTriangle,
-  Users, MapPin, Briefcase,
+  Users, MapPin, Briefcase, Phone,
 } from "lucide-react";
 import useTrainers from "hooks/trainers/useTrainers";
 import useDeleteTrainer from "hooks/trainers/useDeleteTrainer";
@@ -142,7 +142,7 @@ const TrainersPage = () => {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-slate-100 bg-slate-50/60">
-                      {["Trainer", "Email", "Title", "Location", "Actions"].map((label) => (
+                      {["Trainer", "Email", "Title", "Location", "WhatsApp", "Actions"].map((label) => (
                         <th key={label} className="px-5 py-3 text-left text-xs font-bold tracking-widest uppercase text-slate-400">
                           {label}
                         </th>
@@ -196,6 +196,18 @@ const TrainersPage = () => {
                             <span className="inline-flex items-center gap-1.5 text-slate-500 text-xs">
                               <MapPin size={12} className="text-slate-400 flex-shrink-0" />
                               {[trainer.city, trainer.country].filter(Boolean).join(", ")}
+                            </span>
+                          ) : (
+                            <span className="text-slate-300">—</span>
+                          )}
+                        </td>
+
+                        {/* WhatsApp */}
+                        <td className="px-5 py-3.5">
+                          {trainer.whatsapp ? (
+                            <span className="inline-flex items-center gap-1.5 text-slate-500 text-xs">
+                              <Phone size={12} className="text-green-500 flex-shrink-0" />
+                              <span className="truncate" title={trainer.whatsapp}>{trainer.whatsapp}</span>
                             </span>
                           ) : (
                             <span className="text-slate-300">—</span>

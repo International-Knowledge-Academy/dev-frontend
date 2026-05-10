@@ -7,9 +7,14 @@ import useUpdateTrainer from "hooks/trainers/useUpdateTrainer";
 import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
+import TextareaField from "components/form/TextareaField";
+import SearchableDropdown from "components/form/search/SearchableDropdown";
 import Button from "components/ui/buttons/Button";
 import FileUploadField from "components/form/filesUpload/FileUploadField";
 import type { PresignedUploadResult } from "hooks/storage/usePresignedUpload";
+import { COUNTRIES } from "constants/lists";
+
+const COUNTRY_OPTIONS = COUNTRIES.map((c) => ({ value: c.name, label: c.name }));
 
 const SectionTitle = ({ title }) => (
   <p className="text-xs font-bold uppercase tracking-widest text-slate-400 px-4 sm:px-6 pt-5 pb-2 border-t border-slate-100 first:border-t-0">
@@ -224,18 +229,16 @@ const TrainerEditPage = () => {
               <InputField label="Job Title"  field="title" placeholder="Senior Consultant"   required={false} formData={form} errors={fieldErrors} updateFormData={update} />
               <InputField label="Years of Experience" field="years_experience" type="number" placeholder="5" required={false} formData={form} errors={fieldErrors} updateFormData={update} />
             </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-navy-800 mb-2">
-                Bio <span className="text-slate-400 font-normal">(optional)</span>
-              </label>
-              <textarea
-                value={form.bio}
-                onChange={(e) => update("bio", e.target.value)}
-                placeholder="Brief professional background..."
-                rows={3}
-                className="w-full rounded-md lg:rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-navy-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-navy-300 transition resize-none"
-              />
-            </div>
+            <TextareaField
+              label="Bio"
+              field="bio"
+              required={false}
+              rows={3}
+              placeholder="Brief professional background..."
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={update}
+            />
             <InputField label="Certifications" field="certifications" placeholder="PMP, SHRM..." required={false} formData={form} errors={fieldErrors} updateFormData={update} />
             <InputField label="LinkedIn URL"   field="linkedin_url"  placeholder="https://linkedin.com/in/..." required={false} formData={form} errors={fieldErrors} updateFormData={update} />
           </div>
@@ -253,7 +256,7 @@ const TrainerEditPage = () => {
           <SectionTitle title="Location" />
           <div className="px-4 sm:px-6 pb-2">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-              <InputField label="Country"     field="country"     placeholder="United Arab Emirates" required={false} formData={form} errors={fieldErrors} updateFormData={update} />
+              <SearchableDropdown label="Country" field="country" required={false} options={COUNTRY_OPTIONS} formData={form} errors={fieldErrors} updateFormData={update} placeholder="Select country..." />
               <InputField label="City"        field="city"        placeholder="Dubai"                required={false} formData={form} errors={fieldErrors} updateFormData={update} />
               <InputField label="Postal Code" field="postal_code" placeholder="00000"               required={false} formData={form} errors={fieldErrors} updateFormData={update} />
               <InputField label="Address"     field="address"     placeholder="123 Main St"          required={false} formData={form} errors={fieldErrors} updateFormData={update} />
