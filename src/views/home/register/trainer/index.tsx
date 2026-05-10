@@ -133,7 +133,6 @@ const RegisterTrainerPage = () => {
 
   const handleProfilePictureChange = async (file: File) => {
     setProfilePictureFile(file);
-    setProfilePictureUrl(null);
     if (errors.profile_picture) setErrors((p) => ({ ...p, profile_picture: "" }));
     const result = await uploadImage(file, { folder: "trainers/profile-pictures", file_type: "image" });
     if (result) setProfilePictureKey(result.file_key);
@@ -141,7 +140,6 @@ const RegisterTrainerPage = () => {
 
   const handleCvChange = async (file: File) => {
     setCvFile(file);
-    setCvUrl(null);
     if (errors.cv) setErrors((p) => ({ ...p, cv: "" }));
     const result = await uploadCv(file, { folder: "trainers/cvs", file_type: "document" });
     if (result) setCvKey(result.file_key);
