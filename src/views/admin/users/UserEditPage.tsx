@@ -5,8 +5,6 @@ import { Camera } from "lucide-react";
 import useGetUser from "hooks/users/useGetUser";
 import useUpdateUser from "hooks/users/useUpdateUser";
 import useUpdateProfile from "hooks/users/useUpdateProfile";
-import useDeleteCV from "hooks/users/profile/useDeleteCV";
-import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import TextareaField from "components/form/TextareaField";
@@ -14,7 +12,6 @@ import SelectField from "components/form/SelectField";
 import CompactToggle from "components/form/toggle/CompactToggle";
 import Button from "components/ui/buttons/Button";
 import PasswordField from "components/form/PasswordField";
-import FileUploadField from "components/form/filesUpload/FileUploadField";
 import Loading from "components/loading/Loading";
 import { COUNTRIES } from "constants/lists";
 import SearchableSelect from "components/form/SearchableSelect";
@@ -121,11 +118,8 @@ const UserEditPage = () => {
 
   const { user, loading: loadingUser, error: loadError, refetch } = useGetUser(id);
   const { updateUser, loading: updating, error: updateError, fieldErrors, profileFieldErrors, getLastError } = useUpdateUser();
-  const { updateProfile }                                    = useUpdateProfile();
-  const { deleteCV, loading: deletingCV }                    = useDeleteCV();
-  const { upload: uploadCvFile, uploading: uploadingCvFile } = usePresignedUpload();
+  const { updateProfile } = useUpdateProfile();
 
-  const cvBusy = uploadingCvFile || deletingCV;
   const isBusy = updating;
 
   const [form, setForm] = useState({
@@ -181,29 +175,6 @@ const UserEditPage = () => {
     });
     setProfilePictureUrl(p?.profile_picture?.public_url ?? "");
   }, [user]);
-
-  // ── CV ────────────────────────────────────────────────────────────────
-  const [cvFile, setCvFile] = useState<File | null>(null);
-
-  const handleCvChange = async (file: File) => {
-    setCvFile(file);
-    const uploaded = await uploadCvFile(file, { folder: "documents/cvs", file_type: "pdf" });
-    setCvFile(null);
-    if (uploaded) {
-      const result = await updateProfile(id, { cv: uploaded.file_key });
-      if (result) { addToast("CV updated", "success"); refetch(); }
-      else { addToast("Failed to update CV. Please try again.", "error"); }
-    } else {
-      addToast("Failed to upload CV. Please try again.", "error");
-    }
-  };
-
-  const handleCvDelete = async () => {
-    if (!user) return;
-    const ok = await deleteCV(user.uid);
-    if (ok) { addToast("CV removed", "success"); refetch(); }
-    else { addToast("Failed to remove CV. Please try again.", "error"); }
-  };
 
   // ── Submit ────────────────────────────────────────────────────────────
   const handleSubmit = async (e) => {
@@ -481,21 +452,6 @@ const UserEditPage = () => {
                 required={false}
               />
             </div>
-          </div>
-
-          {/* CV */}
-          <div className="space-y-4 pt-2 border-t border-slate-100">
-            <SectionLabel>CV / Resume</SectionLabel>
-            <FileUploadField
-              accept=".pdf,.doc,.docx"
-              simpleFile={cvFile}
-              onSimpleFileChange={handleCvChange}
-              onSimpleRemove={() => setCvFile(null)}
-              simpleUploading={cvBusy}
-              existingFileUrl={user?.profile?.cv?.public_url || null}
-              existingFileName="Current CV"
-              onExistingRemove={handleCvDelete}
-            />
           </div>
 
           {/* Actions */}
