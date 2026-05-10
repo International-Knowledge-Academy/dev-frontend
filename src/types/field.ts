@@ -57,13 +57,14 @@ export interface FieldsParams {
 
 export interface CreateFieldPayload {
   name: string;
-  description?: string;
+  description: string;
   category_uid?: string;
   is_active?: boolean;
   hex_color?: string;
   text_color?: string;
   thumbnail?: string;
   video?: string;
+  trainers?: number[];
 }
 
 export interface UpdateFieldPayload {

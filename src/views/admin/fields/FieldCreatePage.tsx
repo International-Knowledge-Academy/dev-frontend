@@ -42,8 +42,7 @@ const FieldCreatePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload: any = { name: form.name, is_active: form.is_active };
-    if (form.description)  payload.description  = form.description;
+    const payload: any = { name: form.name, description: form.description, is_active: form.is_active };
     if (form.category_uid) payload.category_uid = form.category_uid;
     if (form.hex_color)    payload.hex_color    = form.hex_color;
     if (form.text_color)   payload.text_color   = form.text_color;
