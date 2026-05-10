@@ -13,6 +13,7 @@ import PasswordField from "components/form/PasswordField";
 import ToggleInput from "components/form/toggle/ToggleInput";
 import Button from "components/ui/buttons/Button";
 import FileUploadField from "components/form/filesUpload/FileUploadField";
+import Loading from "components/loading/Loading";
 import type { PresignedUploadResult } from "hooks/storage/usePresignedUpload";
 
 // ── Avatar upload widget ───────────────────────────────────────────────────
@@ -111,7 +112,7 @@ const TrainerEditPage = () => {
   const { addToast } = useToast();
 
   const { user, loading: loadingUser, error: loadError, refetch } = useGetUser(uid);
-  const { updateUser,    loading: updating, error, fieldErrors }  = useUpdateUser();
+  const { updateUser, loading: updating, error, fieldErrors, getLastError } = useUpdateUser();
   const { updateProfile }                               = useUpdateProfile();
   const { deleteProfilePicture, loading: deletingPic }  = useDeleteProfilePicture();
   const { upload: uploadCvFile, uploading: uploadingCvFile } = usePresignedUpload();
@@ -186,13 +187,14 @@ const TrainerEditPage = () => {
     const updated = await updateUser(uid, payload);
     if (updated) {
       addToast("Trainer updated successfully", "success");
-      navigate("/admin/trainers");
+      navigate("/account-manager/trainers");
+    } else {
+      const { fieldErrors: fe, error: ge } = getLastError();
+      addToast(Object.values(fe)[0] ?? ge ?? "Failed to update trainer. Please try again.", "error");
     }
   };
 
-  if (loadingUser) {
-    return <div className="flex items-center justify-center py-20 text-sm text-slate-400">Loading trainer...</div>;
-  }
+  if (loadingUser) return <Loading text="Loading trainer..." />;
 
   if (loadError) {
     return <div className="flex items-center justify-center py-20 text-sm text-red-500">{loadError}</div>;
@@ -293,7 +295,7 @@ const TrainerEditPage = () => {
             <Button
               type="button"
               text="Cancel"
-              onClick={() => navigate("/admin/trainers")}
+              onClick={() => navigate("/account-manager/trainers")}
               className="flex-1 py-2.5"
               bgColor="bg-white"
               textColor="text-slate-600"
@@ -306,7 +308,7 @@ const TrainerEditPage = () => {
               type="submit"
               variant="primary"
               text={updating ? "Saving..." : "Save Changes"}
-              disabled={updating}
+              disabled={updating || !form.name.trim() || !form.email.trim()}
               className="flex-1 py-2.5"
             />
           </div>

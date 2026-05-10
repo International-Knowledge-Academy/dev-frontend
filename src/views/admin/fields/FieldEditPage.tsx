@@ -121,7 +121,6 @@ const FieldEditPage = () => {
               field="description"
               placeholder="Brief description of this field..."
               rows={3}
-              required={false}
               formData={form}
               errors={fieldErrors}
               updateFormData={set}
@@ -246,7 +245,7 @@ const FieldEditPage = () => {
               type="submit"
               variant="primary"
               text={updating ? "Saving..." : "Save Changes"}
-              disabled={updating || !form.name.trim()}
+              disabled={updating || !form.name.trim() || !form.description.trim()}
               className="flex-1 py-2.5"
             />
           </div>

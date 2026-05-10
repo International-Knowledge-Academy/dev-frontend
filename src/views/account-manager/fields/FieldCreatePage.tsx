@@ -88,7 +88,6 @@ const FieldCreatePage = () => {
               field="description"
               placeholder="Brief description of this field..."
               rows={3}
-              required={false}
               formData={form}
               errors={fieldErrors}
               updateFormData={set}
@@ -213,7 +212,7 @@ const FieldCreatePage = () => {
               type="submit"
               variant="primary"
               text={loading ? "Creating..." : "Create Field"}
-              disabled={loading || !form.name.trim()}
+              disabled={loading || !form.name.trim() || !form.description.trim()}
               className="flex-1 py-2.5"
             />
           </div>
