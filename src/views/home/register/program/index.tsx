@@ -61,7 +61,7 @@ const StepIndicator = ({ current }: { current: number }) => (
             </span>
           </div>
           {i < STEPS.length - 1 && (
-            <div className={`w-16 sm:w-24 h-0.5 mb-5 mx-2 rounded-full transition-all duration-500 ${
+            <div className={`w-10 sm:w-24 h-0.5 mb-5 mx-2 rounded-full transition-all duration-500 ${
               current > step.number ? "bg-gold-400" : "bg-slate-200"
             }`} />
           )}
