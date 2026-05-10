@@ -60,7 +60,6 @@ export interface RegistrationsParams {
 
 export interface CreateRegistrationPayload {
   program_uid: string;
-  location_uid?: string;
   category_uid?: string;
   field_uid?: string;
   registration_type: RegistrationType;
