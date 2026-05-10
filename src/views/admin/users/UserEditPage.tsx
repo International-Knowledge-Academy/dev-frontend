@@ -187,7 +187,7 @@ const UserEditPage = () => {
 
   const handleCvChange = async (file: File) => {
     setCvFile(file);
-    const uploaded = await uploadCvFile(file, { folder: "users/cvs", file_type: "document" });
+    const uploaded = await uploadCvFile(file, { folder: "documents/cvs", file_type: "pdf" });
     setCvFile(null);
     if (uploaded) {
       const result = await updateProfile(id, { cv: uploaded.file_key });
@@ -483,9 +483,9 @@ const UserEditPage = () => {
             </div>
           </div>
 
-          {/* Documents */}
+          {/* CV */}
           <div className="space-y-4 pt-2 border-t border-slate-100">
-            <SectionLabel>Documents</SectionLabel>
+            <SectionLabel>CV / Resume</SectionLabel>
             <FileUploadField
               accept=".pdf,.doc,.docx"
               simpleFile={cvFile}
