@@ -22,8 +22,14 @@ export interface ApplyAsTrainerPayload {
   cv?: string;
 }
 
+export interface ApplyAsTrainerResult {
+  ok: boolean;
+  fieldErrors: TrainerFieldErrors;
+  error: string | null;
+}
+
 interface UseApplyAsTrainerReturn {
-  apply: (payload: ApplyAsTrainerPayload) => Promise<boolean>;
+  apply: (payload: ApplyAsTrainerPayload) => Promise<ApplyAsTrainerResult>;
   loading: boolean;
   error: string | null;
   fieldErrors: TrainerFieldErrors;
@@ -34,7 +40,7 @@ const useApplyAsTrainer = (): UseApplyAsTrainerReturn => {
   const [error, setError]             = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<TrainerFieldErrors>({});
 
-  const apply = async (payload: ApplyAsTrainerPayload): Promise<boolean> => {
+  const apply = async (payload: ApplyAsTrainerPayload): Promise<ApplyAsTrainerResult> => {
     setLoading(true);
     setError(null);
     setFieldErrors({});
@@ -49,7 +55,7 @@ const useApplyAsTrainer = (): UseApplyAsTrainerReturn => {
       });
 
       await axiosInstance.post("/trainers", body);
-      return true;
+      return { ok: true, fieldErrors: {}, error: null };
     } catch (err: unknown) {
       const responseData = (err as any)?.response?.data;
 
@@ -66,14 +72,15 @@ const useApplyAsTrainer = (): UseApplyAsTrainerReturn => {
 
       if (Object.keys(extracted).length) {
         setFieldErrors(extracted);
-      } else {
-        setError(
-          responseData?.detail ??
-          responseData?.message ??
-          "Failed to submit application. Please try again."
-        );
+        return { ok: false, fieldErrors: extracted, error: null };
       }
-      return false;
+
+      const generalError =
+        responseData?.detail ??
+        responseData?.message ??
+        "Failed to submit application. Please try again.";
+      setError(generalError);
+      return { ok: false, fieldErrors: {}, error: generalError };
     } finally {
       setLoading(false);
     }

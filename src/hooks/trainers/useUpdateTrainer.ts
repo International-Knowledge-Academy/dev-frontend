@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axiosInstance from "api/axiosInstance";
 import type { Trainer, UpdateTrainerPayload, TrainerFieldErrors } from "types/trainer";
+
+interface LastError {
+  fieldErrors: TrainerFieldErrors;
+  error: string | null;
+}
 
 interface UseUpdateTrainerReturn {
   updateTrainer: (uid: string, payload: UpdateTrainerPayload) => Promise<Trainer | null>;
@@ -8,17 +13,20 @@ interface UseUpdateTrainerReturn {
   error: string | null;
   fieldErrors: TrainerFieldErrors;
   reset: () => void;
+  getLastError: () => LastError;
 }
 
 const useUpdateTrainer = (): UseUpdateTrainerReturn => {
   const [loading, setLoading]         = useState(false);
   const [error, setError]             = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<TrainerFieldErrors>({});
+  const lastErrorRef                  = useRef<LastError>({ fieldErrors: {}, error: null });
 
   const updateTrainer = async (uid: string, payload: UpdateTrainerPayload): Promise<Trainer | null> => {
     setLoading(true);
     setError(null);
     setFieldErrors({});
+    lastErrorRef.current = { fieldErrors: {}, error: null };
 
     try {
       const { data } = await axiosInstance.patch<Trainer>(`/trainers/${uid}`, payload);
@@ -39,12 +47,14 @@ const useUpdateTrainer = (): UseUpdateTrainerReturn => {
 
       if (Object.keys(extracted).length) {
         setFieldErrors(extracted);
+        lastErrorRef.current = { fieldErrors: extracted, error: null };
       } else {
-        setError(
+        const generalError =
           responseData?.detail ??
           responseData?.message ??
-          "Failed to update trainer. Please try again."
-        );
+          "Failed to update trainer. Please try again.";
+        setError(generalError);
+        lastErrorRef.current = { fieldErrors: {}, error: generalError };
       }
       return null;
     } finally {
@@ -54,7 +64,7 @@ const useUpdateTrainer = (): UseUpdateTrainerReturn => {
 
   const reset = () => { setError(null); setFieldErrors({}); };
 
-  return { updateTrainer, loading, error, fieldErrors, reset };
+  return { updateTrainer, loading, error, fieldErrors, reset, getLastError: () => lastErrorRef.current };
 };
 
 export default useUpdateTrainer;

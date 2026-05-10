@@ -157,9 +157,10 @@ const TrainerCreatePage = () => {
       profile_picture:  profilePictureKey     || undefined,
       cv:               cvKey                 || undefined,
     };
-    const created = await createTrainer(payload);
+    const { trainer: created, fieldErrors: fe, error: ge } = await createTrainer(payload);
     if (!created) {
-      addToast("Failed to create trainer. Please check the form and try again.", "error");
+      const firstFieldError = Object.values(fe)[0];
+      addToast(firstFieldError ?? ge ?? "Failed to create trainer. Please try again.", "error");
       return;
     }
     addToast("Trainer created successfully", "success");

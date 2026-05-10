@@ -173,7 +173,7 @@ const RegisterTrainerPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const ok = await apply({
+    const { ok, fieldErrors: fe, error: ge } = await apply({
       name:             formData.name,
       email:            formData.email,
       phone:            formData.phone,
@@ -193,6 +193,9 @@ const RegisterTrainerPage = () => {
     if (ok) {
       addToast("Application submitted! We'll be in touch soon.", "success");
       navigate("/register/trainer/success");
+    } else {
+      const firstFieldError = Object.values(fe)[0];
+      addToast(firstFieldError ?? ge ?? "Failed to submit application. Please try again.", "error");
     }
   };
 

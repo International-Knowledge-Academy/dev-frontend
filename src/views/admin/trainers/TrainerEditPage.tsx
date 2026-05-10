@@ -111,7 +111,7 @@ const TrainerEditPage = () => {
   const { addToast } = useToast();
 
   const { trainer, loading: loadingTrainer, error: loadError, refetch } = useTrainer(uid);
-  const { updateTrainer, loading: updating, error, fieldErrors }        = useUpdateTrainer();
+  const { updateTrainer, loading: updating, error, fieldErrors, getLastError } = useUpdateTrainer();
   const { upload: uploadCvFile, uploading: uploadingCv }                = usePresignedUpload();
 
   const [cvFile,            setCvFile]            = useState<File | null>(null);
@@ -198,7 +198,9 @@ const TrainerEditPage = () => {
       addToast("Trainer updated successfully", "success");
       navigate("/admin/trainers");
     } else {
-      addToast("Failed to save changes. Please try again.", "error");
+      const { fieldErrors: fe, error: ge } = getLastError();
+      const firstFieldError = Object.values(fe)[0];
+      addToast(firstFieldError ?? ge ?? "Failed to save changes. Please try again.", "error");
     }
   };
 

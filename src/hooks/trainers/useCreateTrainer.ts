@@ -2,8 +2,14 @@ import { useState } from "react";
 import axiosInstance from "api/axiosInstance";
 import type { Trainer, CreateTrainerPayload, TrainerFieldErrors } from "types/trainer";
 
+export interface CreateTrainerResult {
+  trainer: Trainer | null;
+  fieldErrors: TrainerFieldErrors;
+  error: string | null;
+}
+
 interface UseCreateTrainerReturn {
-  createTrainer: (payload: CreateTrainerPayload) => Promise<Trainer | null>;
+  createTrainer: (payload: CreateTrainerPayload) => Promise<CreateTrainerResult>;
   loading: boolean;
   error: string | null;
   fieldErrors: TrainerFieldErrors;
@@ -15,14 +21,14 @@ const useCreateTrainer = (): UseCreateTrainerReturn => {
   const [error, setError]             = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<TrainerFieldErrors>({});
 
-  const createTrainer = async (payload: CreateTrainerPayload): Promise<Trainer | null> => {
+  const createTrainer = async (payload: CreateTrainerPayload): Promise<CreateTrainerResult> => {
     setLoading(true);
     setError(null);
     setFieldErrors({});
 
     try {
       const { data } = await axiosInstance.post<Trainer>("/trainers", payload);
-      return data;
+      return { trainer: data, fieldErrors: {}, error: null };
     } catch (err: unknown) {
       const responseData = (err as any)?.response?.data;
 
@@ -39,14 +45,15 @@ const useCreateTrainer = (): UseCreateTrainerReturn => {
 
       if (Object.keys(extracted).length) {
         setFieldErrors(extracted);
-      } else {
-        setError(
-          responseData?.detail ??
-          responseData?.message ??
-          "Failed to create trainer. Please try again."
-        );
+        return { trainer: null, fieldErrors: extracted, error: null };
       }
-      return null;
+
+      const generalError =
+        responseData?.detail ??
+        responseData?.message ??
+        "Failed to create trainer. Please try again.";
+      setError(generalError);
+      return { trainer: null, fieldErrors: {}, error: generalError };
     } finally {
       setLoading(false);
     }
