@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axiosInstance from "api/axiosInstance";
 import type { User } from "types/auth";
 import type { UpdateProfilePayload } from "types/user";
@@ -7,22 +7,30 @@ export type { UpdateProfilePayload };
 
 type FieldErrors = Partial<Record<keyof UpdateProfilePayload, string>>;
 
+interface LastError {
+  fieldErrors: FieldErrors;
+  error: string | null;
+}
+
 interface UseUpdateProfileReturn {
-  updateProfile: (uid: string, payload: UpdateProfilePayload) => Promise<User | void>;
+  updateProfile: (uid: string, payload: UpdateProfilePayload) => Promise<User | null>;
   loading: boolean;
   error: string | null;
   fieldErrors: FieldErrors;
+  getLastError: () => LastError;
 }
 
 const useUpdateProfile = (): UseUpdateProfileReturn => {
   const [loading, setLoading]         = useState(false);
   const [error, setError]             = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const lastErrorRef                  = useRef<LastError>({ fieldErrors: {}, error: null });
 
-  const updateProfile = async (uid: string, payload: UpdateProfilePayload): Promise<User | void> => {
+  const updateProfile = async (uid: string, payload: UpdateProfilePayload): Promise<User | null> => {
     setLoading(true);
     setError(null);
     setFieldErrors({});
+    lastErrorRef.current = { fieldErrors: {}, error: null };
 
     try {
       const { data } = await axiosInstance.patch<User>(
@@ -39,7 +47,6 @@ const useUpdateProfile = (): UseUpdateProfileReturn => {
         "linkedin_url", "primary_email", "secondary_email", "address", "country",
         "city", "postal_code", "phone", "whatsapp", "specializations",
       ];
-
       const extracted: FieldErrors = {};
       fields.forEach((field) => {
         const val = profileErrors?.[field];
@@ -48,15 +55,20 @@ const useUpdateProfile = (): UseUpdateProfileReturn => {
 
       if (Object.keys(extracted).length) {
         setFieldErrors(extracted);
+        lastErrorRef.current = { fieldErrors: extracted, error: null };
       } else {
-        setError(responseData?.detail ?? responseData?.message ?? "Failed to update profile.");
+        const generalError =
+          responseData?.detail ?? responseData?.message ?? "Failed to update profile.";
+        setError(generalError);
+        lastErrorRef.current = { fieldErrors: {}, error: generalError };
       }
+      return null;
     } finally {
       setLoading(false);
     }
   };
 
-  return { updateProfile, loading, error, fieldErrors };
+  return { updateProfile, loading, error, fieldErrors, getLastError: () => lastErrorRef.current };
 };
 
 export default useUpdateProfile;

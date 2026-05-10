@@ -50,15 +50,17 @@ const UserProfilePage = () => {
     const file = e.target.files?.[0];
     if (!file || !user) return;
     e.target.value = "";
-    const result = await upload(file, { folder: "users/profiles", file_type: "image" });
+    const result = await upload(file, { folder: "users/profile-pictures", file_type: "image" });
     if (result) {
       const updated = await updateProfile(user.uid, { profile_picture: result.file_key });
       if (updated) {
         addToast("Profile picture updated", "success");
         refetch();
       } else {
-        addToast("Failed to update profile picture", "error");
+        addToast("Failed to update profile picture. Please try again.", "error");
       }
+    } else {
+      addToast("Failed to upload profile picture. Please try again.", "error");
     }
   };
 

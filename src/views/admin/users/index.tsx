@@ -82,6 +82,8 @@ const UsersPage = () => {
       addToast(`${deleteTarget.name} has been deleted`, "success");
       setDeleteTarget(null);
       refetch();
+    } else {
+      addToast("Failed to delete user. Please try again.", "error");
     }
   };
 

@@ -37,10 +37,13 @@ const UserCreatePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const created = await createUser({ ...form });
+    const { user: created, fieldErrors: fe, error: ge } = await createUser({ ...form });
     if (created) {
       addToast("User created successfully", "success");
       navigate("/admin/users");
+    } else {
+      const firstFieldError = Object.values(fe)[0];
+      addToast(firstFieldError ?? ge ?? "Failed to create user. Please try again.", "error");
     }
   };
 

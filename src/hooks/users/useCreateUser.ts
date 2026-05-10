@@ -17,8 +17,14 @@ export interface CreateUserPayload {
 
 export type CreateUserFieldErrors = Partial<Record<keyof CreateUserPayload, string>>;
 
+export interface CreateUserResult {
+  user: User | null;
+  fieldErrors: CreateUserFieldErrors;
+  error: string | null;
+}
+
 interface UseCreateUserReturn {
-  createUser: (payload: CreateUserPayload) => Promise<User | void>;
+  createUser: (payload: CreateUserPayload) => Promise<CreateUserResult>;
   loading: boolean;
   error: string | null;
   fieldErrors: CreateUserFieldErrors;
@@ -30,32 +36,22 @@ const useCreateUser = (): UseCreateUserReturn => {
   const [error, setError]             = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<CreateUserFieldErrors>({});
 
-  const createUser = async (payload: CreateUserPayload): Promise<User | void> => {
+  const createUser = async (payload: CreateUserPayload): Promise<CreateUserResult> => {
     setLoading(true);
     setError(null);
     setFieldErrors({});
 
     try {
       const { data } = await axiosInstance.post<User>("/auth/users", payload);
-      return data;
+      return { user: data, fieldErrors: {}, error: null };
     } catch (err: unknown) {
-      const responseData = (
-        err as {
-          response?: {
-            data?: Partial<Record<keyof CreateUserPayload, string[]>> & {
-              detail?: string;
-              message?: string;
-            };
-          };
-        }
-      )?.response?.data;
+      const responseData = (err as { response?: { data?: any } })?.response?.data;
 
       const fields: (keyof CreateUserPayload)[] = [
         "email", "password", "name", "role",
         "is_active", "is_staff", "is_superuser",
         "groups", "user_permissions",
       ];
-
       const extracted: CreateUserFieldErrors = {};
       fields.forEach((field) => {
         const val = responseData?.[field];
@@ -64,22 +60,21 @@ const useCreateUser = (): UseCreateUserReturn => {
 
       if (Object.keys(extracted).length) {
         setFieldErrors(extracted);
-      } else {
-        setError(
-          responseData?.detail ??
-          responseData?.message ??
-          "Failed to create user. Please try again."
-        );
+        return { user: null, fieldErrors: extracted, error: null };
       }
+
+      const generalError =
+        responseData?.detail ??
+        responseData?.message ??
+        "Failed to create user. Please try again.";
+      setError(generalError);
+      return { user: null, fieldErrors: {}, error: generalError };
     } finally {
       setLoading(false);
     }
   };
 
-  const reset = () => {
-    setError(null);
-    setFieldErrors({});
-  };
+  const reset = () => { setError(null); setFieldErrors({}); };
 
   return { createUser, loading, error, fieldErrors, reset };
 };
