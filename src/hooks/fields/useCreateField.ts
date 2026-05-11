@@ -23,14 +23,15 @@ const useCreateField = (): UseCreateFieldReturn => {
       const { data } = await axiosInstance.post<Field>("/fields", payload);
       return { field: data, fieldErrors: {}, error: null };
     } catch (err: unknown) {
-      const responseData = (err as { response?: { data?: any } })?.response?.data;
+      const axiosErr = err as { response?: { data?: any }; message?: string };
+      const responseData = axiosErr?.response?.data;
 
-      const fields: (keyof CreateFieldPayload)[] = [
+      const fieldKeys: (keyof CreateFieldPayload)[] = [
         "name", "description", "category_uid", "is_active",
         "hex_color", "text_color", "thumbnail", "video",
       ];
       const extracted: FieldFieldErrors = {};
-      fields.forEach((f) => {
+      fieldKeys.forEach((f) => {
         const val = responseData?.[f];
         if (Array.isArray(val) && val[0]) extracted[f] = val[0];
       });
@@ -39,10 +40,15 @@ const useCreateField = (): UseCreateFieldReturn => {
         return { field: null, fieldErrors: extracted, error: null };
       }
 
+      const nonFieldError = Array.isArray(responseData?.non_field_errors)
+        ? responseData.non_field_errors[0]
+        : null;
+      const networkMsg = !axiosErr?.response && axiosErr?.message ? axiosErr.message : null;
+
       return {
         field: null,
         fieldErrors: {},
-        error: responseData?.detail ?? responseData?.message ?? "Failed to create field. Please try again.",
+        error: responseData?.detail ?? responseData?.message ?? nonFieldError ?? networkMsg ?? "Failed to create field. Please try again.",
       };
     } finally {
       setLoading(false);

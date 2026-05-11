@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useGetField from "hooks/fields/useGetField";
 import useUpdateField from "hooks/fields/useUpdateField";
 import useAllCategories from "hooks/categories/useAllCategories";
+import { getMediaUrl, getMediaKey } from "types/field";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import TextareaField from "components/form/TextareaField";
@@ -50,10 +51,10 @@ const FieldEditPage = () => {
         text_color:   field.text_color   ?? "#ffffff",
         is_active:    field.is_active    ?? true,
       });
-      setThumbnailKey(field.thumbnail?.file_key   ?? "");
-      setThumbnailUrl(field.thumbnail?.public_url ?? "");
-      setVideoKey(field.video?.file_key   ?? "");
-      setVideoUrl(field.video?.public_url ?? "");
+      setThumbnailKey(getMediaKey(field.thumbnail));
+      setThumbnailUrl(getMediaUrl(field.thumbnail));
+      setVideoKey(getMediaKey(field.video));
+      setVideoUrl(getMediaUrl(field.video));
     }
   }, [field]);
 
@@ -62,21 +63,24 @@ const FieldEditPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload: any = { name: form.name, is_active: form.is_active };
-    if (form.description !== undefined) payload.description  = form.description;
-    if (form.category_uid)              payload.category_uid = form.category_uid;
-    if (form.hex_color)                 payload.hex_color    = form.hex_color;
-    if (form.text_color)                payload.text_color   = form.text_color;
-    payload.thumbnail = thumbnailKey || "";
-    payload.video     = videoKey     || "";
+    try {
+      const payload: any = { name: form.name, description: form.description, is_active: form.is_active };
+      if (form.category_uid) payload.category_uid = form.category_uid;
+      if (form.hex_color)    payload.hex_color    = form.hex_color;
+      if (form.text_color)   payload.text_color   = form.text_color;
+      payload.thumbnail = thumbnailKey || "";
+      payload.video     = videoKey     || "";
 
-    const updated = await updateField(uid, payload);
-    if (updated) {
-      addToast("Field updated successfully", "success");
-      navigate("/account-manager/fields");
-    } else {
-      const { fieldErrors: fe, error: ge } = getLastError();
-      addToast(Object.values(fe)[0] ?? ge ?? "Failed to update field. Please try again.", "error");
+      const updated = await updateField(uid, payload);
+      if (updated) {
+        addToast("Field updated successfully", "success");
+        navigate("/account-manager/fields");
+      } else {
+        const { fieldErrors: fe, error: ge } = getLastError();
+        addToast(Object.values(fe)[0] ?? ge ?? "Failed to update field. Please try again.", "error");
+      }
+    } catch (err: any) {
+      addToast(err?.message ?? "An unexpected error occurred. Please try again.", "error");
     }
   };
 

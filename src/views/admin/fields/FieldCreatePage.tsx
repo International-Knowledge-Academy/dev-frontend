@@ -42,20 +42,24 @@ const FieldCreatePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload: any = { name: form.name, description: form.description, is_active: form.is_active };
-    if (form.category_uid) payload.category_uid = form.category_uid;
-    if (form.hex_color)    payload.hex_color    = form.hex_color;
-    if (form.text_color)   payload.text_color   = form.text_color;
-    if (thumbnailKey)      payload.thumbnail    = thumbnailKey;
-    if (videoKey)          payload.video        = videoKey;
+    try {
+      const payload: any = { name: form.name, description: form.description, is_active: form.is_active };
+      if (form.category_uid) payload.category_uid = form.category_uid;
+      if (form.hex_color)    payload.hex_color    = form.hex_color;
+      if (form.text_color)   payload.text_color   = form.text_color;
+      if (thumbnailKey)      payload.thumbnail    = thumbnailKey;
+      if (videoKey)          payload.video        = videoKey;
 
-    const { field: created, fieldErrors: fe, error: ge } = await createField(payload);
-    if (created) {
-      addToast("Field created successfully", "success");
-      navigate("/admin/fields");
-    } else {
-      setFieldErrors(fe);
-      addToast(Object.values(fe)[0] ?? ge ?? "Failed to create field. Please try again.", "error");
+      const { field: created, fieldErrors: fe, error: ge } = await createField(payload);
+      if (created) {
+        addToast("Field created successfully", "success");
+        navigate("/admin/fields");
+      } else {
+        setFieldErrors(fe ?? {});
+        addToast(Object.values(fe ?? {})[0] ?? ge ?? "Failed to create field. Please try again.", "error");
+      }
+    } catch (err: any) {
+      addToast(err?.message ?? "An unexpected error occurred. Please try again.", "error");
     }
   };
 
