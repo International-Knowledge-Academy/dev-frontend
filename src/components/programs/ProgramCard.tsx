@@ -49,7 +49,8 @@ const ProgramCard = ({ program }: Props) => {
       role="button"
       tabIndex={0}
       aria-label={`Program: ${program.name}`}
-      className="group relative bg-white border border-slate-100 hover:border-gold-300 rounded-2xl overflow-hidden flex flex-col cursor-pointer hover:shadow-[0_8px_32px_rgba(201,168,76,0.14)] transition-all duration-300"
+      style={{ borderColor: `${fieldHex}55` }}
+      className="group relative bg-white border rounded-2xl overflow-hidden flex flex-col cursor-pointer transition-all duration-300"
     >
       {/* Field color accent bar */}
       <div

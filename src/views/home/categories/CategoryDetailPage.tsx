@@ -82,7 +82,8 @@ const FieldCard = ({ field }: { field: Field }) => {
     <motion.div
       variants={cardVariant}
       whileHover={{ y: -5, transition: { duration: 0.2, ease: "easeOut" } }}
-      className="group bg-white border border-slate-100 hover:border-gold-300 rounded-2xl overflow-hidden flex flex-col hover:shadow-[0_8px_28px_rgba(201,168,76,0.12)] transition-all duration-300"
+      style={{ borderColor: `${accent}55` }}
+      className="group bg-white border rounded-2xl overflow-hidden flex flex-col transition-all duration-300"
     >
       {hasThumbnail ? (
         <div className="h-44 overflow-hidden flex-shrink-0">
