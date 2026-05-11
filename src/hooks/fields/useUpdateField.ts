@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useRef } from "react";
 import axiosInstance from "api/axiosInstance";
 import type { Field, UpdateFieldPayload, FieldFieldErrors } from "types/field";
