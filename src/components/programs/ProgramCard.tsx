@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -35,7 +36,8 @@ interface Props {
 }
 
 const ProgramCard = ({ program }: Props) => {
-  const navigate = useNavigate();
+  const navigate          = useNavigate();
+  const [hovered, setHovered] = useState(false);
 
   const type      = typeConfig[program.program_type]   ?? typeConfig.course;
   const Icon      = TypeIcon[program.program_type]     ?? BookOpen;
@@ -49,19 +51,18 @@ const ProgramCard = ({ program }: Props) => {
       role="button"
       tabIndex={0}
       aria-label={`Program: ${program.name}`}
-      style={{ borderColor: `${fieldHex}55` }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        borderColor:  hovered ? `${fieldHex}99` : `${fieldHex}55`,
+        boxShadow:    hovered ? `0 8px 28px ${fieldHex}30` : `0 2px 8px ${fieldHex}10`,
+      }}
       className="group relative bg-white border rounded-2xl overflow-hidden flex flex-col cursor-pointer transition-all duration-300"
     >
       {/* Field color accent bar */}
       <div
         className="h-1 w-full flex-shrink-0 opacity-80 group-hover:opacity-100 transition-opacity duration-300"
         style={{ backgroundColor: fieldHex }}
-      />
-
-      {/* Animated gold top border sweep */}
-      <span
-        className="absolute top-0 left-0 h-[3px] rounded-r-full bg-gradient-to-r from-gold-400 via-gold-500 to-gold-300 w-0 group-hover:w-full transition-[width] duration-500 ease-out pointer-events-none z-10"
-        aria-hidden="true"
       />
 
       {/* Hover background glow */}
