@@ -83,6 +83,8 @@ const FieldsPage = () => {
       addToast(`"${deleteTarget.name}" has been deleted`, "success");
       setDeleteTarget(null);
       refetch();
+    } else {
+      addToast("Failed to delete field. Please try again.", "error");
     }
   };
 

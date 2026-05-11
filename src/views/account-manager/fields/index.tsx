@@ -83,6 +83,8 @@ const FieldsPage = () => {
       addToast(`"${deleteTarget.name}" has been deleted`, "success");
       setDeleteTarget(null);
       refetch();
+    } else {
+      addToast("Failed to delete field. Please try again.", "error");
     }
   };
 
@@ -99,7 +101,7 @@ const FieldsPage = () => {
             variant="dark-navy"
             text="Add Field"
             icon={<Plus size={15} />}
-            onClick={() => navigate("/admin/fields/create")}
+            onClick={() => navigate("/account-manager/fields/create")}
           />
         }
         className="mb-4 px-0 sm:px-0"
@@ -307,7 +309,7 @@ const FieldsPage = () => {
                     {fields.map((field) => (
                       <tr
                         key={field.uid}
-                        onClick={() => navigate(`/admin/fields/${field.uid}`)}
+                        onClick={() => navigate(`/account-manager/fields/${field.uid}`)}
                         className="hover:bg-slate-50 transition cursor-pointer group"
                       >
                         {/* Field */}
@@ -369,7 +371,7 @@ const FieldsPage = () => {
                         <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                           <div className="flex items-center gap-1">
                             <button
-                              onClick={() => navigate(`/admin/fields/${field.uid}/edit`)}
+                              onClick={() => navigate(`/account-manager/fields/${field.uid}/edit`)}
                               className="p-1.5 rounded-md text-slate-400 hover:bg-navy-50 hover:text-navy-700 transition"
                               title="Edit"
                             >
