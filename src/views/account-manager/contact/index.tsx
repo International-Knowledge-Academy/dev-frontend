@@ -239,21 +239,12 @@ const ContactsPage = () => {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-slate-100 bg-slate-50/60">
-                      {[
-                        { label: "Sender",       icon: <MessageSquare size={13} /> },
-                        { label: "Organization", icon: <Building2     size={13} /> },
-                        { label: "Email",        icon: <Mail          size={13} /> },
-                        { label: "Phone",        icon: <Phone         size={13} /> },
-                        { label: "Category",     icon: <Tag           size={13} /> },
-                        { label: "Status",       icon: <CheckCircle2  size={13} /> },
-                        { label: "Date",         icon: <Calendar      size={13} /> },
-                        { label: "Actions",      icon: null },
-                      ].map(({ label, icon }) => (
+                      {["Sender", "Organization", "Email", "Phone", "Category", "Status", "Date", "Actions"].map((label) => (
                         <th
                           key={label}
                           className="px-5 py-3 text-left text-xs font-bold tracking-widest uppercase text-slate-400"
                         >
-                          <span className="flex items-center gap-1.5">{icon}{label}</span>
+                          {label}
                         </th>
                       ))}
                     </tr>
@@ -312,10 +303,9 @@ const ContactsPage = () => {
                         {/* Status */}
                         <td className="px-5 py-3.5">
                           {(() => {
-                            const { className, icon, label } = getStatusConfig(contact.status);
+                            const { className, label } = getStatusConfig(contact.status);
                             return (
                               <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold ${className}`}>
-                                {icon}
                                 {label}
                               </span>
                             );
