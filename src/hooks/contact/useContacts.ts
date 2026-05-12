@@ -28,6 +28,7 @@ const useContacts = (initialParams: ContactsParams = {}): UseContactsReturn => {
           ...(params.page     && { page:     params.page     }),
           ...(params.search   && { search:   params.search   }),
           ...(params.ordering && { ordering: params.ordering }),
+          ...(params.status   && { status:   params.status   }),
         },
       });
       setContacts(Array.isArray(data.results) ? data.results : []);
@@ -49,7 +50,7 @@ const useContacts = (initialParams: ContactsParams = {}): UseContactsReturn => {
     setParamsState((prev) => ({
       ...prev,
       ...updates,
-      page: "search" in updates || "ordering" in updates ? 1 : (updates.page ?? prev.page),
+      page: "search" in updates || "ordering" in updates || "status" in updates ? 1 : (updates.page ?? prev.page),
     }));
   };
 

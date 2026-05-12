@@ -30,6 +30,7 @@ import ManagerTrainersPage   from "views/account-manager/trainers";
 import ManagerCategoriesPage from "views/account-manager/categories";
 import ManagerFieldsPage     from "views/account-manager/fields";
 import ManagerLocationsPage  from "views/account-manager/locations";
+import ManagerContactsPage   from "views/account-manager/contact";
 
 // Icon Imports
 import {
@@ -246,6 +247,14 @@ const routes = [
     icon: <MdLocationOn className="h-6 w-6" />,
     component: <ManagerLocationsPage />,
     group: "Configure",
+  },
+  {
+    name: "Contact",
+    layout: "/account-manager",
+    path: "contact",
+    icon: <MdContactMail className="h-6 w-6" />,
+    component: <ManagerContactsPage />,
+    group: "Admin",
   },
 
 ];

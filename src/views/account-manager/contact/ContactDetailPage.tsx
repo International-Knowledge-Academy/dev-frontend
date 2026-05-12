@@ -151,7 +151,7 @@ const ContactDetailPage = () => {
         <div className="px-4 sm:px-6 py-4 border-t border-slate-100 flex gap-2 mt-2">
           <button
             type="button"
-            onClick={() => navigate("/admin/contact")}
+            onClick={() => navigate("/account-manager/contact")}
             className="flex-1 rounded-md lg:rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition flex items-center justify-center gap-2"
           >
             <MdArrowBack size={16} />
@@ -159,7 +159,7 @@ const ContactDetailPage = () => {
           </button>
           <button
             type="button"
-            onClick={() => navigate(`/admin/contact/${uid}/edit`)}
+            onClick={() => navigate(`/account-manager/contact/${uid}/edit`)}
             className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition flex items-center justify-center gap-2"
           >
             <MdEdit size={16} />

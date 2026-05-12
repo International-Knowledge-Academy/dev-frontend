@@ -7,6 +7,7 @@ export interface Contact {
   program_category: string;
   program_type:     string;
   message:          string;
+  status:           string;
   created_at:       string;
 }
 
@@ -21,6 +22,7 @@ export interface ContactsParams {
   page?:     number;
   search?:   string;
   ordering?: string;
+  status?:   string;
 }
 
 export interface CreateContactPayload {
@@ -31,4 +33,5 @@ export interface CreateContactPayload {
   program_category: string;
   program_type:     string;
   message:          string;
+  status?:          string;
 }

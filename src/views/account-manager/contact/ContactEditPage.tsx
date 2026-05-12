@@ -65,7 +65,7 @@ const ContactEditPage = () => {
     const updated = await updateContact(uid, form);
     if (updated) {
       addToast("Contact updated successfully", "success");
-      navigate(`/admin/contact/${uid}`);
+      navigate(`/account-manager/contact/${uid}`);
     }
   };
 
@@ -200,7 +200,7 @@ const ContactEditPage = () => {
             <Button
               type="button"
               text="Cancel"
-              onClick={() => navigate(`/admin/contact/${uid}`)}
+              onClick={() => navigate(`/account-manager/contact/${uid}`)}
               className="flex-1"
               bgColor="bg-white"
               textColor="text-slate-600"

@@ -245,7 +245,7 @@ const ContactsPage = () => {
                         { label: "Email",        icon: <Mail          size={13} /> },
                         { label: "Phone",        icon: <Phone         size={13} /> },
                         { label: "Category",     icon: <Tag           size={13} /> },
-                        { label: "Status", icon: <CheckCircle2 size={13} /> },
+                        { label: "Status",       icon: <CheckCircle2  size={13} /> },
                         { label: "Date",         icon: <Calendar      size={13} /> },
                         { label: "Actions",      icon: null },
                       ].map(({ label, icon }) => (
@@ -262,7 +262,7 @@ const ContactsPage = () => {
                     {contacts.map((contact) => (
                       <tr
                         key={contact.uid}
-                        onClick={() => navigate(`/admin/contact/${contact.uid}`)}
+                        onClick={() => navigate(`/account-manager/contact/${contact.uid}`)}
                         className="hover:bg-slate-50 transition cursor-pointer group"
                       >
                         {/* Sender */}
@@ -331,7 +331,7 @@ const ContactsPage = () => {
                         <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                           <div className="flex items-center gap-1">
                             <button
-                              onClick={() => navigate(`/admin/contact/${contact.uid}/edit`)}
+                              onClick={() => navigate(`/account-manager/contact/${contact.uid}/edit`)}
                               className="p-1.5 rounded-md text-slate-400 hover:bg-navy-50 hover:text-navy-700 transition"
                               title="Edit"
                             >

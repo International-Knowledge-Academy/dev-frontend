@@ -14,13 +14,14 @@ const programTypeOptions = [
 ];
 
 const initialForm = {
-  full_name:        "",
-  organization:     "",
-  email:            "",
-  phone_whatsapp:   "",
+  full_name: "",
+  organization: "",
+  email: "",
+  phone_whatsapp: "",
   program_category: "",
-  program_type:     "",
-  message:          "",
+  program_type: "",
+  message: "",
+  status: "pending",
 };
 
 const ContactForm = () => {
