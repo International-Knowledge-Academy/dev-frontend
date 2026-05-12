@@ -303,10 +303,9 @@ const ContactsPage = () => {
                         {/* Status */}
                         <td className="px-5 py-3.5">
                           {(() => {
-                            const { className, icon, label } = getStatusConfig(contact.status);
+                            const { className, label } = getStatusConfig(contact.status);
                             return (
-                              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold ${className}`}>
-                                {icon}
+                              <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold ${className}`}>
                                 {label}
                               </span>
                             );
