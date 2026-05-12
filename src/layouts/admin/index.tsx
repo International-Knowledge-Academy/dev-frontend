@@ -39,6 +39,10 @@ import ContactEditPage from "views/admin/contact/ContactEditPage";
 import AdditionalServicesPage from "views/admin/services";
 import ServiceDetailPage from "views/admin/services/ServiceDetailPage";
 import ServiceEditPage from "views/admin/services/ServiceEditPage";
+import PartnershipsPage from "views/admin/partnerships";
+import PartnershipCreatePage from "views/admin/partnerships/PartnershipCreatePage";
+import PartnershipDetailPage from "views/admin/partnerships/PartnershipDetailPage";
+import PartnershipEditPage from "views/admin/partnerships/PartnershipEditPage";
 
 export default function Admin(props) {
   const { ...rest } = props;
@@ -154,6 +158,10 @@ export default function Admin(props) {
                 <Route path="/services"                   element={<AdditionalServicesPage />} />
                 <Route path="/services/:uid"              element={<ServiceDetailPage />} />
                 <Route path="/services/:uid/edit"         element={<ServiceEditPage />} />
+                <Route path="/partnerships"               element={<PartnershipsPage />} />
+                <Route path="/partnerships/create"        element={<PartnershipCreatePage />} />
+                <Route path="/partnerships/:uid"          element={<PartnershipDetailPage />} />
+                <Route path="/partnerships/:uid/edit"     element={<PartnershipEditPage />} />
 
                 <Route
                   path="/"

@@ -38,6 +38,10 @@ import PaymentEditPage         from "views/account-manager/payments/PaymentEditP
 import ContactsPage            from "views/account-manager/contact";
 import ContactDetailPage       from "views/account-manager/contact/ContactDetailPage";
 import ContactEditPage         from "views/account-manager/contact/ContactEditPage";
+import ManagerPartnershipsPage        from "views/account-manager/partnerships";
+import ManagerPartnershipCreatePage   from "views/account-manager/partnerships/PartnershipCreatePage";
+import ManagerPartnershipDetailPage   from "views/account-manager/partnerships/PartnershipDetailPage";
+import ManagerPartnershipEditPage     from "views/account-manager/partnerships/PartnershipEditPage";
 
 const ManagerLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -121,6 +125,12 @@ const ManagerLayout = () => {
             <Route path="contact"             element={<ContactsPage />} />
             <Route path="contact/:uid"        element={<ContactDetailPage />} />
             <Route path="contact/:uid/edit"   element={<ContactEditPage />} />
+
+            {/* Partnerships */}
+            <Route path="partnerships"             element={<ManagerPartnershipsPage />} />
+            <Route path="partnerships/create"      element={<ManagerPartnershipCreatePage />} />
+            <Route path="partnerships/:uid"        element={<ManagerPartnershipDetailPage />} />
+            <Route path="partnerships/:uid/edit"   element={<ManagerPartnershipEditPage />} />
 
             <Route path="/" element={<Navigate to="/account-manager/dashboard" replace />} />
           </Routes>

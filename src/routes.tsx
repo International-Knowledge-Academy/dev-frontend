@@ -19,6 +19,7 @@ import RegistrationsPage from "views/admin/registrations";
 import PaymentsPage     from "views/admin/payments";
 import ContactsPage          from "views/admin/contact";
 import AdditionalServicesPage from "views/admin/services";
+import PartnershipsPage       from "views/admin/partnerships";
 
 // Account Manager Imports
 import ManagerDashboard      from "views/account-manager/default";
@@ -30,7 +31,8 @@ import ManagerTrainersPage   from "views/account-manager/trainers";
 import ManagerCategoriesPage from "views/account-manager/categories";
 import ManagerFieldsPage     from "views/account-manager/fields";
 import ManagerLocationsPage  from "views/account-manager/locations";
-import ManagerContactsPage   from "views/account-manager/contact";
+import ManagerContactsPage        from "views/account-manager/contact";
+import ManagerPartnershipsPage    from "views/account-manager/partnerships";
 
 // Icon Imports
 import {
@@ -48,6 +50,7 @@ import {
   MdAssignment,
   MdPayment,
   MdContactMail,
+  MdHandshake,
   MdMiscellaneousServices,
   MdExtension,
   MdTune,
@@ -161,6 +164,14 @@ const routes = [
     component: <ContactsPage />,
     group: "Admin",
   },
+  {
+    name: "Partnerships",
+    layout: "/admin",
+    path: "partnerships",
+    icon: <MdHandshake className="h-6 w-6" />,
+    component: <PartnershipsPage />,
+    group: "Admin",
+  },
 
   // Admin
   {
@@ -254,6 +265,14 @@ const routes = [
     path: "contact",
     icon: <MdContactMail className="h-6 w-6" />,
     component: <ManagerContactsPage />,
+    group: "Admin",
+  },
+  {
+    name: "Partnerships",
+    layout: "/account-manager",
+    path: "partnerships",
+    icon: <MdHandshake className="h-6 w-6" />,
+    component: <ManagerPartnershipsPage />,
     group: "Admin",
   },
 
