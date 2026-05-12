@@ -1,7 +1,8 @@
 // @ts-nocheck
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MdMenu, MdLogout, MdKeyboardArrowDown, MdPerson, MdLock } from "react-icons/md";
+import { FiAlignJustify } from "react-icons/fi";
+import { MdLogout, MdKeyboardArrowDown, MdPerson, MdLock } from "react-icons/md";
 import Dropdown from "components/dropdown";
 import useAuth from "hooks/auth/useAuth";
 import ChangePasswordModal from "components/ui/modals/ChangePasswordModal";
@@ -18,15 +19,24 @@ const ManagerTopbar = ({ onOpenSidebar, pageTitle }: TopbarProps) => {
 
   return (
     <>
-      <header className="flex items-center justify-between bg-white px-6 py-4 shadow-sm rounded-2xl mb-6">
+      <nav className="sticky z-40 flex flex-wrap items-center justify-between rounded-md bg-brand-50/10 p-2 backdrop-blur-xl transition-all duration-300 top-4">
+
         <div className="flex items-center gap-4">
           <button
+            className="xl:hidden flex items-center justify-center w-9 h-9 rounded-lg text-navy-500 hover:bg-navy-50 hover:text-navy-800 transition"
             onClick={onOpenSidebar}
-            className="xl:hidden text-slate-500 hover:text-navy-700 transition"
           >
-            <MdMenu size={24} />
+            <FiAlignJustify size={20} />
           </button>
-          <h1 className="text-xl font-bold text-navy-700">{pageTitle}</h1>
+
+          <div>
+            <p className="text-xs text-slate-400 leading-none mb-0.5">
+              Pages / <span className="capitalize">{pageTitle}</span>
+            </p>
+            <h1 className="text-lg font-bold capitalize sm:text-2xl lg:text-3xl text-navy-800 leading-none">
+              {pageTitle}
+            </h1>
+          </div>
         </div>
 
         <Dropdown
@@ -39,10 +49,17 @@ const ManagerTopbar = ({ onOpenSidebar, pageTitle }: TopbarProps) => {
                 <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-400 border-2 border-white" />
               </div>
               <div className="hidden md:block text-left">
-                <p className="text-sm font-semibold text-navy-800 leading-tight">{user?.name ?? "..."}</p>
-                <p className="text-[10px] font-bold tracking-widest uppercase text-gold-500 leading-tight">{user?.role ?? ""}</p>
+                <p className="text-sm font-semibold text-navy-800 leading-tight">
+                  {user?.name ?? "..."}
+                </p>
+                <p className="text-[10px] font-bold tracking-widest uppercase text-gold-500 leading-tight">
+                  {user?.role ?? ""}
+                </p>
               </div>
-              <MdKeyboardArrowDown size={16} className="hidden md:block text-slate-400 group-hover:text-navy-600 transition" />
+              <MdKeyboardArrowDown
+                size={16}
+                className="hidden md:block text-slate-400 group-hover:text-navy-600 transition"
+              />
             </button>
           }
           children={
@@ -52,11 +69,16 @@ const ManagerTopbar = ({ onOpenSidebar, pageTitle }: TopbarProps) => {
                   {user?.name?.[0]?.toUpperCase() ?? "?"}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-bold text-navy-800 truncate">{user?.name ?? "..."}</p>
-                  <p className="text-[10px] font-bold tracking-widest uppercase text-gold-500">{user?.role ?? ""}</p>
+                  <p className="text-sm font-bold text-navy-800 truncate">
+                    {user?.name ?? "..."}
+                  </p>
+                  <p className="text-[10px] font-bold tracking-widest uppercase text-gold-500">
+                    {user?.role ?? ""}
+                  </p>
                 </div>
               </div>
               <div className="h-px bg-slate-100" />
+
               <div className="p-2 flex flex-col gap-0.5">
                 <button
                   onClick={() => navigate("/account-manager/profile")}
@@ -83,9 +105,9 @@ const ManagerTopbar = ({ onOpenSidebar, pageTitle }: TopbarProps) => {
               </div>
             </div>
           }
-          classNames={"py-2 top-14 -left-[180px] w-max"}
+          classNames={"py-2 top-12 -left-[180px] w-max"}
         />
-      </header>
+      </nav>
 
       <ChangePasswordModal
         open={showChangePassword}
