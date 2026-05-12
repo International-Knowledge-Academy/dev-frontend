@@ -10,7 +10,7 @@ interface FieldErrors {
 }
 
 interface UseCreatePartnershipReturn {
-  createPartnership: (payload: PartnershipPayload, logoFile?: File | null) => Promise<Partnership | void>;
+  createPartnership: (payload: PartnershipPayload) => Promise<Partnership | void>;
   loading:           boolean;
   error:             string | null;
   fieldErrors:       FieldErrors;
@@ -24,25 +24,13 @@ const useCreatePartnership = (): UseCreatePartnershipReturn => {
 
   const reset = () => { setError(null); setFieldErrors({}); };
 
-  const createPartnership = async (payload: PartnershipPayload, logoFile?: File | null): Promise<Partnership | void> => {
+  const createPartnership = async (payload: PartnershipPayload): Promise<Partnership | void> => {
     setLoading(true);
     setError(null);
     setFieldErrors({});
     try {
-      let response;
-      if (logoFile) {
-        const fd = new FormData();
-        fd.append("name", payload.name);
-        fd.append("partnership_type", payload.partnership_type);
-        if (payload.website_url) fd.append("website_url", payload.website_url);
-        fd.append("logo", logoFile);
-        response = await axiosInstance.post<Partnership>("/partnerships", fd, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      } else {
-        response = await axiosInstance.post<Partnership>("/partnerships", payload);
-      }
-      return response.data;
+      const { data } = await axiosInstance.post<Partnership>("/partnerships", payload);
+      return data;
     } catch (err: unknown) {
       const responseData = (err as any)?.response?.data;
       const fields: (keyof FieldErrors)[] = ["name", "logo", "partnership_type", "website_url"];

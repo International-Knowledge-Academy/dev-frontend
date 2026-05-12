@@ -10,7 +10,7 @@ interface FieldErrors {
 }
 
 interface UseUpdatePartnershipReturn {
-  updatePartnership: (uid: string, payload: Partial<PartnershipPayload>, logoFile?: File | null) => Promise<Partnership | void>;
+  updatePartnership: (uid: string, payload: Partial<PartnershipPayload>) => Promise<Partnership | void>;
   loading:           boolean;
   error:             string | null;
   fieldErrors:       FieldErrors;
@@ -22,25 +22,13 @@ const useUpdatePartnership = (): UseUpdatePartnershipReturn => {
   const [error,       setError]       = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
-  const updatePartnership = async (uid: string, payload: Partial<PartnershipPayload>, logoFile?: File | null): Promise<Partnership | void> => {
+  const updatePartnership = async (uid: string, payload: Partial<PartnershipPayload>): Promise<Partnership | void> => {
     setLoading(true);
     setError(null);
     setFieldErrors({});
     try {
-      let response;
-      if (logoFile) {
-        const fd = new FormData();
-        if (payload.name)             fd.append("name", payload.name);
-        if (payload.partnership_type) fd.append("partnership_type", payload.partnership_type);
-        if (payload.website_url)      fd.append("website_url", payload.website_url);
-        fd.append("logo", logoFile);
-        response = await axiosInstance.patch<Partnership>(`/partnerships/${uid}`, fd, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      } else {
-        response = await axiosInstance.patch<Partnership>(`/partnerships/${uid}`, payload);
-      }
-      return response.data;
+      const { data } = await axiosInstance.patch<Partnership>(`/partnerships/${uid}`, payload);
+      return data;
     } catch (err: unknown) {
       const responseData = (err as any)?.response?.data;
       const fields: (keyof FieldErrors)[] = ["name", "logo", "partnership_type", "website_url"];

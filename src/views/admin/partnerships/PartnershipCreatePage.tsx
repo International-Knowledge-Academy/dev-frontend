@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "context/ToastContext";
 import useCreatePartnership from "hooks/partnerships/useCreatePartnership";
+import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import PageHeader from "components/ui/PageHeader";
 import { InputField, SelectField } from "components/form";
 import ImageUploadField from "components/form/images/ImageUploadField";
@@ -21,6 +22,7 @@ const PartnershipCreatePage = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
   const { createPartnership, loading, error, fieldErrors } = useCreatePartnership();
+  const { upload, uploading, progress, reset: resetUpload } = usePresignedUpload();
 
   const [form, setForm] = useState({
     name:             "",
@@ -28,13 +30,36 @@ const PartnershipCreatePage = () => {
     website_url:      "",
   });
   const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoKey,  setLogoKey]  = useState("");
 
   const updateFormData = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
 
+  const handleLogoChange = async (file: File) => {
+    setLogoFile(file);
+    const result = await upload(file, { folder: "partnerships/logos", file_type: "image" });
+    if (result) {
+      setLogoKey(result.file_key);
+      resetUpload();
+    } else {
+      setLogoFile(null);
+      addToast("Failed to upload logo. Please try again.", "error");
+    }
+  };
+
+  const handleLogoRemove = () => {
+    setLogoFile(null);
+    setLogoKey("");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const created = await createPartnership(form, logoFile);
+    const created = await createPartnership({
+      name:             form.name,
+      partnership_type: form.partnership_type,
+      website_url:      form.website_url || undefined,
+      logo:             logoKey          || undefined,
+    });
     if (created) {
       addToast("Partnership created successfully", "success");
       navigate("/admin/partnerships");
@@ -94,8 +119,10 @@ const PartnershipCreatePage = () => {
             required={false}
             errors={fieldErrors}
             simpleFile={logoFile}
-            onSimpleFileChange={setLogoFile}
-            onSimpleRemove={() => setLogoFile(null)}
+            onSimpleFileChange={handleLogoChange}
+            onSimpleRemove={handleLogoRemove}
+            simpleUploading={uploading}
+            simpleProgress={progress}
           />
 
           <div className="flex gap-2 border-t border-slate-100 pt-4">
@@ -115,7 +142,7 @@ const PartnershipCreatePage = () => {
               type="submit"
               variant="primary"
               text={loading ? "Creating..." : "Create Partnership"}
-              disabled={loading || !form.name.trim() || !form.partnership_type}
+              disabled={loading || uploading || !form.name.trim() || !form.partnership_type}
               className="flex-1"
             />
           </div>
