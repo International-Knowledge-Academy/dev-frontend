@@ -3,11 +3,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "context/ToastContext";
 import useCreatePartnership from "hooks/partnerships/useCreatePartnership";
-import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import PageHeader from "components/ui/PageHeader";
 import { InputField, SelectField } from "components/form";
-import ImageUploadField from "components/form/images/ImageUploadField";
+import MediaUploadField from "components/form/filesUpload/MediaUploadField";
 import Button from "components/ui/buttons/Button";
+import type { PresignedUploadResult } from "hooks/storage/usePresignedUpload";
 
 const PARTNERSHIP_TYPE_OPTIONS = [
   { value: "certification", label: "Certification" },
@@ -22,34 +22,26 @@ const PartnershipCreatePage = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
   const { createPartnership, loading, error, fieldErrors } = useCreatePartnership();
-  const { upload, uploading, progress, reset: resetUpload } = usePresignedUpload();
 
   const [form, setForm] = useState({
     name:             "",
     partnership_type: "",
     website_url:      "",
   });
-  const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [logoKey,  setLogoKey]  = useState("");
+  const [logoKey, setLogoKey] = useState("");
+  const [logoUrl, setLogoUrl] = useState("");
 
   const updateFormData = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
 
-  const handleLogoChange = async (file: File) => {
-    setLogoFile(file);
-    const result = await upload(file, { folder: "partnerships/logos", file_type: "image" });
+  const handleLogoChange = (result: PresignedUploadResult | null) => {
     if (result) {
       setLogoKey(result.file_key);
-      resetUpload();
+      setLogoUrl(result.public_url);
     } else {
-      setLogoFile(null);
-      addToast("Failed to upload logo. Please try again.", "error");
+      setLogoKey("");
+      setLogoUrl("");
     }
-  };
-
-  const handleLogoRemove = () => {
-    setLogoFile(null);
-    setLogoKey("");
   };
 
   const handleSubmit = async (e) => {
@@ -112,17 +104,13 @@ const PartnershipCreatePage = () => {
             updateFormData={updateFormData}
           />
 
-          <ImageUploadField
+          <MediaUploadField
             label="Logo"
-            field="logo"
-            imageOnly
-            required={false}
-            errors={fieldErrors}
-            simpleFile={logoFile}
-            onSimpleFileChange={handleLogoChange}
-            onSimpleRemove={handleLogoRemove}
-            simpleUploading={uploading}
-            simpleProgress={progress}
+            type="image"
+            folder="partnerships/logos"
+            displayUrl={logoUrl}
+            onChange={handleLogoChange}
+            error={fieldErrors?.logo}
           />
 
           <div className="flex gap-2 border-t border-slate-100 pt-4">
@@ -142,7 +130,7 @@ const PartnershipCreatePage = () => {
               type="submit"
               variant="primary"
               text={loading ? "Creating..." : "Create Partnership"}
-              disabled={loading || uploading || !form.name.trim() || !form.partnership_type}
+              disabled={loading || !form.name.trim() || !form.partnership_type}
               className="flex-1"
             />
           </div>

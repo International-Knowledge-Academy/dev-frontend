@@ -4,11 +4,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "context/ToastContext";
 import usePartnership from "hooks/partnerships/usePartnership";
 import useUpdatePartnership from "hooks/partnerships/useUpdatePartnership";
-import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import PageHeader from "components/ui/PageHeader";
 import { InputField, SelectField } from "components/form";
-import ImageUploadField from "components/form/images/ImageUploadField";
+import MediaUploadField from "components/form/filesUpload/MediaUploadField";
 import Button from "components/ui/buttons/Button";
+import type { PresignedUploadResult } from "hooks/storage/usePresignedUpload";
 
 const PARTNERSHIP_TYPE_OPTIONS = [
   { value: "certification", label: "Certification" },
@@ -26,16 +26,14 @@ const PartnershipEditPage = () => {
 
   const { partnership, loading: loadingPartnership, error: loadError } = usePartnership(uid);
   const { updatePartnership, loading: updating, error, fieldErrors } = useUpdatePartnership();
-  const { upload, uploading, progress, reset: resetUpload } = usePresignedUpload();
 
   const [form, setForm] = useState({
     name:             "",
     partnership_type: "",
     website_url:      "",
   });
-  const [logoFile,    setLogoFile]    = useState<File | null>(null);
-  const [logoKey,     setLogoKey]     = useState<string | null>(null);
-  const [existingUrl, setExistingUrl] = useState<string | null>(null);
+  const [logoKey, setLogoKey] = useState<string | null>(null);
+  const [logoUrl, setLogoUrl] = useState("");
 
   useEffect(() => {
     if (partnership) {
@@ -44,34 +42,21 @@ const PartnershipEditPage = () => {
         partnership_type: partnership.partnership_type ?? "",
         website_url:      partnership.website_url      ?? "",
       });
-      setExistingUrl(partnership.logo ?? null);
+      setLogoUrl(partnership.logo ?? "");
     }
   }, [partnership]);
 
   const updateFormData = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
 
-  const handleLogoChange = async (file: File) => {
-    setLogoFile(file);
-    setExistingUrl(null);
-    const result = await upload(file, { folder: "partnerships/logos", file_type: "image" });
+  const handleLogoChange = (result: PresignedUploadResult | null) => {
     if (result) {
       setLogoKey(result.file_key);
-      resetUpload();
+      setLogoUrl(result.public_url);
     } else {
-      setLogoFile(null);
-      addToast("Failed to upload logo. Please try again.", "error");
+      setLogoKey("");
+      setLogoUrl("");
     }
-  };
-
-  const handleLogoRemove = () => {
-    setLogoFile(null);
-    setLogoKey(null);
-  };
-
-  const handleExistingRemove = () => {
-    setExistingUrl(null);
-    setLogoKey("");
   };
 
   const handleSubmit = async (e) => {
@@ -157,19 +142,13 @@ const PartnershipEditPage = () => {
             updateFormData={updateFormData}
           />
 
-          <ImageUploadField
+          <MediaUploadField
             label="Logo"
-            field="logo"
-            imageOnly
-            required={false}
-            errors={fieldErrors}
-            simpleFile={logoFile}
-            onSimpleFileChange={handleLogoChange}
-            onSimpleRemove={handleLogoRemove}
-            simpleUploading={uploading}
-            simpleProgress={progress}
-            existingUrl={existingUrl}
-            onExistingRemove={handleExistingRemove}
+            type="image"
+            folder="partnerships/logos"
+            displayUrl={logoUrl}
+            onChange={handleLogoChange}
+            error={fieldErrors?.logo}
           />
 
           <div className="flex gap-2 border-t border-slate-100 pt-4">
@@ -189,7 +168,7 @@ const PartnershipEditPage = () => {
               type="submit"
               variant="primary"
               text={updating ? "Saving..." : "Save Changes"}
-              disabled={updating || uploading}
+              disabled={updating}
               className="flex-1"
             />
           </div>
