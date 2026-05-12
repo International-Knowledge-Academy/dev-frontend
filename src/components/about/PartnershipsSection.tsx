@@ -80,9 +80,9 @@ const PartnershipsSection = () => {
               >
                 {/* Logo */}
                 <div className="w-16 h-16 rounded-xl bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
-                  {p.logo ? (
+                  {p.logo?.public_url ? (
                     <img
-                      src={p.logo}
+                      src={p.logo.public_url}
                       alt={p.name}
                       className="w-full h-full object-contain p-1.5"
                       onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}

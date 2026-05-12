@@ -58,9 +58,9 @@ const PartnershipDetailPage = () => {
 
         {/* Header */}
         <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-slate-100 flex items-center gap-4">
-          {partnership.logo ? (
+          {partnership.logo?.public_url ? (
             <img
-              src={partnership.logo}
+              src={partnership.logo.public_url}
               alt={partnership.name}
               className="w-14 h-14 rounded-2xl object-contain border border-slate-100 bg-white flex-shrink-0"
             />

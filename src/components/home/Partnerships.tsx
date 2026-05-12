@@ -15,9 +15,9 @@ const PARTNERSHIP_TYPE_LABELS: Record<string, string> = {
 const LogoCard = ({ p }: { p: any }) => (
   <div className="flex-shrink-0 flex flex-col items-center gap-3 px-8">
     <div className="w-20 h-20 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-center justify-center overflow-hidden">
-      {p.logo ? (
+      {p.logo?.public_url ? (
         <img
-          src={p.logo}
+          src={p.logo.public_url}
           alt={p.name}
           className="w-full h-full object-contain p-2"
           onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}

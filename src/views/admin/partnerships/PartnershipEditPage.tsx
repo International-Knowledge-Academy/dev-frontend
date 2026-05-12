@@ -42,7 +42,7 @@ const PartnershipEditPage = () => {
         partnership_type: partnership.partnership_type ?? "",
         website_url:      partnership.website_url      ?? "",
       });
-      setLogoUrl(partnership.logo ?? "");
+      setLogoUrl(partnership.logo?.public_url ?? "");
     }
   }, [partnership]);
 

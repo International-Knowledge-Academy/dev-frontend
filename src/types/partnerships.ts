@@ -1,7 +1,12 @@
+export interface PartnershipFile {
+  file_key:   string;
+  public_url: string;
+}
+
 export interface Partnership {
   uid:              string;
   name:             string;
-  logo:             string;
+  logo:             PartnershipFile | null;
   partnership_type: string;
   website_url:      string;
 }

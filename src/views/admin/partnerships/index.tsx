@@ -213,9 +213,9 @@ const PartnershipsPage = () => {
                       >
                         {/* Logo */}
                         <td className="px-5 py-3.5">
-                          {p.logo ? (
+                          {p.logo?.public_url ? (
                             <img
-                              src={p.logo}
+                              src={p.logo.public_url}
                               alt={p.name}
                               className="w-9 h-9 rounded-lg object-contain border border-slate-100 bg-white"
                             />
