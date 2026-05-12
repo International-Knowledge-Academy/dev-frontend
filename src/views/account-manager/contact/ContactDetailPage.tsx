@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  MdEmail, MdPhone, MdBusiness, MdCategory, MdMessage,
+  MdEmail, MdPhone, MdBusiness, MdCategory,
   MdCalendarToday, MdArrowBack, MdEdit,
 } from "react-icons/md";
 import { CheckCircle2, Clock3 } from "lucide-react";
