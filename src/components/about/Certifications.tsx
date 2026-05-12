@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
-import { MdVerified, MdHandshake } from "react-icons/md";
+import { MdVerified } from "react-icons/md";
 
 const certifications = [
   {
