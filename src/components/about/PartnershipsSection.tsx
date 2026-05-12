@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
-import { MdHandshake, MdLink } from "react-icons/md";
+import { MdHandshake } from "react-icons/md";
 import { Globe } from "lucide-react";
 import usePartnerships from "hooks/partnerships/usePartnerships";
 
