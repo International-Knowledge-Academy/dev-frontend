@@ -301,17 +301,20 @@ const ContactsPage = () => {
                         </td>
 
                         {/* Status */}
+
                         <td className="px-5 py-3.5">
                           {(() => {
                             const { className, label } = getStatusConfig(contact.status);
                             return (
-                              <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold ${className}`}>
+                              <span
+                                className={`inline-flex items-center max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap px-2.5 py-1 rounded-md text-xs font-semibold ${className}`}
+                              >
                                 {label}
                               </span>
                             );
                           })()}
                         </td>
-
+                        
                         {/* Date */}
                         <td className="px-5 py-3.5 text-slate-400 text-xs whitespace-nowrap">
                           {formatDate(contact.created_at)}
