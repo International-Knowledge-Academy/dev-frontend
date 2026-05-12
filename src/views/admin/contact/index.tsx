@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Mail, Phone, Building2, RefreshCw, AlertTriangle,
-  X, Filter, MessageSquare, Calendar, Tag, Trash2, Pencil, CheckCircle2, Clock3, CircleDot,
+  RefreshCw, AlertTriangle, X, Filter, MessageSquare,
+  Trash2, Pencil, CheckCircle2, Clock3, CircleDot,
 } from "lucide-react";
 import FilterSelectField from "components/form/filter/FilterSelectField";
 import useContacts from "hooks/contact/useContacts";
