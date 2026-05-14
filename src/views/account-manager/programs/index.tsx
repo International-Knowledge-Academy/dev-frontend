@@ -132,7 +132,7 @@ const ProgramsPage = () => {
   const totalPages = Math.ceil(count / 10);
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div>
       {/* Page header */}
       <PageHeader
         title="Training Programs"
@@ -142,7 +142,7 @@ const ProgramsPage = () => {
             variant="dark-navy"
             text="Add Program"
             icon={<Plus size={15} />}
-            onClick={() => navigate("/admin/programs/create")}
+            onClick={() => navigate("/account-manager/programs/create")}
           />
         }
         className="mb-4 px-0 sm:px-0"
@@ -368,7 +368,7 @@ const ProgramsPage = () => {
               />
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-sm">
+                <table className="min-w-full text-sm">
                   <thead>
                     <tr className="border-b border-slate-100 bg-slate-50/60">
                       {[
@@ -392,7 +392,7 @@ const ProgramsPage = () => {
                     {programs.map((program) => (
                       <tr
                         key={program.uid}
-                        onClick={() => navigate(`/admin/programs/${program.uid}`)}
+                        onClick={() => navigate(`/account-manager/programs/${program.uid}`)}
                         className="hover:bg-slate-50 transition cursor-pointer group"
                       >
 
@@ -469,7 +469,7 @@ const ProgramsPage = () => {
                               <UserPlus size={14} />
                             </button>
                             <button
-                              onClick={() => navigate(`/admin/programs/${program.uid}/edit`)}
+                              onClick={() => navigate(`/account-manager/programs/${program.uid}/edit`)}
                               className="p-1.5 rounded-md text-slate-400 hover:bg-navy-50 hover:text-navy-700 transition"
                               title="Edit"
                             >

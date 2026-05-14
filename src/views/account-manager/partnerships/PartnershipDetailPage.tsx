@@ -53,7 +53,7 @@ const PartnershipDetailPage = () => {
   }
 
   return (
-    <div className="space-y-4 max-w-3xl mx-auto">
+    <div className="space-y-4 max-w-5xl mx-auto">
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
 
         {/* Header */}

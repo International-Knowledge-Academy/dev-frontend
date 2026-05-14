@@ -92,7 +92,7 @@ const PartnershipEditPage = () => {
   }
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-5xl mx-auto">
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
         <PageHeader
           title="Edit Partnership"
