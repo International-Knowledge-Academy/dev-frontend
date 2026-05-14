@@ -60,7 +60,7 @@ const ManagerLayout = () => {
     <div className="flex h-full min-h-screen bg-slate-50">
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      <div className="flex-1 xl:ml-[276px]">
+      <div className="flex-1 min-w-0 xl:ml-[276px]">
         <div className="min-h-screen p-4 md:p-6">
           <ManagerTopbar
             onOpenSidebar={() => setSidebarOpen(true)}
