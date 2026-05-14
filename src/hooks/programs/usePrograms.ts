@@ -37,6 +37,7 @@ const usePrograms = (initialParams: ProgramsParams = {}): UseProgramsReturn => {
           ...(params.program_type && { program_type: params.program_type }),
           ...(params.level        && { level:        params.level }),
           ...(params.mode         && { mode:         params.mode }),
+          ...(params.language     && { language:     params.language }),
           ...(params.status       && { status:       params.status }),
           ...(params.start_date_from && { start_date_from: params.start_date_from }),
           ...(params.start_date_to   && { start_date_to:   params.start_date_to }),
@@ -75,7 +76,8 @@ const usePrograms = (initialParams: ProgramsParams = {}): UseProgramsReturn => {
         "status"          in updates ||
         "start_date_from" in updates ||
         "start_date_to"   in updates ||
-        "is_active"       in updates
+        "is_active"       in updates ||
+        "trainer"         in updates
           ? 1
           : (updates.page ?? prev.page),
     }));

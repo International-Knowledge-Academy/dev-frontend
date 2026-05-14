@@ -29,6 +29,17 @@ export interface ProgramTrainer {
   profile_picture: string;
 }
 
+export interface ProgramTrainerFlat {
+  uid: string;
+  name: string;
+  email: string;
+  profile_picture: string;
+  title: string;
+  country: string;
+  city: string;
+  whatsapp: string;
+}
+
 export interface Program {
   id?: number;
   uid: string;
@@ -41,6 +52,7 @@ export interface Program {
   program_type_display?: string;
   field: ProgramField | null;
   location: ProgramLocation | null;
+  trainers: ProgramTrainerFlat[];
   trainer_profiles: ProgramTrainer[];
   duration: string;
   level: ProgramLevel;

@@ -6,7 +6,6 @@ import {
   RefreshCw, Filter, X, ToggleLeft, Activity, CheckCircle,
 } from "lucide-react";
 import usePrograms from "hooks/programs/usePrograms";
-import useAuth from "hooks/auth/useAuth";
 import useDeleteProgram from "hooks/programs/useDeleteProgram";
 import DeleteProgramModal from "./components/DeleteProgramModal";
 import AssignTrainerModal from "./components/AssignTrainerModal";
@@ -91,10 +90,7 @@ const StatCard = ({
 const ProgramsPage = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
-  const { user } = useAuth();
-  const { programs, count, loading, error, params, setParams, refetch } = usePrograms(
-    user?.uid ? { trainer: user.uid } : {}
-  );
+  const { programs, count, loading, error, params, setParams, refetch } = usePrograms();
   const { deleteProgram, loading: deleting } = useDeleteProgram();
 
   const [deleteOpen, setDeleteOpen]           = useState(false);
