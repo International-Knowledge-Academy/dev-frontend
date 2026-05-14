@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Package, RefreshCw, AlertTriangle, X, Filter,
   Trash2, Pencil, CheckCircle, XCircle, FileText,
+  Plus, Users,
 } from "lucide-react";
 import useServices from "hooks/services/useServices";
 import useDeleteService from "hooks/services/useDeleteService";
@@ -73,6 +74,15 @@ const ServicesPage = () => {
         title="Services"
         subtitle="Manage services offered by the academy"
         className="mb-4 px-0 sm:px-0"
+        actions={
+          <button
+            type="button"
+            onClick={() => navigate("/account-manager/services/create")}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-md lg:rounded-lg bg-navy-800 text-white text-xs font-semibold hover:bg-navy-700 transition"
+          >
+            <Plus size={14} /> Add Service
+          </button>
+        }
       />
 
       {/* Stats */}
@@ -178,10 +188,11 @@ const ServicesPage = () => {
                   <thead>
                     <tr className="border-b border-slate-100 bg-slate-50/60">
                       {[
-                        { label: "Service", icon: <Package    size={13} /> },
-                        { label: "Summary", icon: <FileText   size={13} /> },
-                        { label: "Status",  icon: <CheckCircle size={13} /> },
-                        { label: "Actions", icon: null },
+                        { label: "Service",      icon: <Package     size={13} /> },
+                        { label: "Summary",      icon: <FileText    size={13} /> },
+                        { label: "Registration", icon: <Users       size={13} /> },
+                        { label: "Status",       icon: <CheckCircle size={13} /> },
+                        { label: "Actions",      icon: null },
                       ].map(({ label, icon }) => (
                         <th
                           key={label}
@@ -220,6 +231,14 @@ const ServicesPage = () => {
                           ) : (
                             <span className="text-slate-300">—</span>
                           )}
+                        </td>
+
+                        {/* Registration */}
+                        <td className="px-5 py-3.5">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-navy-50 text-navy-700 border border-navy-100">
+                            <Users size={11} />
+                            {service.registration ?? 0}
+                          </span>
                         </td>
 
                         {/* Status */}

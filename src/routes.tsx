@@ -18,7 +18,7 @@ import FieldsPage       from "views/admin/fields";
 import RegistrationsPage from "views/admin/registrations";
 import PaymentsPage     from "views/admin/payments";
 import ContactsPage          from "views/admin/contact";
-import AdditionalServicesPage from "views/admin/services";
+import ServicesPage from "views/admin/services";
 import PartnershipsPage       from "views/admin/partnerships";
 
 // Account Manager Imports
@@ -31,6 +31,7 @@ import ManagerTrainersPage   from "views/account-manager/trainers";
 import ManagerCategoriesPage from "views/account-manager/categories";
 import ManagerFieldsPage     from "views/account-manager/fields";
 import ManagerLocationsPage  from "views/account-manager/locations";
+import ManagerServicesPage        from "views/account-manager/services";
 import ManagerContactsPage        from "views/account-manager/contact";
 import ManagerPartnershipsPage    from "views/account-manager/partnerships";
 
@@ -52,9 +53,6 @@ import {
   MdContactMail,
   MdHandshake,
   MdMiscellaneousServices,
-  MdExtension,
-  MdTune,
-  MdEventNote,
 } from "react-icons/md";
 
 const routes = [
@@ -148,13 +146,9 @@ const routes = [
     layout: "/admin",
     path: "services",
     icon: <MdMiscellaneousServices className="h-6 w-6" />,
-    component: <AdditionalServicesPage />,
+    component: <ServicesPage />,
     group: "Manage",
-    children: [
-      { name: "Additional Services", path: "services",         icon: <MdExtension       className="h-4 w-4" /> },
-      { name: "Service Types",       path: "service-types",    icon: <MdTune             className="h-4 w-4" /> },
-      { name: "Service Bookings",    path: "service-bookings", icon: <MdEventNote        className="h-4 w-4" /> },
-    ],
+    
   },
   {
     name: "Contact",
@@ -231,6 +225,14 @@ const routes = [
     path: "trainers",
     icon: <MdSchool className="h-6 w-6" />,
     component: <ManagerTrainersPage />,
+    group: "Manage",
+  },
+  {
+    name: "Services",
+    layout: "/account-manager",
+    path: "services",
+    icon: <MdMiscellaneousServices className="h-6 w-6" />,
+    component: <ManagerServicesPage />,
     group: "Manage",
   },
 

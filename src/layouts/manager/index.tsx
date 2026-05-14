@@ -39,6 +39,7 @@ import ContactsPage            from "views/account-manager/contact";
 import ContactDetailPage       from "views/account-manager/contact/ContactDetailPage";
 import ContactEditPage         from "views/account-manager/contact/ContactEditPage";
 import ManagerServicesPage        from "views/account-manager/services";
+import ManagerServiceCreatePage   from "views/account-manager/services/ServiceCreatePage";
 import ManagerServiceDetailPage   from "views/account-manager/services/ServiceDetailPage";
 import ManagerServiceEditPage     from "views/account-manager/services/ServiceEditPage";
 import ManagerPartnershipsPage        from "views/account-manager/partnerships";
@@ -131,6 +132,7 @@ const ManagerLayout = () => {
 
             {/* Services */}
             <Route path="services"             element={<ManagerServicesPage />} />
+            <Route path="services/create"      element={<ManagerServiceCreatePage />} />
             <Route path="services/:uid"        element={<ManagerServiceDetailPage />} />
             <Route path="services/:uid/edit"   element={<ManagerServiceEditPage />} />
 
