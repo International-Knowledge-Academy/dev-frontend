@@ -59,7 +59,7 @@ const CreatableSelectField = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () =>
       document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [onSearchChange]);
 
   const handleSelect = (option) => {
     if (disabledOptions.includes(option.value)) return;
