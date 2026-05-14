@@ -132,7 +132,7 @@ const ProgramsPage = () => {
   const totalPages = Math.ceil(count / 10);
 
   return (
-    <div>
+    <div className="max-w-5xl mx-auto">
       {/* Page header */}
       <PageHeader
         title="Training Programs"
