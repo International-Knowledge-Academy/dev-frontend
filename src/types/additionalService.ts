@@ -1,30 +1,39 @@
-/* ─── Additional Services ─────────────────────────────────────────────────── */
-export interface AdditionalService {
-  id: number;
+/* ─── Services ───────────────────────────────────────────────────────────── */
+export interface Service {
   uid: string;
   name: string;
-  service_type: number;
-  service_type_name: string;
-  price: string;
-  currency: string;
+  summary: string;
   is_active: boolean;
-  available_locations: number[];
   created_at: string;
   updated_at: string;
+  registration: number;
 }
 
-export interface PaginatedAdditionalServices {
+export interface PaginatedServices {
   count: number;
   next: string | null;
   previous: string | null;
-  results: AdditionalService[];
+  results: Service[];
 }
 
-export interface AdditionalServicesParams {
+export interface ServicesParams {
   page?: number;
   search?: string;
   ordering?: string;
+  is_active?: boolean;
 }
+
+export interface CreateServicePayload {
+  name: string;
+  summary?: string;
+  is_active?: boolean;
+  registration?: number;
+  registration_uid?: string;
+}
+
+export type UpdateServicePayload = Partial<CreateServicePayload>;
+
+export type ServiceFieldErrors = Partial<Record<keyof CreateServicePayload, string>>;
 
 /* ─── Service Types ───────────────────────────────────────────────────────── */
 export interface ServiceType {
@@ -78,14 +87,6 @@ export interface ServiceBookingsParams {
   page?: number;
   search?: string;
   ordering?: string;
-}
-
-export interface UpdateAdditionalServicePayload {
-  name?: string;
-  service_type?: number;
-  price?: string;
-  currency?: string;
-  is_active?: boolean;
 }
 
 export interface CreateServiceBookingPayload {

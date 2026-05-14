@@ -45,7 +45,7 @@ const ServiceEditPage = () => {
     });
     if (result) {
       addToast("Service updated successfully", "success");
-      navigate(`/admin/services/${uid}`);
+      navigate(`/account-manager/services/${uid}`);
     }
   };
 
@@ -109,7 +109,7 @@ const ServiceEditPage = () => {
           <div className="flex gap-2 pt-2">
             <button
               type="button"
-              onClick={() => navigate(`/admin/services/${uid}`)}
+              onClick={() => navigate(`/account-manager/services/${uid}`)}
               className="flex-1 rounded-md lg:rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition flex items-center justify-center gap-2"
             >
               <MdArrowBack size={16} />

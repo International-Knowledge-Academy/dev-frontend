@@ -196,7 +196,7 @@ const ServicesPage = () => {
                     {services.map((service) => (
                       <tr
                         key={service.uid}
-                        onClick={() => navigate(`/admin/services/${service.uid}`)}
+                        onClick={() => navigate(`/account-manager/services/${service.uid}`)}
                         className="hover:bg-slate-50 transition cursor-pointer group"
                       >
                         {/* Service name */}
@@ -239,7 +239,7 @@ const ServicesPage = () => {
                         <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                           <div className="flex items-center gap-1">
                             <button
-                              onClick={() => navigate(`/admin/services/${service.uid}/edit`)}
+                              onClick={() => navigate(`/account-manager/services/${service.uid}/edit`)}
                               className="p-1.5 rounded-md text-slate-400 hover:bg-navy-50 hover:text-navy-700 transition"
                               title="Edit"
                             >

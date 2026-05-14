@@ -38,6 +38,9 @@ import PaymentEditPage         from "views/account-manager/payments/PaymentEditP
 import ContactsPage            from "views/account-manager/contact";
 import ContactDetailPage       from "views/account-manager/contact/ContactDetailPage";
 import ContactEditPage         from "views/account-manager/contact/ContactEditPage";
+import ManagerServicesPage        from "views/account-manager/services";
+import ManagerServiceDetailPage   from "views/account-manager/services/ServiceDetailPage";
+import ManagerServiceEditPage     from "views/account-manager/services/ServiceEditPage";
 import ManagerPartnershipsPage        from "views/account-manager/partnerships";
 import ManagerPartnershipCreatePage   from "views/account-manager/partnerships/PartnershipCreatePage";
 import ManagerPartnershipDetailPage   from "views/account-manager/partnerships/PartnershipDetailPage";
@@ -125,6 +128,11 @@ const ManagerLayout = () => {
             <Route path="contact"             element={<ContactsPage />} />
             <Route path="contact/:uid"        element={<ContactDetailPage />} />
             <Route path="contact/:uid/edit"   element={<ContactEditPage />} />
+
+            {/* Services */}
+            <Route path="services"             element={<ManagerServicesPage />} />
+            <Route path="services/:uid"        element={<ManagerServiceDetailPage />} />
+            <Route path="services/:uid/edit"   element={<ManagerServiceEditPage />} />
 
             {/* Partnerships */}
             <Route path="partnerships"             element={<ManagerPartnershipsPage />} />

@@ -11,6 +11,7 @@ import HowToBeTrainer   from "components/home/HowToBeTrainer";
 import Locations        from "components/home/Locations";
 import Features         from "components/home/Features";
 import Partnerships     from "components/home/Partnerships";
+import Services         from "components/home/Services";
 import Footer           from "components/home/Footer";
 
 const HomePage = () => {
@@ -28,6 +29,7 @@ const HomePage = () => {
       <Locations />
       <Features />
       <Partnerships />
+      <Services />
       <Footer />
     </div>
   );
