@@ -4,44 +4,59 @@ import { useNavigate, useParams } from "react-router-dom";
 import { MdArrowBack, MdSave } from "react-icons/md";
 import useService from "hooks/services/useService";
 import useUpdateService from "hooks/services/useUpdateService";
+import useRegistrations from "hooks/registrations/useRegistrations";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import TextareaField from "components/form/TextareaField";
-import SelectField from "components/form/SelectField";
+import SearchableDropdown from "components/form/search/SearchableDropdown";
 
 const ServiceEditPage = () => {
   const { uid }      = useParams<{ uid: string }>();
   const navigate     = useNavigate();
   const { addToast } = useToast();
 
-  const { service, loading: fetching }                               = useService(uid);
-  const { updateService, loading: saving, error, fieldErrors }       = useUpdateService();
+  const { service, loading: fetching }                         = useService(uid);
+  const { updateService, loading: saving, error, fieldErrors } = useUpdateService();
+  const { registrations }                                      = useRegistrations();
 
   const [formData, setFormData] = useState({
-    name:      "",
-    summary:   "",
-    is_active: "true",
+    name:             "",
+    summary:          "",
+    is_active:        true,
+    registration_uid: "",
   });
 
   useEffect(() => {
     if (!service) return;
     setFormData({
-      name:      service.name      ?? "",
-      summary:   service.summary   ?? "",
-      is_active: service.is_active ? "true" : "false",
+      name:             service.name             ?? "",
+      summary:          service.summary          ?? "",
+      is_active:        service.is_active        ?? true,
+      registration_uid: service.registration_uid ?? "",
     });
   }, [service]);
 
-  const updateFormData = (field: string, value: string) => {
+  const updateFormData = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
+
+  const registrationOptions = [
+    { value: "", label: "Select a registration..." },
+    ...registrations.map((r) => ({
+      value: r.uid,
+      label: r.full_name
+        ? `${r.full_name}${r.program?.name ? ` — ${r.program.name}` : ""}`
+        : r.email,
+    })),
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = await updateService(uid, {
-      name:      formData.name,
-      summary:   formData.summary,
-      is_active: formData.is_active === "true",
+      name:             formData.name,
+      summary:          formData.summary,
+      is_active:        formData.is_active,
+      registration_uid: formData.registration_uid,
     });
     if (result) {
       addToast("Service updated successfully", "success");
@@ -93,20 +108,40 @@ const ServiceEditPage = () => {
             placeholder="Brief description of the service..."
           />
 
-          <SelectField
-            label="Status"
-            field="is_active"
-            options={[
-              { label: "Active",   value: "true"  },
-              { label: "Inactive", value: "false" },
-            ]}
+          <SearchableDropdown
+            label="Registration"
+            field="registration_uid"
+            options={registrationOptions}
             formData={formData}
             errors={fieldErrors}
             updateFormData={updateFormData}
+            placeholder="Select a registration..."
+            required
           />
 
+          {/* Active toggle */}
+          <div className="flex items-center justify-between py-2">
+            <div>
+              <p className="text-sm font-medium text-navy-800">Active</p>
+              <p className="text-xs text-slate-400 mt-0.5">Service will be visible and available</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => updateFormData("is_active", !formData.is_active)}
+              className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors duration-200 focus:outline-none ${
+                formData.is_active ? "bg-navy-700" : "bg-slate-200"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${
+                  formData.is_active ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+
           {/* Actions */}
-          <div className="flex gap-2 pt-2">
+          <div className="flex gap-2 pt-2 border-t border-slate-100">
             <button
               type="button"
               onClick={() => navigate(`/admin/services/${uid}`)}
