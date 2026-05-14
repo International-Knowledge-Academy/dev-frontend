@@ -22,6 +22,7 @@ const CreatableSelectField = ({
                                 updateFormData,
                                 placeholder = "Select...",
                                 disabledOptions = [],
+                                onSearchChange,
                               }) => {
   const containerRef = useRef(null);
 
@@ -37,10 +38,11 @@ const CreatableSelectField = ({
   const selectedLabel = selectedOption?.label ?? selectedValue ?? "";
 
   const filteredOptions = useMemo(() => {
+    if (onSearchChange) return options;
     return options.filter(
       (opt) => opt.label && opt.label.toLowerCase().includes(search.toLowerCase())
     );
-  }, [search, options]);
+  }, [search, options, onSearchChange]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -50,6 +52,7 @@ const CreatableSelectField = ({
       ) {
         setIsOpen(false);
         setSearch("");
+        onSearchChange?.("");
       }
     };
 
@@ -64,6 +67,7 @@ const CreatableSelectField = ({
     updateFormData(field, option.value);
     setIsOpen(false);
     setSearch("");
+    onSearchChange?.("");
   };
 
   return (
@@ -111,7 +115,7 @@ const CreatableSelectField = ({
             placeholder="Search..."
             autoFocus
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => { setSearch(e.target.value); onSearchChange?.(e.target.value); }}
             className={`mt-2 flex h-10 w-full items-start justify-start rounded-md border p-3 px-3 py-2 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1  focus:ring-blue-500 ${
               getNestedValue(errors, field) ? "border-red-500" : "border-default"
             }`}

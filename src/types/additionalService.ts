@@ -7,7 +7,6 @@ export interface Service {
   created_at: string;
   updated_at: string;
   registration: number;
-  registration_uid?: string;
 }
 
 export interface PaginatedServices {
@@ -29,7 +28,6 @@ export interface CreateServicePayload {
   summary?: string;
   is_active?: boolean;
   registration?: number;
-  registration_uid: string;
 }
 
 export type UpdateServicePayload = Partial<CreateServicePayload>;

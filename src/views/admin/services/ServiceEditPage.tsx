@@ -4,11 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { MdArrowBack, MdSave } from "react-icons/md";
 import useService from "hooks/services/useService";
 import useUpdateService from "hooks/services/useUpdateService";
-import useRegistrations from "hooks/registrations/useRegistrations";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import TextareaField from "components/form/TextareaField";
-import SearchableDropdown from "components/form/search/SearchableDropdown";
 
 const ServiceEditPage = () => {
   const { uid }      = useParams<{ uid: string }>();
@@ -17,22 +15,19 @@ const ServiceEditPage = () => {
 
   const { service, loading: fetching }                         = useService(uid);
   const { updateService, loading: saving, error, fieldErrors } = useUpdateService();
-  const { registrations }                                      = useRegistrations();
 
   const [formData, setFormData] = useState({
-    name:             "",
-    summary:          "",
-    is_active:        true,
-    registration_uid: "",
+    name:      "",
+    summary:   "",
+    is_active: true,
   });
 
   useEffect(() => {
     if (!service) return;
     setFormData({
-      name:             service.name             ?? "",
-      summary:          service.summary          ?? "",
-      is_active:        service.is_active        ?? true,
-      registration_uid: service.registration_uid ?? "",
+      name:      service.name      ?? "",
+      summary:   service.summary   ?? "",
+      is_active: service.is_active ?? true,
     });
   }, [service]);
 
@@ -40,23 +35,12 @@ const ServiceEditPage = () => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const registrationOptions = [
-    { value: "", label: "Select a registration..." },
-    ...registrations.map((r) => ({
-      value: r.uid,
-      label: r.full_name
-        ? `${r.full_name}${r.program?.name ? ` — ${r.program.name}` : ""}`
-        : r.email,
-    })),
-  ];
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = await updateService(uid, {
-      name:             formData.name,
-      summary:          formData.summary,
-      is_active:        formData.is_active,
-      registration_uid: formData.registration_uid,
+      name:      formData.name,
+      summary:   formData.summary,
+      is_active: formData.is_active,
     });
     if (result) {
       addToast("Service updated successfully", "success");
@@ -76,7 +60,6 @@ const ServiceEditPage = () => {
     <div className="space-y-4">
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
 
-        {/* Header */}
         <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-slate-100">
           <h1 className="text-base font-bold text-navy-800 leading-snug">Edit Service</h1>
           <p className="text-xs text-slate-400 mt-0.5">{service?.name}</p>
@@ -108,17 +91,6 @@ const ServiceEditPage = () => {
             placeholder="Brief description of the service..."
           />
 
-          <SearchableDropdown
-            label="Registration"
-            field="registration_uid"
-            options={registrationOptions}
-            formData={formData}
-            errors={fieldErrors}
-            updateFormData={updateFormData}
-            placeholder="Select a registration..."
-            required
-          />
-
           {/* Active toggle */}
           <div className="flex items-center justify-between py-2">
             <div>
@@ -140,7 +112,6 @@ const ServiceEditPage = () => {
             </button>
           </div>
 
-          {/* Actions */}
           <div className="flex gap-2 pt-2 border-t border-slate-100">
             <button
               type="button"

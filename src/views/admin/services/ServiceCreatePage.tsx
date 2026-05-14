@@ -3,46 +3,31 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdArrowBack, MdSave } from "react-icons/md";
 import useCreateService from "hooks/services/useCreateService";
-import useRegistrations from "hooks/registrations/useRegistrations";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import TextareaField from "components/form/TextareaField";
-import SearchableDropdown from "components/form/search/SearchableDropdown";
 
 const ServiceCreatePage = () => {
   const navigate     = useNavigate();
   const { addToast } = useToast();
   const { createService, loading, error, fieldErrors } = useCreateService();
-  const { registrations } = useRegistrations();
 
   const [formData, setFormData] = useState({
-    name:             "",
-    summary:          "",
-    is_active:        true,
-    registration_uid: "",
+    name:      "",
+    summary:   "",
+    is_active: true,
   });
 
   const updateFormData = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const registrationOptions = [
-    { value: "", label: "Select a registration..." },
-    ...registrations.map((r) => ({
-      value: r.uid,
-      label: r.full_name
-        ? `${r.full_name}${r.program?.name ? ` — ${r.program.name}` : ""}`
-        : r.email,
-    })),
-  ];
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = await createService({
-      name:             formData.name,
-      summary:          formData.summary || undefined,
-      is_active:        formData.is_active,
-      registration_uid: formData.registration_uid,
+      name:      formData.name,
+      summary:   formData.summary || undefined,
+      is_active: formData.is_active,
     });
     if (result) {
       addToast("Service created successfully", "success");
@@ -54,10 +39,9 @@ const ServiceCreatePage = () => {
     <div className="space-y-4">
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
 
-        {/* Header */}
         <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-slate-100">
           <h1 className="text-base font-bold text-navy-800 leading-snug">New Service</h1>
-          <p className="text-xs text-slate-400 mt-0.5">Add a new service to the academy</p>
+          <p className="text-xs text-slate-400 mt-0.5">Add a new service to the catalogue</p>
         </div>
 
         <form onSubmit={handleSubmit} className="px-4 sm:px-6 py-5 space-y-4">
@@ -86,17 +70,6 @@ const ServiceCreatePage = () => {
             placeholder="Brief description of the service..."
           />
 
-          <SearchableDropdown
-            label="Registration"
-            field="registration_uid"
-            options={registrationOptions}
-            formData={formData}
-            errors={fieldErrors}
-            updateFormData={updateFormData}
-            placeholder="Select a registration..."
-            required
-          />
-
           {/* Active toggle */}
           <div className="flex items-center justify-between py-2">
             <div>
@@ -118,7 +91,6 @@ const ServiceCreatePage = () => {
             </button>
           </div>
 
-          {/* Actions */}
           <div className="flex gap-2 pt-2 border-t border-slate-100">
             <button
               type="button"
@@ -130,7 +102,7 @@ const ServiceCreatePage = () => {
             </button>
             <button
               type="submit"
-              disabled={loading || !formData.name.trim() || !formData.registration_uid}
+              disabled={loading || !formData.name.trim()}
               className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 disabled:opacity-60 transition flex items-center justify-center gap-2"
             >
               <MdSave size={16} />
