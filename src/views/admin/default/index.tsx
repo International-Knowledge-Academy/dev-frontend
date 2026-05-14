@@ -17,7 +17,6 @@ const SUMMARY_CONFIG = {
   total_locations:        { label: "Locations",         icon: MdLocationOn,       color: "text-amber-500",  bg: "bg-amber-50"  },
   total_categories:       { label: "Categories",        icon: MdCategory,         color: "text-orange-500", bg: "bg-orange-50" },
   total_fields:           { label: "Fields",            icon: MdLayers,           color: "text-purple-600", bg: "bg-purple-50" },
-  total_users:            { label: "Users",             icon: MdPeople,           color: "text-sky-600",    bg: "bg-sky-50"    },
   total_payments:         { label: "Payments",          icon: MdPayment,          color: "text-teal-600",   bg: "bg-teal-50"   },
   active_programs:        { label: "Active Programs",   icon: MdWorkspacePremium, color: "text-navy-600",   bg: "bg-navy-50"   },
   pending_registrations:  { label: "Pending",           icon: MdPending,          color: "text-amber-600",  bg: "bg-amber-50"  },
