@@ -1,10 +1,29 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
-import { FaWhatsapp } from "react-icons/fa";
-import { Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Home,
+  Wrench,
+  ClipboardList,
+  Building2,
+  LayoutList,
+  Truck,
+  Users,
+  Star,
+  Shield,
+  MapPin,
+  Settings,
+} from "lucide-react";
 import useServices from "hooks/services/useServices";
 
 const WHATSAPP_NUMBER = "601139936766";
+
+const ICONS = [
+  Home, Wrench, ClipboardList, Building2,
+  LayoutList, Truck, Users, Star, Shield, MapPin, Settings,
+];
+
+const HEX = "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)";
 
 const container = {
   hidden: {},
@@ -53,69 +72,62 @@ const Services = () => {
           viewport={{ once: true, margin: "-60px" }}
           variants={container}
         >
-          {services.map((service) => {
+          {services.map((service, index) => {
             const waText = encodeURIComponent(
               `Hi, I'm interested in your service: ${service.name}`
             );
             const waHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
+            const Icon = ICONS[index % ICONS.length];
 
             return (
               <motion.div
                 key={service.uid}
                 variants={card}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className="group flex flex-col bg-white rounded-2xl border border-slate-100 hover:border-gold-300 hover:shadow-lg transition-all duration-300 overflow-hidden"
+                className="group flex flex-col bg-white rounded-2xl border border-slate-200 hover:border-gold-300 hover:shadow-lg transition-all duration-300 overflow-hidden"
               >
-                {/* Card body */}
-                <div className="flex-1 p-7">
-                  <div className="w-11 h-11 rounded-xl bg-navy-50 border border-navy-100 flex items-center justify-center text-navy-700 font-extrabold text-sm mb-5 group-hover:bg-gold-500 group-hover:text-white group-hover:border-gold-500 transition-all duration-300">
-                    {service.name?.charAt(0)?.toUpperCase() ?? "S"}
+                {/* Icon area */}
+                <div className="relative h-44 bg-slate-100 overflow-hidden">
+                  {/* Decorative hexagon */}
+                  <div
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-44 bg-slate-200/70"
+                    style={{ clipPath: HEX }}
+                  />
+                  {/* Icon badge */}
+                  <div className="absolute top-6 left-6 w-12 h-12 rounded-xl bg-gold-500 flex items-center justify-center text-white shadow-sm group-hover:bg-gold-600 transition-colors duration-300">
+                    <Icon size={22} />
                   </div>
-
-                  <h3 className="text-lg font-bold text-navy-800 mb-2 leading-snug">
-                    {service.name}
-                  </h3>
-
-                  {service.summary ? (
-                    <p className="text-slate-500 text-sm leading-relaxed line-clamp-3">
-                      {service.summary}
-                    </p>
-                  ) : (
-                    <p className="text-slate-300 text-sm italic">No description provided.</p>
-                  )}
                 </div>
 
-                {/* Divider */}
-                <div className="h-px bg-slate-100 mx-7" />
+                {/* Content */}
+                <div className="flex-1 px-6 pt-5 pb-2">
+                  <h3 className="text-lg font-bold text-navy-800 mb-2 line-clamp-2 leading-snug">
+                    {service.name}
+                  </h3>
+                  <p className="text-slate-500 text-sm leading-relaxed line-clamp-3">
+                    {service.summary || "No description provided."}
+                  </p>
+                </div>
 
-                {/* WhatsApp CTA */}
-                <div className="px-7 py-5">
+                {/* CTA */}
+                <div className="px-6 py-5">
                   <a
                     href={waHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full py-2.5 rounded-md lg:rounded-lg bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-semibold transition-colors duration-200"
+                    className="inline-flex items-center gap-1.5 text-gold-600 font-semibold text-sm hover:text-gold-700 transition-colors duration-200"
                   >
-                    <FaWhatsapp size={16} />
-                    Enquire on WhatsApp
+                    Contact Us
+                    <ArrowRight
+                      size={15}
+                      className="transition-transform duration-200 group-hover:translate-x-1"
+                    />
                   </a>
                 </div>
               </motion.div>
             );
           })}
         </motion.div>
-
-        {/* Bottom accent */}
-        <div className="mt-14 flex items-center justify-center gap-3">
-          <div className="h-px flex-1 bg-slate-200" />
-          <div className="flex items-center gap-2 text-slate-400">
-            <Sparkles size={14} />
-            <span className="text-xs font-medium uppercase tracking-widest">
-              {services.length} Service{services.length !== 1 ? "s" : ""} Available
-            </span>
-          </div>
-          <div className="h-px flex-1 bg-slate-200" />
-        </div>
 
       </div>
     </section>
