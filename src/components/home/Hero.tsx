@@ -65,8 +65,9 @@ const Hero = () => {
           variants={fadeUp}
           className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-12 leading-relaxed text-justify"
         >
-          A global academy dedicated to empowering leaders, professionals, and institutions
-          through practical, internationally oriented training — delivered in Malaysia, Europe, UK, and beyond.
+          A trusted international center for professional training, executive development,
+          and applied learning — empowering individuals and institutions to achieve excellence
+          in Malaysia, Europe, the United Kingdom, Türkiye, and beyond.
         </motion.p>
 
         {/* CTA Buttons */}

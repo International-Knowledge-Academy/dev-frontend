@@ -9,21 +9,21 @@ const steps = [
     number:      "01",
     title:       "Browse & Choose",
     description:
-      "Explore our catalog of training programs by category, field, or location. Find the program that matches your team's goals and schedule.",
+      "Explore IKA's international training programs by category, field, or destination. Find the program that matches your organization's goals, leadership needs, and professional development objectives.",
   },
   {
     icon:        <ClipboardList size={22} />,
     number:      "02",
     title:       "Submit Your Registration",
     description:
-      "Fill out the online registration form with participant details. It takes less than 2 minutes — no account required.",
+      "Complete the online registration form with participant and institutional details. Our team is designed for professionals, executives, government employees, and institutional leaders — no account required.",
   },
   {
     icon:        <BadgeCheck size={22} />,
     number:      "03",
-    title:       "Get Confirmed & Certified",
+    title:       "Attend, Apply & Get Certified",
     description:
-      "Our team reviews your submission and sends a confirmation. Upon completion, every participant receives an accredited IKA certificate.",
+      "Join your international program, engage in expert-led learning and practical workshops, then return to your organization with practical tools, renewed perspectives, and a documented IKA professional certificate.",
   },
 ];
 
@@ -99,8 +99,8 @@ const HowToEnroll = () => {
             variants={fadeUp}
             className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed text-justify"
           >
-            Joining an IKA international training program is straightforward.
-            Here's how professionals and institutions get started.
+            Joining an IKA international training program is simple. Here's how
+            professionals and institutions take the first step toward measurable growth.
           </motion.p>
 
           <motion.div

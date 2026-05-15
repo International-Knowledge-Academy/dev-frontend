@@ -9,21 +9,21 @@ const steps = [
     number:      "01",
     title:       "Submit Your Application",
     description:
-      "Fill out the trainer application form with your professional background, areas of expertise, and the fields you'd like to teach. The process takes just a few minutes.",
+      "Share your professional background, areas of expertise, and the fields you wish to deliver. IKA works with experienced trainers, academics, consultants, and professional experts from diverse fields.",
   },
   {
     icon:        <UserCheck size={22} />,
     number:      "02",
     title:       "Assessment & Interview",
     description:
-      "Our team reviews your profile and conducts a brief interview to evaluate your knowledge, experience, and teaching approach. We match you with programs that fit your expertise.",
+      "Our team evaluates your depth, relevance, and credibility in your field. We match each trainer to programs where they can deliver knowledge with the greatest real-world impact.",
   },
   {
     icon:        <GraduationCap size={22} />,
     number:      "03",
-    title:       "Onboard & Start Teaching",
+    title:       "Deliver & Make an Impact",
     description:
-      "Once approved, you'll be officially onboarded as an IKA trainer. You'll get access to our resources, scheduling tools, and a growing community of professionals.",
+      "Join IKA's international trainer network and deliver programs that combine academic depth, practical tools, and measurable outcomes — helping professionals achieve excellence worldwide.",
   },
 ];
 
@@ -99,8 +99,8 @@ const HowToBeTrainer = () => {
             variants={fadeUp}
             className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed text-justify"
           >
-            Share your expertise and make an impact. Joining our trainer network
-            is a straightforward three-step process.
+            IKA works with experienced trainers, academics, and consultants to deliver
+            programs with depth, relevance, and credibility. Here's how to join our network.
           </motion.p>
 
           <motion.div

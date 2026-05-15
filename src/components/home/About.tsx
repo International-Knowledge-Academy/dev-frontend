@@ -50,8 +50,22 @@ const About = () => {
             academy dedicated to empowering leaders, professionals, and institutions through
             high-quality, practical, and internationally oriented training experiences.
           </p>
+          <p className="text-slate-500 mt-4 text-base leading-relaxed text-justify">
+            Established and commercially registered in Türkiye, with operational presence and
+            partnerships in Malaysia, Europe, the United Kingdom, and beyond, IKA delivers
+            specialized training programs that combine academic depth, practical application,
+            and global exposure.
+          </p>
+          <p className="text-slate-500 mt-4 text-base leading-relaxed text-justify">
+            We design our programs for professionals, executives, government employees, and
+            institutional leaders who seek more than traditional training — integrating expert-led
+            learning, interactive workshops, international study experiences, and real-world
+            application to deliver measurable professional value.
+          </p>
           <p className="text-slate-500 mt-4 text-base leading-relaxed italic border-l-4 border-gold-500 pl-4 text-justify">
-            "Invest in Your Employees and Invest in the Future of Your Institution."
+            "At IKA, training is not only about gaining knowledge — it is about transforming
+            performance, developing leadership capability, and preparing professionals to meet
+            the demands of a rapidly changing world."
           </p>
 
           {/* Highlights */}
@@ -95,7 +109,7 @@ const About = () => {
                 { value: "20+", label: "Training Fields" },
                 { value: "10",  label: "Countries" },
                 { value: "3",   label: "Program Types" },
-                { value: "5★",  label: "Hotel Partnerships" },
+                { value: "8",   label: "Strategic Goals" },
               ].map((s, i) => (
                 <motion.div
                   key={s.label}
