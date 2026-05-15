@@ -2,10 +2,10 @@
 import { motion } from "framer-motion";
 
 const stats = [
-  { value: "20+", label: "Training Fields", sub: "Across all major sectors" },
-  { value: "10",  label: "Countries",       sub: "UAE, UK, Europe, Asia & more" },
-  { value: "3",   label: "Program Types",   sub: "Courses, Diplomas & Contracted" },
-  { value: "100%", label: "Accredited",     sub: "Internationally recognized certificates" },
+  { value: "20+",  label: "Training Fields", sub: "Across all major professional sectors" },
+  { value: "10+",  label: "Countries",       sub: "Malaysia, Europe, UK, Türkiye & beyond" },
+  { value: "3",    label: "Program Types",   sub: "International · Workshops · Study Trips" },
+  { value: "100%", label: "Accredited",      sub: "Professional certificates upon completion" },
 ];
 
 const container = {

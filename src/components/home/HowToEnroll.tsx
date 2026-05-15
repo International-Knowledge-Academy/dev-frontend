@@ -99,8 +99,8 @@ const HowToEnroll = () => {
             variants={fadeUp}
             className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed"
           >
-            Registering for an IKA training program is fast and straightforward.
-            Here's how to get started.
+            Joining an IKA international training program is straightforward.
+            Here's how professionals and institutions get started.
           </motion.p>
 
           <motion.div

@@ -3,10 +3,11 @@ import { motion } from "framer-motion";
 import { MdCheckCircle } from "react-icons/md";
 
 const highlights = [
-  "Tailored programs designed for your organization's specific needs",
-  "Delivered by industry-leading experts with real-world experience",
-  "Flexible formats — on-site, remote, or intensive",
-  "Internationally recognized accredited certificates",
+  "Training delivered outside participants' home countries for genuine international exposure",
+  "Expert trainers, academics, consultants, and specialists from diverse professional fields",
+  "Tailored programs for government entities, private organizations, and institutional leaders",
+  "Multicultural environment fostering dialogue, networking, and knowledge exchange",
+  "Documented IKA certificates upon successful program completion",
 ];
 
 const fadeLeft = {
@@ -45,9 +46,9 @@ const About = () => {
             <span className="block text-gold-500 mt-1">for Training & Management Development</span>
           </h2>
           <p className="text-slate-500 mt-6 text-base leading-relaxed">
-            IKA provides high-quality training programs that blend deep theoretical knowledge with
-            practical experience. We believe that effective training is the cornerstone of
-            organizational excellence — empowering individuals and transforming institutions.
+            International Knowledge Academy – IKA is a global training and professional development
+            academy dedicated to empowering leaders, professionals, and institutions through
+            high-quality, practical, and internationally oriented training experiences.
           </p>
           <p className="text-slate-500 mt-4 text-base leading-relaxed italic border-l-4 border-gold-500 pl-4">
             "Invest in Your Employees and Invest in the Future of Your Institution."
@@ -111,7 +112,7 @@ const About = () => {
             </div>
             <div className="border-t border-slate-100 pt-5 text-center">
               <p className="text-slate-400 text-xs">
-                Operating across the UAE, UK, Europe, Asia & the Middle East
+                Operating across Malaysia, Europe, UK, Türkiye & beyond
               </p>
             </div>
           </div>

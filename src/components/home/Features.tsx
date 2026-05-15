@@ -1,50 +1,50 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
 import {
-  MdDesignServices,
-  MdAutorenew,
+  MdTravelExplore,
+  MdWorkspacePremium,
   MdPeople,
-  MdTune,
+  MdAccountBalance,
+  MdPublic,
   MdVerified,
-  MdAttachMoney,
 } from "react-icons/md";
 
 const features = [
   {
-    icon: <MdDesignServices size={28} />,
-    title: "Custom Training Programs",
+    icon: <MdTravelExplore size={28} />,
+    title: "International Training Experience",
     description:
-      "We design tailored training programs built around your organization's specific goals, culture, and workforce needs.",
+      "IKA specializes in delivering training programs outside participants' home countries, giving trainees the opportunity to learn in inspiring international environments that expand their professional perspectives.",
   },
   {
-    icon: <MdAutorenew size={28} />,
-    title: "Updated & Modern Content",
+    icon: <MdWorkspacePremium size={28} />,
+    title: "Practical and Applied Learning",
     description:
-      "Our training materials reflect the latest industry practices, tools, and real-world case studies — always current, always relevant.",
+      "Our programs focus on real workplace challenges, applied tools, case studies, and practical outcomes rather than purely theoretical content.",
   },
   {
     icon: <MdPeople size={28} />,
-    title: "Expert Trainers & Specialists",
+    title: "Expert Trainers and Specialists",
     description:
-      "A carefully selected group of seasoned professionals and subject-matter experts who bring deep knowledge and field experience.",
+      "IKA works with experienced trainers, academics, consultants, and professional experts from diverse fields to ensure depth, relevance, and credibility.",
   },
   {
-    icon: <MdTune size={28} />,
-    title: "Flexible Delivery Options",
+    icon: <MdAccountBalance size={28} />,
+    title: "Tailored for Institutional Needs",
     description:
-      "Choose what works best for your team — on-site, remote, or intensive programs — tailored to fit your schedule and location.",
+      "We design programs that match the objectives of government entities, private organizations, universities, and professional institutions seeking external training for their employees and leaders.",
+  },
+  {
+    icon: <MdPublic size={28} />,
+    title: "Multicultural Learning Environment",
+    description:
+      "Our programs bring together participants from different backgrounds, creating valuable opportunities for dialogue, networking, and exchange of professional experiences.",
   },
   {
     icon: <MdVerified size={28} />,
-    title: "Accredited Certificates",
+    title: "Professional Certificates",
     description:
-      "Participants receive internationally recognized certificates upon successful completion, adding real value to their professional profile.",
-  },
-  {
-    icon: <MdAttachMoney size={28} />,
-    title: "Competitive & Flexible Pricing",
-    description:
-      "We offer cost-effective training packages with flexible financing options to make quality development accessible for every organization.",
+      "Participants receive documented certificates from IKA upon successful program completion, supporting their professional development and institutional training records.",
   },
 ];
 
@@ -78,7 +78,8 @@ const Features = () => {
             What Sets Us Apart
           </h2>
           <p className="text-slate-500 mt-4 max-w-xl mx-auto">
-            Invest in your employees and invest in the future of your institution — with training built for real impact.
+            We do not offer ordinary training programs. We create international learning experiences
+            that are practical, engaging, and professionally valuable.
           </p>
         </motion.div>
 

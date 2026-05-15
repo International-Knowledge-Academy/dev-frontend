@@ -6,7 +6,6 @@ import History from "components/about/History";
 import Mission from "components/about/Mission";
 import TargetAudience from "components/about/TargetAudience";
 import Team from "components/about/Team";
-import Certifications from "components/about/Certifications";
 import PartnershipsSection from "components/about/PartnershipsSection";
 import WorldMapSection from "components/home/WorldMapSection";
 
@@ -19,7 +18,6 @@ const AboutPage = () => {
       <Mission />
       <TargetAudience />
       <Team />
-      <Certifications />
       <PartnershipsSection />
       <WorldMapSection />
       <Footer />

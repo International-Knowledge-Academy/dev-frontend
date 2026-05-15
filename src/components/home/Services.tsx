@@ -59,8 +59,8 @@ const Services = () => {
             Our Services
           </h2>
           <p className="text-slate-500 mt-4 max-w-xl mx-auto">
-            Explore our range of professional services designed to elevate your
-            organization. Reach out on WhatsApp to learn more or get started.
+            Specialized services designed for professionals, executives, government employees,
+            and institutional leaders. Contact us on WhatsApp to learn more or get started.
           </p>
         </motion.div>
 

@@ -89,8 +89,8 @@ const Footer = () => {
               About Us
             </h4>
             <p className="text-slate-300 text-sm leading-relaxed mb-5">
-              Delivering world-class training programs that blend deep knowledge with practical
-              experience — empowering organizations across 10 countries.
+              A global academy empowering leaders, professionals, and institutions through
+              high-quality, practical, and internationally oriented training experiences.
             </p>
             <p className="text-slate-400 text-xs italic">
               "Invest in Your Employees and Invest in the Future of Your Institution."

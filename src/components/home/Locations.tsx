@@ -212,8 +212,8 @@ const Locations = () => {
           variants={fadeUp}
           className="text-slate-500 max-w-md mx-auto text-sm leading-relaxed mb-12"
         >
-          Premium venues across the Middle East, Europe, and Southeast Asia —
-          built for professional excellence.
+          Inspiring international training environments across Malaysia, Europe,
+          the United Kingdom, Türkiye, and beyond.
         </motion.p>
 
         {/* Stats row */}
