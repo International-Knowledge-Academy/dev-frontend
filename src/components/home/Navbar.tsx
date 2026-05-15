@@ -230,18 +230,18 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-1/2 -translate-x-1/2 w-[calc(100%-32px)] max-w-6xl mt-3 z-50 rounded-xl transition-all duration-300 ${
+      className={` max-w-6xl mx-auto fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-lg shadow-navy-900/8 border border-slate-200/80"
-          : "bg-white/90 backdrop-blur-sm border border-slate-100 shadow-sm"
+          ? "bg-white rounded-b-xl backdrop-blur-sm"
+          : "bg-white/98 "
       }`}
     >
-      <div className="px-5 sm:px-8 h-[80px] flex items-center justify-between gap-6">
+      <div className="max-w-6xl mx-auto px-4 h-[72px] flex items-center justify-between gap-6">
 
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 flex-shrink-0">
-          <img src="/brand/IKA-logo-bg.png" alt="IKA Logo" className="h-16 w-auto" />
-          <div className="hidden sm:block">
+          <img src="/brand/IKA-logo-bg.png" alt="IKA Logo" className="h-12 sm:h-14 w-auto" />
+          <div className="hidden lg:block">
             <p className="text-navy-800 font-bold text-sm leading-tight">
               International Knowledge Academy
             </p>
@@ -256,23 +256,6 @@ const Navbar = () => {
           {navLinks.map((link) => (
             <NavItem key={link.to} link={link} pathname={pathname} />
           ))}
-        </div>
-
-        {/* Desktop CTAs */}
-        <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-          <Link
-            to="/auth/sign-in"
-            className="text-sm font-semibold text-slate-600 hover:text-navy-800 transition-colors px-3.5 py-2 rounded-md lg:rounded-lg hover:bg-slate-50"
-          >
-            Sign In
-          </Link>
-          <Link
-            to="/auth/sign-in"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-navy-700 hover:bg-navy-800 px-4 py-2 rounded-md lg:rounded-lg transition-all shadow-sm hover:shadow-md"
-          >
-            Get Started
-            <MdArrowForward size={14} />
-          </Link>
         </div>
 
         {/* Mobile toggle */}

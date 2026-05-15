@@ -46,6 +46,10 @@ import ManagerPartnershipsPage        from "views/account-manager/partnerships";
 import ManagerPartnershipCreatePage   from "views/account-manager/partnerships/PartnershipCreatePage";
 import ManagerPartnershipDetailPage   from "views/account-manager/partnerships/PartnershipDetailPage";
 import ManagerPartnershipEditPage     from "views/account-manager/partnerships/PartnershipEditPage";
+import ManagerCertificatesPage        from "views/account-manager/certificates";
+import ManagerCertificateCreatePage   from "views/account-manager/certificates/CertificateCreatePage";
+import ManagerCertificateDetailPage   from "views/account-manager/certificates/CertificateDetailPage";
+import ManagerCertificateEditPage     from "views/account-manager/certificates/CertificateEditPage";
 
 const ManagerLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -141,6 +145,12 @@ const ManagerLayout = () => {
             <Route path="partnerships/create"      element={<ManagerPartnershipCreatePage />} />
             <Route path="partnerships/:uid"        element={<ManagerPartnershipDetailPage />} />
             <Route path="partnerships/:uid/edit"   element={<ManagerPartnershipEditPage />} />
+
+            {/* Certificates */}
+            <Route path="certificates"             element={<ManagerCertificatesPage />} />
+            <Route path="certificates/create"      element={<ManagerCertificateCreatePage />} />
+            <Route path="certificates/:uid"        element={<ManagerCertificateDetailPage />} />
+            <Route path="certificates/:uid/edit"   element={<ManagerCertificateEditPage />} />
 
             <Route path="/" element={<Navigate to="/account-manager/dashboard" replace />} />
           </Routes>

@@ -20,6 +20,7 @@ import PaymentsPage     from "views/admin/payments";
 import ContactsPage          from "views/admin/contact";
 import ServicesPage from "views/admin/services";
 import PartnershipsPage       from "views/admin/partnerships";
+import CertificatesPage from "views/admin/certificates";
 
 // Account Manager Imports
 import ManagerDashboard      from "views/account-manager/default";
@@ -34,6 +35,7 @@ import ManagerLocationsPage  from "views/account-manager/locations";
 import ManagerServicesPage        from "views/account-manager/services";
 import ManagerContactsPage        from "views/account-manager/contact";
 import ManagerPartnershipsPage    from "views/account-manager/partnerships";
+import ManagerCertificatesPage   from "views/account-manager/certificates";
 
 // Icon Imports
 import {
@@ -53,6 +55,7 @@ import {
   MdContactMail,
   MdHandshake,
   MdMiscellaneousServices,
+  MdVerified,
 } from "react-icons/md";
 
 const routes = [
@@ -148,7 +151,14 @@ const routes = [
     icon: <MdMiscellaneousServices className="h-6 w-6" />,
     component: <ServicesPage />,
     group: "Manage",
-    
+  },
+  {
+    name: "Certificates",
+    layout: "/admin",
+    path: "certificates",
+    icon: <MdVerified className="h-6 w-6" />,
+    component: <CertificatesPage />,
+    group: "Manage",
   },
   {
     name: "Contact",
@@ -276,6 +286,14 @@ const routes = [
     icon: <MdHandshake className="h-6 w-6" />,
     component: <ManagerPartnershipsPage />,
     group: "Admin",
+  },
+  {
+    name: "Certificates",
+    layout: "/account-manager",
+    path: "certificates",
+    icon: <MdVerified className="h-6 w-6" />,
+    component: <ManagerCertificatesPage />,
+    group: "Manage",
   },
 
 ];

@@ -44,6 +44,10 @@ import PartnershipsPage from "views/admin/partnerships";
 import PartnershipCreatePage from "views/admin/partnerships/PartnershipCreatePage";
 import PartnershipDetailPage from "views/admin/partnerships/PartnershipDetailPage";
 import PartnershipEditPage from "views/admin/partnerships/PartnershipEditPage";
+import CertificatesPage from "views/admin/certificates";
+import CertificateCreatePage from "views/admin/certificates/CertificateCreatePage";
+import CertificateDetailPage from "views/admin/certificates/CertificateDetailPage";
+import CertificateEditPage from "views/admin/certificates/CertificateEditPage";
 
 export default function Admin(props) {
   const { ...rest } = props;
@@ -164,6 +168,10 @@ export default function Admin(props) {
                 <Route path="/partnerships/create"        element={<PartnershipCreatePage />} />
                 <Route path="/partnerships/:uid"          element={<PartnershipDetailPage />} />
                 <Route path="/partnerships/:uid/edit"     element={<PartnershipEditPage />} />
+                <Route path="/certificates"               element={<CertificatesPage />} />
+                <Route path="/certificates/create"        element={<CertificateCreatePage />} />
+                <Route path="/certificates/:uid"          element={<CertificateDetailPage />} />
+                <Route path="/certificates/:uid/edit"     element={<CertificateEditPage />} />
 
                 <Route
                   path="/"
