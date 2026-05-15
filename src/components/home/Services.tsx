@@ -1,18 +1,10 @@
 // @ts-nocheck
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowRight,
-  Home,
-  Wrench,
-  ClipboardList,
-  Building2,
-  LayoutList,
-  Truck,
-  Users,
-  Star,
-  Shield,
-  MapPin,
-  Settings,
+  ArrowRight, ChevronLeft, ChevronRight,
+  Home, Wrench, ClipboardList, Building2,
+  LayoutList, Truck, Users, Star, Shield, MapPin, Settings,
 } from "lucide-react";
 import useServices from "hooks/services/useServices";
 
@@ -23,22 +15,19 @@ const ICONS = [
   LayoutList, Truck, Users, Star, Shield, MapPin, Settings,
 ];
 
-const HEX = "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)";
-
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.09 } },
-};
-
-const card = {
-  hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
+const PER_PAGE = 4;
 
 const Services = () => {
   const { services, loading } = useServices({ is_active: true });
+  const [page, setPage] = useState(0);
 
   if (loading || services.length === 0) return null;
+
+  const totalPages = Math.ceil(services.length / PER_PAGE);
+  const visible    = services.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE);
+
+  const prev = () => setPage((p) => Math.max(0, p - 1));
+  const next = () => setPage((p) => Math.min(totalPages - 1, p + 1));
 
   return (
     <section className="py-24 px-6 bg-slate-50">
@@ -46,7 +35,7 @@ const Services = () => {
 
         {/* Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-14"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
@@ -64,53 +53,43 @@ const Services = () => {
           </p>
         </motion.div>
 
-        {/* Grid */}
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={container}
-        >
-          {services.map((service, index) => {
-            const waText = encodeURIComponent(
-              `Hi, I'm interested in your service: ${service.name}`
-            );
-            const waHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
-            const Icon = ICONS[index % ICONS.length];
+        {/* Carousel */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={page}
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -30 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
+          >
+            {visible.map((service, index) => {
+              const Icon    = ICONS[(page * PER_PAGE + index) % ICONS.length];
+              const waText  = encodeURIComponent(`Hi, I'm interested in your service: ${service.name}`);
+              const waHref  = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
 
-            return (
-              <motion.div
-                key={service.uid}
-                variants={card}
-                whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className="group flex flex-col bg-white rounded-2xl border border-slate-200 hover:border-gold-300 hover:shadow-lg transition-all duration-300 overflow-hidden"
-              >
-                {/* Icon area */}
-                <div className="relative h-44 bg-slate-100 overflow-hidden">
-                  {/* Decorative hexagon */}
-                  <div
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-44 bg-slate-200/70"
-                    style={{ clipPath: HEX }}
-                  />
-                  {/* Icon badge */}
-                  <div className="absolute top-6 left-6 w-12 h-12 rounded-xl bg-gold-500 flex items-center justify-center text-white shadow-sm group-hover:bg-gold-600 transition-colors duration-300">
-                    <Icon size={22} />
+              return (
+                <motion.div
+                  key={service.uid}
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  className="group flex flex-col bg-white rounded-2xl border border-slate-200 hover:border-gold-300 hover:shadow-lg transition-all duration-300 p-6"
+                >
+                  {/* Icon */}
+                  <div className="w-10 h-10 rounded-xl bg-gold-50 border border-gold-200 flex items-center justify-center text-gold-600 mb-5 group-hover:bg-gold-500 group-hover:text-white group-hover:border-gold-500 transition-all duration-300 flex-shrink-0">
+                    <Icon size={18} />
                   </div>
-                </div>
 
-                {/* Content */}
-                <div className="flex-1 px-6 pt-5 pb-2">
-                  <h3 className="text-lg font-bold text-navy-800 mb-2 line-clamp-2 leading-snug">
+                  {/* Name */}
+                  <h3 className="text-navy-800 font-bold text-base leading-snug mb-2 line-clamp-2">
                     {service.name}
                   </h3>
-                  <p className="text-slate-500 text-sm leading-relaxed line-clamp-3">
+
+                  {/* Description */}
+                  <p className="text-slate-500 text-sm leading-relaxed line-clamp-3 flex-1 mb-5">
                     {service.summary || "No description provided."}
                   </p>
-                </div>
 
-                {/* CTA */}
-                <div className="px-6 py-5">
+                  {/* CTA */}
                   <a
                     href={waHref}
                     target="_blank"
@@ -118,16 +97,49 @@ const Services = () => {
                     className="inline-flex items-center gap-1.5 text-gold-600 font-semibold text-sm hover:text-gold-700 transition-colors duration-200"
                   >
                     Contact Us
-                    <ArrowRight
-                      size={15}
-                      className="transition-transform duration-200 group-hover:translate-x-1"
-                    />
+                    <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
                   </a>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Navigation — only show if more than one page */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-4 mt-10">
+            {/* Prev */}
+            <button
+              onClick={prev}
+              disabled={page === 0}
+              className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:border-gold-400 hover:text-gold-500 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
+            >
+              <ChevronLeft size={18} />
+            </button>
+
+            {/* Dots */}
+            <div className="flex items-center gap-2">
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setPage(i)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    i === page ? "w-6 bg-gold-500" : "w-2 bg-slate-300 hover:bg-slate-400"
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Next */}
+            <button
+              onClick={next}
+              disabled={page === totalPages - 1}
+              className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:border-gold-400 hover:text-gold-500 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        )}
 
       </div>
     </section>
