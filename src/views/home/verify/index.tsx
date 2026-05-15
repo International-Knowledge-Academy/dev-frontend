@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, ShieldCheck, ShieldX, Award, User, MapPin, Calendar, Clock } from "lucide-react";
+import { Search, ShieldCheck, ShieldX, Award, Clock } from "lucide-react";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
 import useVerifyCertificate from "hooks/certificates/useVerifyCertificate";
