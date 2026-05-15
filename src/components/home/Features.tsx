@@ -77,7 +77,7 @@ const Features = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             What Sets Us Apart
           </h2>
-          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto text-justify">
             We do not offer ordinary training programs. We create international learning experiences
             that are practical, engaging, and professionally valuable.
           </p>
@@ -102,7 +102,7 @@ const Features = () => {
                 {feature.icon}
               </div>
               <h3 className="text-lg font-bold text-navy-800 mb-2">{feature.title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{feature.description}</p>
+              <p className="text-slate-500 text-sm leading-relaxed text-justify">{feature.description}</p>
             </motion.div>
           ))}
         </motion.div>

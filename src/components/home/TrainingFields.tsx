@@ -85,7 +85,7 @@ const CategoryCard = ({
     </h3>
 
     {/* ── Summary ── */}
-    <p className="text-slate-500 text-sm leading-relaxed line-clamp-3 flex-1 mb-5">
+    <p className="text-slate-500 text-sm leading-relaxed line-clamp-3 flex-1 mb-5 text-justify">
       {category.summary || "Specialized training program designed for professional development and career advancement."}
     </p>
 
@@ -166,10 +166,11 @@ const TrainingFields = ({ onCardClick }: { onCardClick?: (c: Category) => void }
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed"
+            className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed text-justify"
           >
             From leadership and governance to technical and institutional fields — discover
             programs built for professionals, executives, and government employees.
+
           </motion.p>
 
           {/* Gold accent line */}

@@ -88,7 +88,7 @@ const Footer = () => {
             <h4 className="text-gold-500 font-bold text-xs uppercase tracking-widest mb-5">
               About Us
             </h4>
-            <p className="text-slate-300 text-sm leading-relaxed mb-5">
+            <p className="text-slate-300 text-sm leading-relaxed mb-5 text-justify">
               A global academy empowering leaders, professionals, and institutions through
               high-quality, practical, and internationally oriented training experiences.
             </p>

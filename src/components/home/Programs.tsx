@@ -55,7 +55,7 @@ const Programs = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             Three Ways to Learn
           </h2>
-          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto text-justify">
             IKA offers a flexible and impactful learning experience designed for professionals
             and organizations seeking international training opportunities outside their home countries.
           </p>
@@ -105,7 +105,7 @@ const Programs = () => {
                 <h3 className={`text-xl font-bold ${i === 0 ? "text-white" : "text-navy-800"}`}>
                   {p.title}
                 </h3>
-                <p className={`text-sm mt-3 leading-relaxed ${i === 0 ? "text-navy-200" : "text-slate-500"}`}>
+                <p className={`text-sm mt-3 leading-relaxed text-justify ${i === 0 ? "text-navy-200" : "text-slate-500"}`}>
                   {p.description}
                 </p>
               </div>

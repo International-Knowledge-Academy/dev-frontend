@@ -45,12 +45,12 @@ const About = () => {
             International Knowledge Academy
             <span className="block text-gold-500 mt-1">for Training & Management Development</span>
           </h2>
-          <p className="text-slate-500 mt-6 text-base leading-relaxed">
+          <p className="text-slate-500 mt-6 text-base leading-relaxed text-justify">
             International Knowledge Academy – IKA is a global training and professional development
             academy dedicated to empowering leaders, professionals, and institutions through
             high-quality, practical, and internationally oriented training experiences.
           </p>
-          <p className="text-slate-500 mt-4 text-base leading-relaxed italic border-l-4 border-gold-500 pl-4">
+          <p className="text-slate-500 mt-4 text-base leading-relaxed italic border-l-4 border-gold-500 pl-4 text-justify">
             "Invest in Your Employees and Invest in the Future of Your Institution."
           </p>
 

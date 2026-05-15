@@ -63,7 +63,7 @@ const Hero = () => {
           animate="visible"
           custom={0.3}
           variants={fadeUp}
-          className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-12 leading-relaxed"
+          className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-12 leading-relaxed text-justify"
         >
           A global academy dedicated to empowering leaders, professionals, and institutions
           through practical, internationally oriented training — delivered in Malaysia, Europe, UK, and beyond.

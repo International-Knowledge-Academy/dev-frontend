@@ -97,7 +97,7 @@ const ProgramCard = ({ program }: { program: Program }) => {
       </h3>
 
       {/* Description */}
-      <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4 flex-1">
+      <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4 flex-1 text-justify">
         {program.description || "A professional training program designed to advance your skills and expertise."}
       </p>
 
@@ -184,7 +184,7 @@ const UpcomingPrograms = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed"
+            className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed text-justify"
           >
             Internationally delivered programs combining academic depth, practical tools,
             and measurable professional outcomes. Secure your place today.

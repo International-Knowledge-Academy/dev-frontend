@@ -97,7 +97,7 @@ const HowToBeTrainer = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed"
+            className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed text-justify"
           >
             Share your expertise and make an impact. Joining our trainer network
             is a straightforward three-step process.
@@ -150,7 +150,7 @@ const HowToBeTrainer = () => {
               {/* Text */}
               <div>
                 <h3 className="text-navy-800 font-bold text-lg mb-2">{step.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{step.description}</p>
+                <p className="text-slate-500 text-sm leading-relaxed text-justify">{step.description}</p>
               </div>
             </motion.div>
           ))}

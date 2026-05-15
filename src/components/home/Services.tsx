@@ -47,7 +47,7 @@ const Services = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             Our Services
           </h2>
-          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto text-justify">
             Specialized services designed for professionals, executives, government employees,
             and institutional leaders. Contact us on WhatsApp to learn more or get started.
           </p>
@@ -85,7 +85,7 @@ const Services = () => {
                   </h3>
 
                   {/* Description */}
-                  <p className="text-slate-500 text-sm leading-relaxed line-clamp-3 flex-1 mb-5">
+                  <p className="text-slate-500 text-sm leading-relaxed line-clamp-3 flex-1 mb-5 text-justify">
                     {service.summary || "No description provided."}
                   </p>
 
