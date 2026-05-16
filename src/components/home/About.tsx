@@ -1,14 +1,5 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
-import { MdCheckCircle } from "react-icons/md";
-
-const highlights = [
-  "Training delivered outside participants' home countries for genuine international exposure",
-  "Expert trainers, academics, consultants, and specialists from diverse professional fields",
-  "Tailored programs for government entities, private organizations, and institutional leaders",
-  "Multicultural environment fostering dialogue, networking, and knowledge exchange",
-  "Documented IKA certificates upon successful program completion",
-];
 
 const fadeLeft = {
   hidden: { opacity: 0, x: -40 },
@@ -67,26 +58,7 @@ const About = () => {
             performance, developing leadership capability, and preparing professionals to meet
             the demands of a rapidly changing world."
           </p>
-
-          {/* Highlights */}
-          <motion.ul
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            className="mt-8 space-y-3"
-          >
-            {highlights.map((item, i) => (
-              <motion.li
-                key={item}
-                custom={i}
-                variants={fadeUp}
-                className="flex items-start gap-3 text-slate-600 text-sm"
-              >
-                <MdCheckCircle size={20} className="text-gold-500 flex-shrink-0 mt-0.5" />
-                {item}
-              </motion.li>
-            ))}
-          </motion.ul>
+       
         </motion.div>
 
         {/* Right — decorative card */}
