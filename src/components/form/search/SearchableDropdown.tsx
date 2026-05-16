@@ -88,14 +88,14 @@ const CreatableSelectField = ({
 
       >
         <span
-          className={`${
+          className={`truncate min-w-0 flex-1 ${
             selectedLabel ? "text-slate-900" : "text-slate-400"
           }`}
         >
           {selectedLabel || placeholder}
         </span>
-        <span className="text-xs text-slate-500">
-          <ChevronDown   className="h-5 w-5" />
+        <span className="text-xs text-slate-500 flex-shrink-0 ml-2">
+          <ChevronDown className="h-5 w-5" />
         </span>
       </div>
 
@@ -116,7 +116,7 @@ const CreatableSelectField = ({
             autoFocus
             value={search}
             onChange={(e) => { setSearch(e.target.value); onSearchChange?.(e.target.value); }}
-            className={`mt-2 flex h-10 w-full items-start justify-start rounded-md border p-3 px-3 py-2 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1  focus:ring-blue-500 ${
+            className={`mt-2 flex h-10 w-full items-start justify-start rounded-md border p-3 px-3 py-2 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-blue-500 ${
               getNestedValue(errors, field) ? "border-red-500" : "border-default"
             }`}
           />
