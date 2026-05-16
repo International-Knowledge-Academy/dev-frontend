@@ -16,8 +16,8 @@ import IconButton from "components/ui/buttons/IconButton";
 import PageHeader from "components/ui/PageHeader";
 import PrevButton from "components/ui/buttons/PrevButton";
 import NextButton from "components/ui/buttons/NextButton";
-import SearchInput from "components/form/SearchInput";
-import FilterSelectField from "components/form/filter/FilterSelectField";
+import InputField from "components/form/InputField";
+import SearchableDropdown from "components/form/search/SearchableDropdown";
 import { useToast } from "context/ToastContext";
 import type { Program } from "types/program";
 
@@ -175,11 +175,14 @@ const ProgramsPage = () => {
           <div className="hidden sm:block w-px h-5 bg-slate-200" />
 
           {/* Search — always visible */}
-          <SearchInput
-            value={params.search ?? ""}
-            onChange={(val) => setParams({ search: val })}
+          <InputField
+            field="search"
             placeholder="Search programs..."
-            className="flex-1"
+            formData={{ search: params.search ?? "" }}
+            errors={{}}
+            updateFormData={(_, v) => setParams({ search: v || undefined })}
+            required={false}
+            wrapperClassName="flex-1"
           />
 
           <div className="hidden sm:block w-px h-5 bg-slate-200" />
@@ -235,86 +238,118 @@ const ProgramsPage = () => {
 
         {/* Row 2 — desktop filter selects (always visible) */}
         <div className="hidden sm:flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-slate-100">
-          <FilterSelectField
-            value={params.program_type ?? "all"}
-            onChange={(val) => setParams({ program_type: val === "all" ? undefined : val })}
-            icon={Award}
-            defaultOption="All Types"
-            options={TYPE_OPTIONS}
-          />
-          <FilterSelectField
-            value={params.status ?? "all"}
-            onChange={(val) => setParams({ status: val === "all" ? undefined : val })}
-            icon={Activity}
-            defaultOption="All Status"
-            options={STATUS_OPTIONS}
-          />
-          <FilterSelectField
-            value={params.level ?? "all"}
-            onChange={(val) => setParams({ level: val === "all" ? undefined : val })}
-            icon={Layers}
-            defaultOption="All Levels"
-            options={LEVEL_OPTIONS}
-          />
-          <FilterSelectField
-            value={params.mode ?? "all"}
-            onChange={(val) => setParams({ mode: val === "all" ? undefined : val })}
-            icon={Monitor}
-            defaultOption="All Modes"
-            options={MODE_OPTIONS}
-          />
-          <FilterSelectField
-            value={params.is_active === undefined ? "all" : String(params.is_active)}
-            onChange={(val) => setParams({ is_active: val === "all" ? undefined : val === "true" })}
-            icon={ToggleLeft}
-            defaultOption="All"
-            options={[
-              { value: "true",  label: "Active"   },
-              { value: "false", label: "Inactive" },
-            ]}
-          />
+          <div className="min-w-[150px]">
+            <SearchableDropdown
+              field="program_type"
+              options={[{ value: "", label: "All Types" }, ...TYPE_OPTIONS]}
+              formData={{ program_type: params.program_type ?? "" }}
+              errors={{}}
+              updateFormData={(_, v) => setParams({ program_type: v || undefined })}
+              placeholder="All Types"
+              required={false}
+            />
+          </div>
+          <div className="min-w-[150px]">
+            <SearchableDropdown
+              field="status"
+              options={[{ value: "", label: "All Status" }, ...STATUS_OPTIONS]}
+              formData={{ status: params.status ?? "" }}
+              errors={{}}
+              updateFormData={(_, v) => setParams({ status: v || undefined })}
+              placeholder="All Status"
+              required={false}
+            />
+          </div>
+          <div className="min-w-[150px]">
+            <SearchableDropdown
+              field="level"
+              options={[{ value: "", label: "All Levels" }, ...LEVEL_OPTIONS]}
+              formData={{ level: params.level ?? "" }}
+              errors={{}}
+              updateFormData={(_, v) => setParams({ level: v || undefined })}
+              placeholder="All Levels"
+              required={false}
+            />
+          </div>
+          <div className="min-w-[150px]">
+            <SearchableDropdown
+              field="mode"
+              options={[{ value: "", label: "All Modes" }, ...MODE_OPTIONS]}
+              formData={{ mode: params.mode ?? "" }}
+              errors={{}}
+              updateFormData={(_, v) => setParams({ mode: v || undefined })}
+              placeholder="All Modes"
+              required={false}
+            />
+          </div>
+          <div className="min-w-[130px]">
+            <SearchableDropdown
+              field="is_active"
+              options={[
+                { value: "",      label: "All"      },
+                { value: "true",  label: "Active"   },
+                { value: "false", label: "Inactive" },
+              ]}
+              formData={{ is_active: params.is_active === undefined ? "" : String(params.is_active) }}
+              errors={{}}
+              updateFormData={(_, v) => setParams({ is_active: v === "" ? undefined : v === "true" })}
+              placeholder="All"
+              required={false}
+            />
+          </div>
         </div>
 
         {/* Mobile: expanded filter panel */}
         {filtersOpen && (
           <div className="sm:hidden mt-2 pt-2 border-t border-slate-100 flex flex-col gap-2">
-            <FilterSelectField
-              value={params.program_type ?? "all"}
-              onChange={(val) => setParams({ program_type: val === "all" ? undefined : val })}
-              icon={Award}
-              defaultOption="All Types"
-              options={TYPE_OPTIONS}
+            <SearchableDropdown
+              field="program_type"
+              options={[{ value: "", label: "All Types" }, ...TYPE_OPTIONS]}
+              formData={{ program_type: params.program_type ?? "" }}
+              errors={{}}
+              updateFormData={(_, v) => setParams({ program_type: v || undefined })}
+              placeholder="All Types"
+              required={false}
             />
-            <FilterSelectField
-              value={params.status ?? "all"}
-              onChange={(val) => setParams({ status: val === "all" ? undefined : val })}
-              icon={Activity}
-              defaultOption="All Status"
-              options={STATUS_OPTIONS}
+            <SearchableDropdown
+              field="status"
+              options={[{ value: "", label: "All Status" }, ...STATUS_OPTIONS]}
+              formData={{ status: params.status ?? "" }}
+              errors={{}}
+              updateFormData={(_, v) => setParams({ status: v || undefined })}
+              placeholder="All Status"
+              required={false}
             />
-            <FilterSelectField
-              value={params.level ?? "all"}
-              onChange={(val) => setParams({ level: val === "all" ? undefined : val })}
-              icon={Layers}
-              defaultOption="All Levels"
-              options={LEVEL_OPTIONS}
+            <SearchableDropdown
+              field="level"
+              options={[{ value: "", label: "All Levels" }, ...LEVEL_OPTIONS]}
+              formData={{ level: params.level ?? "" }}
+              errors={{}}
+              updateFormData={(_, v) => setParams({ level: v || undefined })}
+              placeholder="All Levels"
+              required={false}
             />
-            <FilterSelectField
-              value={params.mode ?? "all"}
-              onChange={(val) => setParams({ mode: val === "all" ? undefined : val })}
-              icon={Monitor}
-              defaultOption="All Modes"
-              options={MODE_OPTIONS}
+            <SearchableDropdown
+              field="mode"
+              options={[{ value: "", label: "All Modes" }, ...MODE_OPTIONS]}
+              formData={{ mode: params.mode ?? "" }}
+              errors={{}}
+              updateFormData={(_, v) => setParams({ mode: v || undefined })}
+              placeholder="All Modes"
+              required={false}
             />
-            <FilterSelectField
-              value={params.is_active === undefined ? "all" : String(params.is_active)}
-              onChange={(val) => setParams({ is_active: val === "all" ? undefined : val === "true" })}
-              icon={ToggleLeft}
-              defaultOption="All"
+            <SearchableDropdown
+              field="is_active"
               options={[
+                { value: "",      label: "All"      },
                 { value: "true",  label: "Active"   },
                 { value: "false", label: "Inactive" },
               ]}
+              formData={{ is_active: params.is_active === undefined ? "" : String(params.is_active) }}
+              errors={{}}
+              updateFormData={(_, v) => setParams({ is_active: v === "" ? undefined : v === "true" })}
+              placeholder="All"
+              required={false}
             />
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">

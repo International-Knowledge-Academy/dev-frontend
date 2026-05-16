@@ -137,7 +137,7 @@ const CreatableSelectField = ({
                   }
       `}
                 >
-                  {opt.label}
+                  <span className="truncate min-w-0">{opt.label}</span>
                 </li>
               );
             })}

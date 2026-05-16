@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   MdMenu, MdClose, MdKeyboardArrowDown,
   MdArrowForward, MdGridView, MdMenuBook,
@@ -8,6 +9,13 @@ import {
 } from "react-icons/md";
 
 import useCategories from "hooks/categories/useCategories";
+
+const slideDown = {
+  initial:  { opacity: 0, height: 0 },
+  animate:  { opacity: 1, height: "auto" },
+  exit:     { opacity: 0, height: 0 },
+  transition: { duration: 0.22, ease: "easeInOut" },
+};
 
 /* ── Shared dropdown item ─────────────────────────────────────────────────── */
 function DropdownItem({ item, onClick = undefined }) {
@@ -230,10 +238,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className={` max-w-6xl mx-auto fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white rounded-b-xl backdrop-blur-sm"
-          : "bg-white/98 "
+      className={`fixed top-0 left-0 right-0 w-full z-50 bg-white transition-all duration-300 ${
+        scrolled ? "shadow-sm border-b border-slate-100" : "border-b border-slate-100/60"
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 h-[72px] flex items-center justify-between gap-6">
@@ -269,8 +275,13 @@ const Navbar = () => {
       </div>
 
       {/* Mobile menu */}
+      <AnimatePresence>
       {menuOpen && (
-        <div className="lg:hidden border-t border-slate-100 px-4 py-4 flex flex-col gap-1">
+        <motion.div
+          {...slideDown}
+          className="lg:hidden border-t border-slate-100 overflow-hidden"
+        >
+        <div className="px-4 py-4 flex flex-col gap-1">
           {navLinks.map((link) => {
             const hasChildren = link.children?.length > 0;
             const isExpanded  = mobileExpanded === link.to;
@@ -295,7 +306,9 @@ const Navbar = () => {
                       />
                     </button>
 
+                    <AnimatePresence>
                     {isExpanded && (
+                      <motion.div {...slideDown} className="overflow-hidden">
                       <div className="ml-3 mt-0.5 mb-1 pl-3 border-l-2 border-slate-100 flex flex-col gap-0.5">
                         {link.children.map((child) => (
                           <Link
@@ -332,7 +345,9 @@ const Navbar = () => {
                           </Link>
                         )}
                       </div>
+                      </motion.div>
                     )}
+                    </AnimatePresence>
                   </>
                 ) : (
                   <Link
@@ -369,7 +384,9 @@ const Navbar = () => {
             </Link>
           </div>
         </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </nav>
   );
 };
