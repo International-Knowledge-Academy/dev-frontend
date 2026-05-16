@@ -64,7 +64,7 @@ const Partnerships = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             Our Partners
           </h2>
-          <p className="text-slate-500 mt-4 max-w-xl mx-auto text-justify">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
             IKA builds long-term partnerships with organizations, training companies, universities,
             and professional institutions to promote international cooperation and knowledge exchange.
           </p>

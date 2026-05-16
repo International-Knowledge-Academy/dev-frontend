@@ -210,7 +210,7 @@ const Locations = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
           variants={fadeUp}
-          className="text-slate-500 max-w-md mx-auto text-sm leading-relaxed mb-12 text-justify"
+          className="text-slate-500 max-w-md mx-auto text-sm leading-relaxed mb-12 "
         >
           Inspiring international training environments across Malaysia, Europe,
           the United Kingdom, Türkiye, and beyond.

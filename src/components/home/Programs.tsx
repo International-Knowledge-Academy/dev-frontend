@@ -55,7 +55,7 @@ const Programs = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             Three Ways to Learn
           </h2>
-          <p className="text-slate-500 mt-4 max-w-xl mx-auto text-justify">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto ">
             IKA offers a flexible and impactful learning experience designed for professionals
             and organizations seeking international training opportunities outside their home countries.
           </p>

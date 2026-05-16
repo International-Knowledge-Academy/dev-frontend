@@ -184,7 +184,7 @@ const UpcomingPrograms = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed text-justify"
+            className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed "
           >
             Internationally delivered programs combining academic depth, practical tools,
             and measurable professional outcomes. Secure your place today.

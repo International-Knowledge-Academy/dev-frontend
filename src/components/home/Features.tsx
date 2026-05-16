@@ -77,7 +77,7 @@ const Features = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             What Sets Us Apart
           </h2>
-          <p className="text-slate-500 mt-4 max-w-xl mx-auto text-justify">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
             We do not offer ordinary training programs. We create international learning experiences
             that are practical, engaging, and professionally valuable.
           </p>

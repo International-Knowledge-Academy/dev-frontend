@@ -47,7 +47,7 @@ const Services = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             Our Services
           </h2>
-          <p className="text-slate-500 mt-4 max-w-xl mx-auto text-justify">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto ">
             Specialized services designed for professionals, executives, government employees,
             and institutional leaders. Contact us on WhatsApp to learn more or get started.
           </p>

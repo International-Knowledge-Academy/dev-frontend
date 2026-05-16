@@ -97,7 +97,7 @@ const HowToBeTrainer = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed text-justify"
+            className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed "
           >
             IKA works with experienced trainers, academics, and consultants to deliver
             programs with depth, relevance, and credibility. Here's how to join our network.

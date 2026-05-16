@@ -97,7 +97,7 @@ const HowToEnroll = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed text-justify"
+            className="text-slate-500 max-w-lg mx-auto text-sm md:text-base leading-relaxed"
           >
             Joining an IKA international training program is simple. Here's how
             professionals and institutions take the first step toward measurable growth.
