@@ -101,13 +101,9 @@ const RegisterPage = () => {
   const [selectedCategoryUid, setSelectedCategoryUid] = useState("");
   const [selectedFieldUid,    setSelectedFieldUid]    = useState("");
 
-  const { categories, loading: loadingCats }     = useAllCategories();
-  const { fields,    loading: loadingFields }    = useFields(
-    selectedCategoryUid ? { category: selectedCategoryUid, is_active: true } : {}
-  );
-  const { programs,  loading: loadingPrograms }  = usePrograms(
-    selectedFieldUid ? { field: selectedFieldUid, is_active: true } : {}
-  );
+  const { categories, loading: loadingCats }                    = useAllCategories();
+  const { fields,    loading: loadingFields,   setParams: setFieldsParams   } = useFields({});
+  const { programs,  loading: loadingPrograms, setParams: setProgramsParams  } = usePrograms({ is_active: true });
 
   const { createRegistration, loading, error, fieldErrors } = useCreateRegistration();
 
@@ -132,13 +128,16 @@ const RegisterPage = () => {
   const handleCategoryChange = (key: string, val: string) => {
     update(key, val);
     setSelectedCategoryUid(val);
+    setFieldsParams({ category: val || undefined, is_active: true });
     setFormData((p) => ({ ...p, field: "", program: "" }));
     setSelectedFieldUid("");
+    setProgramsParams({ field: undefined, is_active: true });
   };
 
   const handleFieldChange = (key: string, val: string) => {
     update(key, val);
     setSelectedFieldUid(val);
+    setProgramsParams({ field: val || undefined, is_active: true });
     setFormData((p) => ({ ...p, program: "" }));
   };
 
