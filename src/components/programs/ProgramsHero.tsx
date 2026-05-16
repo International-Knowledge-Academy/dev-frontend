@@ -34,7 +34,7 @@ const ProgramsHero = ({ selectedType }: Props) => {
   const content = selectedType ? typeContent[selectedType] ?? defaultContent : defaultContent;
 
   return (
-    <section className="relative bg-navy-600 overflow-hidden">
+    <section className="relative mt-[72px] bg-navy-600 overflow-hidden">
       {/* Grid overlay */}
       <div
         className="absolute inset-0 opacity-[0.04] pointer-events-none"

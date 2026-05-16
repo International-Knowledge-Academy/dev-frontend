@@ -46,7 +46,7 @@ const VerifyCertificatePage = () => {
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Navbar />
 
-      <main className="flex-1 py-16 px-4 sm:px-6">
+      <main className="flex-1 pt-24 pb-16 px-4 sm:px-6">
         <div className="max-w-2xl mx-auto">
 
           {/* Header */}

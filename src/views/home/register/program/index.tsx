@@ -199,7 +199,7 @@ const RegisterPage = () => {
       <Navbar />
 
       {/* Hero */}
-      <section className="bg-navy-800 pt-28 pb-12 relative overflow-hidden">
+      <section className="bg-navy-800 mt-[72px] pt-16 pb-12 relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{

@@ -257,7 +257,7 @@ const ProgramPage = () => {
       <Navbar />
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative bg-navy-800 overflow-hidden">
+      <section className="relative mt-[72px] bg-navy-800 overflow-hidden">
 
         {/* Grid pattern */}
         <div
@@ -273,7 +273,7 @@ const ProgramPage = () => {
         <div className="absolute top-0 right-0 w-[520px] h-[520px] bg-gold-500 opacity-[0.06] rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" />
         <div className="absolute bottom-0 left-1/3 w-[320px] h-[320px] bg-navy-400 opacity-[0.08] rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative max-w-6xl mx-auto px-6 pt-8 pb-16">
+        <div className="relative max-w-6xl mx-auto px-6 pt-10 pb-16">
 
           {/* Top bar */}
           <motion.div
