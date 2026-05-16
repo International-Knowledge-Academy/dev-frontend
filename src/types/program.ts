@@ -89,6 +89,7 @@ export interface ProgramsParams {
   ordering?: string;
   field?: string;
   location?: string;
+  category?: string;
   program_type?: ProgramType | "";
   level?: ProgramLevel | "";
   mode?: ProgramMode | "";
