@@ -9,6 +9,7 @@ import ProgramsHero from "components/programs/ProgramsHero";
 import TypeTabs from "components/programs/TypeTabs";
 import ProgramCard from "components/programs/ProgramCard";
 import SearchableDropdown from "components/form/search/SearchableDropdown";
+import InputField from "components/form/InputField";
 
 import usePrograms from "hooks/programs/usePrograms";
 import useLocations from "hooks/locations/useLocations";
@@ -39,6 +40,11 @@ const ProgramsPublicPage = () => {
   const locationOptions = [
     { value: "", label: "All Locations" },
     ...locations.map((l) => ({ value: l.uid, label: `${l.name} — ${l.city}, ${l.country}` })),
+  ];
+
+  const fieldOptions = [
+    { value: "", label: "All Fields" },
+    ...fields.map((f) => ({ value: f.uid, label: f.name })),
   ];
 
   const { programs, count, loading, error, setParams } = usePrograms({
@@ -92,25 +98,29 @@ const ProgramsPublicPage = () => {
         {/* Search + filters */}
         <div className="flex flex-wrap items-center gap-3 mb-8">
           <div className="relative flex-1 min-w-[200px]">
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => handleSearchChange(e.target.value)}
+            <InputField
+              field="search"
               placeholder="Search programs..."
-              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-navy-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-navy-300 transition"
+              formData={{ search }}
+              errors={{}}
+              updateFormData={(_, v) => handleSearchChange(v)}
+              required={false}
+              wrapperClassName="w-full"
             />
           </div>
 
-          <select
-            value={fieldUid}
-            onChange={(e) => handleFieldChange(e.target.value)}
-            className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-navy-800 focus:outline-none focus:ring-2 focus:ring-navy-300 transition"
-          >
-            <option value="">All Fields</option>
-            {fields.map((f) => (
-              <option key={f.uid} value={f.uid}>{f.name}</option>
-            ))}
-          </select>
+          <div className="relative min-w-[220px]">
+            <SearchableDropdown
+              field="field"
+              label="Field"
+              options={fieldOptions}
+              formData={{ field: fieldUid }}
+              errors={{}}
+              updateFormData={(_, v) => handleFieldChange(v)}
+              placeholder="All Fields"
+              required={false}
+            />
+          </div>
 
           <div className="relative min-w-[220px]">
             <SearchableDropdown
