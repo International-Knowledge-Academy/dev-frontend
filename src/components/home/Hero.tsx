@@ -14,7 +14,7 @@ const fadeUp = {
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[70vh] mt-[72px] mx-3 sm:mx-6 mb-6 flex items-center overflow-hidden rounded-2xl sm:rounded-3xl max-w-6xl lg:mx-auto">
+    <section className="relative min-h-[70vh] mt-[72px] mx-3 sm:mx-6 mb-6 flex items-center overflow-hidden rounded-2xl sm:rounded-3xl max-w-6xl lg:mx-auto bg-slate-50">
 
       {/* Video background */}
       <video
