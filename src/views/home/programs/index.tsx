@@ -15,7 +15,6 @@ import InputField from "components/form/InputField";
 import usePrograms from "hooks/programs/usePrograms";
 import useLocations from "hooks/locations/useLocations";
 import useFields from "hooks/fields/useFields";
-import useCategories from "hooks/categories/useCategories";
 
 const container = {
   hidden: {},
@@ -35,12 +34,10 @@ const ProgramsPublicPage = () => {
   const [search, setSearch]             = useState("");
   const [locationUid, setLocationUid]   = useState("");
   const [fieldUid, setFieldUid]         = useState(initialField);
-  const [categoryUid, setCategoryUid]   = useState("");
   const [filtersOpen, setFiltersOpen]   = useState(false);
 
-  const { locations }   = useLocations();
-  const { fields }      = useFields();
-  const { categories }  = useCategories();
+  const { locations } = useLocations();
+  const { fields }    = useFields();
 
   const locationOptions = [
     { value: "", label: "All Locations" },
@@ -52,11 +49,6 @@ const ProgramsPublicPage = () => {
     ...fields.map((f) => ({ value: f.uid, label: f.name })),
   ];
 
-  const categoryOptions = [
-    { value: "", label: "All Categories" },
-    ...categories.map((c) => ({ value: c.uid, label: c.name })),
-  ];
-
   const { programs, count, loading, error, setParams } = usePrograms({
     is_active: true,
     ...(initialField && { field: initialField }),
@@ -64,40 +56,34 @@ const ProgramsPublicPage = () => {
 
   const handleTypeSelect = (type: string | null) => {
     setSelectedType(type);
-    setParams({ program_type: type ?? undefined, location: locationUid || undefined, field: fieldUid || undefined, category: categoryUid || undefined, search: search || undefined, is_active: true });
+    setParams({ program_type: type ?? undefined, location: locationUid || undefined, field: fieldUid || undefined, search: search || undefined, is_active: true });
   };
 
   const handleSearchChange = (v: string) => {
     setSearch(v);
-    setParams({ search: v || undefined, program_type: selectedType ?? undefined, location: locationUid || undefined, field: fieldUid || undefined, category: categoryUid || undefined, is_active: true });
+    setParams({ search: v || undefined, program_type: selectedType ?? undefined, location: locationUid || undefined, field: fieldUid || undefined, is_active: true });
   };
 
   const handleLocationChange = (v: string) => {
     setLocationUid(v);
-    setParams({ location: v || undefined, program_type: selectedType ?? undefined, field: fieldUid || undefined, category: categoryUid || undefined, search: search || undefined, is_active: true });
+    setParams({ location: v || undefined, program_type: selectedType ?? undefined, field: fieldUid || undefined, search: search || undefined, is_active: true });
   };
 
   const handleFieldChange = (v: string) => {
     setFieldUid(v);
-    setParams({ field: v || undefined, program_type: selectedType ?? undefined, location: locationUid || undefined, category: categoryUid || undefined, search: search || undefined, is_active: true });
-  };
-
-  const handleCategoryChange = (v: string) => {
-    setCategoryUid(v);
-    setParams({ category: v || undefined, program_type: selectedType ?? undefined, location: locationUid || undefined, field: fieldUid || undefined, search: search || undefined, is_active: true });
+    setParams({ field: v || undefined, program_type: selectedType ?? undefined, location: locationUid || undefined, search: search || undefined, is_active: true });
   };
 
   const clearAll = () => {
     setSearch("");
     setLocationUid("");
     setFieldUid("");
-    setCategoryUid("");
     setSelectedType(null);
     setFiltersOpen(false);
-    setParams({ search: undefined, program_type: undefined, location: undefined, field: undefined, category: undefined, is_active: true });
+    setParams({ search: undefined, program_type: undefined, location: undefined, field: undefined, is_active: true });
   };
 
-  const activeFilterCount = [!!search, !!locationUid, !!fieldUid, !!categoryUid].filter(Boolean).length;
+  const activeFilterCount = [!!search, !!locationUid, !!fieldUid].filter(Boolean).length;
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
@@ -150,7 +136,7 @@ const ProgramsPublicPage = () => {
               </span>
             )}
 
-            {(search || locationUid || fieldUid || categoryUid || selectedType) && (
+            {(search || locationUid || fieldUid || selectedType) && (
               <button
                 onClick={clearAll}
                 className="hidden sm:flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition whitespace-nowrap flex-shrink-0"
@@ -177,18 +163,7 @@ const ProgramsPublicPage = () => {
 
           {/* Row 2 — desktop dropdowns */}
           <div className="hidden sm:flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-slate-100">
-            <div className="min-w-[180px]">
-              <SearchableDropdown
-                field="category"
-                options={categoryOptions}
-                formData={{ category: categoryUid }}
-                errors={{}}
-                updateFormData={(_, v) => handleCategoryChange(v)}
-                placeholder="All Categories"
-                required={false}
-              />
-            </div>
-            <div className="min-w-[180px]">
+            <div className="min-w-[200px]">
               <SearchableDropdown
                 field="field"
                 options={fieldOptions}
@@ -199,7 +174,7 @@ const ProgramsPublicPage = () => {
                 required={false}
               />
             </div>
-            <div className="min-w-[220px]">
+            <div className="min-w-[240px]">
               <SearchableDropdown
                 field="location"
                 options={locationOptions}
@@ -215,15 +190,6 @@ const ProgramsPublicPage = () => {
           {/* Mobile: expanded filter panel */}
           {filtersOpen && (
             <div className="sm:hidden mt-2 pt-2 border-t border-slate-100 flex flex-col gap-2">
-              <SearchableDropdown
-                field="category"
-                options={categoryOptions}
-                formData={{ category: categoryUid }}
-                errors={{}}
-                updateFormData={(_, v) => handleCategoryChange(v)}
-                placeholder="All Categories"
-                required={false}
-              />
               <SearchableDropdown
                 field="field"
                 options={fieldOptions}
@@ -243,7 +209,7 @@ const ProgramsPublicPage = () => {
                 required={false}
               />
               <div className="flex items-center justify-between">
-                {(search || locationUid || fieldUid || categoryUid) && (
+                {(search || locationUid || fieldUid) && (
                   <button
                     onClick={clearAll}
                     className="flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition"
@@ -313,7 +279,7 @@ const ProgramsPublicPage = () => {
         {!loading && !error && programs.length > 0 && (
           <AnimatePresence mode="wait">
             <motion.div
-              key={`${selectedType}-${locationUid}-${fieldUid}-${categoryUid}-${search}`}
+              key={`${selectedType}-${locationUid}-${fieldUid}-${search}`}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
               initial="hidden"
               animate="visible"

@@ -34,7 +34,6 @@ const usePrograms = (initialParams: ProgramsParams = {}): UseProgramsReturn => {
           ...(params.ordering     && { ordering:     params.ordering }),
           ...(params.field        && { field:        params.field }),
           ...(params.location     && { location:     params.location }),
-          ...(params.category     && { category:     params.category }),
           ...(params.program_type && { program_type: params.program_type }),
           ...(params.level        && { level:        params.level }),
           ...(params.mode         && { mode:         params.mode }),
@@ -71,7 +70,6 @@ const usePrograms = (initialParams: ProgramsParams = {}): UseProgramsReturn => {
         "search"          in updates ||
         "field"           in updates ||
         "location"        in updates ||
-        "category"        in updates ||
         "program_type"    in updates ||
         "level"           in updates ||
         "mode"            in updates ||
