@@ -145,7 +145,7 @@ const UpcomingPrograms = () => {
   const displayed = programs.slice(0, 6);
 
   return (
-    <section className="py-24 px-6 bg-white">
+    <section className="py-24 px-6 bg-slate-50">
       <div className="max-w-6xl mx-auto">
 
         {/* Header */}
