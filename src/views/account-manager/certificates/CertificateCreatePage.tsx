@@ -6,6 +6,7 @@ import { FileText, Upload, X, ExternalLink } from "lucide-react";
 import useCreateCertificate from "hooks/certificates/useCreateCertificate";
 import useRegistrations from "hooks/registrations/useRegistrations";
 import usePrograms from "hooks/programs/usePrograms";
+import useTrainers from "hooks/trainers/useTrainers";
 import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
@@ -77,8 +78,9 @@ const CertificateCreatePage = () => {
   const { addToast } = useToast();
   const { createCertificate, loading, error, fieldErrors } = useCreateCertificate();
 
-  const { registrations, setParams: setRegParams } = useRegistrations({});
-  const { programs }                               = usePrograms({ is_active: true });
+  const { registrations, setParams: setRegParams }  = useRegistrations({});
+  const { programs }                                = usePrograms({ is_active: true });
+  const { trainers, setParams: setTrainersParams }  = useTrainers({});
 
   const [formData, setFormData] = useState({
     registration:     "",
@@ -122,7 +124,8 @@ const CertificateCreatePage = () => {
     label: `${r.full_name} — ${r.program?.name ?? "No program"}`,
   }));
 
-  const programOptions = programs.map((p) => ({ value: p.uid, label: p.name }));
+  const programOptions  = programs.map((p) => ({ value: p.uid, label: p.name }));
+  const trainerOptions  = trainers.map((t) => ({ value: t.name, label: t.name }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -194,9 +197,19 @@ const CertificateCreatePage = () => {
             Program
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InputField label="Program Name"  field="program_name"      formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Program title" required />
-            <InputField label="Lead Trainer"  field="lead_trainer_name" formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Trainer full name" required={false} />
-            <InputField label="Issued By"     field="issued_by"         formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Issuing authority" required={false} />
+            <InputField label="Program Name" field="program_name" formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Program title" required />
+            <SearchableDropdown
+              label="Lead Trainer"
+              field="lead_trainer_name"
+              options={trainerOptions}
+              formData={formData}
+              errors={fieldErrors}
+              updateFormData={(_, name) => updateFormData("lead_trainer_name", name)}
+              placeholder="Search trainer..."
+              required={false}
+              onSearchChange={(q) => setTrainersParams({ search: q || undefined })}
+            />
+            <InputField label="Issued By" field="issued_by" formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Issuing authority" required={false} />
           </div>
 
           {/* Certificate */}

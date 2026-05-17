@@ -3,13 +3,12 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Pencil, CheckCircle, XCircle, GraduationCap, UserCheck,
-  CalendarDays, FileText, DollarSign, AlertTriangle, UserPlus,
+  CalendarDays, FileText, DollarSign, AlertTriangle,
 } from "lucide-react";
 import { MdClose } from "react-icons/md";
 import DropdownButton from "components/ui/buttons/DropdownButton";
 import Button from "components/ui/buttons/Button";
 import DangerButton from "components/ui/buttons/DangerButton";
-import AssignManagerModal from "./components/AssignManagerModal";
 import useGetRegistration from "hooks/registrations/useGetRegistration";
 import useApproveRegistration from "hooks/registrations/useApproveRegistration";
 import useRejectRegistration from "hooks/registrations/useRejectRegistration";
@@ -74,7 +73,6 @@ const RegistrationDetailPage = () => {
   const [rejectOpen, setRejectOpen]     = useState(false);
   const [rejectReason, setRejectReason] = useState("");
   const [deleteOpen, setDeleteOpen]     = useState(false);
-  const [assignOpen, setAssignOpen]     = useState(false);
 
   if (loading) return <Loading text="Loading registration..." />;
   if (error || !registration) {
@@ -137,9 +135,8 @@ const RegistrationDetailPage = () => {
               variant="outline"
               loading={anyActionLoading}
               items={[
-                { label: "Approve",        icon: <CheckCircle size={14} />,  onClick: handleApprove,              disabled: anyActionLoading || registration.status === "approved"  },
-                { label: "Reject",         icon: <XCircle size={14} />,      onClick: () => setRejectOpen(true),  disabled: anyActionLoading || registration.status === "rejected"  },
-                { label: "Assign Manager", icon: <UserPlus size={14} />,     onClick: () => setAssignOpen(true),  disabled: anyActionLoading },
+                { label: "Approve", icon: <CheckCircle size={14} />, onClick: handleApprove,             disabled: anyActionLoading || registration.status === "approved" },
+                { label: "Reject",  icon: <XCircle size={14} />,   onClick: () => setRejectOpen(true), disabled: anyActionLoading || registration.status === "rejected" },
                 { divider: true },
                 { label: "Delete Registration", icon: <AlertTriangle size={14} />, onClick: () => setDeleteOpen(true), danger: true },
               ]}
@@ -182,13 +179,12 @@ const RegistrationDetailPage = () => {
           <InfoRow icon={DollarSign} label="Program Price" value={registration.program_price ? `$${registration.program_price}` : "—"} />
         </div>
 
-        {/* Status & Assignment */}
-        <SectionTitle title="Status & Assignment" />
+        {/* Status */}
+        <SectionTitle title="Status" />
         <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
-          <InfoRow icon={FileText}      label="Status"        value={<span className="capitalize">{registration.status}</span>} />
-          <InfoRow icon={CalendarDays}  label="Status Changed" value={formatDate(registration.status_changed_at)} />
-          <InfoRow icon={UserCheck}     label="Manager ID"   value={registration.manager ? `#${registration.manager}` : "Not assigned"} />
-          <InfoRow icon={UserCheck}     label="Approved By"  value={registration.approved_by ? `#${registration.approved_by}` : "—"} />
+          <InfoRow icon={FileText}     label="Status"        value={<span className="capitalize">{registration.status}</span>} />
+          <InfoRow icon={CalendarDays} label="Status Changed" value={formatDate(registration.status_changed_at)} />
+          <InfoRow icon={UserCheck}    label="Approved By"   value={registration.approved_by ? `#${registration.approved_by}` : "—"} />
         </div>
 
         {/* Certificate */}
@@ -295,13 +291,6 @@ const RegistrationDetailPage = () => {
           </div>
         </div>
       )}
-
-      <AssignManagerModal
-        open={assignOpen}
-        registration={registration}
-        onClose={() => setAssignOpen(false)}
-        onSuccess={refetch}
-      />
 
       <ConfirmModal
         open={deleteOpen}

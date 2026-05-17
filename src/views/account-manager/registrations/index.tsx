@@ -2,14 +2,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ClipboardList, UserCheck, UserX, UserPlus, Clock, RefreshCw,
+  ClipboardList, UserCheck, Clock, RefreshCw,
   Pencil, Trash2, AlertTriangle, X, Filter,
 } from "lucide-react";
 import useRegistrations from "hooks/registrations/useRegistrations";
 import useAuth from "hooks/auth/useAuth";
 import useDeleteRegistration from "hooks/registrations/useDeleteRegistration";
 import { useToast } from "context/ToastContext";
-import AssignManagerModal from "./components/AssignManagerModal";
 import Loading from "components/loading/Loading";
 import IconButton from "components/ui/buttons/IconButton";
 import PageHeader from "components/ui/PageHeader";
@@ -80,15 +79,11 @@ const RegistrationsPage = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
   const { user } = useAuth();
-  const { registrations, count, loading, error, params, setParams, refetch } = useRegistrations(
-    user?.uid ? { manager: user.uid } : {}
-  );
+  const { registrations, count, loading, error, params, setParams, refetch } = useRegistrations({});
   const { deleteRegistration, loading: deleting } = useDeleteRegistration();
 
-  const [deleteTarget, setDeleteTarget]   = useState<Registration | null>(null);
-  const [assignTarget, setAssignTarget]   = useState<Registration | null>(null);
-  const [assignOpen, setAssignOpen]       = useState(false);
-  const [filtersOpen, setFiltersOpen]     = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<Registration | null>(null);
+  const [filtersOpen, setFiltersOpen]   = useState(false);
 
   const totalApproved = registrations.filter((r) => r.status === "approved").length;
   const totalPending  = registrations.filter((r) => r.status === "pending").length;
@@ -276,7 +271,7 @@ const RegistrationsPage = () => {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-slate-100 bg-slate-50/60">
-                      {["Participant", "Program", "Type", "Price", "Status", "Manager", "Date", "Actions"].map((label) => (
+                      {["Participant", "Program", "Type", "Price", "Status", "Date", "Actions"].map((label) => (
                         <th key={label} className="px-5 py-3 text-left text-xs font-bold tracking-widest uppercase text-slate-400">
                           {label}
                         </th>
@@ -320,25 +315,6 @@ const RegistrationsPage = () => {
                             <span className="capitalize">{reg.status}</span>
                           </span>
                         </td>
-                        <td className="px-5 py-3.5">
-                          {reg.manager ? (
-                            <span
-                              title={`Manager #${reg.manager}`}
-                              className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium bg-green-50 text-green-600 border border-green-200"
-                            >
-                              <UserCheck size={13} />
-                              Assigned
-                            </span>
-                          ) : (
-                            <span
-                              title="No manager assigned"
-                              className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium bg-slate-50 text-slate-400 border border-slate-200"
-                            >
-                              <UserX size={13} />
-                              None
-                            </span>
-                          )}
-                        </td>
                         <td className="px-5 py-3.5 text-slate-400 text-xs whitespace-nowrap">
                           {reg.registration_date
                             ? new Date(reg.registration_date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
@@ -346,13 +322,6 @@ const RegistrationsPage = () => {
                         </td>
                         <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                           <div className="flex items-center gap-1">
-                            <button
-                              onClick={() => { setAssignTarget(reg); setAssignOpen(true); }}
-                              className="p-1.5 rounded-md text-slate-400 hover:bg-navy-50 hover:text-navy-600 transition"
-                              title="Assign Manager"
-                            >
-                              <UserPlus size={14} />
-                            </button>
                             <button
                               onClick={() => navigate(`/admin/registrations/${reg.uid}/edit`)}
                               className="p-1.5 rounded-md text-slate-400 hover:bg-navy-50 hover:text-navy-700 transition"
@@ -396,13 +365,6 @@ const RegistrationsPage = () => {
           </div>
         </div>
       </div>
-
-      <AssignManagerModal
-        open={assignOpen}
-        registration={assignTarget}
-        onClose={() => { setAssignOpen(false); setAssignTarget(null); }}
-        onSuccess={refetch}
-      />
 
       <ConfirmModal
         open={!!deleteTarget}
