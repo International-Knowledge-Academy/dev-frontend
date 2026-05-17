@@ -19,6 +19,7 @@ interface DropdownButtonProps {
   variant?: "primary" | "outline";
   loading?: boolean;
   disabled?: boolean;
+  align?: "left" | "right";
 }
 
 const DropdownButton = ({
@@ -28,22 +29,32 @@ const DropdownButton = ({
   variant = "primary",
   loading = false,
   disabled = false,
+  align = "right",
 }: DropdownButtonProps) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
+    const onMouse = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onMouse);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onMouse);
+      document.removeEventListener("keydown", onKey);
+    };
   }, []);
 
   const triggerClass =
     variant === "primary"
       ? "bg-navy-800 text-white hover:bg-navy-700 border-navy-800"
       : "bg-white text-slate-700 hover:bg-slate-50 border-slate-200 shadow-sm";
+
+  const alignClass = align === "left" ? "left-0" : "right-0";
 
   return (
     <div ref={ref} className="relative inline-block">
@@ -67,37 +78,41 @@ const DropdownButton = ({
         )}
       </button>
 
-      {open && (
-        <div className="absolute right-0 mt-2 w-52 rounded-xl bg-white border border-slate-100 shadow-xl z-50 overflow-hidden py-1.5">
-          {items.map((item, i) =>
-            item.divider ? (
-              <div key={i} className="my-1.5 border-t border-slate-100" />
-            ) : (
-              <button
-                key={i}
-                type="button"
-                disabled={item.disabled}
-                onClick={() => {
-                  if (!item.disabled) {
-                    item.onClick?.();
-                    setOpen(false);
-                  }
-                }}
-                className={`flex items-center gap-2.5 w-full px-4 py-2.5 text-sm font-medium transition text-left disabled:opacity-40 disabled:cursor-not-allowed ${
-                  item.danger
-                    ? "text-red-500 hover:bg-red-50"
-                    : "text-navy-700 hover:bg-navy-50"
-                }`}
-              >
-                {item.icon && (
-                  <span className="flex items-center text-current flex-shrink-0">{item.icon}</span>
-                )}
-                {item.label}
-              </button>
-            )
-          )}
-        </div>
-      )}
+      <div
+        className={`absolute ${alignClass} mt-2 w-52 rounded-xl bg-white border border-slate-100 shadow-xl z-50 overflow-hidden py-1.5 transition-all duration-200 origin-top ${
+          open
+            ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
+            : "opacity-0 scale-95 -translate-y-1 pointer-events-none"
+        }`}
+      >
+        {items.map((item, i) =>
+          item.divider ? (
+            <div key={i} className="my-1.5 border-t border-slate-100" />
+          ) : (
+            <button
+              key={i}
+              type="button"
+              disabled={item.disabled}
+              onClick={() => {
+                if (!item.disabled) {
+                  item.onClick?.();
+                  setOpen(false);
+                }
+              }}
+              className={`flex items-center gap-2.5 w-full px-4 py-2.5 text-sm font-medium transition text-left disabled:opacity-40 disabled:cursor-not-allowed ${
+                item.danger
+                  ? "text-red-500 hover:bg-red-50"
+                  : "text-navy-700 hover:bg-navy-50"
+              }`}
+            >
+              {item.icon && (
+                <span className="flex items-center text-current flex-shrink-0">{item.icon}</span>
+              )}
+              {item.label}
+            </button>
+          )
+        )}
+      </div>
     </div>
   );
 };

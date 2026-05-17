@@ -2,14 +2,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  CreditCard, CheckCircle, Clock, Plus, RefreshCw,
+  CreditCard, CheckCircle, Clock, RefreshCw,
   Pencil, Trash2, AlertTriangle, X, Filter, DollarSign,
 } from "lucide-react";
 import usePayments from "hooks/payments/usePayments";
 import useDeletePayment from "hooks/payments/useDeletePayment";
 import { useToast } from "context/ToastContext";
 import Loading from "components/loading/Loading";
-import Button from "components/ui/buttons/Button";
 import IconButton from "components/ui/buttons/IconButton";
 import PageHeader from "components/ui/PageHeader";
 import PrevButton from "components/ui/buttons/PrevButton";
@@ -128,14 +127,6 @@ const PaymentsPage = () => {
       <PageHeader
         title="Payments"
         subtitle="Manage program payment records"
-        actions={
-          <Button
-            variant="dark-navy"
-            text="New Payment"
-            icon={<Plus size={15} />}
-            onClick={() => navigate("/admin/payments/create")}
-          />
-        }
         className="mb-4 px-0 sm:px-0"
       />
 

@@ -128,14 +128,6 @@ const PaymentsPage = () => {
       <PageHeader
         title="Payments"
         subtitle="Manage program payment records"
-        actions={
-          <Button
-            variant="dark-navy"
-            text="New Payment"
-            icon={<Plus size={15} />}
-            onClick={() => navigate("/admin/payments/create")}
-          />
-        }
         className="mb-4 px-0 sm:px-0"
       />
 
