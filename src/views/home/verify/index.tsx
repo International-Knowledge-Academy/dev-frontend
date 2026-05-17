@@ -178,17 +178,14 @@ const VerifyCertificatePage = () => {
 
               {/* Details */}
               <div className="px-6 py-2">
-                <ResultRow label="Certificate #"      value={result.certificate_number} />
-                <ResultRow label="Verification Code"  value={result.verification_code} />
-                <ResultRow label="Participant"        value={result.participant_name} />
-                <ResultRow label="Program"            value={result.program_name} />
-                <ResultRow label="Program Duration"   value={result.program_duration} />
-                <ResultRow label="Training Location"  value={result.training_location} />
-                <ResultRow label="Training Dates"     value={result.training_dates} />
-                <ResultRow label="Certificate Type"   value={result.certificate_type ? result.certificate_type.charAt(0).toUpperCase() + result.certificate_type.slice(1) : undefined} />
-                <ResultRow label="Issue Date"         value={result.issue_date ? new Date(result.issue_date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : undefined} />
-                <ResultRow label="Lead Trainer"       value={result.lead_trainer_name} />
-                <ResultRow label="Issued By"          value={result.issued_by} />
+                <ResultRow label="Certificate #"     value={result.certificate_number} />
+                <ResultRow label="Verification Code" value={result.verification_code} />
+                <ResultRow label="Participant"       value={result.participant_name} />
+                <ResultRow label="Program"           value={result.program_name} />
+                <ResultRow label="Certificate Type"  value={result.certificate_type ? result.certificate_type.charAt(0).toUpperCase() + result.certificate_type.slice(1) : undefined} />
+                <ResultRow label="Issue Date"        value={result.issue_date ? new Date(result.issue_date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : undefined} />
+                <ResultRow label="Lead Trainer"      value={result.lead_trainer_name} />
+                <ResultRow label="Issued By"         value={result.issued_by} />
               </div>
             </motion.div>
           )}

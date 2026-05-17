@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   MdArrowBack, MdEdit, MdPerson, MdEmail, MdBadge,
-  MdSchool, MdLocationOn, MdCalendarToday, MdVerified,
+  MdSchool, MdCalendarToday, MdVerified,
   MdNotes, MdBlock, MdCheckCircle, MdCancel, MdSchedule,
 } from "react-icons/md";
 import { ShieldOff } from "lucide-react";
@@ -143,20 +143,16 @@ const CertificateDetailPage = () => {
           {/* Participant Info */}
           <SectionTitle title="Participant Details" />
           <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
-            <InfoRow icon={<MdPerson size={18} />}   label="Participant Name"    value={certificate.participant_name} />
-            <InfoRow icon={<MdEmail size={18} />}    label="Email"              value={certificate.participant_email} />
-            <InfoRow icon={<MdBadge size={18} />}    label="ID Number"          value={certificate.participant_id_number} />
+            <InfoRow icon={<MdPerson size={18} />} label="Participant Name" value={certificate.participant_name} />
+            <InfoRow icon={<MdEmail size={18} />}  label="Email"           value={certificate.participant_email} />
           </div>
 
           {/* Program Info */}
           <SectionTitle title="Program Details" />
           <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
-            <InfoRow icon={<MdSchool size={18} />}      label="Program Name"       value={certificate.program_name} />
-            <InfoRow icon={<MdCalendarToday size={18} />} label="Duration"         value={certificate.program_duration} />
-            <InfoRow icon={<MdLocationOn size={18} />}  label="Training Location"  value={certificate.training_location} />
-            <InfoRow icon={<MdCalendarToday size={18} />} label="Training Dates"   value={certificate.training_dates} />
-            <InfoRow icon={<MdPerson size={18} />}      label="Lead Trainer"       value={certificate.lead_trainer_name} />
-            <InfoRow icon={<MdVerified size={18} />}    label="Issued By"          value={certificate.issued_by} />
+            <InfoRow icon={<MdSchool size={18} />}   label="Program Name"  value={certificate.program_name} />
+            <InfoRow icon={<MdPerson size={18} />}   label="Lead Trainer"  value={certificate.lead_trainer_name} />
+            <InfoRow icon={<MdVerified size={18} />} label="Issued By"     value={certificate.issued_by} />
             {certificate.certificate_pdf && (
               <InfoRow
                 icon={<MdNotes size={18} />}
@@ -182,10 +178,7 @@ const CertificateDetailPage = () => {
             <InfoRow icon={<MdBadge size={18} />}        label="Certificate Type"     value={certificate.certificate_type ? certificate.certificate_type.charAt(0).toUpperCase() + certificate.certificate_type.slice(1) : "—"} />
             <InfoRow icon={<MdCalendarToday size={18} />} label="Issue Date"          value={formatDate(certificate.issue_date)} />
             <InfoRow icon={<MdVerified size={18} />}     label="Verification Code"    value={certificate.verification_code} />
-            <InfoRow icon={<MdCheckCircle size={18} />}  label="Validity"             value={certificate.is_valid} />
-            {certificate.special_notes && (
-              <InfoRow icon={<MdNotes size={18} />}      label="Special Notes"        value={certificate.special_notes} />
-            )}
+            <InfoRow icon={<MdCheckCircle size={18} />} label="Validity" value={certificate.is_valid} />
           </div>
 
           {/* Revocation (only if revoked) */}

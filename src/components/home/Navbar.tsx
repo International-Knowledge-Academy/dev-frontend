@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   MdMenu, MdClose, MdKeyboardArrowDown,
   MdArrowForward, MdGridView, MdMenuBook,
-  MdSchool, MdWorkspacePremium,
+  MdSchool, MdWorkspacePremium, MdVerified,
 } from "react-icons/md";
 
 import useCategories from "hooks/categories/useCategories";
@@ -208,8 +208,8 @@ const Navbar = () => {
         to: `/category/${c.uid}`,
       })),
     },
-    { label: "Programs",  to: "/programs" },
-    { label: "Contact",   to: "/contact" },
+    { label: "Programs", to: "/programs" },
+    { label: "Contact",  to: "/contact" },
     {
       label: "Register",
       to: "/register",
@@ -225,6 +225,12 @@ const Navbar = () => {
           description: "Join our trainer network and share your expertise.",
           icon: <MdWorkspacePremium size={16} />,
           to: "/register/trainer",
+        },
+        {
+          label: "Verify Certificate",
+          description: "Check the authenticity of an issued certificate.",
+          icon: <MdVerified size={16} />,
+          to: "/verify",
         },
       ],
     },

@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { MdArrowBack, MdSave } from "react-icons/md";
 import { FileText, Upload, X, ExternalLink } from "lucide-react";
 import useCreateCertificate from "hooks/certificates/useCreateCertificate";
+import useRegistrations from "hooks/registrations/useRegistrations";
+import usePrograms from "hooks/programs/usePrograms";
 import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
-import TextareaField from "components/form/TextareaField";
 import SelectField from "components/form/SelectField";
+import SearchableDropdown from "components/form/search/SearchableDropdown";
 
 /* ─── PDF Upload ─────────────────────────────────────────────────────────── */
 const PdfUpload = ({ value, onChange }) => {
@@ -86,24 +88,45 @@ const CertificateCreatePage = () => {
   const { addToast } = useToast();
   const { createCertificate, loading, error, fieldErrors } = useCreateCertificate();
 
+  const { registrations, setParams: setRegParams } = useRegistrations({});
+  const { programs }                               = usePrograms({ is_active: true });
+
   const [formData, setFormData] = useState({
-    participant_name:     "",
-    participant_email:    "",
-    participant_id_number: "",
-    certificate_type:     "completion",
-    program_name:         "",
-    program_duration:     "",
-    training_location:    "",
-    training_dates:       "",
-    lead_trainer_name:    "",
-    issued_by:            "",
-    status:               "pending",
-    special_notes:        "",
-    certificate_pdf:      "",
+    registration:     "",
+    program:          "",
+    participant_name: "",
+    participant_email:"",
+    certificate_type: "completion",
+    program_name:     "",
+    lead_trainer_name:"",
+    issued_by:        "",
+    status:           "pending",
+    certificate_pdf:  "",
   });
 
   const updateFormData = (field: string, value: any) =>
     setFormData((prev) => ({ ...prev, [field]: value }));
+
+  const handleRegistrationChange = (_: string, uid: string) => {
+    const reg = registrations.find((r) => r.uid === uid);
+    setFormData((prev) => ({
+      ...prev,
+      registration:      uid,
+      participant_name:  reg?.full_name   || prev.participant_name,
+      participant_email: reg?.email       || prev.participant_email,
+      program:           reg?.program?.uid  || prev.program,
+      program_name:      reg?.program?.name || prev.program_name,
+    }));
+  };
+
+  const handleProgramChange = (_: string, uid: string) => {
+    const prog = programs.find((p) => p.uid === uid);
+    setFormData((prev) => ({
+      ...prev,
+      program:      uid,
+      program_name: prog?.name || prev.program_name,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,6 +139,13 @@ const CertificateCreatePage = () => {
       navigate("/admin/certificates");
     }
   };
+
+  const registrationOptions = registrations.map((r) => ({
+    value: r.uid,
+    label: `${r.full_name} — ${r.program?.name ?? "No program"}`,
+  }));
+
+  const programOptions = programs.map((p) => ({ value: p.uid, label: p.name }));
 
   return (
     <div className="space-y-4">
@@ -133,14 +163,41 @@ const CertificateCreatePage = () => {
             </div>
           )}
 
-          {/* Participant */}
+          {/* Link */}
           <p className="text-xs font-bold uppercase tracking-widest text-slate-400 border-b border-slate-100 pb-2">
+            Link (Optional)
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <SearchableDropdown
+              label="Registration"
+              field="registration"
+              options={registrationOptions}
+              formData={formData}
+              errors={fieldErrors}
+              updateFormData={handleRegistrationChange}
+              placeholder="Search by participant name..."
+              required={false}
+              onSearchChange={(q) => setRegParams({ search: q || undefined })}
+            />
+            <SearchableDropdown
+              label="Program"
+              field="program"
+              options={programOptions}
+              formData={formData}
+              errors={fieldErrors}
+              updateFormData={handleProgramChange}
+              placeholder="Select program..."
+              required={false}
+            />
+          </div>
+
+          {/* Participant */}
+          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 border-b border-slate-100 pb-2 pt-2">
             Participant
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InputField label="Participant Name"  field="participant_name"      formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Full name" required />
-            <InputField label="Email"             field="participant_email"     formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="email@example.com" required />
-            <InputField label="ID Number"         field="participant_id_number" formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Passport / ID number" />
+            <InputField label="Participant Name" field="participant_name"  formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Full name" required />
+            <InputField label="Email"            field="participant_email" formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="email@example.com" required />
           </div>
 
           {/* Program */}
@@ -148,12 +205,9 @@ const CertificateCreatePage = () => {
             Program
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InputField label="Program Name"       field="program_name"      formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Program title" required />
-            <InputField label="Program Duration"   field="program_duration"  formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="e.g. 5 days" />
-            <InputField label="Training Location"  field="training_location" formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="City, Country" />
-            <InputField label="Training Dates"     field="training_dates"    formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="e.g. 10–14 March 2026" />
-            <InputField label="Lead Trainer"       field="lead_trainer_name" formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Trainer full name" />
-            <InputField label="Issued By"          field="issued_by"         formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Issuing authority" />
+            <InputField label="Program Name" field="program_name"      formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Program title" required />
+            <InputField label="Lead Trainer" field="lead_trainer_name" formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Trainer full name" required={false} />
+            <InputField label="Issued By"    field="issued_by"         formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Issuing authority" required={false} />
           </div>
 
           {/* Certificate */}
@@ -165,7 +219,6 @@ const CertificateCreatePage = () => {
             <SelectField label="Status"           field="status"           options={STATUSES}          formData={formData} errors={fieldErrors} updateFormData={updateFormData} required />
           </div>
           <PdfUpload value={formData.certificate_pdf} onChange={(url) => updateFormData("certificate_pdf", url)} />
-          <TextareaField label="Special Notes" field="special_notes" formData={formData} errors={fieldErrors} updateFormData={updateFormData} placeholder="Any additional notes..." />
 
           <div className="flex gap-2 pt-2 border-t border-slate-100">
             <button

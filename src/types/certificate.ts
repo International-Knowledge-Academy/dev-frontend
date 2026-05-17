@@ -11,17 +11,12 @@ export interface Certificate {
   verification_code: string;
   participant_name: string;
   participant_email: string;
-  participant_id_number: string;
   certificate_type: CertificateType;
   program_name: string;
-  program_duration: string;
-  training_location: string;
-  training_dates: string;
   lead_trainer_name: string;
   issued_by: string;
   issue_date: string;
   status: CertificateStatus;
-  special_notes: string;
   revocation_reason: string;
   revoked_at: string | null;
   created_at: string;
@@ -44,19 +39,16 @@ export interface CertificatesParams {
 }
 
 export interface CreateCertificatePayload {
+  registration?: string;
+  program?: string;
   certificate_pdf?: string;
   participant_name: string;
   participant_email: string;
-  participant_id_number?: string;
   certificate_type: CertificateType;
   program_name: string;
-  program_duration?: string;
-  training_location?: string;
-  training_dates?: string;
   lead_trainer_name?: string;
   issued_by?: string;
   status?: CertificateStatus;
-  special_notes?: string;
   revocation_reason?: string;
   revoked_at?: string | null;
   issued_by_user?: number | null;
@@ -72,10 +64,6 @@ export interface CertificateVerification {
   verification_code: string;
   participant_name: string;
   program_name: string;
-  program_duration: string;
-  program_details: string;
-  training_location: string;
-  training_dates: string;
   certificate_type: CertificateType;
   issue_date: string;
   status: CertificateStatus;
