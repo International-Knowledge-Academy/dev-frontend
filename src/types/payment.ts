@@ -1,6 +1,6 @@
 export type SponsorshipType = "self_funded" | "company_sponsored" | "government_funded" | "scholarship";
-export type PaymentStatus  = "pending" | "approved" | "cancelled" | "refunded";
-export type PaymentMethod  = "cash" | "bank_transfer" | "credit_card" | "cheque" | "online";
+export type PaymentStatus   = "pending" | "approved" | "cancelled" | "refunded";
+export type PaymentMethod   = "cash" | "bank_transfer" | "credit_card" | "cheque" | "online";
 
 export interface RegistrationBrief {
   uid: string;
@@ -10,8 +10,14 @@ export interface RegistrationBrief {
   status: string;
 }
 
+export interface PaymentUser {
+  uid: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
 export interface Payment {
-  id: number;
   uid: string;
   sponsorship_type: SponsorshipType;
   amount: string;
@@ -21,9 +27,15 @@ export interface Payment {
   payment_method: PaymentMethod;
   cancelled_at: string | null;
   cancelled_reason: string;
-  registration: RegistrationBrief | number | null;
-  approved_by: number | null;
-  cancelled_by: number | null;
+  refunded_at: string | null;
+  refunded_reason: string;
+  refund: string | null;
+  created_at: string;
+  updated_at: string;
+  registration: RegistrationBrief | null;
+  approved_by: PaymentUser | null;
+  cancelled_by: PaymentUser | null;
+  refunded_by: PaymentUser | null;
 }
 
 export interface PaginatedPayments {
@@ -37,18 +49,16 @@ export interface PaymentsParams {
   page?: number;
   search?: string;
   ordering?: string;
+  status?: PaymentStatus | "";
+  sponsorship_type?: SponsorshipType | "";
 }
 
 export interface CreatePaymentPayload {
+  registration_uid: string;
   sponsorship_type: SponsorshipType;
   amount: string;
   payment_method: PaymentMethod;
   proof?: string | null;
-  cancelled_at?: string | null;
-  cancelled_reason?: string;
-  registration: number;
-  approved_by?: number | null;
-  cancelled_by?: number | null;
 }
 
 export type UpdatePaymentPayload = Partial<CreatePaymentPayload>;

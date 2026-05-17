@@ -295,9 +295,9 @@ const PaymentsPage = () => {
                         onClick={() => navigate(`/admin/payments/${payment.uid}`)}
                         className="hover:bg-slate-50 transition cursor-pointer group"
                       >
-                        <td className="px-5 py-3.5 text-slate-400 tabular-nums text-xs">#{payment.id}</td>
-                        <td className="px-5 py-3.5 text-slate-500 tabular-nums">
-                          {payment.registration ? `Reg #${payment.registration}` : "—"}
+                        <td className="px-5 py-3.5 text-slate-400 tabular-nums text-xs font-mono">{payment.uid?.slice(0, 8)}</td>
+                        <td className="px-5 py-3.5 text-slate-500 truncate max-w-[140px]">
+                          {payment.registration?.full_name ?? "—"}
                         </td>
                         <td className="px-5 py-3.5">
                           <span className="font-semibold text-navy-800 tabular-nums">
@@ -370,7 +370,7 @@ const PaymentsPage = () => {
         message={
           <>
             Are you sure you want to delete payment{" "}
-            <span className="font-semibold text-navy-800">#{deleteTarget?.id}</span>?{" "}
+            <span className="font-semibold text-navy-800">#{deleteTarget?.uid?.slice(0, 8)}</span>?{" "}
             This action cannot be undone.
           </>
         }

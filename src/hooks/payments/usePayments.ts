@@ -29,9 +29,11 @@ const usePayments = (initialParams: PaymentsParams = {}): UsePaymentsReturn => {
     try {
       const { data } = await axiosInstance.get<PaginatedPayments>("/payments", {
         params: {
-          ...(params.page     && { page:     params.page }),
-          ...(params.search   && { search:   params.search }),
-          ...(params.ordering && { ordering: params.ordering }),
+          ...(params.page              && { page:              params.page }),
+          ...(params.search            && { search:            params.search }),
+          ...(params.ordering          && { ordering:          params.ordering }),
+          ...(params.status            && { status:            params.status }),
+          ...(params.sponsorship_type  && { sponsorship_type:  params.sponsorship_type }),
         },
       });
       setPayments(Array.isArray(data.results) ? data.results : []);
@@ -55,7 +57,7 @@ const usePayments = (initialParams: PaymentsParams = {}): UsePaymentsReturn => {
     setParamsState((prev) => ({
       ...prev,
       ...updates,
-      page: "search" in updates || "ordering" in updates
+      page: "search" in updates || "ordering" in updates || "status" in updates || "sponsorship_type" in updates
         ? 1
         : (updates.page ?? prev.page),
     }));
