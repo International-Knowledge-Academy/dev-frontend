@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdPhotoCamera } from "react-icons/md";
+import { FileText, Upload, X, ExternalLink } from "lucide-react";
 import useGetProgram from "hooks/programs/useGetProgram";
 import useUpdateProgram from "hooks/programs/useUpdateProgram";
 import useFields from "hooks/fields/useFields";

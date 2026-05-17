@@ -1,9 +1,11 @@
 // @ts-nocheck
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { FileText, Upload, X, ExternalLink } from "lucide-react";
 import { useToast } from "context/ToastContext";
 import useGetPayment from "hooks/payments/useGetPayment";
 import useUpdatePayment from "hooks/payments/useUpdatePayment";
+import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import PageHeader from "components/ui/PageHeader";
 import InputField from "components/form/InputField";
 import Button from "components/ui/buttons/Button";
@@ -24,6 +26,65 @@ const METHOD_OPTIONS = [
   { value: "cheque",        label: "Cheque"        },
   { value: "online",        label: "Online"        },
 ];
+
+const PdfUpload = ({ value, onChange }) => {
+  const { upload, uploading, progress, error } = usePresignedUpload();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = "";
+    const result = await upload(file, { folder: "payments/proofs", file_type: "pdf" });
+    if (result) onChange(result.public_url);
+  };
+
+  const fileName = value ? value.split("/").pop() : null;
+
+  return (
+    <div>
+      <label className="block text-sm font-medium text-navy-800 mb-2">Payment Proof</label>
+      {value ? (
+        <div className="flex items-center gap-3 px-4 py-3 rounded-lg border border-slate-200 bg-slate-50">
+          <FileText size={18} className="text-navy-500 flex-shrink-0" />
+          <span className="text-sm text-navy-800 truncate flex-1" title={fileName}>{fileName}</span>
+          <a href={value} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-navy-600 transition flex-shrink-0">
+            <ExternalLink size={14} />
+          </a>
+          <button type="button" onClick={() => { onChange(""); inputRef.current?.click(); }}
+            className="text-slate-400 hover:text-navy-600 transition flex-shrink-0" title="Replace">
+            <Upload size={14} />
+          </button>
+          <button type="button" onClick={() => onChange("")}
+            className="text-slate-400 hover:text-red-500 transition flex-shrink-0" title="Remove">
+            <X size={14} />
+          </button>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          disabled={uploading}
+          className="w-full h-20 rounded-lg border-2 border-dashed border-slate-200 flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:border-navy-300 hover:text-navy-500 transition bg-slate-50 disabled:opacity-60"
+        >
+          <FileText size={20} />
+          <span className="text-xs font-medium">Upload Proof PDF</span>
+          <span className="text-[10px] text-slate-300">PDF files only</span>
+        </button>
+      )}
+      {uploading && (
+        <div className="mt-2 space-y-1">
+          <div className="h-1 rounded-full bg-slate-100 overflow-hidden">
+            <div className="h-full bg-navy-500 transition-all duration-300" style={{ width: `${progress}%` }} />
+          </div>
+          <p className="text-xs text-slate-400 text-center">Uploading {progress}%</p>
+        </div>
+      )}
+      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
+      <input ref={inputRef} type="file" accept="application/pdf" className="hidden" onChange={handleChange} />
+    </div>
+  );
+};
 
 const PaymentEditPage = () => {
   const { uid } = useParams<{ uid: string }>();
@@ -57,10 +118,7 @@ const PaymentEditPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = {
-      ...form,
-      proof: form.proof || null,
-    };
+    const payload = { ...form, proof: form.proof || null };
     const updated = await updatePayment(id, payload);
     if (updated) {
       addToast("Payment updated", "success");
@@ -69,12 +127,9 @@ const PaymentEditPage = () => {
   };
 
   if (loadingPayment) return <Loading text="Loading payment..." />;
-
   if (loadError) {
     return (
-      <div className="flex items-center justify-center py-20 text-sm text-red-500">
-        {loadError}
-      </div>
+      <div className="flex items-center justify-center py-20 text-sm text-red-500">{loadError}</div>
     );
   }
 
@@ -124,16 +179,12 @@ const PaymentEditPage = () => {
               updateFormData={update}
               placeholder="Select sponsorship..."
             />
-            <InputField
-              label="Proof URL"
-              field="proof"
-              placeholder="https://..."
-              required={false}
-              formData={form}
-              errors={fieldErrors}
-              updateFormData={update}
-            />
           </div>
+
+          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 border-b border-slate-100 pb-2 mt-2">
+            Proof
+          </p>
+          <PdfUpload value={form.proof} onChange={(url) => update("proof", url)} />
 
           <div className="flex gap-2 border-t border-slate-100 pt-4">
             <Button
