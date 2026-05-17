@@ -6,9 +6,7 @@ import SignIn from "views/auth/SignIn";
 
 // Admin Imports
 import MainDashboard    from "views/admin/default";
-import NFTMarketplace   from "views/admin/marketplace";
 import Profile          from "views/admin/profile";
-import DataTables       from "views/admin/tables";
 import UsersPage        from "views/admin/users";
 import TrainersPage     from "views/admin/trainers";
 import LocationsPage    from "views/admin/locations";
@@ -40,8 +38,6 @@ import ManagerCertificatesPage   from "views/account-manager/certificates";
 // Icon Imports
 import {
   MdHome,
-  MdOutlineShoppingCart,
-  MdBarChart,
   MdPerson,
   MdDashboard,
   MdAdminPanelSettings,
