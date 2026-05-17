@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdPhotoCamera } from "react-icons/md";
-import { FileText, Upload, X, ExternalLink } from "lucide-react";
+import PdfUploadField from "components/form/filesUpload/PdfUploadField";
 import useGetProgram from "hooks/programs/useGetProgram";
 import useUpdateProgram from "hooks/programs/useUpdateProgram";
 import useFields from "hooks/fields/useFields";
@@ -384,15 +384,7 @@ const ProgramEditPage = () => {
           />
 
           <div className="md:col-span-2">
-            <InputField
-              label="Brochure URL"
-              field="brochure_url"
-              required={false}
-              placeholder="https://..."
-              formData={form}
-              errors={fieldErrors}
-              updateFormData={updateFormData}
-            />
+            <PdfUploadField label="Brochure" folder="programs/brochures" displayUrl={form.brochure_url} onChange={(url) => updateFormData("brochure_url", url)} />
           </div>
 
           <div className="md:col-span-2">
