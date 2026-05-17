@@ -27,9 +27,7 @@ const useCreatePayment = (): UseCreatePaymentReturn => {
       const responseData = (err as any)?.response?.data;
 
       const fields: (keyof CreatePaymentPayload)[] = [
-        "sponsorship_type", "amount", "payment_method", "proof",
-        "cancelled_at", "cancelled_reason", "registration",
-        "approved_by", "cancelled_by",
+        "registration_uid", "sponsorship_type", "amount", "payment_method", "proof",
       ];
 
       const extracted: PaymentFieldErrors = {};
