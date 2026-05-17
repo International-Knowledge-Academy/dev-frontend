@@ -281,7 +281,7 @@ const PaymentsPage = () => {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-slate-100 bg-slate-50/60">
-                      {["#", "Registration", "Amount", "Method", "Sponsorship", "Status", "Actions"].map((label) => (
+                      {["Registration", "Amount", "Method", "Sponsorship", "Status", "Actions"].map((label) => (
                         <th key={label} className="px-5 py-3 text-left text-xs font-bold tracking-widest uppercase text-slate-400">
                           {label}
                         </th>
@@ -295,7 +295,6 @@ const PaymentsPage = () => {
                         onClick={() => navigate(`/account-manager/payments/${payment.uid}`)}
                         className="hover:bg-slate-50 transition cursor-pointer group"
                       >
-                        <td className="px-5 py-3.5 text-slate-400 tabular-nums text-xs font-mono">{payment.uid?.slice(0, 8)}</td>
                         <td className="px-5 py-3.5 text-slate-500 truncate max-w-[140px]">
                           {payment.registration?.full_name ?? "—"}
                         </td>
