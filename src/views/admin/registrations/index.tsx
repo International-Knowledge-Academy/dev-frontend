@@ -98,7 +98,7 @@ const RegistrationsPage = () => {
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
-    const ok = await deleteRegistration(deleteTarget.id);
+    const ok = await deleteRegistration(deleteTarget.uid);
     if (ok) {
       addToast("Registration deleted", "success");
       setDeleteTarget(null);
@@ -279,7 +279,7 @@ const RegistrationsPage = () => {
                   <tbody className="divide-y divide-slate-50">
                     {registrations.map((reg) => (
                       <tr
-                        key={reg.id}
+                        key={reg.uid}
                         onClick={() => navigate(`/admin/registrations/${reg.uid}`)}
                         className="hover:bg-slate-50 transition cursor-pointer group"
                       >
@@ -296,8 +296,8 @@ const RegistrationsPage = () => {
                             </div>
                           </div>
                         </td>
-                        <td className="px-5 py-3.5 text-slate-500 tabular-nums">
-                          {reg.program ? `#${reg.program}` : "—"}
+                        <td className="px-5 py-3.5 text-slate-500 truncate max-w-[160px]">
+                          {reg.program?.name ?? "—"}
                         </td>
                         <td className="px-5 py-3.5">
                           <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-slate-50 text-slate-600 border border-slate-200 capitalize">
@@ -305,7 +305,7 @@ const RegistrationsPage = () => {
                           </span>
                         </td>
                         <td className="px-5 py-3.5 text-slate-600 tabular-nums">
-                          {reg.program_price ? `$${reg.program_price}` : "—"}
+                          {reg.program?.price ? `$${reg.program.price}` : "—"}
                         </td>
                         <td className="px-5 py-3.5">
                           <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border ${STATUS_COLORS[reg.status] ?? "bg-slate-50 text-slate-400 border-slate-200"}`}>

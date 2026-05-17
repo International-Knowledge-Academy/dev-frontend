@@ -40,10 +40,9 @@ const RegistrationEditPage = () => {
   });
 
   useEffect(() => {
-    if (registration && programs.length > 0) {
-      const linkedProgram = programs.find((p) => p.id === registration.program);
+    if (registration) {
       setForm({
-        program_uid:            linkedProgram?.uid ?? "",
+        program_uid:            registration.program?.uid          ?? "",
         full_name:              registration.full_name              ?? "",
         email:                  registration.email                  ?? "",
         phone:                  registration.phone                  ?? "",
@@ -55,7 +54,7 @@ const RegistrationEditPage = () => {
         certificate_issue_date: registration.certificate_issue_date ?? "",
       });
     }
-  }, [registration, programs]);
+  }, [registration]);
 
   const update = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));

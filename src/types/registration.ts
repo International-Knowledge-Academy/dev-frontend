@@ -11,10 +11,9 @@ export interface RegistrationProgram {
 
 export interface RegistrationUser {
   uid: string;
-  email: string;
   name: string;
+  email: string;
   role: string;
-  is_active: boolean;
 }
 
 export interface Registration {
@@ -27,7 +26,6 @@ export interface Registration {
   address: string;
   status: RegistrationStatus;
   status_changed_at: string | null;
-  assigned_at: string | null;
   admin_notes: string;
   certificate_issued: boolean;
   certificate_issue_date: string | null;
@@ -35,11 +33,10 @@ export interface Registration {
   created_at: string;
   updated_at: string;
   program: RegistrationProgram | null;
-  manager: RegistrationUser | null;
   approved_by: RegistrationUser | null;
   category: number | null;
   field: number | null;
-  location: number | null;
+  service: number | null;
 }
 
 export interface PaginatedRegistrations {
@@ -53,8 +50,8 @@ export interface RegistrationsParams {
   page?: number;
   search?: string;
   ordering?: string;
-  manager?: string;
   status?: RegistrationStatus | "";
+  registration_type?: RegistrationType | "";
   program?: number | string;
 }
 
@@ -62,6 +59,7 @@ export interface CreateRegistrationPayload {
   program_uid: string;
   category_uid?: string;
   field_uid?: string;
+  service_uid?: string;
   registration_type: RegistrationType;
   full_name: string;
   email: string;
@@ -73,7 +71,7 @@ export interface CreateRegistrationPayload {
   certificate_issue_date?: string | null;
   category?: number | null;
   field?: number | null;
-  location?: number | null;
+  service?: number | null;
 }
 
 export type UpdateRegistrationPayload = Partial<CreateRegistrationPayload>;

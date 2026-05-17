@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Pencil, CheckCircle, XCircle, GraduationCap, UserCheck,
-  CalendarDays, FileText, DollarSign, AlertTriangle,
+  CalendarDays, FileText, DollarSign, AlertTriangle, BookOpen,
 } from "lucide-react";
 import { MdClose } from "react-icons/md";
 import DropdownButton from "components/ui/buttons/DropdownButton";
@@ -11,9 +11,9 @@ import Button from "components/ui/buttons/Button";
 import DangerButton from "components/ui/buttons/DangerButton";
 import useGetRegistration from "hooks/registrations/useGetRegistration";
 import useApproveRegistration from "hooks/registrations/useApproveRegistration";
+import useEnrollRegistration from "hooks/registrations/useEnrollRegistration";
 import useRejectRegistration from "hooks/registrations/useRejectRegistration";
 import useDeleteRegistration from "hooks/registrations/useDeleteRegistration";
-import useAllPrograms from "hooks/programs/useAllPrograms";
 import { useToast } from "context/ToastContext";
 import Loading from "components/loading/Loading";
 import ConfirmModal from "components/ui/modals/ConfirmModal";
@@ -62,13 +62,9 @@ const RegistrationDetailPage = () => {
 
   const { registration, loading, error, refetch } = useGetRegistration(id);
   const { approve, loading: approving, error: approveError } = useApproveRegistration();
+  const { enroll, loading: enrolling }                       = useEnrollRegistration();
   const { reject, loading: rejecting, error: rejectError }   = useRejectRegistration();
   const { deleteRegistration, loading: deleting } = useDeleteRegistration();
-  const { programs } = useAllPrograms();
-
-  const linkedProgram = registration
-    ? programs.find((p) => p.id === registration.program)
-    : null;
 
   const [rejectOpen, setRejectOpen]     = useState(false);
   const [rejectReason, setRejectReason] = useState("");
@@ -86,7 +82,13 @@ const RegistrationDetailPage = () => {
   const handleApprove = async () => {
     const ok = await approve(id);
     if (ok) { addToast("Registration approved", "success"); refetch(); }
-    else { addToast(approveError ?? "Failed to approve", "error"); }
+    else     { addToast(approveError ?? "Failed to approve", "error"); }
+  };
+
+  const handleEnroll = async () => {
+    const ok = await enroll(id);
+    if (ok) { addToast("Registration enrolled", "success"); refetch(); }
+    else     { addToast("Failed to enroll", "error"); }
   };
 
   const handleReject = async () => {
@@ -105,13 +107,13 @@ const RegistrationDetailPage = () => {
     const ok = await deleteRegistration(id);
     if (ok) {
       addToast("Registration deleted", "success");
-      navigate("/admin/registrations");
+      navigate("/account-manager/registrations");
     } else {
       addToast("Failed to delete registration", "error");
     }
   };
 
-  const anyActionLoading = approving || rejecting;
+  const anyActionLoading = approving || enrolling || rejecting;
 
   return (
     <div className="space-y-4 max-w-5xl mx-auto">
@@ -135,8 +137,9 @@ const RegistrationDetailPage = () => {
               variant="outline"
               loading={anyActionLoading}
               items={[
-                { label: "Approve", icon: <CheckCircle size={14} />, onClick: handleApprove,             disabled: anyActionLoading || registration.status === "approved" },
-                { label: "Reject",  icon: <XCircle size={14} />,   onClick: () => setRejectOpen(true), disabled: anyActionLoading || registration.status === "rejected" },
+                { label: "Approve", icon: <CheckCircle size={14} />, onClick: handleApprove,            disabled: anyActionLoading || registration.status === "approved"  },
+                { label: "Enroll",  icon: <BookOpen size={14} />,   onClick: handleEnroll,              disabled: anyActionLoading || registration.status === "completed" },
+                { label: "Reject",  icon: <XCircle size={14} />,    onClick: () => setRejectOpen(true), disabled: anyActionLoading || registration.status === "rejected"  },
                 { divider: true },
                 { label: "Delete Registration", icon: <AlertTriangle size={14} />, onClick: () => setDeleteOpen(true), danger: true },
               ]}
@@ -158,25 +161,8 @@ const RegistrationDetailPage = () => {
         {/* Program */}
         <SectionTitle title="Program" />
         <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
-          <InfoRow
-            icon={GraduationCap}
-            label="Program"
-            value={
-              linkedProgram ? (
-                <button
-                  type="button"
-                  onClick={() => navigate(`/admin/programs/${linkedProgram.uid}`)}
-                  className="flex items-center gap-1.5 text-navy-600 font-semibold hover:text-navy-500 hover:underline underline-offset-2 transition"
-                >
-                  <GraduationCap size={13} />
-                  {linkedProgram.name}
-                </button>
-              ) : registration.program ? (
-                `#${registration.program}`
-              ) : "—"
-            }
-          />
-          <InfoRow icon={DollarSign} label="Program Price" value={registration.program_price ? `$${registration.program_price}` : "—"} />
+          <InfoRow icon={GraduationCap} label="Program"       value={registration.program?.name ?? "—"} />
+          <InfoRow icon={DollarSign}   label="Program Price" value={registration.program?.price ? `$${registration.program.price}` : "—"} />
         </div>
 
         {/* Status */}
@@ -184,7 +170,7 @@ const RegistrationDetailPage = () => {
         <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
           <InfoRow icon={FileText}     label="Status"        value={<span className="capitalize">{registration.status}</span>} />
           <InfoRow icon={CalendarDays} label="Status Changed" value={formatDate(registration.status_changed_at)} />
-          <InfoRow icon={UserCheck}    label="Approved By"   value={registration.approved_by ? `#${registration.approved_by}` : "—"} />
+          <InfoRow icon={UserCheck}    label="Approved By"   value={registration.approved_by?.name ?? "—"} />
         </div>
 
         {/* Certificate */}
@@ -224,14 +210,14 @@ const RegistrationDetailPage = () => {
         <div className="px-4 sm:px-6 py-4 border-t border-slate-100 mt-2 flex gap-2">
           <button
             type="button"
-            onClick={() => navigate("/admin/registrations")}
+            onClick={() => navigate("/account-manager/registrations")}
             className="flex-1 rounded-md lg:rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition"
           >
             Back
           </button>
           <button
             type="button"
-            onClick={() => navigate(`/admin/registrations/${id}/edit`)}
+            onClick={() => navigate(`/account-manager/registrations/${id}/edit`)}
             className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition flex items-center justify-center gap-2"
           >
             <Pencil size={15} />
