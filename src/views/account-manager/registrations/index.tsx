@@ -6,7 +6,6 @@ import {
   Pencil, Trash2, AlertTriangle, X, Filter,
 } from "lucide-react";
 import useRegistrations from "hooks/registrations/useRegistrations";
-import useAuth from "hooks/auth/useAuth";
 import useDeleteRegistration from "hooks/registrations/useDeleteRegistration";
 import { useToast } from "context/ToastContext";
 import Loading from "components/loading/Loading";
@@ -78,7 +77,6 @@ const TYPE_OPTIONS = [
 const RegistrationsPage = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
-  const { user } = useAuth();
   const { registrations, count, loading, error, params, setParams, refetch } = useRegistrations({});
   const { deleteRegistration, loading: deleting } = useDeleteRegistration();
 
