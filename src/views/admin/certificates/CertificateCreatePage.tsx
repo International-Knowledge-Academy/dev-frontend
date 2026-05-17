@@ -9,7 +9,6 @@ import usePrograms from "hooks/programs/usePrograms";
 import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
-import SelectField from "components/form/SelectField";
 import SearchableDropdown from "components/form/search/SearchableDropdown";
 
 /* ─── PDF Upload ─────────────────────────────────────────────────────────── */
@@ -72,16 +71,6 @@ const PdfUpload = ({ value, onChange }) => {
   );
 };
 
-const CERTIFICATE_TYPES = [
-  { value: "completion",  label: "Completion"  },
-  { value: "attendance",  label: "Attendance"  },
-  { value: "excellence",  label: "Excellence"  },
-];
-
-const STATUSES = [
-  { value: "pending", label: "Pending" },
-  { value: "issued",  label: "Issued"  },
-];
 
 const CertificateCreatePage = () => {
   const navigate     = useNavigate();
@@ -214,10 +203,6 @@ const CertificateCreatePage = () => {
           <p className="text-xs font-bold uppercase tracking-widest text-slate-400 border-b border-slate-100 pb-2 pt-2">
             Certificate
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <SelectField label="Certificate Type" field="certificate_type" options={CERTIFICATE_TYPES} formData={formData} errors={fieldErrors} updateFormData={updateFormData} required />
-            <SelectField label="Status"           field="status"           options={STATUSES}          formData={formData} errors={fieldErrors} updateFormData={updateFormData} required />
-          </div>
           <PdfUpload value={formData.certificate_pdf} onChange={(url) => updateFormData("certificate_pdf", url)} />
 
           <div className="flex gap-2 pt-2 border-t border-slate-100">
