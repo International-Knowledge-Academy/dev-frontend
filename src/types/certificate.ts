@@ -1,5 +1,5 @@
-export type CertificateType = "completion" | "attendance" | "excellence" | string;
-export type CertificateStatus = "issued" | "pending" | "revoked" | "expired";
+export type CertificateType   = "completion" | "achievement" | "participation" | "excellence";
+export type CertificateStatus = "issued" | "revoked";
 
 export interface Certificate {
   uid: string;

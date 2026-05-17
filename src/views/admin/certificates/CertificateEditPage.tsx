@@ -71,16 +71,15 @@ const PdfUpload = ({ value, onChange }) => {
 };
 
 const CERTIFICATE_TYPES = [
-  { value: "completion",  label: "Completion"  },
-  { value: "attendance",  label: "Attendance"  },
-  { value: "excellence",  label: "Excellence"  },
+  { value: "completion",    label: "Completion"    },
+  { value: "achievement",   label: "Achievement"   },
+  { value: "participation", label: "Participation" },
+  { value: "excellence",    label: "Excellence"    },
 ];
 
 const STATUSES = [
-  { value: "pending", label: "Pending" },
   { value: "issued",  label: "Issued"  },
   { value: "revoked", label: "Revoked" },
-  { value: "expired", label: "Expired" },
 ];
 
 const CertificateEditPage = () => {
@@ -97,8 +96,8 @@ const CertificateEditPage = () => {
     certificate_type:  "completion",
     program_name:      "",
     lead_trainer_name: "",
-    issued_by:         "",
-    status:            "pending",
+    issued_by:         "International Knowledge Academy IKA",
+    status:            "issued",
     certificate_pdf:   "",
   });
 
@@ -110,8 +109,8 @@ const CertificateEditPage = () => {
       certificate_type:  certificate.certificate_type  ?? "completion",
       program_name:      certificate.program_name      ?? "",
       lead_trainer_name: certificate.lead_trainer_name ?? "",
-      issued_by:         certificate.issued_by         ?? "",
-      status:            certificate.status            ?? "pending",
+      issued_by:         certificate.issued_by         ?? "International Knowledge Academy IKA",
+      status:            certificate.status            ?? "issued",
       certificate_pdf:   certificate.certificate_pdf   ?? "",
     });
   }, [certificate]);

@@ -11,6 +11,14 @@ import usePresignedUpload from "hooks/storage/usePresignedUpload";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import SearchableDropdown from "components/form/search/SearchableDropdown";
+import SearchableSelect from "components/form/SearchableSelect";
+
+const CERTIFICATE_TYPES = [
+  { value: "completion",    label: "Completion"    },
+  { value: "achievement",   label: "Achievement"   },
+  { value: "participation", label: "Participation" },
+  { value: "excellence",    label: "Excellence"    },
+];
 
 /* ─── PDF Upload ─────────────────────────────────────────────────────────── */
 const PdfUpload = ({ value, onChange }) => {
@@ -90,8 +98,8 @@ const CertificateCreatePage = () => {
     certificate_type: "completion",
     program_name:     "",
     lead_trainer_name:"",
-    issued_by:        "",
-    status:           "pending",
+    issued_by:        "International Knowledge Academy IKA",
+    status:           "issued",
     certificate_pdf:  "",
   });
 
@@ -216,6 +224,17 @@ const CertificateCreatePage = () => {
           <p className="text-xs font-bold uppercase tracking-widest text-slate-400 border-b border-slate-100 pb-2 pt-2">
             Certificate
           </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <SearchableSelect
+              label="Certificate Type"
+              field="certificate_type"
+              options={CERTIFICATE_TYPES}
+              formData={formData}
+              errors={fieldErrors}
+              updateFormData={updateFormData}
+              placeholder="Select type..."
+            />
+          </div>
           <PdfUpload value={formData.certificate_pdf} onChange={(url) => updateFormData("certificate_pdf", url)} />
 
           <div className="flex gap-2 pt-2 border-t border-slate-100">
