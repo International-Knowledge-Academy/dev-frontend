@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { ChevronDown, Check } from "lucide-react";
 
 const getNestedValue = (obj, path) => {
@@ -60,11 +60,11 @@ const CreatableSelectField = ({
     setIsOpen(true);
   };
 
-  const close = () => {
+  const close = useCallback(() => {
     setIsOpen(false);
     setSearch("");
     onSearchChange?.("");
-  };
+  }, [onSearchChange]);
 
   useEffect(() => {
     if (!isOpen) return;
