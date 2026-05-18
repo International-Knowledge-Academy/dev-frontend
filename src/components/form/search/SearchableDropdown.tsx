@@ -91,7 +91,7 @@ const CreatableSelectField = ({
       window.removeEventListener("scroll",  handleScrollOrResize, true);
       window.removeEventListener("resize",  handleScrollOrResize);
     };
-  }, [isOpen, onSearchChange]);
+  }, [isOpen, close]);
 
   const handleSelect = (option) => {
     if (disabledOptions.includes(option.value)) return;
