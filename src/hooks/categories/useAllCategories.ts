@@ -22,11 +22,23 @@ const useAllCategories = (): UseAllCategoriesReturn => {
 
       try {
         while (true) {
-          const { data } = await axiosInstance.get<PaginatedCategories>("/categories", {
+          const { data } = await axiosInstance.get("/categories", {
             params: { page },
           });
-          all.push(...data.results);
-          if (!data.next) break;
+
+          const raw = data as unknown;
+
+          // Handle both flat array and paginated { results: [...] } responses
+          const results: Category[] = Array.isArray(raw)
+            ? (raw as Category[])
+            : Array.isArray((raw as PaginatedCategories).results)
+            ? (raw as PaginatedCategories).results
+            : [];
+
+          all.push(...results);
+
+          const hasNext = !Array.isArray(raw) && !!(raw as PaginatedCategories).next;
+          if (!hasNext) break;
           page++;
         }
         setCategories(all);
