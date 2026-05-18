@@ -5,14 +5,16 @@ import {
   ArrowLeft, Share2, Download, MapPin, Users, Clock,
   Globe, CheckCircle2, Mail, Phone, Calendar, GraduationCap,
   BookOpen, Award, Briefcase, Monitor, LayoutGrid, Layers,
-  ChevronRight, ArrowRight,
+  ChevronRight, ArrowRight, FileText,
 } from "lucide-react";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
 import Loading from "components/loading/Loading";
 import useGetProgram from "hooks/programs/useGetProgram";
 import usePrograms from "hooks/programs/usePrograms";
 import ProgramCard from "components/programs/ProgramCard";
+import ProgramQuotationPDF from "components/pdf/ProgramQuotationPDF";
 import type { ProgramTrainer } from "types/program";
 
 /* ─── Config maps ────────────────────────────────────────────────────────── */
@@ -309,6 +311,18 @@ const ProgramPage = () => {
                   Brochure
                 </a>
               )}
+              <PDFDownloadLink
+                document={<ProgramQuotationPDF program={program} />}
+                fileName={`IKA-Quotation-${program.name.replace(/\s+/g, "-")}.pdf`}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-navy-600 hover:bg-navy-700 border border-navy-500 px-3 py-2 rounded-md lg:rounded-lg transition-all duration-200"
+              >
+                {({ loading: pdfLoading }) => (
+                  <>
+                    <FileText size={12} />
+                    {pdfLoading ? "Preparing..." : "Download Quotation"}
+                  </>
+                )}
+              </PDFDownloadLink>
             </div>
           </motion.div>
 
