@@ -104,6 +104,25 @@ const s = StyleSheet.create({
     fontSize: 9,
     color: SLATE4,
     textAlign: "center",
+    marginBottom: 28,
+  },
+  coverLocation: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+  },
+  coverLocationDot: {
+    width: 5,
+    height: 5,
+    borderRadius: 100,
+    backgroundColor: GOLD,
+    marginRight: 6,
+  },
+  coverLocationText: {
+    fontSize: 9,
+    color: SLATE5,
+    textAlign: "center",
   },
 
   /* ── Header (inner pages) ── */
@@ -377,6 +396,12 @@ const ProgramQuotationPDF = ({ program }: { program: Program }) => {
           <Text style={s.coverLabel}>Training Quotation</Text>
           <Text style={s.coverTitle}>{program.name}</Text>
           <Text style={s.coverDate}>{today}</Text>
+          {locationStr && (
+            <View style={s.coverLocation}>
+              <View style={s.coverLocationDot} />
+              <Text style={s.coverLocationText}>{locationStr}</Text>
+            </View>
+          )}
         </View>
 
         <View style={s.coverBottomBar} />

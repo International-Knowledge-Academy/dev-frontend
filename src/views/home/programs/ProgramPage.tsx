@@ -227,7 +227,7 @@ const QuotationDownloadButton = ({ program }: { program: any }) => {
     <button
       onClick={handleDownload}
       disabled={instance.loading}
-      className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-navy-600 hover:bg-navy-700 border border-navy-500 px-3 py-2 rounded-md lg:rounded-lg transition-all duration-200 disabled:opacity-60"
+      className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-slate-700 hover:bg-slate-800 border border-slate-600 px-3 py-2 rounded-md lg:rounded-lg transition-all duration-200 disabled:opacity-60"
     >
       <FileText size={12} />
       {instance.loading ? "Preparing..." : "Download Quotation"}
