@@ -7,7 +7,7 @@ import {
   BookOpen, Award, Briefcase, Monitor, LayoutGrid, Layers,
   ChevronRight, ArrowRight, FileText,
 } from "lucide-react";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { usePDF } from "@react-pdf/renderer";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
 import Loading from "components/loading/Loading";
@@ -208,6 +208,33 @@ const RelatedProgramsSection = ({
   );
 };
 
+/* ─── Quotation download button ──────────────────────────────────────────── */
+
+const QuotationDownloadButton = ({ program }: { program: any }) => {
+  const [instance] = usePDF({ document: <ProgramQuotationPDF program={program} /> });
+
+  const handleDownload = () => {
+    if (!instance.url) return;
+    const a = document.createElement("a");
+    a.href = instance.url;
+    a.download = `IKA-Quotation-${program.name.replace(/\s+/g, "-")}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  return (
+    <button
+      onClick={handleDownload}
+      disabled={instance.loading}
+      className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-navy-600 hover:bg-navy-700 border border-navy-500 px-3 py-2 rounded-md lg:rounded-lg transition-all duration-200 disabled:opacity-60"
+    >
+      <FileText size={12} />
+      {instance.loading ? "Preparing..." : "Download Quotation"}
+    </button>
+  );
+};
+
 /* ─── Main page ──────────────────────────────────────────────────────────── */
 
 const ProgramPage = () => {
@@ -311,18 +338,7 @@ const ProgramPage = () => {
                   Brochure
                 </a>
               )}
-              <PDFDownloadLink
-                document={<ProgramQuotationPDF program={program} />}
-                fileName={`IKA-Quotation-${program.name.replace(/\s+/g, "-")}.pdf`}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-navy-600 hover:bg-navy-700 border border-navy-500 px-3 py-2 rounded-md lg:rounded-lg transition-all duration-200"
-              >
-                {({ loading: pdfLoading }) => (
-                  <>
-                    <FileText size={12} />
-                    {pdfLoading ? "Preparing..." : "Download Quotation"}
-                  </>
-                )}
-              </PDFDownloadLink>
+              <QuotationDownloadButton program={program} />
             </div>
           </motion.div>
 
