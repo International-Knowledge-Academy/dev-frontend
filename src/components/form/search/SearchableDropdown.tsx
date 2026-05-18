@@ -24,12 +24,14 @@ const CreatableSelectField = ({
   disabledOptions = [],
   onSearchChange,
 }) => {
-  const containerRef = useRef(null);
+  const triggerRef  = useRef(null);
+  const dropdownRef = useRef(null);
 
   const selectedValue = getNestedValue(formData, field) ?? "";
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  const [isOpen,        setIsOpen]        = useState(false);
+  const [search,        setSearch]        = useState("");
+  const [dropdownStyle, setDropdownStyle] = useState({});
 
   const selectedOption = options.find((opt) => opt.value === selectedValue);
   const selectedLabel  = selectedOption?.label ?? selectedValue ?? "";
@@ -41,30 +43,66 @@ const CreatableSelectField = ({
     );
   }, [search, options, onSearchChange]);
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (containerRef.current && !containerRef.current.contains(e.target)) {
-        setIsOpen(false);
-        setSearch("");
-        onSearchChange?.("");
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [onSearchChange]);
+  const calculatePosition = () => {
+    if (!triggerRef.current) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    setDropdownStyle({
+      position: "fixed",
+      top:      rect.bottom + 4,
+      left:     rect.left,
+      width:    rect.width,
+      zIndex:   9999,
+    });
+  };
 
-  const handleSelect = (option) => {
-    if (disabledOptions.includes(option.value)) return;
-    updateFormData(field, option.value);
+  const open = () => {
+    calculatePosition();
+    setIsOpen(true);
+  };
+
+  const close = () => {
     setIsOpen(false);
     setSearch("");
     onSearchChange?.("");
   };
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (e) => {
+      if (
+        triggerRef.current  && !triggerRef.current.contains(e.target) &&
+        dropdownRef.current && !dropdownRef.current.contains(e.target)
+      ) {
+        close();
+      }
+    };
+
+    const handleScrollOrResize = () => {
+      calculatePosition();
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("scroll",  handleScrollOrResize, true);
+    window.addEventListener("resize",  handleScrollOrResize);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll",  handleScrollOrResize, true);
+      window.removeEventListener("resize",  handleScrollOrResize);
+    };
+  }, [isOpen, onSearchChange]);
+
+  const handleSelect = (option) => {
+    if (disabledOptions.includes(option.value)) return;
+    updateFormData(field, option.value);
+    close();
+  };
+
   const hasError = !!getNestedValue(errors, field);
 
   return (
-    <div className={`relative${label ? " mb-4" : ""}`} ref={containerRef}>
+    <div className={label ? "mb-4" : ""}>
 
       {label && (
         <label className="block text-sm font-medium text-navy-800 mb-1.5">
@@ -74,11 +112,12 @@ const CreatableSelectField = ({
 
       {/* Trigger */}
       <button
+        ref={triggerRef}
         type="button"
-        onClick={() => setIsOpen((prev) => !prev)}
-        className={`flex h-10 w-full items-center justify-between rounded-md lg:rounded-lg border bg-white px-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-navy-300 ${
+        onClick={() => (isOpen ? close() : open())}
+        className={`flex h-10 w-full items-center justify-between rounded-md lg:rounded-lg border bg-white px-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-navy-200 ${
           hasError
-            ? "border-red-400 focus:ring-red-200"
+            ? "border-red-400"
             : isOpen
             ? "border-navy-400 ring-2 ring-navy-100"
             : "border-slate-200 hover:border-slate-300"
@@ -93,10 +132,13 @@ const CreatableSelectField = ({
         />
       </button>
 
-      {/* Dropdown panel */}
+      {/* Dropdown — fixed-positioned so it always escapes overflow/transform parents */}
       {isOpen && (
-        <div className="absolute left-0 right-0 top-full z-[9999] mt-1 rounded-md lg:rounded-lg border border-slate-200 bg-white shadow-lg">
-
+        <div
+          ref={dropdownRef}
+          style={dropdownStyle}
+          className="rounded-md lg:rounded-lg border border-slate-200 bg-white shadow-lg overflow-hidden"
+        >
           {/* Search */}
           <div className="p-2 border-b border-slate-100">
             <input

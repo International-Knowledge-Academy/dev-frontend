@@ -143,7 +143,7 @@ const PaymentDetailPage = () => {
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-base font-bold text-navy-800 truncate leading-snug">
-              Payment #{payment.uid?.slice(0, 8)}
+              Payment 
             </h1>
             <p className="text-xs text-slate-400 mt-0.5 truncate">
               {payment.registration?.full_name ?? "No registration linked"}
@@ -353,7 +353,6 @@ const PaymentDetailPage = () => {
         message={
           <>
             Are you sure you want to delete payment{" "}
-            <span className="font-semibold text-navy-800">#{payment.uid?.slice(0, 8)}</span>?{" "}
             This cannot be undone.
           </>
         }

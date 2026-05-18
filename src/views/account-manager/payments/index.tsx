@@ -369,7 +369,6 @@ const PaymentsPage = () => {
         message={
           <>
             Are you sure you want to delete payment{" "}
-            <span className="font-semibold text-navy-800">#{deleteTarget?.uid?.slice(0, 8)}</span>?{" "}
             This action cannot be undone.
           </>
         }
