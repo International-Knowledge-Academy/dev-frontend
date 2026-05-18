@@ -39,40 +39,46 @@ const s = StyleSheet.create({
   },
 
   /* ── Cover ── */
-  coverHero: {
+  coverTopBar: {
+    height: 6,
     backgroundColor: NAVY,
-    paddingTop: 52,
-    paddingBottom: 44,
+  },
+  coverHero: {
+    backgroundColor: WHITE,
+    paddingTop: 44,
+    paddingBottom: 36,
     paddingHorizontal: 56,
     alignItems: "center",
   },
   coverLogo: {
-    width: 84,
-    height: 84,
-    marginBottom: 20,
+    width: 96,
+    height: 96,
+    marginBottom: 18,
   },
   coverOrgName: {
     fontSize: 11,
     fontFamily: "Helvetica-Bold",
-    color: WHITE,
+    color: NAVY,
     textAlign: "center",
     letterSpacing: 2,
     marginBottom: 6,
   },
   coverOrgSub: {
     fontSize: 7.5,
-    color: SLATE4,
+    color: SLATE5,
     textAlign: "center",
     letterSpacing: 1.2,
   },
   coverGoldLine: {
     height: 3,
+    width: 56,
     backgroundColor: GOLD,
+    marginTop: 20,
   },
   coverInfo: {
     flex: 1,
     paddingHorizontal: 56,
-    paddingTop: 44,
+    paddingTop: 32,
     paddingBottom: 40,
     alignItems: "center",
     justifyContent: "center",
@@ -466,15 +472,17 @@ const ProgramQuotationPDF = ({ program, locations = [] }: { program: Program; lo
       {/* ── Cover ───────────────────────────────────────────────────────── */}
       <Page size="A4" style={s.page}>
 
-        {/* Navy hero block */}
+        {/* Navy top bar */}
+        <View style={s.coverTopBar} />
+
+        {/* White hero block */}
         <View style={s.coverHero}>
           <Image src={ikaLogoSrc} style={s.coverLogo} />
           <Text style={s.coverOrgName}>INTERNATIONAL KNOWLEDGE ACADEMY</Text>
           <Text style={s.coverOrgSub}>FOR TRAINING AND MANAGEMENT DEVELOPMENT</Text>
+          {/* Gold divider */}
+          <View style={s.coverGoldLine} />
         </View>
-
-        {/* Gold separator */}
-        <View style={s.coverGoldLine} />
 
         {/* White info area */}
         <View style={s.coverInfo}>
