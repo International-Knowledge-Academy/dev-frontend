@@ -144,7 +144,9 @@ const RegisterPage = () => {
   const validateStep = (s: number) => {
     const e: Record<string, string> = {};
     if (s === 1) {
-      if (!formData.program) e.program = "Please select a program";
+      if (!formData.category) e.category = "Please select a category";
+      if (!formData.field)    e.field    = "Please select a field";
+      if (!formData.program)  e.program  = "Please select a program";
     }
     if (s === 2) {
       if (!formData.full_name.trim()) e.full_name = "Full name is required";
@@ -262,7 +264,7 @@ const RegisterPage = () => {
                         <SearchableSelect
                           label="Category"
                           field="category"
-                          required={false}
+                          required
                           placeholder="Search categories…"
                           loading={loadingCats}
                           options={categories.map((c) => ({ value: c.uid, label: c.name }))}
@@ -271,7 +273,7 @@ const RegisterPage = () => {
                         <SearchableSelect
                           label="Field"
                           field="field"
-                          required={false}
+                          required
                           placeholder={selectedCategoryUid ? "Search fields…" : "Select a category first"}
                           loading={loadingFields && !!selectedCategoryUid}
                           disabled={!selectedCategoryUid}
@@ -384,7 +386,7 @@ const RegisterPage = () => {
                 )}
 
                 {step < 3 ? (() => {
-                  const step1Disabled = !formData.program;
+                  const step1Disabled = !formData.category || !formData.field || !formData.program;
                   const step2Disabled =
                     !formData.full_name.trim() ||
                     !formData.email.trim()     ||
