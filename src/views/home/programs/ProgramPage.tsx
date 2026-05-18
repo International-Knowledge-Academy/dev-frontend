@@ -13,6 +13,7 @@ import Footer from "components/home/Footer";
 import Loading from "components/loading/Loading";
 import useGetProgram from "hooks/programs/useGetProgram";
 import usePrograms from "hooks/programs/usePrograms";
+import useAllLocations from "hooks/locations/useAllLocations";
 import ProgramCard from "components/programs/ProgramCard";
 import ProgramQuotationPDF from "components/pdf/ProgramQuotationPDF";
 import type { ProgramTrainer } from "types/program";
@@ -211,7 +212,8 @@ const RelatedProgramsSection = ({
 /* ─── Quotation download button ──────────────────────────────────────────── */
 
 const QuotationDownloadButton = ({ program }: { program: any }) => {
-  const [instance] = usePDF({ document: <ProgramQuotationPDF program={program} /> });
+  const { locations } = useAllLocations();
+  const [instance] = usePDF({ document: <ProgramQuotationPDF program={program} locations={locations} /> });
 
   const handleDownload = () => {
     if (!instance.url) return;

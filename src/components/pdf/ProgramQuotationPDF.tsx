@@ -9,9 +9,10 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer";
 import type { Program } from "types/program";
-import ikaLogoSrc from "assets/img/brand/ika-logo.png";
+import type { Location } from "types/location";
+import ikaLogoSrc from "assets/img/brand/IKA-logo-bg.png";
 
-/* ── Brand tokens ───────────────────────────────────────────────────────── */
+/* ── Color tokens ───────────────────────────────────────────────────────── */
 const NAVY   = "#101a3c";
 const NAVY6  = "#1B2A5E";
 const GOLD   = "#C9A84C";
@@ -20,6 +21,7 @@ const SLATE4 = "#94a3b8";
 const SLATE5 = "#64748b";
 const SLATE1 = "#f1f5f9";
 const SLATE2 = "#e2e8f0";
+const SLATE8 = "#1e293b";
 
 /* ── Helpers ─────────────────────────────────────────────────────────────── */
 const formatDate = (d: string | null) =>
@@ -30,127 +32,141 @@ const parseLines = (text: string | null | undefined): string[] =>
 
 /* ── Styles ──────────────────────────────────────────────────────────────── */
 const s = StyleSheet.create({
-  /* Page */
   page: {
     fontFamily: "Helvetica",
     backgroundColor: WHITE,
-    paddingBottom: 64,
+    paddingBottom: 72,
   },
 
   /* ── Cover ── */
-  coverTopBar: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 8,
+  coverHero: {
     backgroundColor: NAVY,
+    paddingTop: 52,
+    paddingBottom: 44,
+    paddingHorizontal: 56,
+    alignItems: "center",
+  },
+  coverLogo: {
+    width: 84,
+    height: 84,
+    marginBottom: 20,
+  },
+  coverOrgName: {
+    fontSize: 11,
+    fontFamily: "Helvetica-Bold",
+    color: WHITE,
+    textAlign: "center",
+    letterSpacing: 2,
+    marginBottom: 6,
+  },
+  coverOrgSub: {
+    fontSize: 7.5,
+    color: SLATE4,
+    textAlign: "center",
+    letterSpacing: 1.2,
+  },
+  coverGoldLine: {
+    height: 3,
+    backgroundColor: GOLD,
+  },
+  coverInfo: {
+    flex: 1,
+    paddingHorizontal: 56,
+    paddingTop: 44,
+    paddingBottom: 40,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  coverBadge: {
+    fontSize: 7.5,
+    fontFamily: "Helvetica-Bold",
+    color: GOLD,
+    letterSpacing: 3,
+    marginBottom: 18,
+  },
+  coverTitle: {
+    fontSize: 34,
+    fontFamily: "Helvetica-Bold",
+    color: NAVY,
+    textAlign: "center",
+    lineHeight: 1.25,
+    marginBottom: 28,
+  },
+  coverMeta: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  coverMetaDivider: {
+    width: 1,
+    height: 10,
+    backgroundColor: SLATE2,
+  },
+  coverMetaText: {
+    fontSize: 8.5,
+    color: SLATE5,
+  },
+  coverLocationDot: {
+    width: 4,
+    height: 4,
+    borderRadius: 100,
+    backgroundColor: GOLD,
+    marginRight: 5,
+  },
+  coverLocationRow: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   coverBottomBar: {
     position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
-    height: 8,
+    height: 6,
     backgroundColor: GOLD,
-  },
-  coverBody: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 56,
-    paddingVertical: 60,
-  },
-  coverLogo: {
-    width: 96,
-    height: 96,
-    marginBottom: 18,
-  },
-  coverOrgName: {
-    fontSize: 12,
-    fontFamily: "Helvetica-Bold",
-    color: NAVY,
-    textAlign: "center",
-    letterSpacing: 1.8,
-    marginBottom: 5,
-  },
-  coverOrgSub: {
-    fontSize: 8,
-    color: SLATE5,
-    textAlign: "center",
-    letterSpacing: 1,
-    marginBottom: 44,
-  },
-  coverDivider: {
-    width: 56,
-    height: 2,
-    backgroundColor: GOLD,
-    marginBottom: 44,
-  },
-  coverLabel: {
-    fontSize: 26,
-    color: NAVY6,
-    textAlign: "center",
-    marginBottom: 14,
-  },
-  coverTitle: {
-    fontSize: 44,
-    fontFamily: "Helvetica-Bold",
-    color: NAVY,
-    textAlign: "center",
-    marginBottom: 28,
-  },
-  coverDate: {
-    fontSize: 9,
-    color: SLATE4,
-    textAlign: "center",
-    marginBottom: 28,
-  },
-  coverLocation: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 5,
-  },
-  coverLocationDot: {
-    width: 5,
-    height: 5,
-    borderRadius: 100,
-    backgroundColor: GOLD,
-    marginRight: 6,
-  },
-  coverLocationText: {
-    fontSize: 9,
-    color: SLATE5,
-    textAlign: "center",
   },
 
   /* ── Header (inner pages) ── */
   header: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 36,
-    paddingTop: 26,
-    paddingBottom: 18,
-    borderBottomWidth: 2,
-    borderBottomColor: GOLD,
+    paddingTop: 24,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: SLATE2,
+  },
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   headerLogo: {
-    width: 46,
-    height: 46,
-    marginRight: 12,
+    width: 40,
+    height: 40,
+    marginRight: 10,
   },
   headerOrgName: {
-    fontSize: 10,
+    fontSize: 9,
     fontFamily: "Helvetica-Bold",
     color: NAVY,
-    letterSpacing: 1.2,
-    marginBottom: 3,
+    letterSpacing: 1,
+    marginBottom: 2,
   },
   headerOrgSub: {
+    fontSize: 6.5,
+    color: SLATE4,
+    letterSpacing: 0.5,
+  },
+  headerBadge: {
     fontSize: 7,
-    color: SLATE5,
-    letterSpacing: 0.6,
+    fontFamily: "Helvetica-Bold",
+    color: GOLD,
+    letterSpacing: 1.5,
+    borderWidth: 1,
+    borderColor: GOLD,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
   },
 
   /* ── Footer (inner pages) ── */
@@ -159,12 +175,13 @@ const s = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    borderTopWidth: 2,
-    borderTopColor: GOLD,
     flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 36,
     paddingVertical: 10,
-    backgroundColor: WHITE,
+    backgroundColor: SLATE1,
+    borderTopWidth: 1,
+    borderTopColor: SLATE2,
   },
   footerCol: {
     flex: 1,
@@ -176,36 +193,48 @@ const s = StyleSheet.create({
   footerText: {
     fontSize: 6.5,
     color: SLATE5,
-    lineHeight: 1.55,
+    lineHeight: 1.6,
+  },
+  footerPage: {
+    fontSize: 7,
+    color: SLATE4,
+    textAlign: "center",
   },
 
   /* ── Content area ── */
   content: {
     paddingHorizontal: 36,
-    paddingTop: 22,
+    paddingTop: 20,
   },
 
   /* ── Page title block ── */
   pageTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: "Helvetica-Bold",
     color: NAVY,
-    marginBottom: 4,
+    marginBottom: 3,
   },
   pageSubtitle: {
     fontSize: 9,
     color: SLATE5,
-    marginBottom: 22,
+    marginBottom: 20,
   },
 
   /* ── Section heading ── */
-  sectionLabel: {
-    fontSize: 8,
-    fontFamily: "Helvetica-Bold",
-    color: GOLD,
-    letterSpacing: 2,
-    marginTop: 20,
+  sectionLabelWrap: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 18,
     marginBottom: 10,
+    paddingLeft: 9,
+    borderLeftWidth: 3,
+    borderLeftColor: GOLD,
+  },
+  sectionLabelText: {
+    fontSize: 7.5,
+    fontFamily: "Helvetica-Bold",
+    color: SLATE8,
+    letterSpacing: 1.8,
   },
 
   /* ── Details table ── */
@@ -225,23 +254,23 @@ const s = StyleSheet.create({
   tdLabel: {
     width: "34%",
     paddingHorizontal: 12,
-    paddingVertical: 9,
-    backgroundColor: NAVY,
+    paddingVertical: 10,
+    backgroundColor: NAVY6,
     justifyContent: "center",
   },
   tdLabelAlt: {
-    backgroundColor: NAVY6,
+    backgroundColor: NAVY,
   },
   tdLabelText: {
-    fontSize: 8,
+    fontSize: 7.5,
     fontFamily: "Helvetica-Bold",
     color: WHITE,
-    letterSpacing: 0.4,
+    letterSpacing: 0.3,
   },
   tdValue: {
     flex: 1,
     paddingHorizontal: 12,
-    paddingVertical: 9,
+    paddingVertical: 10,
     justifyContent: "center",
   },
   tdValueAlt: {
@@ -249,21 +278,66 @@ const s = StyleSheet.create({
   },
   tdValueText: {
     fontSize: 9,
-    color: NAVY,
+    color: SLATE8,
   },
 
   /* ── Text ── */
   paragraph: {
     fontSize: 9,
     color: SLATE5,
-    lineHeight: 1.65,
+    lineHeight: 1.7,
     marginBottom: 6,
+  },
+
+  /* ── Location cards ── */
+  locationSection: {
+    paddingHorizontal: 36,
+    paddingTop: 24,
+    paddingBottom: 20,
+  },
+  locationSectionTitle: {
+    fontSize: 7,
+    fontFamily: "Helvetica-Bold",
+    color: SLATE4,
+    letterSpacing: 2.5,
+    textAlign: "center",
+    marginBottom: 14,
+  },
+  locationGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  locationCard: {
+    width: "47%",
+    backgroundColor: SLATE1,
+    borderLeftWidth: 3,
+    borderLeftColor: GOLD,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  locationCardName: {
+    fontSize: 8.5,
+    fontFamily: "Helvetica-Bold",
+    color: NAVY,
+    marginBottom: 2,
+  },
+  locationCardCity: {
+    fontSize: 7.5,
+    color: GOLD,
+    fontFamily: "Helvetica-Bold",
+    marginBottom: 5,
+  },
+  locationCardAddress: {
+    fontSize: 7,
+    color: SLATE5,
+    lineHeight: 1.55,
   },
 
   /* ── Bullet list ── */
   bulletRow: {
     flexDirection: "row",
-    marginBottom: 5,
+    marginBottom: 6,
     alignItems: "flex-start",
   },
   bulletDot: {
@@ -271,24 +345,28 @@ const s = StyleSheet.create({
     fontSize: 9,
     color: GOLD,
     fontFamily: "Helvetica-Bold",
+    marginTop: 1,
   },
   bulletText: {
     flex: 1,
     fontSize: 9,
     color: SLATE5,
-    lineHeight: 1.55,
+    lineHeight: 1.6,
   },
 });
 
 /* ── Sub-components ──────────────────────────────────────────────────────── */
 
-const PageHeader = () => (
+const PageHeader = ({ label = "TRAINING QUOTATION" }: { label?: string }) => (
   <View style={s.header}>
-    <Image src={ikaLogoSrc} style={s.headerLogo} />
-    <View>
-      <Text style={s.headerOrgName}>INTERNATIONAL KNOWLEDGE ACADEMY</Text>
-      <Text style={s.headerOrgSub}>FOR TRAINING AND MANAGEMENT DEVELOPMENT</Text>
+    <View style={s.headerLeft}>
+      <Image src={ikaLogoSrc} style={s.headerLogo} />
+      <View>
+        <Text style={s.headerOrgName}>INTERNATIONAL KNOWLEDGE ACADEMY</Text>
+        <Text style={s.headerOrgSub}>FOR TRAINING AND MANAGEMENT DEVELOPMENT</Text>
+      </View>
     </View>
+    <Text style={s.headerBadge}>{label}</Text>
   </View>
 );
 
@@ -299,12 +377,11 @@ const PageFooter = () => (
       <Text style={s.footerText}>53000 Kuala Lumpur, Malaysia</Text>
     </View>
     <View style={s.footerCol}>
-      <Text style={s.footerText}>Fatih Molla Gürani Mah. Turgut Özal</Text>
-      <Text style={s.footerText}>Millet Cd. 84/214, Istanbul, Türkiye</Text>
+      <Text style={s.footerPage} render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />
     </View>
     <View style={s.footerColRight}>
-      <Text style={s.footerText}>00601139936766  |  00905345699372</Text>
       <Text style={s.footerText}>info@ika-edu.com  |  www.ika-edu.com</Text>
+      <Text style={s.footerText}>00601139936766  |  00905345699372</Text>
     </View>
   </View>
 );
@@ -331,7 +408,9 @@ const TableRow = ({
 );
 
 const SectionLabel = ({ children }: { children: string }) => (
-  <Text style={s.sectionLabel}>{children.toUpperCase()}</Text>
+  <View style={s.sectionLabelWrap}>
+    <Text style={s.sectionLabelText}>{children.toUpperCase()}</Text>
+  </View>
 );
 
 const BulletItem = ({ text }: { text: string }) => (
@@ -343,14 +422,14 @@ const BulletItem = ({ text }: { text: string }) => (
 
 /* ── Main document ───────────────────────────────────────────────────────── */
 
-const ProgramQuotationPDF = ({ program }: { program: Program }) => {
+const ProgramQuotationPDF = ({ program, locations = [] }: { program: Program; locations?: Location[] }) => {
   const startDate  = formatDate(program.start_date);
   const endDate    = formatDate(program.end_date);
   const objectives = parseLines(program.objectives);
   const audience   = parseLines(program.target_audience);
   const prereqs    = parseLines(program.prerequisites);
 
-  const dateRange   = [startDate, endDate].filter(Boolean).join(" – ") || "—";
+  const dateRange   = [startDate, endDate].filter(Boolean).join(" – ") || null;
   const locationStr = program.location
     ? [program.location.name, program.location.city, program.location.country].filter(Boolean).join(", ")
     : null;
@@ -363,16 +442,16 @@ const ProgramQuotationPDF = ({ program }: { program: Program }) => {
   });
 
   const tableRows = [
-    { label: "Training Title", value: program.name },
-    ...(dateRange !== "—"    ? [{ label: "Date & Time",   value: dateRange }]                           : []),
-    ...(locationStr          ? [{ label: "Location",      value: locationStr }]                         : []),
-    ...(program.language     ? [{ label: "Language",      value: program.language }]                    : []),
-    ...(program.level        ? [{ label: "Level",         value: program.level_display ?? program.level }] : []),
-    ...(program.mode         ? [{ label: "Mode",          value: program.mode_display  ?? program.mode  }] : []),
-    ...(program.duration     ? [{ label: "Duration",      value: program.duration }]                    : []),
-    ...(program.max_participants ? [{ label: "Seats",     value: String(program.max_participants) }]    : []),
-    ...(priceStr             ? [{ label: "Price",         value: priceStr }]                            : []),
-    ...(program.contact_email ? [{ label: "Contact",      value: program.contact_email }]               : []),
+    { label: "Training Title",  value: program.name },
+    ...(dateRange               ? [{ label: "Date",          value: dateRange }]                              : []),
+    ...(locationStr             ? [{ label: "Location",      value: locationStr }]                            : []),
+    ...(program.language        ? [{ label: "Language",      value: program.language }]                       : []),
+    ...(program.level           ? [{ label: "Level",         value: program.level_display ?? program.level }] : []),
+    ...(program.mode            ? [{ label: "Mode",          value: program.mode_display  ?? program.mode  }] : []),
+    ...(program.duration        ? [{ label: "Duration",      value: program.duration }]                       : []),
+    ...(program.max_participants ? [{ label: "Seats",        value: String(program.max_participants) }]       : []),
+    ...(priceStr                ? [{ label: "Price",         value: priceStr }]                               : []),
+    ...(program.contact_email   ? [{ label: "Contact",       value: program.contact_email }]                  : []),
   ];
 
   const hasContent =
@@ -386,23 +465,53 @@ const ProgramQuotationPDF = ({ program }: { program: Program }) => {
     >
       {/* ── Cover ───────────────────────────────────────────────────────── */}
       <Page size="A4" style={s.page}>
-        <View style={s.coverTopBar} />
 
-        <View style={s.coverBody}>
+        {/* Navy hero block */}
+        <View style={s.coverHero}>
           <Image src={ikaLogoSrc} style={s.coverLogo} />
           <Text style={s.coverOrgName}>INTERNATIONAL KNOWLEDGE ACADEMY</Text>
           <Text style={s.coverOrgSub}>FOR TRAINING AND MANAGEMENT DEVELOPMENT</Text>
-          <View style={s.coverDivider} />
-          <Text style={s.coverLabel}>Training Quotation</Text>
-          <Text style={s.coverTitle}>{program.name}</Text>
-          <Text style={s.coverDate}>{today}</Text>
-          {locationStr && (
-            <View style={s.coverLocation}>
-              <View style={s.coverLocationDot} />
-              <Text style={s.coverLocationText}>{locationStr}</Text>
-            </View>
-          )}
         </View>
+
+        {/* Gold separator */}
+        <View style={s.coverGoldLine} />
+
+        {/* White info area */}
+        <View style={s.coverInfo}>
+          <Text style={s.coverBadge}>TRAINING QUOTATION</Text>
+          <Text style={s.coverTitle}>{program.name}</Text>
+
+          <View style={s.coverMeta}>
+            <Text style={s.coverMetaText}>{today}</Text>
+            {locationStr && (
+              <>
+                <View style={s.coverMetaDivider} />
+                <View style={s.coverLocationRow}>
+                  <View style={s.coverLocationDot} />
+                  <Text style={s.coverMetaText}>{locationStr}</Text>
+                </View>
+              </>
+            )}
+          </View>
+        </View>
+
+        {/* Locations */}
+        {locations.length > 0 && (
+          <View style={s.locationSection}>
+            <Text style={s.locationSectionTitle}>OUR LOCATIONS</Text>
+            <View style={s.locationGrid}>
+              {locations.map((loc) => (
+                <View key={loc.uid} style={s.locationCard}>
+                  <Text style={s.locationCardName}>{loc.name}</Text>
+                  <Text style={s.locationCardCity}>{[loc.city, loc.country].filter(Boolean).join(", ")}</Text>
+                  {loc.address ? (
+                    <Text style={s.locationCardAddress}>{loc.address}</Text>
+                  ) : null}
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
 
         <View style={s.coverBottomBar} />
       </Page>
@@ -412,10 +521,10 @@ const ProgramQuotationPDF = ({ program }: { program: Program }) => {
         <PageHeader />
 
         <View style={s.content}>
-          <Text style={s.pageTitle}>Training Quotation</Text>
+          <Text style={s.pageTitle}>Program Details</Text>
           <Text style={s.pageSubtitle}>{program.name}</Text>
 
-          <SectionLabel>Program Details</SectionLabel>
+          <SectionLabel>Overview</SectionLabel>
 
           <View style={s.table}>
             {tableRows.map((row, i) => (
@@ -436,7 +545,7 @@ const ProgramQuotationPDF = ({ program }: { program: Program }) => {
       {/* ── Program Outline ──────────────────────────────────────────────── */}
       {hasContent && (
         <Page size="A4" style={s.page}>
-          <PageHeader />
+          <PageHeader label="PROGRAM OUTLINE" />
 
           <View style={s.content}>
             <Text style={s.pageTitle}>{program.name}</Text>
