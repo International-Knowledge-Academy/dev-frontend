@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const AboutHero = () => {
   return (
-    <section className="relative mt-[72px] bg-navy-600 py-28 px-6 overflow-hidden">
+    <section className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-600 py-28 px-6 overflow-hidden">
       {/* Background blobs */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-gold-500 opacity-10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-72 h-72 bg-gold-400 opacity-10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4 pointer-events-none" />

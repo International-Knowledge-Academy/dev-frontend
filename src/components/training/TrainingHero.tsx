@@ -9,7 +9,7 @@ interface Props {
 
 const TrainingHero = ({ selectedCategory }: Props) => {
   return (
-    <section className="relative mt-[72px] bg-navy-600 overflow-hidden">
+    <section className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-600 overflow-hidden">
       {/* Background grid */}
       <div
         className="absolute inset-0 opacity-[0.04] pointer-events-none"
