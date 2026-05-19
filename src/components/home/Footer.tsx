@@ -2,14 +2,15 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { MdEmail, MdPhone, MdLanguage, MdArrowForward } from "react-icons/md";
-import { FaInstagram, FaWhatsapp, FaSnapchatGhost } from "react-icons/fa";
+import { FaInstagram, FaWhatsapp, FaSnapchatGhost, FaFacebook } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 const socials = [
-  { icon: <FaInstagram    size={14} />, href: "https://www.instagram.com/ika.academy?igsh=YWN4eTBqdHMxN2Nj&utm_source=qr",                           label: "Instagram" },
-  { icon: <FaXTwitter     size={14} />, href: "https://x.com/internatio86032?s=11&t=FiEYk1tKhME8U_rENQfVOA",                                          label: "X"         },
+  { icon: <FaFacebook      size={14} />, href: "https://www.facebook.com/share/1bDy9Uv8uH/?mibextid=wwXIfr",                                          label: "Facebook"  },
+  { icon: <FaInstagram     size={14} />, href: "https://www.instagram.com/ika.academy?igsh=YWN4eTBqdHMxN2Nj&utm_source=qr",                           label: "Instagram" },
+  { icon: <FaXTwitter      size={14} />, href: "https://x.com/internatio86032?s=11&t=FiEYk1tKhME8U_rENQfVOA",                                          label: "X"         },
   { icon: <FaSnapchatGhost size={14} />, href: "https://www.snapchat.com/add/ika.academy?share_id=rxFv-CM6ThGReTcwUW0mJw&locale=en_MY",               label: "Snapchat"  },
-  { icon: <FaWhatsapp     size={14} />, href: "https://wa.me/601139936766",                                                                            label: "WhatsApp"  },
+  { icon: <FaWhatsapp      size={14} />, href: "https://wa.me/601139936766",                                                                            label: "WhatsApp"  },
 ];
 
 const quickLinks = [

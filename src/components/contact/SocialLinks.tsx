@@ -1,9 +1,16 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
-import { FaInstagram, FaWhatsapp, FaSnapchatGhost } from "react-icons/fa";
+import { FaInstagram, FaWhatsapp, FaSnapchatGhost, FaFacebook } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 const socials = [
+  {
+    icon: <FaFacebook size={20} />,
+    label: "Facebook",
+    handle: "IKA Academy",
+    href: "https://www.facebook.com/share/1bDy9Uv8uH/?mibextid=wwXIfr",
+    color: "hover:bg-[#1877F2] hover:border-[#1877F2]",
+  },
   {
     icon: <FaInstagram size={20} />,
     label: "Instagram",
