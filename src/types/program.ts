@@ -66,7 +66,6 @@ export interface Program {
   status_display?: string;
   is_active: boolean;
   max_participants?: number | null;
-  brochure_url?: string;
   contact_email?: string;
   contact_phone?: string;
   thumbnail?: string;
@@ -117,7 +116,6 @@ export interface CreateProgramPayload {
   start_date?: string;
   end_date?: string;
   max_participants?: number | null;
-  brochure_url?: string;
   contact_email?: string;
   contact_phone?: string;
   status: ProgramStatus;

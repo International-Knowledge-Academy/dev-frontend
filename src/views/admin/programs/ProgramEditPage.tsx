@@ -140,7 +140,6 @@ const ProgramEditPage = () => {
     start_date:       "",
     end_date:         "",
     max_participants: "",
-    brochure_url:     "",
     contact_email:    "",
     contact_phone:    "",
     status:           "upcoming",
@@ -168,7 +167,6 @@ const ProgramEditPage = () => {
         start_date:       program.start_date ?? "",
         end_date:         program.end_date ?? "",
         max_participants: program.max_participants != null ? String(program.max_participants) : "",
-        brochure_url:     program.brochure_url ?? "",
         contact_email:    program.contact_email ?? "",
         contact_phone:    program.contact_phone ?? "",
         status:           program.status,
@@ -382,10 +380,6 @@ const ProgramEditPage = () => {
             errors={fieldErrors}
             updateFormData={updateFormData}
           />
-
-          <div className="md:col-span-2">
-            <PdfUploadField label="Brochure" folder="programs/brochures" displayUrl={form.brochure_url} onChange={(url) => updateFormData("brochure_url", url)} />
-          </div>
 
           <div className="md:col-span-2">
             <TextareaField

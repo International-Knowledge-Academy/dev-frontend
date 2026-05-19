@@ -136,7 +136,6 @@ const ProgramCreatePage = () => {
     start_date:       "",
     end_date:         "",
     max_participants: "",
-    brochure_url:     "",
     contact_email:    "",
     contact_phone:    "",
     status:           "upcoming",
@@ -338,11 +337,6 @@ const ProgramCreatePage = () => {
             errors={fieldErrors}
             updateFormData={updateFormData}
           />
-
-          {/* Brochure — full width */}
-          <div className="md:col-span-2">
-            <PdfUploadField label="Brochure" folder="programs/brochures" displayUrl={form.brochure_url} onChange={(url) => updateFormData("brochure_url", url)} />
-          </div>
 
           {/* Description — full width */}
           <div className="md:col-span-2">

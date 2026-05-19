@@ -329,17 +329,6 @@ const ProgramPage = () => {
                 <Share2 size={12} />
                 Share
               </button>
-              {program.brochure_url && (
-                <a
-                  href={program.brochure_url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy-900 bg-gold-400 hover:bg-gold-300 px-3 py-2 rounded-md lg:rounded-lg transition-all duration-200"
-                >
-                  <Download size={12} />
-                  Brochure
-                </a>
-              )}
               <QuotationDownloadButton program={program} />
             </div>
           </motion.div>
@@ -783,38 +772,6 @@ const ProgramPage = () => {
               </motion.div>
             )}
 
-            {/* Brochure */}
-            {program.brochure_url && (
-              <motion.div
-                initial={{ opacity: 0, x: 24 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm"
-              >
-                <a
-                  href={program.brochure_url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center justify-between group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-gold-50 border border-gold-200 flex items-center justify-center flex-shrink-0 group-hover:bg-gold-100 transition-colors">
-                      <Download size={14} className="text-gold-500" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-navy-800 group-hover:text-gold-600 transition-colors">
-                        Download Brochure
-                      </p>
-                      <p className="text-[10px] text-slate-400 mt-0.5">PDF format</p>
-                    </div>
-                  </div>
-                  <ChevronRight
-                    size={14}
-                    className="text-slate-300 group-hover:text-gold-500 group-hover:translate-x-0.5 transition-all duration-200"
-                  />
-                </a>
-              </motion.div>
-            )}
 
             {/* Share */}
             <motion.div

@@ -64,7 +64,7 @@ const ProgramDetailPage = () => {
     <div className="flex items-center justify-center py-20 text-sm text-red-500">{error ?? "Program not found."}</div>
   );
 
-  const hasContact  = program.contact_email || program.contact_phone || program.brochure_url;
+  const hasContact  = program.contact_email || program.contact_phone;
   const hasContent  = program.description || program.objectives || program.target_audience || program.prerequisites;
   const hasTrainers = program.trainer_profiles?.length > 0;
 
@@ -266,14 +266,6 @@ const ProgramDetailPage = () => {
                     <a href={`tel:${program.contact_phone}`}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-200 bg-slate-50 text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
                       <MdPhone size={12} className="text-slate-400" /> {program.contact_phone}
-                    </a>
-                  } />
-                )}
-                {program.brochure_url && (
-                  <Field label="Brochure" value={
-                    <a href={program.brochure_url} target="_blank" rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-200 bg-slate-50 text-xs font-medium text-slate-700 hover:bg-slate-100 transition">
-                      <MdOpenInNew size={12} className="text-slate-400" /> View Brochure
                     </a>
                   } />
                 )}
