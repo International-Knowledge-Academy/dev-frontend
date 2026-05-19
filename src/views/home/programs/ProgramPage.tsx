@@ -288,7 +288,7 @@ const ProgramPage = () => {
       <Navbar />
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative mt-[72px] bg-navy-800 overflow-hidden">
+      <section className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-800 overflow-hidden">
 
         {/* Grid pattern */}
         <div

@@ -67,7 +67,7 @@ const CategoryTypePage = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Navbar />
-        <div className="flex-1 flex items-center justify-center flex-col gap-3 pt-24">
+        <div className="flex-1 flex items-center justify-center flex-col gap-3 pt-[80px] sm:pt-[100px] lg:pt-[120px]">
           <h1 className="text-3xl font-bold text-navy-700">404</h1>
           <p className="text-slate-500">Category type not found.</p>
           <Link

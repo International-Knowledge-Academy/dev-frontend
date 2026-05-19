@@ -9,6 +9,7 @@ import {
 } from "react-icons/md";
 
 import useCategories from "hooks/categories/useCategories";
+import ikaLogo from "assets/img/brand/IKA-logo-bg.png";
 
 const slideDown = {
   initial:  { opacity: 0, height: 0 },
@@ -248,11 +249,15 @@ const Navbar = () => {
         scrolled ? "shadow-sm border-b border-slate-100" : "border-b border-slate-100/60"
       }`}
     >
-      <div className="max-w-6xl mx-auto px-4 h-[72px] flex items-center justify-between gap-6">
+      <div className="max-w-6xl mx-auto px-4 h-[80px] sm:h-[100px] lg:h-[120px] flex items-center justify-between gap-6">
 
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 flex-shrink-0">
-          <img src="/brand/IKA-logo-bg.png" alt="IKA Logo" className="h-12 sm:h-14 w-auto" />
+          <img
+            src={ikaLogo}
+            alt="IKA Logo"
+            className="w-20 sm:w-28 lg:w-36 h-auto max-h-14 sm:max-h-20 lg:max-h-24 object-contain"
+          />
           <div className="hidden lg:block">
             <p className="text-navy-800 font-bold text-sm leading-tight">
               International Knowledge Academy
