@@ -164,7 +164,7 @@ const UserEditPage = () => {
       password:  "",
       role:      user.role      ?? "account_manager",
       is_active: user.is_active ?? true,
-      profile_picture:  "",
+      profile_picture:  p?.profile_picture?.file_key ?? "",
       title:            p?.title            ?? "",
       bio:              p?.bio              ?? "",
       years_experience: p?.years_experience != null ? String(p.years_experience) : "",
@@ -227,8 +227,8 @@ const UserEditPage = () => {
         postal_code:      form.postal_code      || undefined,
       },
     };
-    if (form.password)          payload.password                  = form.password;
-    if (form.profile_picture)   payload.profile.profile_picture   = form.profile_picture;
+    if (form.password)        payload.password                = form.password;
+    if (form.profile_picture) payload.profile.profile_picture = form.profile_picture;
 
     const result = await updateUser(id, payload);
 
@@ -496,7 +496,7 @@ const UserEditPage = () => {
           </div>
 
           {/* Actions */}
-          <div className="flex gap-2 border-t border-slate-100 pt-5">
+          <div className="flex flex-col-reverse sm:flex-row gap-2 border-t border-slate-100 pt-5">
             <Button
               type="button"
               text="Cancel"

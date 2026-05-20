@@ -5,7 +5,7 @@ import useCreateUser from "hooks/users/useCreateUser";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import SelectField from "components/form/SelectField";
-import ToggleInput from "components/form/toggle/ToggleInput";
+import CompactToggle from "components/form/toggle/CompactToggle";
 import PasswordField from "components/form/PasswordField";
 import Button from "components/ui/buttons/Button";
 
@@ -96,15 +96,16 @@ const UserCreatePage = () => {
             />
           </div>
 
-          <ToggleInput
+          <CompactToggle
             label="Active"
+            description="Account can log in and access the system"
             field="is_active"
             formData={form}
             errors={fieldErrors}
             updateFormData={updateFormData}
           />
 
-          <div className="flex gap-2 border-t border-slate-100 pt-5">
+          <div className="flex flex-col-reverse sm:flex-row gap-2 border-t border-slate-100 pt-5">
             <Button
               type="button"
               text="Cancel"
