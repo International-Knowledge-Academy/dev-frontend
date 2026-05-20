@@ -133,10 +133,22 @@ const ProgramDetailPage = () => {
                 </span>
               )}
             </div>
+
+            {/* Actions — mobile only */}
+            <div className="flex sm:hidden gap-2 mt-4">
+              <button type="button" onClick={() => navigate(`/admin/programs/${uid}/edit`)}
+                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md bg-navy-800 hover:bg-navy-700 text-xs font-medium text-white transition">
+                <MdEdit size={13} /> Edit
+              </button>
+              <button type="button" onClick={() => navigate("/admin/programs")}
+                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-50 transition">
+                <MdArrowBack size={13} /> Back
+              </button>
+            </div>
           </div>
 
-          {/* Actions */}
-          <div className="flex flex-col gap-2 flex-shrink-0">
+          {/* Actions — desktop only */}
+          <div className="hidden sm:flex flex-col gap-2 flex-shrink-0">
             <button
               type="button"
               onClick={() => navigate(`/admin/programs/${uid}/edit`)}
@@ -210,18 +222,18 @@ const ProgramDetailPage = () => {
           <>
             <Divider />
             <Section title="Location">
-              <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-x-8 sm:gap-y-5">
                 <Field label="Venue" value={program.location.name} />
                 {program.location.city && (
                   <Field label="City / Country" value={[program.location.city, program.location.country].filter(Boolean).join(", ")} />
                 )}
                 {program.location.address && (
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Field label="Address" value={program.location.address} />
                   </div>
                 )}
                 {program.location.venue_details && (
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Field label="Venue Details" value={
                       <span className="whitespace-pre-wrap font-normal text-slate-600">{program.location.venue_details}</span>
                     } />
@@ -252,7 +264,7 @@ const ProgramDetailPage = () => {
           <>
             <Divider />
             <Section title="Contact">
-              <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-x-8 sm:gap-y-5">
                 {program.contact_email && (
                   <Field label="Email" value={
                     <a href={`mailto:${program.contact_email}`}

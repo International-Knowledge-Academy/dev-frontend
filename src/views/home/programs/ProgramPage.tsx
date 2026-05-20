@@ -552,7 +552,7 @@ const ProgramPage = () => {
                 transition={{ duration: 0.5, delay: 0.14 }}
               >
                 <SectionCard title="Training Schedule" icon={Calendar}>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {startDate && (
                       <div className="bg-slate-50 rounded-xl p-4">
                         <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1.5">Start Date</p>

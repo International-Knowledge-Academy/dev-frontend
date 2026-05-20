@@ -116,10 +116,22 @@ const TrainerProfilePage = () => {
                 <MdSchool size={11} /> Trainer
               </span>
             </div>
+
+            {/* Actions — mobile only */}
+            <div className="flex sm:hidden gap-2 mt-4">
+              <button type="button" onClick={() => navigate(`/admin/trainers/${uid}/edit`)}
+                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md bg-navy-800 hover:bg-navy-700 text-xs font-medium text-white transition">
+                <MdEdit size={13} /> Edit
+              </button>
+              <button type="button" onClick={() => navigate("/admin/trainers")}
+                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-50 transition">
+                <MdArrowBack size={13} /> Back
+              </button>
+            </div>
           </div>
 
-          {/* Actions */}
-          <div className="flex flex-col gap-2 flex-shrink-0">
+          {/* Actions — desktop only */}
+          <div className="hidden sm:flex flex-col gap-2 flex-shrink-0">
             <button type="button"
               onClick={() => navigate(`/admin/trainers/${uid}/edit`)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-md lg:rounded-lg bg-navy-800 hover:bg-navy-700 text-xs font-medium text-white transition">
@@ -138,7 +150,7 @@ const TrainerProfilePage = () => {
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
 
         <Section title="Account">
-          <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-x-8 sm:gap-y-5">
             <Field label="Full Name" value={trainer.name} />
             <Field label="Email"     value={trainer.email} />
           </div>
@@ -148,7 +160,7 @@ const TrainerProfilePage = () => {
           <>
             <Divider />
             <Section title="Professional">
-              <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-x-8 sm:gap-y-5">
                 {trainer.title && <Field label="Title" value={trainer.title} />}
                 {trainer.years_experience != null && (
                   <Field label="Experience" value={`${trainer.years_experience} year${trainer.years_experience !== 1 ? "s" : ""}`} />
@@ -180,7 +192,7 @@ const TrainerProfilePage = () => {
           <>
             <Divider />
             <Section title="Contact">
-              <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-x-8 sm:gap-y-5">
                 {trainer.primary_email   && <Field label="Primary Email"   value={trainer.primary_email} />}
                 {trainer.secondary_email && <Field label="Secondary Email" value={trainer.secondary_email} />}
                 {trainer.phone           && <Field label="Phone"           value={trainer.phone} />}
@@ -201,7 +213,7 @@ const TrainerProfilePage = () => {
           <>
             <Divider />
             <Section title="Address">
-              <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-x-8 sm:gap-y-5">
                 {trainer.country     && <Field label="Country"     value={trainer.country} />}
                 {trainer.city        && <Field label="City"        value={trainer.city} />}
                 {trainer.address     && <Field label="Street"      value={trainer.address} />}
