@@ -184,15 +184,18 @@ const ProgramEditPage = () => {
     form.name.trim() !== "" &&
     form.description.trim() !== "" &&
     form.objectives.trim() !== "" &&
-    form.target_audience.trim() !== "";
+    form.target_audience.trim() !== "" &&
+    form.field !== "" &&
+    form.location !== "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const { field, location, ...rest } = form;
     const updated = await updateProgram(uid, {
-      ...form,
+      ...rest,
+      field_uid:        field || undefined,
+      location_uid:     location || undefined,
       max_participants: form.max_participants ? Number(form.max_participants) : null,
-      field:    form.field    || undefined,
-      location: form.location || undefined,
     });
     if (updated) {
       addToast("Program updated successfully", "success");
@@ -260,6 +263,7 @@ const ProgramEditPage = () => {
           <SelectField
             label="Field"
             field="field"
+            required
             options={fieldOptions}
             formData={form}
             errors={fieldErrors}
@@ -268,6 +272,7 @@ const ProgramEditPage = () => {
           <SelectField
             label="Location"
             field="location"
+            required
             options={locationOptions}
             formData={form}
             errors={fieldErrors}
@@ -464,7 +469,7 @@ const ProgramEditPage = () => {
           <button
             type="submit"
             disabled={updating || !isFormValid}
-            className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition disabled:opacity-60"
+            className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white transition enabled:hover:bg-navy-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {updating ? "Saving..." : "Save Changes"}
           </button>

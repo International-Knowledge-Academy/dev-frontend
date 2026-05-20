@@ -28,7 +28,7 @@ const useCreateProgram = (): UseCreateProgramReturn => {
 
       const fields: (keyof CreateProgramPayload)[] = [
         "name", "description", "objectives", "target_audience", "prerequisites",
-        "field", "location", "trainer_profiles", "program_type", "duration",
+        "field_uid", "location_uid", "trainer_uids", "program_type", "duration",
         "level", "mode", "language", "start_date", "end_date",
         "max_participants", "contact_email", "contact_phone",
         "status", "is_active", "thumbnail", "price", "currency",

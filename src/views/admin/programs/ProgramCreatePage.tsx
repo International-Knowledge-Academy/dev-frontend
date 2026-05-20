@@ -151,15 +151,19 @@ const ProgramCreatePage = () => {
     form.name.trim() !== "" &&
     form.description.trim() !== "" &&
     form.objectives.trim() !== "" &&
-    form.target_audience.trim() !== "";
+    form.target_audience.trim() !== "" &&
+    form.field !== "" &&
+    form.location !== "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const { field, location, ...rest } = form;
     const created = await createProgram({
-      ...form,
+      ...rest,
+      field_uid:        field || undefined,
+      location_uid:     location || undefined,
+      trainer_uids:     [],
       max_participants: form.max_participants ? Number(form.max_participants) : null,
-      field:    form.field    || undefined,
-      location: form.location || undefined,
     });
     if (created) {
       addToast("Program created successfully", "success");
@@ -211,6 +215,7 @@ const ProgramCreatePage = () => {
           <SelectField
             label="Field"
             field="field"
+            required
             options={fieldOptions}
             formData={form}
             errors={fieldErrors}
@@ -219,6 +224,7 @@ const ProgramCreatePage = () => {
           <SelectField
             label="Location"
             field="location"
+            required
             options={locationOptions}
             formData={form}
             errors={fieldErrors}
@@ -426,7 +432,7 @@ const ProgramCreatePage = () => {
           <button
             type="submit"
             disabled={loading || !isFormValid}
-            className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition disabled:opacity-60"
+            className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white transition enabled:hover:bg-navy-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Creating..." : "Create Program"}
           </button>

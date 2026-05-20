@@ -105,9 +105,9 @@ export interface CreateProgramPayload {
   objectives?: string;
   target_audience?: string;
   prerequisites?: string;
-  field?: string;
-  location?: string;
-  trainer_profiles?: string[];
+  field_uid?: string;
+  location_uid?: string;
+  trainer_uids?: string[];
   program_type: ProgramType;
   duration?: string;
   level: ProgramLevel;
