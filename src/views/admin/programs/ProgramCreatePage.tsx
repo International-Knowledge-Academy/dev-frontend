@@ -83,21 +83,10 @@ const TYPE_OPTIONS = [
   { value: "diploma",    label: "Training Diploma" },
   { value: "contracted", label: "Contracted Course" },
 ];
-const LEVEL_OPTIONS = [
-  { value: "beginner",     label: "Beginner" },
-  { value: "intermediate", label: "Intermediate" },
-  { value: "advanced",     label: "Advanced" },
-];
 const MODE_OPTIONS = [
   { value: "online",  label: "Online" },
   { value: "offline", label: "Offline" },
   { value: "hybrid",  label: "Hybrid" },
-];
-const STATUS_OPTIONS = [
-  { value: "upcoming",  label: "Upcoming" },
-  { value: "ongoing",   label: "Ongoing" },
-  { value: "completed", label: "Completed" },
-  { value: "cancelled", label: "Cancelled" },
 ];
 const CURRENCY_OPTIONS = [
   { value: "MYR", label: "MYR — Malaysian Ringgit" },
