@@ -188,7 +188,9 @@ const ProgramEditPage = () => {
     form.field !== "" &&
     form.location !== "" &&
     form.contact_email.trim() !== "" &&
-    form.contact_phone.trim() !== "";
+    form.contact_phone.trim() !== "" &&
+    form.start_date.trim() !== "" &&
+    form.end_date.trim() !== "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -319,7 +321,7 @@ const ProgramEditPage = () => {
             label="Start Date"
             field="start_date"
             type="date"
-            required={false}
+            required={true}
             formData={form}
             errors={fieldErrors}
             updateFormData={updateFormData}
@@ -328,7 +330,7 @@ const ProgramEditPage = () => {
             label="End Date"
             field="end_date"
             type="date"
-            required={false}
+            required={true}
             formData={form}
             errors={fieldErrors}
             updateFormData={updateFormData}
