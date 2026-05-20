@@ -189,7 +189,7 @@ const VerifyCertificatePage = () => {
               </div>
 
               {/* PDF file row */}
-              {result.certificate_pdf && (
+              {typeof result.certificate_pdf === "string" && result.certificate_pdf && (
                 <div className="px-6 pb-5">
                   <div className="flex items-center gap-3 px-4 py-3 rounded-md lg:rounded-lg border border-slate-200 bg-slate-50">
                     <FileText size={18} className="text-navy-500 flex-shrink-0" />

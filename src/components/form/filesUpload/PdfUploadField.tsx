@@ -29,14 +29,14 @@ const PdfUploadField = ({
     if (result) onChange(result.public_url);
   };
 
-  const fileName = displayUrl ? displayUrl.split("/").pop() : null;
+  const fileName = displayUrl && typeof displayUrl === "string" ? displayUrl.split("/").pop() : null;
 
   return (
     <div className="space-y-2">
       <label className="block text-sm font-medium text-navy-800">{label}</label>
 
       {/* Existing file row */}
-      {displayUrl && !uploading && (
+      {typeof displayUrl === "string" && displayUrl && !uploading && (
         <div className="flex items-center gap-3 px-4 py-3 rounded-md lg:rounded-lg border border-slate-200 bg-slate-50">
           <FileText size={18} className="text-navy-500 flex-shrink-0" />
           <span className="text-sm text-navy-800 truncate flex-1" title={fileName}>{fileName}</span>
@@ -69,7 +69,7 @@ const PdfUploadField = ({
       )}
 
       {/* Drop zone */}
-      {!displayUrl && !uploading && (
+      {!(typeof displayUrl === "string" && displayUrl) && !uploading && (
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
@@ -98,7 +98,7 @@ const PdfUploadField = ({
       )}
 
       {/* Replace link */}
-      {displayUrl && !uploading && (
+      {typeof displayUrl === "string" && displayUrl && !uploading && (
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
