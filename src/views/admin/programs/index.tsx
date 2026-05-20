@@ -493,14 +493,16 @@ const ProgramsPage = () => {
                         <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                           <div className="flex items-center gap-1">
                             <button
-                              onClick={() => navigate(`/admin/programs/${program.uid}/edit`)}
+                              type="button"
+                              onClick={(e) => { e.stopPropagation(); navigate(`/admin/programs/${program.uid}/edit`); }}
                               className="p-1.5 rounded-md text-slate-400 hover:bg-navy-50 hover:text-navy-700 transition"
                               title="Edit"
                             >
                               <Pencil size={14} />
                             </button>
                             <button
-                              onClick={() => openDelete(program)}
+                              type="button"
+                              onClick={(e) => { e.stopPropagation(); openDelete(program); }}
                               className="p-1.5 rounded-md text-slate-400 hover:bg-red-50 hover:text-red-500 transition"
                               title="Delete"
                             >

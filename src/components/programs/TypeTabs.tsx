@@ -36,7 +36,8 @@ const TypeTabs = ({ selected, counts, total, onSelect }: Props) => {
             return (
               <button
                 key={t.label}
-                onClick={() => onSelect(t.value)}
+                type="button"
+                onClick={(e) => { e.stopPropagation(); onSelect(t.value); }}
                 className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-200 flex-shrink-0 ${
                   isActive
                     ? "bg-navy-800 text-white shadow-md"

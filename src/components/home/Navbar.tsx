@@ -168,6 +168,7 @@ function NavItem({ link, pathname }) {
       onMouseLeave={() => setOpen(false)}
     >
       <button
+        type="button"
         onClick={() => setOpen((o) => !o)}
         className={`flex items-center gap-0.5 ${baseCls}`}
       >
@@ -277,6 +278,7 @@ const Navbar = () => {
 
         {/* Mobile toggle */}
         <button
+          type="button"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           onClick={() => { if (menuOpen) setMobileExpanded(null); setMenuOpen(!menuOpen); }}
           className="lg:hidden flex items-center justify-center w-9 h-9 rounded-md lg:rounded-lg text-slate-600 hover:text-navy-800 hover:bg-slate-50 transition"
@@ -303,6 +305,7 @@ const Navbar = () => {
                 {hasChildren ? (
                   <>
                     <button
+                      type="button"
                       onClick={() => setMobileExpanded(isExpanded ? null : link.to)}
                       className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-md lg:rounded-lg text-sm font-medium transition ${
                         isActive

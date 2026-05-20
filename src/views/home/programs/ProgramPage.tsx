@@ -227,6 +227,7 @@ const QuotationDownloadButton = ({ program }: { program: any }) => {
 
   return (
     <button
+      type="button"
       onClick={handleDownload}
       disabled={instance.loading}
       className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-slate-700 hover:bg-slate-800 border border-slate-600 px-3 py-2 rounded-md lg:rounded-lg transition-all duration-200 disabled:opacity-60"
@@ -261,6 +262,7 @@ const ProgramPage = () => {
         <div className="flex-1 flex flex-col items-center justify-center gap-4 py-20">
           <p className="text-red-400 text-sm">{error ?? "Program not found."}</p>
           <button
+            type="button"
             onClick={() => navigate("/programs")}
             className="text-sm font-semibold text-navy-700 hover:underline"
           >
@@ -314,6 +316,7 @@ const ProgramPage = () => {
             className="flex items-center justify-between mb-8"
           >
             <button
+              type="button"
               onClick={() => navigate(-1)}
               className="inline-flex items-center gap-2 text-navy-300 hover:text-white text-sm font-medium transition-colors duration-200 group"
             >
@@ -323,6 +326,7 @@ const ProgramPage = () => {
 
             <div className="flex items-center gap-2">
               <button
+                type="button"
                 onClick={() => handleShare(program.name)}
                 className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy-300 hover:text-white border border-navy-600 hover:border-navy-500 px-3 py-2 rounded-md lg:rounded-lg transition-all duration-200"
               >

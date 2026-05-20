@@ -138,6 +138,7 @@ const ProgramsPublicPage = () => {
 
             {(search || locationUid || fieldUid || selectedType) && (
               <button
+                type="button"
                 onClick={clearAll}
                 className="hidden sm:flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition whitespace-nowrap flex-shrink-0"
               >
@@ -211,6 +212,7 @@ const ProgramsPublicPage = () => {
               <div className="flex items-center justify-between">
                 {(search || locationUid || fieldUid) && (
                   <button
+                    type="button"
                     onClick={clearAll}
                     className="flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition"
                   >
@@ -267,6 +269,7 @@ const ProgramsPublicPage = () => {
               Try adjusting your filters or clearing them to see all available programs.
             </p>
             <button
+              type="button"
               onClick={clearAll}
               className="text-sm font-semibold text-gold-600 hover:text-gold-700 underline underline-offset-2 transition"
             >

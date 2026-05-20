@@ -189,6 +189,7 @@ const CategoryDetailPage = () => {
               className="flex items-center justify-between mb-8"
             >
               <button
+                type="button"
                 onClick={() => navigate(-1)}
                 className="inline-flex items-center gap-2 text-navy-300 hover:text-white text-sm font-medium transition-colors duration-200 group"
               >
@@ -196,6 +197,7 @@ const CategoryDetailPage = () => {
                 Back
               </button>
               <button
+                type="button"
                 onClick={() => handleShare(category?.name ?? "Category")}
                 className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy-300 hover:text-white border border-navy-600 hover:border-navy-500 px-3 py-2 rounded-md lg:rounded-lg transition-all duration-200"
               >

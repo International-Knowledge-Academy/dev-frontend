@@ -240,6 +240,7 @@ const UpcomingPrograms = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <button
+              type="button"
               onClick={() => navigate("/programs")}
               className="inline-flex items-center gap-2 bg-navy-800 hover:bg-navy-700 text-white font-semibold text-sm px-8 py-3 rounded-md lg:rounded-lg transition-colors duration-200"
             >
