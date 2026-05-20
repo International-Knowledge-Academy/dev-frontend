@@ -147,6 +147,12 @@ const ProgramCreatePage = () => {
   const updateFormData = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
 
+  const isFormValid =
+    form.name.trim() !== "" &&
+    form.description.trim() !== "" &&
+    form.objectives.trim() !== "" &&
+    form.target_audience.trim() !== "";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const created = await createProgram({
@@ -342,7 +348,7 @@ const ProgramCreatePage = () => {
             <TextareaField
               label="Description"
               field="description"
-              required={false}
+              required={true}
               rows={3}
               placeholder="Detailed description of the program content..."
               formData={form}
@@ -356,7 +362,7 @@ const ProgramCreatePage = () => {
             <TextareaField
               label="Objectives"
               field="objectives"
-              required={false}
+              required={true}
               rows={3}
               placeholder="What participants will achieve..."
               formData={form}
@@ -369,7 +375,7 @@ const ProgramCreatePage = () => {
           <TextareaField
             label="Target Audience"
             field="target_audience"
-            required={false}
+            required={true}
             rows={3}
             placeholder="Who this program is for..."
             formData={form}
@@ -419,7 +425,7 @@ const ProgramCreatePage = () => {
           </button>
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !isFormValid}
             className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition disabled:opacity-60"
           >
             {loading ? "Creating..." : "Create Program"}
