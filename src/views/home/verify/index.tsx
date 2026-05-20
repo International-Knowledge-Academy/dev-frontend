@@ -21,22 +21,17 @@ const ResultRow = ({ label, value }) => {
 const VerifyCertificatePage = () => {
   const { verify, result, loading, error, reset } = useVerifyCertificate();
 
-  const [verificationCode,  setVerificationCode]  = useState("");
-  const [certificateNumber, setCertificateNumber] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!verificationCode.trim() && !certificateNumber.trim()) return;
-    verify({
-      verification_code:  verificationCode.trim()  || undefined,
-      certificate_number: certificateNumber.trim() || undefined,
-    });
+    if (!verificationCode.trim()) return;
+    verify({ verification_code: verificationCode.trim() });
   };
 
   const handleReset = () => {
     reset();
     setVerificationCode("");
-    setCertificateNumber("");
   };
 
   const isValid   = result?.is_valid === "true" || result?.status === "issued";
@@ -63,8 +58,7 @@ const VerifyCertificatePage = () => {
               Verify Certificate
             </h1>
             <p className="text-slate-500 mt-3 text-sm sm:text-base leading-relaxed max-w-md mx-auto text-justify">
-              Enter the verification code or certificate number found on the certificate
-              to confirm its authenticity.
+              Enter the verification code found on your certificate to confirm its authenticity.
             </p>
           </motion.div>
 
@@ -89,25 +83,6 @@ const VerifyCertificatePage = () => {
                 />
               </div>
 
-              <div className="flex items-center gap-3">
-                <div className="flex-1 h-px bg-slate-100" />
-                <span className="text-xs text-slate-400 font-medium">or</span>
-                <div className="flex-1 h-px bg-slate-100" />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-navy-800 mb-1.5">
-                  Certificate Number
-                </label>
-                <input
-                  type="text"
-                  value={certificateNumber}
-                  onChange={(e) => setCertificateNumber(e.target.value)}
-                  placeholder="e.g. CERT-2026-0001"
-                  className="w-full rounded-md lg:rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-navy-800 outline-none focus:ring-2 focus:ring-navy-300 transition"
-                />
-              </div>
-
               {error && (
                 <div className="flex items-start gap-2 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-4 py-3">
                   <ShieldX size={16} className="flex-shrink-0 mt-0.5" />
@@ -127,7 +102,7 @@ const VerifyCertificatePage = () => {
                 )}
                 <button
                   type="submit"
-                  disabled={loading || (!verificationCode.trim() && !certificateNumber.trim())}
+                  disabled={loading || !verificationCode.trim()}
                   className="flex-1 rounded-md lg:rounded-lg bg-navy-800 hover:bg-navy-700 text-white text-sm font-semibold py-2.5 disabled:opacity-60 transition flex items-center justify-center gap-2"
                 >
                   <Search size={15} />
