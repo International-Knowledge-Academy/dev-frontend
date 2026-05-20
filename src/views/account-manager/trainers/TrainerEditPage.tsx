@@ -180,7 +180,6 @@ const TrainerEditPage = () => {
     const payload: any = {
       name:      form.name,
       email:     form.email,
-      role:      "trainer",
       is_active: form.is_active,
     };
     if (form.password) payload.password = form.password;

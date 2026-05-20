@@ -1,11 +1,11 @@
 // @ts-nocheck
 import { useState, useMemo } from "react";
 import { MdClose, MdSchool, MdSearch, MdStar, MdCheck } from "react-icons/md";
-import useUsers from "hooks/users/useUsers";
+import useTrainers from "hooks/trainers/useTrainers";
 import useAssignTrainer from "hooks/trainers/useAssignTrainer";
 import { useToast } from "context/ToastContext";
 import type { Program } from "types/program";
-import type { User } from "types/auth";
+import type { TrainerBrief } from "types/trainer";
 
 interface AssignTrainerModalProps {
   open: boolean;
@@ -16,11 +16,11 @@ interface AssignTrainerModalProps {
 
 const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainerModalProps) => {
   const { addToast } = useToast();
-  const { users: trainers, loading: loadingTrainers } = useUsers({ role: "trainer" });
+  const { trainers, loading: loadingTrainers } = useTrainers();
   const { assign, loading, error, reset } = useAssignTrainer();
 
   const [search, setSearch]     = useState("");
-  const [selected, setSelected] = useState<User[]>([]);
+  const [selected, setSelected] = useState<TrainerBrief[]>([]);
   const [isLead, setIsLead]     = useState(false);
   const [notes, setNotes]       = useState("");
   const [progress, setProgress] = useState<string | null>(null);
@@ -33,7 +33,7 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
     [trainers, search]
   );
 
-  const toggleTrainer = (trainer: User) => {
+  const toggleTrainer = (trainer: TrainerBrief) => {
     setSelected((prev) =>
       prev.some((t) => t.uid === trainer.uid)
         ? prev.filter((t) => t.uid !== trainer.uid)
@@ -54,18 +54,12 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
   const handleSubmit = async () => {
     if (!selected.length || !program) return;
 
-    const missing = selected.filter((t) => !t.profile?.uid);
-    if (missing.length) {
-      addToast(`${missing.map((t) => t.name).join(", ")} ${missing.length === 1 ? "has" : "have"} no profile set up.`, "error");
-      return;
-    }
-
     let successCount = 0;
     for (let i = 0; i < selected.length; i++) {
       const trainer = selected[i];
       setProgress(`Assigning ${i + 1} of ${selected.length}...`);
       const result = await assign({
-        trainer_profile:    trainer.profile.uid,
+        trainer_profile:    trainer.uid,
         program:            program.uid,
         is_lead_instructor: isLead,
         notes:              notes.trim() || undefined,
@@ -159,9 +153,9 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
                         isSelected ? "bg-green-50" : "hover:bg-slate-50"
                       }`}
                     >
-                      {trainer.profile?.profile_picture?.public_url ? (
+                      {trainer.profile_picture?.public_url ? (
                         <img
-                          src={trainer.profile.profile_picture.public_url}
+                          src={trainer.profile_picture.public_url}
                           alt={trainer.name}
                           className="w-8 h-8 rounded-full object-cover flex-shrink-0"
                         />
@@ -172,7 +166,7 @@ const AssignTrainerModal = ({ open, program, onClose, onSuccess }: AssignTrainer
                       )}
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-navy-800 truncate">{trainer.name}</p>
-                        <p className="text-xs text-slate-400 truncate">{trainer.profile?.title || trainer.email}</p>
+                        <p className="text-xs text-slate-400 truncate">{trainer.title || trainer.email}</p>
                       </div>
                       <div className={`w-5 h-5 rounded-md border flex items-center justify-center flex-shrink-0 transition ${
                         isSelected

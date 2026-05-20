@@ -186,7 +186,9 @@ const ProgramEditPage = () => {
     form.objectives.trim() !== "" &&
     form.target_audience.trim() !== "" &&
     form.field !== "" &&
-    form.location !== "";
+    form.location !== "" &&
+    form.contact_email.trim() !== "" &&
+    form.contact_phone.trim() !== "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -374,7 +376,7 @@ const ProgramEditPage = () => {
             label="Contact Email"
             field="contact_email"
             type="email"
-            required={false}
+            required={true}
             placeholder="info@ika-edu.com"
             formData={form}
             errors={fieldErrors}
@@ -384,7 +386,7 @@ const ProgramEditPage = () => {
             label="Contact Phone"
             field="contact_phone"
             type="tel"
-            required={false}
+            required={true}
             placeholder="+601139936766"
             formData={form}
             errors={fieldErrors}
