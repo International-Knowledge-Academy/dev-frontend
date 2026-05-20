@@ -71,6 +71,7 @@ export interface CertificateVerification {
   lead_trainer_name: string;
   issued_by: string;
   is_valid: string;
+  certificate_pdf?: string;
 }
 
 export interface VerifyCertificatePayload {

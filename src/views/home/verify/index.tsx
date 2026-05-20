@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, ShieldCheck, ShieldX, Award, Clock } from "lucide-react";
+import { Search, ShieldCheck, ShieldX, Award, Clock, Download, FileText, ExternalLink } from "lucide-react";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
 import useVerifyCertificate from "hooks/certificates/useVerifyCertificate";
@@ -187,6 +187,42 @@ const VerifyCertificatePage = () => {
                 <ResultRow label="Lead Trainer"      value={result.lead_trainer_name} />
                 <ResultRow label="Issued By"         value={result.issued_by} />
               </div>
+
+              {/* PDF file row */}
+              {result.certificate_pdf && (
+                <div className="px-6 pb-5">
+                  <div className="flex items-center gap-3 px-4 py-3 rounded-md lg:rounded-lg border border-slate-200 bg-slate-50">
+                    <FileText size={18} className="text-navy-500 flex-shrink-0" />
+                    <span className="text-sm text-navy-800 truncate flex-1">
+                      {result.certificate_pdf.split("/").pop()}
+                    </span>
+                    <a
+                      href={result.certificate_pdf}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-slate-400 hover:text-navy-600 transition flex-shrink-0"
+                      title="View"
+                    >
+                      <ExternalLink size={14} />
+                    </a>
+                    <button
+                      type="button"
+                      title="Download"
+                      className="text-slate-400 hover:text-navy-600 transition flex-shrink-0"
+                      onClick={() => {
+                        const a = document.createElement("a");
+                        a.href = result.certificate_pdf;
+                        a.download = `IKA-Certificate-${result.certificate_number ?? result.participant_name?.replace(/\s+/g, "-")}.pdf`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                      }}
+                    >
+                      <Download size={14} />
+                    </button>
+                  </div>
+                </div>
+              )}
             </motion.div>
           )}
         </div>
