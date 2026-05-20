@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MdPhotoCamera } from "react-icons/md";
-import PdfUploadField from "components/form/filesUpload/PdfUploadField";
 import useGetProgram from "hooks/programs/useGetProgram";
 import useUpdateProgram from "hooks/programs/useUpdateProgram";
 import useFields from "hooks/fields/useFields";

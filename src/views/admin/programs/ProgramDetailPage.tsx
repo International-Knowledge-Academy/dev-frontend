@@ -2,7 +2,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import {
   MdEdit, MdArrowBack, MdWorkspacePremium, MdLocationOn,
-  MdCalendarToday, MdPeople, MdEmail, MdPhone, MdOpenInNew,
+  MdCalendarToday, MdPeople, MdEmail, MdPhone,
   MdSchool, MdAccessTime,
 } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";

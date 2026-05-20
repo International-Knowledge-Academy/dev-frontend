@@ -2,7 +2,7 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  ArrowLeft, Share2, Download, MapPin, Users, Clock,
+  ArrowLeft, Share2, MapPin, Users, Clock,
   Globe, CheckCircle2, Mail, Phone, Calendar, GraduationCap,
   BookOpen, Award, Briefcase, Monitor, LayoutGrid, Layers,
   ChevronRight, ArrowRight, FileText,
