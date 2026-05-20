@@ -134,7 +134,7 @@ const ProgramCreatePage = () => {
     language:         "English",
     start_date:       "",
     end_date:         "",
-    max_participants: "",
+    max_participants: "10",
     contact_email:    "",
     contact_phone:    "",
     status:           "upcoming",
@@ -255,14 +255,6 @@ const ProgramCreatePage = () => {
 
           {/* Level + Mode */}
           <SelectField
-            label="Level"
-            field="level"
-            options={LEVEL_OPTIONS}
-            formData={form}
-            errors={fieldErrors}
-            updateFormData={updateFormData}
-          />
-          <SelectField
             label="Mode"
             field="mode"
             options={MODE_OPTIONS}
@@ -292,24 +284,6 @@ const ProgramCreatePage = () => {
           />
 
           {/* Max Participants + Status */}
-          <InputField
-            label="Max Participants"
-            field="max_participants"
-            type="number"
-            required={false}
-            placeholder="e.g. 20"
-            formData={form}
-            errors={fieldErrors}
-            updateFormData={updateFormData}
-          />
-          <SelectField
-            label="Status"
-            field="status"
-            options={STATUS_OPTIONS}
-            formData={form}
-            errors={fieldErrors}
-            updateFormData={updateFormData}
-          />
 
           {/* Price + Currency */}
           <InputField
