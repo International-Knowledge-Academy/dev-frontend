@@ -2,13 +2,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Award, Layers, Calendar, Monitor, UserPlus, Plus, Pencil, Trash2,
+  Award, Layers, Calendar, Monitor, Plus, Pencil, Trash2,
   RefreshCw, Filter, X, Activity, CheckCircle,
 } from "lucide-react";
 import usePrograms from "hooks/programs/usePrograms";
 import useDeleteProgram from "hooks/programs/useDeleteProgram";
 import DeleteProgramModal from "./components/DeleteProgramModal";
-import AssignTrainerModal from "./components/AssignTrainerModal";
 import Loading from "components/loading/Loading";
 import EmptyState from "components/empty/empty";
 import Button from "components/ui/buttons/Button";
@@ -95,12 +94,9 @@ const ProgramsPage = () => {
 
   const [deleteOpen, setDeleteOpen]           = useState(false);
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
-  const [assignOpen, setAssignOpen]           = useState(false);
-  const [assignProgram, setAssignProgram]     = useState<Program | null>(null);
   const [filtersOpen, setFiltersOpen]         = useState(false);
 
   const openDelete = (program: Program) => { setSelectedProgram(program); setDeleteOpen(true); };
-  const openAssign = (program: Program) => { setAssignProgram(program); setAssignOpen(true); };
 
   const handleDelete = async () => {
     if (!selectedProgram) return;
@@ -497,13 +493,6 @@ const ProgramsPage = () => {
                         <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                           <div className="flex items-center gap-1">
                             <button
-                              onClick={() => openAssign(program)}
-                              className="p-1.5 rounded-md text-slate-400 hover:bg-green-50 hover:text-green-600 transition"
-                              title="Assign Trainer"
-                            >
-                              <UserPlus size={14} />
-                            </button>
-                            <button
                               onClick={() => navigate(`/admin/programs/${program.uid}/edit`)}
                               className="p-1.5 rounded-md text-slate-400 hover:bg-navy-50 hover:text-navy-700 transition"
                               title="Edit"
@@ -558,12 +547,6 @@ const ProgramsPage = () => {
         loading={deleting}
       />
 
-      <AssignTrainerModal
-        open={assignOpen}
-        program={assignProgram}
-        onClose={() => setAssignOpen(false)}
-        onSuccess={refetch}
-      />
     </div>
   );
 };
