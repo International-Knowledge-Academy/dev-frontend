@@ -142,7 +142,7 @@ const SearchableSelect = ({
           onChange={(e) => { setSearch(e.target.value); setActiveIdx(-1); }}
           onKeyDown={handleSearchKey}
           placeholder="Search..."
-          className="w-full rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-navy-800 outline-none focus:ring-2 focus:ring-navy-300 focus:border-navy-400 transition"
+          className="w-full rounded-md border border-slate-200 bg-slate-50 hover:bg-slate-100/70 px-3 py-2 text-sm text-navy-800 outline-none focus:ring-2 focus:ring-navy-300 focus:border-navy-400 transition"
         />
       </div>
 
@@ -209,8 +209,8 @@ const SearchableSelect = ({
           disabled
             ? "bg-slate-100 cursor-not-allowed opacity-60"
             : isOpen
-            ? "bg-white"
-            : "bg-slate-50 hover:bg-white"
+            ? "bg-slate-50"
+            : "bg-slate-50 hover:bg-slate-100/70"
         } ${
           hasError
             ? isOpen ? "border-red-400 ring-2 ring-red-200" : "border-red-400"

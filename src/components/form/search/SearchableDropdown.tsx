@@ -115,7 +115,7 @@ const CreatableSelectField = ({
         ref={triggerRef}
         type="button"
         onClick={() => (isOpen ? close() : open())}
-        className={`flex h-10 w-full items-center justify-between rounded-md lg:rounded-lg border bg-white px-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-navy-200 ${
+        className={`flex h-10 w-full items-center justify-between rounded-md lg:rounded-lg border bg-slate-50 hover:bg-slate-100/70 px-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-navy-200 ${
           hasError
             ? "border-red-400"
             : isOpen
@@ -150,7 +150,7 @@ const CreatableSelectField = ({
                 setSearch(e.target.value);
                 onSearchChange?.(e.target.value);
               }}
-              className="h-8 w-full rounded-md border border-slate-200 bg-slate-50 px-3 text-sm text-navy-800 placeholder:text-slate-400 outline-none focus:border-navy-300 focus:bg-white transition-colors"
+              className="h-8 w-full rounded-md border border-slate-200 bg-slate-50 hover:bg-slate-100/70 px-3 text-sm text-navy-800 placeholder:text-slate-400 outline-none focus:border-navy-300 transition-colors"
             />
           </div>
 

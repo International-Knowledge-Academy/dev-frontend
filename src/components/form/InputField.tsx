@@ -35,7 +35,7 @@ const InputField = ({
         value={value}
         onChange={(e) => updateFormData(field, e.target.value)}
         placeholder={placeholder}
-        className={`${label ? "mt-2" : ""} flex h-12 w-full items-center bg-white rounded-md border px-3 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-blue-500 ${
+        className={`${label ? "mt-2" : ""} flex h-12 w-full items-center bg-slate-50 hover:bg-slate-100/70 rounded-md border px-3 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-blue-500 ${
           hasError ? "border-red-400 focus:ring-red-200" : "border-slate-200"
         }`}
       />

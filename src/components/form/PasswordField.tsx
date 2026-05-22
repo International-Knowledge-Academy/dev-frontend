@@ -46,7 +46,7 @@ const PasswordField = ({
           value={value}
           onChange={(e) => updateFormData(field, e.target.value)}
           placeholder={placeholder}
-          className={`flex h-12 w-full items-center bg-slate-50 rounded-md border p-3 pr-10 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-navy-500 ${
+          className={`flex h-12 w-full items-center bg-slate-50 hover:bg-slate-100/70 rounded-md border p-3 pr-10 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-navy-500 ${
             error ? "border-red-500" : "border-default"
           }`}
         />

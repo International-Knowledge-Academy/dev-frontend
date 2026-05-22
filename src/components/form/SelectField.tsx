@@ -21,7 +21,7 @@ const SelectField = ({ label, field, options, required = true, formData, errors,
       <select
         value={value}
         onChange={(e) => updateFormData(field, e.target.value)}
-        className={`w-full rounded-md lg:rounded-lg border bg-slate-50 px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:ring-2 focus:ring-navy-300 ${
+        className={`w-full rounded-md lg:rounded-lg border bg-slate-50 hover:bg-slate-100/70 px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:ring-2 focus:ring-navy-300 ${
           getNestedValue(errors, field) ? "border-red-400 focus:ring-red-200" : "border-slate-200"
         }`}
       >
