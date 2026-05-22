@@ -180,18 +180,6 @@ const ProgramEditPage = () => {
   const updateFormData = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
 
-  const isFormValid =
-    form.name.trim() !== "" &&
-    form.description.trim() !== "" &&
-    form.objectives.trim() !== "" &&
-    form.target_audience.trim() !== "" &&
-    form.field !== "" &&
-    form.location !== "" &&
-    form.contact_email.trim() !== "" &&
-    form.contact_phone.trim() !== "" &&
-    form.start_date.trim() !== "" &&
-    form.end_date.trim() !== "";
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { field, location, ...rest } = form;
@@ -472,7 +460,7 @@ const ProgramEditPage = () => {
           </button>
           <button
             type="submit"
-            disabled={updating || !isFormValid}
+            disabled={updating}
             className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white transition enabled:hover:bg-navy-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {updating ? "Saving..." : "Save Changes"}

@@ -101,7 +101,7 @@ const CategoryEditPage = () => {
               type="submit"
               variant="primary"
               text={updating ? "Saving..." : "Save Changes"}
-              disabled={updating || !form.name.trim()}
+              disabled={updating}
               className="flex-1 py-2.5"
             />
           </div>

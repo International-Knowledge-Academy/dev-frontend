@@ -124,7 +124,6 @@ const LocationEditPage = () => {
               label="Address"
               field="address"
               placeholder="123 Main St"
-              required={false}
               formData={form}
               errors={fieldErrors}
               updateFormData={updateFormData}
@@ -151,7 +150,6 @@ const LocationEditPage = () => {
               label="Contact Phone"
               field="contact_phone"
               placeholder="+971 50 000 0000"
-              required={false}
               formData={form}
               errors={fieldErrors}
               updateFormData={updateFormData}
@@ -160,7 +158,6 @@ const LocationEditPage = () => {
               label="WhatsApp Number"
               field="whatsapp_number"
               placeholder="+971 50 000 0000"
-              required={false}
               formData={form}
               errors={fieldErrors}
               updateFormData={updateFormData}
@@ -202,7 +199,7 @@ const LocationEditPage = () => {
               type="submit"
               variant="primary"
               text={updating ? "Saving..." : "Save Changes"}
-              disabled={updating || !form.name.trim() || !form.city.trim() || !form.country.trim()}
+              disabled={updating}
               className="flex-1 py-2.5"
             />
           </div>

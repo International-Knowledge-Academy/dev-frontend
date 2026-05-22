@@ -238,7 +238,7 @@ const TrainerEditPage = () => {
               <InputField label="Email"      field="email" type="email" placeholder="jane@example.com" formData={form} errors={fieldErrors} updateFormData={update} />
               <InputField label="Phone"      field="phone" placeholder="+971 50 000 0000" required={false} formData={form} errors={fieldErrors} updateFormData={update} />
               <InputField label="WhatsApp"   field="whatsapp" placeholder="+971 50 000 0000" required={false} formData={form} errors={fieldErrors} updateFormData={update} />
-              <InputField label="Job Title"  field="title" placeholder="Senior Consultant"   required={false} formData={form} errors={fieldErrors} updateFormData={update} />
+              <InputField label="Job Title"  field="title" placeholder="Senior Consultant"   formData={form} errors={fieldErrors} updateFormData={update} />
               <InputField label="Years of Experience" field="years_experience" type="number" placeholder="5" required={false} formData={form} errors={fieldErrors} updateFormData={update} />
             </div>
             <TextareaField
@@ -303,7 +303,7 @@ const TrainerEditPage = () => {
             <Button
               type="submit" variant="primary"
               text={updating ? "Saving..." : "Save Changes"}
-              disabled={updating || !form.name.trim() || !form.email.trim()}
+              disabled={updating}
               className="flex-1 py-2.5"
             />
           </div>

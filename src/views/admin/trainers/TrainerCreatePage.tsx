@@ -136,6 +136,11 @@ const TrainerCreatePage = () => {
     setCvKey("");
   };
 
+  const isFormValid =
+    form.name.trim() !== "" &&
+    form.email.trim() !== "" &&
+    form.title.trim() !== "";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
@@ -201,7 +206,7 @@ const TrainerCreatePage = () => {
             required={false} formData={form} errors={fieldErrors} updateFormData={update} />
 
           <InputField label="Job Title" field="title" placeholder="Senior Consultant"
-            required={false} formData={form} errors={fieldErrors} updateFormData={update} />
+            formData={form} errors={fieldErrors} updateFormData={update} />
           <InputField label="Years of Experience" field="years_experience" type="number"
             placeholder="5" required={false} formData={form} errors={fieldErrors} updateFormData={update} />
 
@@ -266,7 +271,7 @@ const TrainerCreatePage = () => {
           </button>
           <button
             type="submit"
-            disabled={loading || !form.name.trim() || !form.email.trim()}
+            disabled={loading || !isFormValid}
             className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition disabled:opacity-60"
           >
             {loading ? "Creating..." : "Create Trainer"}

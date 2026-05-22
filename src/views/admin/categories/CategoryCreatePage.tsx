@@ -18,6 +18,8 @@ const CategoryCreatePage = () => {
   const updateFormData = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
 
+  const isFormValid = form.name.trim() !== "";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { category: created, fieldErrors: fe, error: ge } = await createCategory(form);
@@ -75,7 +77,7 @@ const CategoryCreatePage = () => {
               type="submit"
               variant="primary"
               text={loading ? "Creating..." : "Create Category"}
-              disabled={loading || !form.name.trim()}
+              disabled={loading || !isFormValid}
               className="flex-1 py-2.5"
             />
           </div>

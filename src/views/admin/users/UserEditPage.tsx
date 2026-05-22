@@ -513,7 +513,7 @@ const UserEditPage = () => {
               type="submit"
               variant="primary"
               text={isBusy ? "Saving..." : "Save Changes"}
-              disabled={isBusy || !form.name.trim() || !form.email.trim()}
+              disabled={isBusy}
               className="flex-1 py-2.5"
             />
           </div>

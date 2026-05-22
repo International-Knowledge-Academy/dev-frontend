@@ -33,6 +33,14 @@ const LocationCreatePage = () => {
   const updateFormData = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
 
+  const isFormValid =
+    form.name.trim() !== "" &&
+    form.city.trim() !== "" &&
+    form.country !== "" &&
+    form.address.trim() !== "" &&
+    form.contact_phone.trim() !== "" &&
+    form.whatsapp_number.trim() !== "";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { location: created, fieldErrors: fe, error: ge } = await createLocation(form);
@@ -91,7 +99,6 @@ const LocationCreatePage = () => {
               label="Address"
               field="address"
               placeholder="123 Main St"
-              required={false}
               formData={form}
               errors={fieldErrors}
               updateFormData={updateFormData}
@@ -118,7 +125,6 @@ const LocationCreatePage = () => {
               label="Contact Phone"
               field="contact_phone"
               placeholder="+971 50 000 0000"
-              required={false}
               formData={form}
               errors={fieldErrors}
               updateFormData={updateFormData}
@@ -127,7 +133,6 @@ const LocationCreatePage = () => {
               label="WhatsApp Number"
               field="whatsapp_number"
               placeholder="+971 50 000 0000"
-              required={false}
               formData={form}
               errors={fieldErrors}
               updateFormData={updateFormData}
@@ -169,7 +174,7 @@ const LocationCreatePage = () => {
               type="submit"
               variant="primary"
               text={loading ? "Creating..." : "Create Location"}
-              disabled={loading || !form.name.trim() || !form.city.trim() || !form.country.trim()}
+              disabled={loading || !isFormValid}
               className="flex-1 py-2.5"
             />
           </div>

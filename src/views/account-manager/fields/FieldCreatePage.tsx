@@ -40,6 +40,11 @@ const FieldCreatePage = () => {
   const set = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
 
+  const isFormValid =
+    form.name.trim() !== "" &&
+    form.description.trim() !== "" &&
+    form.category_uid !== "";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -99,7 +104,6 @@ const FieldCreatePage = () => {
               label="Category"
               field="category_uid"
               options={categoryOptions}
-              required={false}
               formData={form}
               errors={fieldErrors}
               updateFormData={set}
@@ -215,7 +219,7 @@ const FieldCreatePage = () => {
               type="submit"
               variant="primary"
               text={loading ? "Creating..." : "Create Field"}
-              disabled={loading || !form.name.trim() || !form.description.trim()}
+              disabled={loading || !isFormValid}
               className="flex-1 py-2.5"
             />
           </div>

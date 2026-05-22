@@ -41,7 +41,8 @@ const TrainerCreatePage = () => {
 
   const isFormValid =
     form.name.trim()  !== "" &&
-    form.email.trim() !== "";
+    form.email.trim() !== "" &&
+    form.title.trim() !== "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -127,7 +128,6 @@ const TrainerCreatePage = () => {
                 label="Job Title"
                 field="title"
                 placeholder="Senior Consultant"
-                required={false}
                 formData={form}
                 errors={fieldErrors}
                 updateFormData={update}
