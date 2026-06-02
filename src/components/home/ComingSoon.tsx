@@ -1,7 +1,8 @@
 // @ts-nocheck
 import { useState } from "react";
 import { MdEmail } from "react-icons/md";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaInstagram, FaSnapchat } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 const ComingSoon = () => {
   const [email, setEmail] = useState("");
@@ -76,7 +77,7 @@ const ComingSoon = () => {
             style={{ animationDelay: "0.05s" }}
           >
             <div className="flex items-center gap-3">
-              <img src="/brand/IKA-logo-bg.png" alt="IKA Logo" className="h-12 w-auto" />
+              <img src="/brand/IKA-logo-bg.png" alt="IKA Logo" className="h-16 w-auto" />
               <div className="hidden sm:block">
                 <p className="text-navy-800 font-bold text-sm leading-tight">International Knowledge Academy</p>
                 <p className="text-gold-600 text-[10px] font-medium tracking-wide">for Training & Management Development</p>
@@ -160,30 +161,40 @@ const ComingSoon = () => {
 
           {/* Footer */}
           <footer
-            className="relative z-10 flex items-center justify-between px-8 py-5 fade-up"
+            className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-3 px-8 py-5 fade-up"
             style={{ animationDelay: "0.75s", borderTop: "1px solid #f4e6c2" }}
           >
-            <p className="text-xs text-navy-300">
+            <p className="text-xs text-navy-300 text-center sm:text-left">
               © {new Date().getFullYear()} International Knowledge Academy. All rights reserved.
             </p>
 
             <div className="flex items-center gap-2">
               <a
-                href="https://wa.me/1234567890"
+                href="https://www.instagram.com/ika.academy?igsh=YWN4eTBqdHMxN2Nj&utm_source=qr"
                 target="_blank"
                 rel="noreferrer"
-                title="WhatsApp"
+                title="Instagram"
                 className="w-9 h-9 flex items-center justify-center rounded-full border border-gold-500 bg-gold-50 transition-all hover:-translate-y-0.5 hover:border-gold-700 hover:bg-gold-100"
-              
               >
-                <FaWhatsapp size={15} style={{ color: "#b8934a" }} />
+                <FaInstagram size={15} style={{ color: "#b8934a" }} />
               </a>
               <a
-                href="mailto:hello@ika.com"
-                title="Email"
+                href="https://x.com/internatio86032?s=11&t=FiEYk1tKhME8U_rENQfVOA"
+                target="_blank"
+                rel="noreferrer"
+                title="X (Twitter)"
                 className="w-9 h-9 flex items-center justify-center rounded-full border border-gold-500 bg-gold-50 transition-all hover:-translate-y-0.5 hover:border-gold-700 hover:bg-gold-100"
               >
-                <MdEmail size={16} style={{ color: "#b8934a" }} />
+                <FaXTwitter size={15} style={{ color: "#b8934a" }} />
+              </a>
+              <a
+                href="https://www.snapchat.com/add/ika.academy?share_id=rxFv-CM6ThGReTcwUW0mJw&locale=en_MY"
+                target="_blank"
+                rel="noreferrer"
+                title="Snapchat"
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-gold-500 bg-gold-50 transition-all hover:-translate-y-0.5 hover:border-gold-700 hover:bg-gold-100"
+              >
+                <FaSnapchat size={15} style={{ color: "#b8934a" }} />
               </a>
             </div>
           </footer>

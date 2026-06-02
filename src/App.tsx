@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import HomeLayout from "layouts/home";
 import AuthLayout from "layouts/auth";
@@ -24,31 +24,42 @@ import VerifyCertificatePage from "views/home/verify";
 
 import ProtectedRoute from "components/auth/ProtectedRoute";
 
+// Set to false when ready to go live
+const COMING_SOON = true;
+
 const App = () => {
   return (
     <Routes>
       {/* Public */}
       <Route element={<HomeLayout />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/training" element={<TrainingPage />} />
-        <Route path="/programs" element={<ProgramsPublicPage />} />
-        <Route path="/programs/:uid" element={<ProgramPage />} />
-        <Route path="/categories" element={<CategoriesHubPage />} />
-        <Route path="/categories/:typeSlug" element={<CategoryTypePage />} />
-        <Route path="/category/:uid" element={<CategoryDetailPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/register/program" element={<RegisterPage />} />
-        <Route path="/register/success" element={<RegisterSuccessPage />} />
-        <Route path="/register/trainer" element={<RegisterTrainerPage />} />
-        <Route path="/register/trainer/success" element={<TrainerApplicationSuccessPage />} />
-        <Route path="/verify" element={<VerifyCertificatePage />} />
-        <Route path="/verify/:verification_code" element={<VerifyCertificatePage />} />
+        {!COMING_SOON && (
+          <>
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/training" element={<TrainingPage />} />
+            <Route path="/programs" element={<ProgramsPublicPage />} />
+            <Route path="/programs/:uid" element={<ProgramPage />} />
+            <Route path="/categories" element={<CategoriesHubPage />} />
+            <Route path="/categories/:typeSlug" element={<CategoryTypePage />} />
+            <Route path="/category/:uid" element={<CategoryDetailPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/register/program" element={<RegisterPage />} />
+            <Route path="/register/success" element={<RegisterSuccessPage />} />
+            <Route path="/register/trainer" element={<RegisterTrainerPage />} />
+            <Route path="/register/trainer/success" element={<TrainerApplicationSuccessPage />} />
+            <Route path="/verify" element={<VerifyCertificatePage />} />
+            <Route path="/verify/:verification_code" element={<VerifyCertificatePage />} />
+          </>
+        )}
       </Route>
 
       {/* Auth */}
-      <Route path="auth/*" element={<AuthLayout />} />
+      {COMING_SOON ? (
+        <Route path="auth/*" element={<Navigate to="/" replace />} />
+      ) : (
+        <Route path="auth/*" element={<AuthLayout />} />
+      )}
 
       {/* Admin only */}
       <Route
@@ -80,6 +91,9 @@ const App = () => {
           </div>
         }
       />
+
+      {/* Catch-all → Coming Soon */}
+      {COMING_SOON && <Route path="*" element={<Navigate to="/" replace />} />}
     </Routes>
   );
 };
