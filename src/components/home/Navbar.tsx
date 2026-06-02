@@ -380,23 +380,6 @@ const Navbar = () => {
             );
           })}
 
-          <div className="mt-3 pt-4 border-t border-slate-100 flex flex-col gap-2.5">
-            <Link
-              to="/auth/sign-in"
-              onClick={() => setMenuOpen(false)}
-              className="px-4 py-2.5 rounded-md lg:rounded-lg text-sm font-semibold text-center text-slate-700 border border-slate-200 hover:bg-slate-50 transition"
-            >
-              Sign In
-            </Link>
-            <Link
-              to="/auth/sign-in"
-              onClick={() => setMenuOpen(false)}
-              className="inline-flex items-center justify-center gap-1.5 bg-navy-700 hover:bg-navy-800 text-white text-sm font-semibold px-5 py-2.5 rounded-md lg:rounded-lg transition"
-            >
-              Get Started
-              <MdArrowForward size={14} />
-            </Link>
-          </div>
         </div>
         </motion.div>
       )}
