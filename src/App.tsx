@@ -25,7 +25,7 @@ import VerifyCertificatePage from "views/home/verify";
 import ProtectedRoute from "components/auth/ProtectedRoute";
 
 // Set to false when ready to go live
-const COMING_SOON = true;
+const COMING_SOON = false;
 
 const App = () => {
   return (

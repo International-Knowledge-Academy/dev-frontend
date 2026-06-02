@@ -5,7 +5,6 @@ import AboutHero from "components/about/AboutHero";
 import History from "components/about/History";
 import Mission from "components/about/Mission";
 import TargetAudience from "components/about/TargetAudience";
-import PartnershipsSection from "components/about/PartnershipsSection";
 import WorldMapSection from "components/home/WorldMapSection";
 
 const AboutPage = () => {
@@ -16,7 +15,6 @@ const AboutPage = () => {
       <History />
       <Mission />
       <TargetAudience />
-      <PartnershipsSection />
       <WorldMapSection />
       <Footer />
     </div>
