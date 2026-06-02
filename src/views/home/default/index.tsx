@@ -1,36 +1,10 @@
 // @ts-nocheck
-import Navbar           from "components/home/Navbar";
-import Hero             from "components/home/Hero";
-import About            from "components/home/About";
-import Stats            from "components/home/Stats";
-import Programs         from "components/home/Programs";
-import UpcomingPrograms from "components/home/UpcomingPrograms";
-import TrainingFields   from "components/home/TrainingFields";
-import HowToEnroll      from "components/home/HowToEnroll";
-import HowToBeTrainer   from "components/home/HowToBeTrainer";
-import Locations        from "components/home/Locations";
-import Features         from "components/home/Features";
-import Partnerships     from "components/home/Partnerships";
-import Services         from "components/home/Services";
-import Footer           from "components/home/Footer";
+import ComingSoon       from "components/home/ComingSoon";
 
 const HomePage = () => {
   return (
     <div className="min-h-screen">
-      <Navbar />
-      <Hero />
-      <About />
-      <Stats />
-      <Programs />
-      <TrainingFields />
-      <UpcomingPrograms />
-      <Features />
-      <HowToEnroll />
-      <HowToBeTrainer />
-      <Partnerships />
-      <Locations />
-      <Services />
-      <Footer />
+      <ComingSoon/>
     </div>
   );
 };
