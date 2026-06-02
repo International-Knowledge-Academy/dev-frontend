@@ -34,8 +34,12 @@ axiosInstance.interceptors.response.use(
       const refresh = localStorage.getItem("refresh");
 
       if (!refresh) {
-        localStorage.clear();
-        window.location.href = "/auth/sign-in";
+        // Only force sign-in if the request was sent with a token (expired session).
+        // Unauthenticated requests on public pages should just fail silently.
+        if (originalRequest.headers?.Authorization) {
+          localStorage.clear();
+          window.location.href = "/auth/sign-in";
+        }
         return Promise.reject(error);
       }
 
@@ -53,7 +57,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         const { data } = await axios.post(
-          `${process.env.REACT_APP_API_URL}/auth/token/refresh/`,
+          `${process.env.REACT_APP_API_URL}/auth/token/refresh`,
           { refresh }
         );
         localStorage.setItem("access", data.access);

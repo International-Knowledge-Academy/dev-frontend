@@ -1,51 +1,23 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
 import { MdVerified } from "react-icons/md";
+import { Globe } from "lucide-react";
+import useTrainers from "hooks/trainers/useTrainers";
+import type { TrainerBrief } from "types/trainer";
 
-const trainers = [
-  {
-    name: "Dr. Ahmed Al-Rashid",
-    role: "Senior Trainer — Leadership & Management",
-    specialty: "Executive Leadership · Strategic Planning · Organizational Development",
-    experience: "18+ years",
-    initials: "AA",
-  },
-  {
-    name: "Prof. Sarah Mitchell",
-    role: "Senior Trainer — HR & Talent Development",
-    specialty: "Human Resources · Talent Management · Performance Systems",
-    experience: "15+ years",
-    initials: "SM",
-  },
-  {
-    name: "Eng. Khalid Al-Mansouri",
-    role: "Senior Trainer — Project Management",
-    specialty: "PMP · Agile · Risk Management · PMO Setup",
-    experience: "12+ years",
-    initials: "KM",
-  },
-  {
-    name: "Dr. Fatima Hassan",
-    role: "Senior Trainer — Finance & Accounting",
-    specialty: "Financial Analysis · Budgeting · IFRS · Corporate Finance",
-    experience: "14+ years",
-    initials: "FH",
-  },
-  {
-    name: "Mr. James Okafor",
-    role: "Senior Trainer — Marketing & Sales",
-    specialty: "Digital Marketing · Brand Strategy · B2B Sales",
-    experience: "10+ years",
-    initials: "JO",
-  },
-  {
-    name: "Ms. Laila Al-Zahra",
-    role: "Senior Trainer — Soft Skills & Communication",
-    specialty: "Communication · Presentation Skills · Emotional Intelligence",
-    experience: "11+ years",
-    initials: "LZ",
-  },
-];
+const getInitials = (name: string) =>
+  name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0].toUpperCase())
+    .join("");
+
+const getAvatarUrl = (pic: TrainerBrief["profile_picture"]): string | null => {
+  if (!pic) return null;
+  if (typeof pic === "string") return pic;
+  return pic.public_url ?? null;
+};
 
 const container = {
   hidden: {},
@@ -57,7 +29,26 @@ const card = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
 };
 
+const SkeletonCard = () => (
+  <div className="bg-white border border-slate-100 rounded-2xl p-6 animate-pulse">
+    <div className="flex items-center gap-4 mb-5">
+      <div className="w-14 h-14 rounded-full bg-slate-200 flex-shrink-0" />
+      <div className="flex-1 space-y-2">
+        <div className="h-4 bg-slate-200 rounded w-3/4" />
+        <div className="h-3 bg-slate-200 rounded w-1/2" />
+      </div>
+    </div>
+    <div className="border-t border-slate-100 pt-4 space-y-2">
+      <div className="h-3 bg-slate-200 rounded w-1/3" />
+      <div className="h-3 bg-slate-200 rounded w-full" />
+      <div className="h-3 bg-slate-200 rounded w-4/5" />
+    </div>
+  </div>
+);
+
 const Team = () => {
+  const { trainers, loading } = useTrainers({ ordering: "name" });
+
   return (
     <section id="team" className="py-24 px-6 bg-slate-50">
       <div className="max-w-6xl mx-auto">
@@ -76,64 +67,88 @@ const Team = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             Trainers & Instructors
           </h2>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
             A carefully selected group of seasoned professionals and subject-matter experts
             who bring deep knowledge and real-world field experience to every program.
           </p>
         </motion.div>
 
         {/* Grid */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={container}
-        >
-          {trainers.map((trainer) => (
-            <motion.div
-              key={trainer.name}
-              variants={card}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
-              className="group bg-white border border-gray-100 hover:border-gold-300 hover:shadow-lg transition-colors duration-300 rounded-2xl p-6 cursor-default"
-            >
-              {/* Avatar */}
-              <div className="flex items-center gap-4 mb-5">
-                <div className="w-14 h-14 rounded-full bg-navy-600 text-white font-extrabold text-lg flex items-center justify-center flex-shrink-0 group-hover:bg-gold-500 transition-colors duration-300">
-                  {trainer.initials}
-                </div>
-                <div>
-                  <div className="flex items-center gap-1.5">
-                    <p className="text-navy-800 font-bold text-sm">{trainer.name}</p>
-                    <MdVerified size={15} className="text-gold-500 flex-shrink-0" />
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
+          </div>
+        ) : trainers.length === 0 ? null : (
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={container}
+          >
+            {trainers.map((trainer) => {
+              const avatarUrl = getAvatarUrl(trainer.profile_picture);
+              const initials  = getInitials(trainer.name);
+              const location  = [trainer.city, trainer.country].filter(Boolean).join(", ");
+
+              return (
+                <motion.div
+                  key={trainer.uid}
+                  variants={card}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  className="group bg-white border border-slate-100 hover:border-gold-300 hover:shadow-lg transition-colors duration-300 rounded-2xl p-6 cursor-default"
+                >
+                  {/* Avatar */}
+                  <div className="flex items-center gap-4 mb-5">
+                    {avatarUrl ? (
+                      <img
+                        src={avatarUrl}
+                        alt={trainer.name}
+                        className="w-14 h-14 rounded-full object-cover flex-shrink-0"
+                      />
+                    ) : (
+                      <div className="w-14 h-14 rounded-full bg-navy-600 text-white font-extrabold text-lg flex items-center justify-center flex-shrink-0 group-hover:bg-gold-500 transition-colors duration-300">
+                        {initials}
+                      </div>
+                    )}
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <p className="text-navy-800 font-bold text-sm">{trainer.name}</p>
+                        <MdVerified size={15} className="text-gold-500 flex-shrink-0" />
+                      </div>
+                      {trainer.title && (
+                        <p className="text-slate-400 text-xs mt-0.5 line-clamp-1">{trainer.title}</p>
+                      )}
+                    </div>
                   </div>
-                  <p className="text-gray-400 text-xs mt-0.5">{trainer.role}</p>
-                </div>
-              </div>
 
-              {/* Specialty */}
-              <div className="border-t border-gray-100 pt-4">
-                <p className="text-xs text-gray-400 uppercase tracking-wider mb-2 font-medium">Specialization</p>
-                <p className="text-gray-600 text-sm leading-relaxed">{trainer.specialty}</p>
-              </div>
+                  {/* Location */}
+                  {location && (
+                    <div className="border-t border-slate-100 pt-4">
+                      <p className="text-xs text-slate-400 uppercase tracking-wider mb-2 font-medium">Location</p>
+                      <div className="flex items-center gap-1.5 text-slate-600 text-sm">
+                        <Globe size={13} className="text-slate-400 flex-shrink-0" />
+                        <span>{location}</span>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        )}
 
-              {/* Experience badge */}
-              <div className="mt-4 inline-flex items-center gap-1.5 bg-navy-50 text-navy-700 text-xs font-semibold px-3 py-1 rounded-full">
-                {trainer.experience} experience
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center text-gray-400 text-sm mt-10"
-        >
-          All IKA trainers hold internationally recognized credentials and are vetted for both academic and field expertise.
-        </motion.p>
+        {!loading && trainers.length > 0 && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-center text-slate-400 text-sm mt-10"
+          >
+            All IKA trainers hold internationally recognized credentials and are vetted for both academic and field expertise.
+          </motion.p>
+        )}
 
       </div>
     </section>

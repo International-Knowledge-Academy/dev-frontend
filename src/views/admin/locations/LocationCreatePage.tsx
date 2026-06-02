@@ -5,7 +5,12 @@ import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import ToggleInput from "components/form/toggle/ToggleInput";
 import Button from "components/ui/buttons/Button";
+import SearchableDropdown from "components/form/search/SearchableDropdown";
 import useCreateLocation from "hooks/locations/useCreateLocation";
+import { COUNTRIES } from "constants/lists";
+import PageHeader from "components/ui/PageHeader";
+
+const COUNTRY_OPTIONS = COUNTRIES.map((c) => ({ value: c.name, label: c.name }));
 
 const LocationCreatePage = () => {
   const navigate = useNavigate();
@@ -13,14 +18,16 @@ const LocationCreatePage = () => {
   const { createLocation, loading, error, fieldErrors } = useCreateLocation();
 
   const [form, setForm] = useState({
-    name:          "",
-    city:          "",
-    country:       "",
-    address:       "",
-    venue_details: "",
-    latitude:      "",
-    longitude:     "",
-    is_active:     true,
+    name:            "",
+    city:            "",
+    country:         "",
+    address:         "",
+    venue_details:   "",
+    latitude:        "",
+    longitude:       "",
+    is_active:       true,
+    contact_phone:   "",
+    whatsapp_number: "",
   });
 
   const updateFormData = (key: string, value: any) =>
@@ -29,24 +36,31 @@ const LocationCreatePage = () => {
   const isFormValid =
     form.name.trim() !== "" &&
     form.city.trim() !== "" &&
-    form.country.trim() !== "";
+    form.country !== "" &&
+    form.address.trim() !== "" &&
+    form.contact_phone.trim() !== "" &&
+    form.whatsapp_number.trim() !== "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const created = await createLocation(form);
+    const { location: created, fieldErrors: fe, error: ge } = await createLocation(form);
     if (created) {
       addToast("Location created successfully", "success");
       navigate("/admin/locations");
+    } else {
+      const firstFieldError = Object.values(fe)[0];
+      addToast(firstFieldError ?? ge ?? "Failed to create location. Please try again.", "error");
     }
   };
 
   return (
-    <div className="">
-      <div className="bg-white dark:bg-navy-800 rounded-2xl border border-gray-100 dark:border-navy-700 shadow-sm">
-        <div className="px-6 py-4 border-b border-gray-100 dark:border-navy-700">
-          <h1 className="text-base font-bold text-navy-800 dark:text-white">Create Location</h1>
-          <p className="text-xs text-gray-400 mt-0.5">Fill in the details to add a new location</p>
-        </div>
+    <div className="max-w-5xl mx-auto">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+        <PageHeader
+          title="Create Location"
+          subtitle="Fill in the details to add a new location"
+          bordered
+        />
 
         <form onSubmit={handleSubmit} className="px-6 py-5 grid grid-cols-1 gap-4">
           {error && (
@@ -72,19 +86,19 @@ const LocationCreatePage = () => {
               errors={fieldErrors}
               updateFormData={updateFormData}
             />
-            <InputField
+            <SearchableDropdown
               label="Country"
               field="country"
-              placeholder="UAE"
+              options={COUNTRY_OPTIONS}
               formData={form}
               errors={fieldErrors}
               updateFormData={updateFormData}
+              placeholder="Select country..."
             />
             <InputField
               label="Address"
               field="address"
               placeholder="123 Main St"
-              required={false}
               formData={form}
               errors={fieldErrors}
               updateFormData={updateFormData}
@@ -103,6 +117,22 @@ const LocationCreatePage = () => {
               field="longitude"
               placeholder="55.2708"
               required={false}
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={updateFormData}
+            />
+            <InputField
+              label="Contact Phone"
+              field="contact_phone"
+              placeholder="+971 50 000 0000"
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={updateFormData}
+            />
+            <InputField
+              label="WhatsApp Number"
+              field="whatsapp_number"
+              placeholder="+971 50 000 0000"
               formData={form}
               errors={fieldErrors}
               updateFormData={updateFormData}
@@ -127,16 +157,16 @@ const LocationCreatePage = () => {
             updateFormData={updateFormData}
           />
 
-          <div className="flex gap-2 border-t border-gray-100 pt-5">
+          <div className="flex gap-2 border-t border-slate-100 pt-5">
             <Button
               type="button"
               text="Cancel"
               onClick={() => navigate("/admin/locations")}
-              className="flex-1 rounded-xl py-2.5"
+              className="flex-1 py-2.5"
               bgColor="bg-white"
-              textColor="text-gray-600"
-              borderColor="border-gray-200"
-              hoverBgColor="hover:bg-gray-50"
+              textColor="text-slate-600"
+              borderColor="border-slate-200"
+              hoverBgColor="hover:bg-slate-50"
               hoverTextColor=""
               hoverBorderColor=""
             />
@@ -145,7 +175,7 @@ const LocationCreatePage = () => {
               variant="primary"
               text={loading ? "Creating..." : "Create Location"}
               disabled={loading || !isFormValid}
-              className="flex-1 rounded-xl py-2.5"
+              className="flex-1 py-2.5"
             />
           </div>
         </form>

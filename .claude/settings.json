@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/User/.claude/projects/c--Users-User-Desktop-dev-frontend/memory/**)"
+    ]
+  }
+}

@@ -109,6 +109,14 @@ module.exports = {
         poppins: ["Poppins", "sans-serif"],
         dm: ["DM Sans", "sans-serif"],
       },
+      keyframes: {
+        shimmer: {
+          "100%": { transform: "translateX(200%)" },
+        },
+      },
+      animation: {
+        shimmer: "shimmer 1.6s infinite",
+      },
       boxShadow: {
         "3xl": "14px 17px 40px 4px",
         inset: "inset 0px 18px 22px",
@@ -116,6 +124,9 @@ module.exports = {
       },
       borderRadius: {
         primary: "20px",
+      },
+      maxWidth: {
+        "8xl": "1440px",
       },
     },
     screens: {

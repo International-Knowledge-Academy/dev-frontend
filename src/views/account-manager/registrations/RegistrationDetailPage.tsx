@@ -1,0 +1,302 @@
+// @ts-nocheck
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  Pencil, CheckCircle, XCircle, GraduationCap, UserCheck,
+  CalendarDays, FileText, DollarSign, AlertTriangle, BookOpen,
+} from "lucide-react";
+import { MdClose } from "react-icons/md";
+import DropdownButton from "components/ui/buttons/DropdownButton";
+import Button from "components/ui/buttons/Button";
+import DangerButton from "components/ui/buttons/DangerButton";
+import useGetRegistration from "hooks/registrations/useGetRegistration";
+import useApproveRegistration from "hooks/registrations/useApproveRegistration";
+import useEnrollRegistration from "hooks/registrations/useEnrollRegistration";
+import useRejectRegistration from "hooks/registrations/useRejectRegistration";
+import useDeleteRegistration from "hooks/registrations/useDeleteRegistration";
+import { useToast } from "context/ToastContext";
+import Loading from "components/loading/Loading";
+import ConfirmModal from "components/ui/modals/ConfirmModal";
+
+const STATUS_COLORS = {
+  pending:   "bg-amber-50 text-amber-600 border-amber-200",
+  approved:  "bg-green-50 text-green-600 border-green-200",
+  rejected:  "bg-red-50 text-red-500 border-red-200",
+  completed: "bg-navy-50 text-navy-700 border-navy-200",
+  cancelled: "bg-slate-50 text-slate-400 border-slate-200",
+};
+
+const DOT_COLORS = {
+  pending:   "bg-amber-400",
+  approved:  "bg-green-500",
+  rejected:  "bg-red-400",
+  completed: "bg-navy-600",
+  cancelled: "bg-slate-300",
+};
+
+const InfoRow = ({ icon: Icon, label, value }) => (
+  <div className="flex items-start gap-4 py-3.5">
+    <div className="w-9 h-9 rounded-xl bg-navy-50 flex items-center justify-center text-navy-400 flex-shrink-0">
+      <Icon size={17} />
+    </div>
+    <div className="flex-1 min-w-0">
+      <p className="text-xs text-slate-400 mb-0.5">{label}</p>
+      <div className="text-sm font-medium text-navy-800 break-words">{value ?? "—"}</div>
+    </div>
+  </div>
+);
+
+const SectionTitle = ({ title }) => (
+  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1 px-4 sm:px-6 border-b border-slate-100 py-3">
+    {title}
+  </p>
+);
+
+const formatDate = (d: string | null) =>
+  d ? new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "—";
+
+const RegistrationDetailPage = () => {
+  const { uid } = useParams<{ uid: string }>(); const id = uid;;
+  const navigate = useNavigate();
+  const { addToast } = useToast();
+
+  const { registration, loading, error, refetch } = useGetRegistration(id);
+  const { approve, loading: approving, error: approveError } = useApproveRegistration();
+  const { enroll, loading: enrolling }                       = useEnrollRegistration();
+  const { reject, loading: rejecting, error: rejectError }   = useRejectRegistration();
+  const { deleteRegistration, loading: deleting } = useDeleteRegistration();
+
+  const [rejectOpen, setRejectOpen]     = useState(false);
+  const [rejectReason, setRejectReason] = useState("");
+  const [deleteOpen, setDeleteOpen]     = useState(false);
+
+  if (loading) return <Loading text="Loading registration..." />;
+  if (error || !registration) {
+    return (
+      <div className="flex items-center justify-center py-20 text-sm text-red-500">
+        {error ?? "Registration not found."}
+      </div>
+    );
+  }
+
+  const handleApprove = async () => {
+    const ok = await approve(id);
+    if (ok) { addToast("Registration approved", "success"); refetch(); }
+    else     { addToast(approveError ?? "Failed to approve", "error"); }
+  };
+
+  const handleEnroll = async () => {
+    const ok = await enroll(id);
+    if (ok) { addToast("Registration enrolled", "success"); refetch(); }
+    else     { addToast("Failed to enroll", "error"); }
+  };
+
+  const handleReject = async () => {
+    const ok = await reject(id, rejectReason || undefined);
+    if (ok) {
+      addToast("Registration rejected", "success");
+      setRejectOpen(false);
+      setRejectReason("");
+      refetch();
+    } else {
+      addToast(rejectError ?? "Failed to reject", "error");
+    }
+  };
+
+  const handleDelete = async () => {
+    const ok = await deleteRegistration(id);
+    if (ok) {
+      addToast("Registration deleted", "success");
+      navigate("/account-manager/registrations");
+    } else {
+      addToast("Failed to delete registration", "error");
+    }
+  };
+
+  const anyActionLoading = approving || enrolling || rejecting;
+
+  return (
+    <div className="space-y-4 max-w-5xl mx-auto">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        {/* Header */}
+        <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-slate-100 flex items-center gap-3 sm:gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-navy-700 flex items-center justify-center text-white flex-shrink-0 text-lg font-bold">
+            {registration.full_name?.[0]?.toUpperCase() ?? "?"}
+          </div>
+          <div className="flex-1 min-w-0">
+            <h1 className="text-base font-bold text-navy-800 truncate leading-snug">{registration.full_name}</h1>
+            <p className="text-xs text-slate-400 mt-0.5 truncate">{registration.email}</p>
+          </div>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold border capitalize ${STATUS_COLORS[registration.status] ?? "bg-slate-50 text-slate-400 border-slate-200"}`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${DOT_COLORS[registration.status] ?? "bg-slate-300"}`} />
+              {registration.status}
+            </span>
+            <DropdownButton
+              label="Actions"
+              variant="outline"
+              loading={anyActionLoading}
+              items={[
+                { label: "Approve", icon: <CheckCircle size={14} />, onClick: handleApprove,            disabled: anyActionLoading || registration.status === "approved"  },
+                { label: "Enroll",  icon: <BookOpen size={14} />,   onClick: handleEnroll,              disabled: anyActionLoading || registration.status === "completed" },
+                { label: "Reject",  icon: <XCircle size={14} />,    onClick: () => setRejectOpen(true), disabled: anyActionLoading || registration.status === "rejected"  },
+                { divider: true },
+                { label: "Delete Registration", icon: <AlertTriangle size={14} />, onClick: () => setDeleteOpen(true), danger: true },
+              ]}
+            />
+          </div>
+        </div>
+
+        {/* Participant */}
+        <SectionTitle title="Participant" />
+        <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
+          <InfoRow icon={UserCheck}     label="Full Name"         value={registration.full_name} />
+          <InfoRow icon={FileText}      label="Email"             value={registration.email} />
+          <InfoRow icon={FileText}      label="Phone"             value={registration.phone} />
+          <InfoRow icon={FileText}      label="Job Title"         value={registration.job_title} />
+          <InfoRow icon={FileText}      label="Address"           value={registration.address} />
+          <InfoRow icon={FileText}      label="Registration Type" value={<span className="capitalize">{registration.registration_type}</span>} />
+        </div>
+
+        {/* Program */}
+        <SectionTitle title="Program" />
+        <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
+          <InfoRow icon={GraduationCap} label="Program"       value={registration.program?.name ?? "—"} />
+          <InfoRow icon={DollarSign}   label="Program Price" value={registration.program?.price ? `$${registration.program.price}` : "—"} />
+        </div>
+
+        {/* Status */}
+        <SectionTitle title="Status" />
+        <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
+          <InfoRow icon={FileText}     label="Status"        value={<span className="capitalize">{registration.status}</span>} />
+          <InfoRow icon={CalendarDays} label="Status Changed" value={formatDate(registration.status_changed_at)} />
+          <InfoRow icon={UserCheck}    label="Approved By"   value={registration.approved_by?.name ?? "—"} />
+        </div>
+
+        {/* Certificate */}
+        <SectionTitle title="Certificate" />
+        <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
+          <InfoRow
+            icon={FileText}
+            label="Certificate Issued"
+            value={
+              <span className={`font-semibold ${registration.certificate_issued ? "text-green-600" : "text-slate-400"}`}>
+                {registration.certificate_issued ? "Yes" : "No"}
+              </span>
+            }
+          />
+          <InfoRow icon={CalendarDays} label="Issue Date" value={formatDate(registration.certificate_issue_date)} />
+        </div>
+
+        {/* Notes */}
+        {registration.admin_notes && (
+          <>
+            <SectionTitle title="Admin Notes" />
+            <div className="px-4 sm:px-6 pb-2">
+              <p className="text-sm text-slate-600 whitespace-pre-wrap py-3">{registration.admin_notes}</p>
+            </div>
+          </>
+        )}
+
+        {/* Timestamps */}
+        <SectionTitle title="Timestamps" />
+        <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
+          <InfoRow icon={CalendarDays} label="Registration Date" value={formatDate(registration.registration_date)} />
+          <InfoRow icon={CalendarDays} label="Created"           value={formatDate(registration.created_at)} />
+          <InfoRow icon={CalendarDays} label="Last Updated"      value={formatDate(registration.updated_at)} />
+        </div>
+
+        {/* Footer actions */}
+        <div className="px-4 sm:px-6 py-4 border-t border-slate-100 mt-2 flex gap-2">
+          <button
+            type="button"
+            onClick={() => navigate("/account-manager/registrations")}
+            className="flex-1 rounded-md lg:rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition"
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate(`/account-manager/registrations/${id}/edit`)}
+            className="flex-1 rounded-md lg:rounded-lg bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition flex items-center justify-center gap-2"
+          >
+            <Pencil size={15} />
+            Edit
+          </button>
+        </div>
+      </div>
+
+      {/* Reject modal */}
+      {rejectOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-navy-overlay-20 backdrop-blur-sm" onClick={() => { setRejectOpen(false); setRejectReason(""); }} />
+          <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl z-10">
+            <div className="flex items-center justify-between px-8 py-5 border-b border-slate-100">
+              <h2 className="text-lg font-bold text-navy-800">Reject Registration</h2>
+              <button onClick={() => { setRejectOpen(false); setRejectReason(""); }} className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 transition">
+                <MdClose size={20} />
+              </button>
+            </div>
+            <div className="px-8 py-6">
+              <div className="flex items-start gap-4 mb-5">
+                <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0">
+                  <XCircle size={20} className="text-red-500" />
+                </div>
+                <p className="text-sm text-slate-600 pt-3">
+                  Optionally provide a reason for rejecting{" "}
+                  <span className="font-semibold text-navy-800">{registration.full_name}</span>'s registration.
+                </p>
+              </div>
+              <textarea
+                value={rejectReason}
+                onChange={(e) => setRejectReason(e.target.value)}
+                placeholder="Reason for rejection (optional)..."
+                rows={3}
+                className="w-full mb-5 rounded-md lg:rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-navy-800 placeholder-slate-400 outline-none focus:ring-2 focus:ring-navy-300 focus:border-navy-400 transition resize-none"
+              />
+              <div className="flex gap-3">
+                <Button
+                  text="Cancel"
+                  onClick={() => { setRejectOpen(false); setRejectReason(""); }}
+                  className="flex-1 py-2.5"
+                  bgColor="bg-white"
+                  textColor="text-slate-600"
+                  borderColor="border-slate-200"
+                  hoverBgColor="hover:bg-slate-50"
+                  hoverTextColor=""
+                  hoverBorderColor=""
+                />
+                <DangerButton
+                  text={rejecting ? "Rejecting..." : "Confirm Reject"}
+                  onClick={handleReject}
+                  disabled={rejecting}
+                  className="flex-1 py-2.5"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <ConfirmModal
+        open={deleteOpen}
+        title="Delete Registration"
+        message={
+          <>
+            Are you sure you want to delete the registration for{" "}
+            <span className="font-semibold text-navy-800">{registration.full_name}</span>?{" "}
+            This cannot be undone.
+          </>
+        }
+        confirmText="Delete"
+        cancelText="Cancel"
+        loading={deleting}
+        icon={<AlertTriangle size={20} className="text-red-500" />}
+        onClose={() => setDeleteOpen(false)}
+        onConfirm={handleDelete}
+      />
+    </div>
+  );
+};
+
+export default RegistrationDetailPage;

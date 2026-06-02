@@ -1,23 +1,22 @@
 import { createContext, useState, useEffect, useCallback, ReactNode } from "react";
 import authApi from "api/auth";
-import type { AuthUser, UserRole } from "types/auth";
+import type { User, UserRole } from "types/auth";
 
 interface AuthContextValue {
-  user: AuthUser | null;
+  user: User | null;
   role: UserRole | null;
   loading: boolean;
-  setUserFromData: (user: AuthUser) => void;
+  setUserFromData: (user: User) => void;
   logout: () => void;
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [role, setRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // On app load, restore session by verifying token via getMe
   useEffect(() => {
     const restore = async () => {
       const token = localStorage.getItem("access");
@@ -37,8 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     restore();
   }, []);
 
-  // Called by useLogin after successful login + getMe
-  const setUserFromData = useCallback((userData: AuthUser) => {
+  const setUserFromData = useCallback((userData: User) => {
     setUser(userData);
     setRole(userData.role);
   }, []);

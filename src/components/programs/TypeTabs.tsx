@@ -24,7 +24,7 @@ const TypeTabs = ({ selected, counts, total, onSelect }: Props) => {
     value === null ? total : (counts[value] ?? 0);
 
   return (
-    <div className="sticky top-0 z-20 bg-white border-b border-gray-100 shadow-sm">
+    <div className="sticky top-0 z-20 bg-white border-b border-slate-100 shadow-sm">
       <div className="max-w-6xl mx-auto px-6">
         <div
           ref={scrollRef}
@@ -36,11 +36,12 @@ const TypeTabs = ({ selected, counts, total, onSelect }: Props) => {
             return (
               <button
                 key={t.label}
-                onClick={() => onSelect(t.value)}
+                type="button"
+                onClick={(e) => { e.stopPropagation(); onSelect(t.value); }}
                 className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-200 flex-shrink-0 ${
                   isActive
                     ? "bg-navy-800 text-white shadow-md"
-                    : "text-gray-500 hover:text-navy-700 hover:bg-gray-50"
+                    : "text-slate-500 hover:text-navy-700 hover:bg-slate-50"
                 }`}
               >
                 {isActive && (

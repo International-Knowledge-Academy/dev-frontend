@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import type { User } from "types/auth";
@@ -60,19 +60,19 @@ const UserFormModal = ({
   };
 
   const inputCls = (key: string) =>
-    `w-full rounded-xl border px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:ring-2 focus:ring-navy-300 dark:bg-navy-800 dark:text-white ${
-      fieldErrors[key] ? "border-red-400 bg-red-50" : "border-gray-200 bg-gray-50"
+    `w-full rounded-xl border px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:ring-2 focus:ring-navy-300 ${
+      fieldErrors[key] ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50"
     }`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl dark:bg-navy-800">
+      <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-navy-700">
-          <h2 className="text-base font-bold text-navy-800 dark:text-white">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+          <h2 className="text-base font-bold text-navy-800">
             {isEdit ? "Edit User" : "Create User"}
           </h2>
-          <button onClick={onClose} className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition">
+          <button onClick={onClose} className="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition">
             <MdClose size={18} />
           </button>
         </div>
@@ -87,22 +87,22 @@ const UserFormModal = ({
 
           {/* Name */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">Full Name</label>
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">Full Name</label>
             <input {...field("name")} required placeholder="John Doe" className={inputCls("name")} />
             {fieldErrors.name && <p className="mt-1 text-xs text-red-500">{fieldErrors.name}</p>}
           </div>
 
           {/* Email */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">Email</label>
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">Email</label>
             <input {...field("email")} type="email" required placeholder="john@example.com" className={inputCls("email")} />
             {fieldErrors.email && <p className="mt-1 text-xs text-red-500">{fieldErrors.email}</p>}
           </div>
 
           {/* Password */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">
-              Password {isEdit && <span className="text-gray-400 font-normal">(leave blank to keep current)</span>}
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">
+              Password {isEdit && <span className="text-slate-400 font-normal">(leave blank to keep current)</span>}
             </label>
             <input {...field("password")} type="password" placeholder="••••••••" required={!isEdit} className={inputCls("password")} />
             {fieldErrors.password && <p className="mt-1 text-xs text-red-500">{fieldErrors.password}</p>}
@@ -110,7 +110,7 @@ const UserFormModal = ({
 
           {/* Role */}
           <div>
-            <label className="block text-xs font-semibold text-navy-600 dark:text-navy-300 mb-1.5">Role</label>
+            <label className="block text-xs font-semibold text-navy-600 mb-1.5">Role</label>
             <select {...field("role")} className={inputCls("role")}>
               {ROLES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
             </select>
@@ -118,12 +118,12 @@ const UserFormModal = ({
           </div>
 
           {/* Active toggle */}
-          <div className="flex items-center justify-between rounded-xl bg-gray-50 border border-gray-200 px-4 py-3">
-            <span className="text-sm font-medium text-navy-700 dark:text-white">Active</span>
+          <div className="flex items-center justify-between rounded-xl bg-slate-50 border border-slate-200 px-4 py-3">
+            <span className="text-sm font-medium text-navy-700">Active</span>
             <button
               type="button"
               onClick={() => setForm((p) => ({ ...p, is_active: !p.is_active }))}
-              className={`relative w-10 h-5 rounded-full transition-colors ${form.is_active ? "bg-navy-700" : "bg-gray-300"}`}
+              className={`relative w-10 h-5 rounded-full transition-colors ${form.is_active ? "bg-navy-700" : "bg-slate-300"}`}
             >
               <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${form.is_active ? "translate-x-5" : ""}`} />
             </button>
@@ -132,7 +132,7 @@ const UserFormModal = ({
           {/* Actions */}
           <div className="flex gap-2 pt-1">
             <button type="button" onClick={onClose}
-              className="flex-1 rounded-xl border border-gray-200 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition">
+              className="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
               Cancel
             </button>
             <button type="submit" disabled={loading}

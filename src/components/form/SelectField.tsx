@@ -14,15 +14,15 @@ const SelectField = ({ label, field, options, required = true, formData, errors,
 
   return (
     <div className="mb-4">
-      <label className="block text-p2 font-medium text-slate-900">
-        {label} {required && <span className="text-red-600">*</span>}
+      <label className="block text-sm font-medium text-navy-800 mb-2">
+        {label} {required && <span className="text-red-500">*</span>}
       </label>
 
       <select
         value={value}
         onChange={(e) => updateFormData(field, e.target.value)}
-        className={`mt-2 flex h-12 w-full items-center justify-center rounded-md border p-3 px-3 py-2 text-p2 bg-gray-50 text-sm outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-navy-500 ${
-          getNestedValue(errors, field) ? "border-red-500" : "border-default"
+        className={`w-full rounded-md lg:rounded-lg border bg-slate-50 hover:bg-slate-100/70 px-4 py-2.5 text-sm text-navy-800 outline-none transition focus:ring-2 focus:ring-navy-300 ${
+          getNestedValue(errors, field) ? "border-red-400 focus:ring-red-200" : "border-slate-200"
         }`}
       >
         <option value="">Select ...</option>
@@ -40,7 +40,7 @@ const SelectField = ({ label, field, options, required = true, formData, errors,
       </select>
 
       {getNestedValue(errors, field) && (
-        <p className="mt-1 text-xs text-red-600">{getNestedValue(errors, field)}</p>
+        <p className="mt-1 text-xs text-red-500">{getNestedValue(errors, field)}</p>
       )}
     </div>
   );

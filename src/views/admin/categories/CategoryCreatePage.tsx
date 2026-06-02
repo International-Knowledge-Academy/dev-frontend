@@ -4,58 +4,43 @@ import { useNavigate } from "react-router-dom";
 import useCreateCategory from "hooks/categories/useCreateCategory";
 import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
-import SelectField from "components/form/SelectField";
-import ToggleInput from "components/form/toggle/ToggleInput";
-
-const TYPE_OPTIONS = [
-  { value: "training",            label: "Training & Development" },
-  { value: "international_youth", label: "International & Youth Programs" },
-  { value: "research",            label: "Research & Knowledge Services" },
-];
+import TextareaField from "components/form/TextareaField";
+import Button from "components/ui/buttons/Button";
 
 const CategoryCreatePage = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
-  const { createCategory, loading, error, fieldErrors } = useCreateCategory();
+  const { createCategory, loading } = useCreateCategory();
 
-  const [form, setForm] = useState({
-    name:          "",
-    description:   "",
-    type:          "training",
-    display_order: 0,
-    is_active:     true,
-  });
+  const [form, setForm]               = useState({ name: "", summary: "" });
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const updateFormData = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
 
+  const isFormValid = form.name.trim() !== "";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const created = await createCategory({
-      ...form,
-      display_order: Number(form.display_order),
-    });
+    const { category: created, fieldErrors: fe, error: ge } = await createCategory(form);
     if (created) {
       addToast("Category created successfully", "success");
       navigate("/admin/categories");
+    } else {
+      setFieldErrors(fe);
+      addToast(Object.values(fe)[0] ?? ge ?? "Failed to create category. Please try again.", "error");
     }
   };
 
   return (
-    <div className="">
-      <div className="bg-white dark:bg-navy-800 rounded-2xl border border-gray-100 dark:border-navy-700 shadow-sm">
-        <div className="px-6 py-4 border-b border-gray-100 dark:border-navy-700">
-          <h1 className="text-base font-bold text-navy-800 dark:text-white">Create Category</h1>
-          <p className="text-xs text-gray-400 mt-0.5">Fill in the details to add a new educational category</p>
+    <div className="max-w-5xl mx-auto">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+        <div className="px-6 py-4 border-b border-slate-100">
+          <h1 className="text-base font-bold text-navy-800">Create Category</h1>
+          <p className="text-xs text-slate-400 mt-0.5">Add a new category</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="px-6 py-5 grid grid-cols-2 gap-4">
-          {error && (
-            <div className="col-span-2 rounded-xl bg-red-50 border border-red-200 px-4 py-2.5 text-sm text-red-600">
-              {error}
-            </div>
-          )}
-
+        <form onSubmit={handleSubmit} className="px-6 py-5 flex flex-col gap-4">
           <InputField
             label="Category Name"
             field="name"
@@ -65,62 +50,36 @@ const CategoryCreatePage = () => {
             updateFormData={updateFormData}
           />
 
-          <SelectField
-            label="Type"
-            field="type"
-            options={TYPE_OPTIONS}
+          <TextareaField
+            label="Summary"
+            field="summary"
+            placeholder="Brief description of this category..."
             formData={form}
             errors={fieldErrors}
             updateFormData={updateFormData}
+            required={false}
           />
 
-          <div className="col-span-2">
-            <InputField
-              label="Description"
-              field="description"
-              placeholder="Brief description of this category"
-              formData={form}
-              errors={fieldErrors}
-              updateFormData={updateFormData}
-            />
-          </div>
-
-          <InputField
-            label="Display Order"
-            field="display_order"
-            type="number"
-            placeholder="0"
-            formData={form}
-            errors={fieldErrors}
-            updateFormData={updateFormData}
-          />
-
-          <div className="col-span-2">
-            <ToggleInput
-              label="Active"
-              field="is_active"
-              formData={form}
-              errors={fieldErrors}
-              updateFormData={updateFormData}
-            />
-          </div>
-
-          {/* Actions */}
-          <div className="col-span-2 flex gap-2 border-t border-gray-100 pt-4">
-            <button
+          <div className="flex gap-2 border-t border-slate-100 pt-4">
+            <Button
               type="button"
+              text="Cancel"
               onClick={() => navigate("/admin/categories")}
-              className="flex-1 rounded-xl border border-gray-200 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
-            >
-              Cancel
-            </button>
-            <button
+              className="flex-1 py-2.5"
+              bgColor="bg-white"
+              textColor="text-slate-600"
+              borderColor="border-slate-200"
+              hoverBgColor="hover:bg-slate-50"
+              hoverTextColor=""
+              hoverBorderColor=""
+            />
+            <Button
               type="submit"
-              disabled={loading}
-              className="flex-1 rounded-xl bg-navy-800 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 transition disabled:opacity-60"
-            >
-              {loading ? "Creating..." : "Create Category"}
-            </button>
+              variant="primary"
+              text={loading ? "Creating..." : "Create Category"}
+              disabled={loading || !isFormValid}
+              className="flex-1 py-2.5"
+            />
           </div>
         </form>
       </div>

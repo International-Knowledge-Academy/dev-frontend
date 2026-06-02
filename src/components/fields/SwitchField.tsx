@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import Switch from "components/switch";
 
 const SwitchField = (props) => {
@@ -9,10 +9,10 @@ const SwitchField = (props) => {
         htmlFor={id}
         className="max-w-[80%] hover:cursor-pointer lg:max-w-[65%]"
       >
-        <h5 className="text-base font-bold text-navy-700 dark:text-white">
+        <h5 className="text-base font-bold text-navy-700">
           {label}
         </h5>
-        <p className={`text-base text-gray-600`}>{desc}</p>
+        <p className={`text-base text-slate-600`}>{desc}</p>
       </label>
       <div>
         <Switch id={id} />

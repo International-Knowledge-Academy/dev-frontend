@@ -4,9 +4,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "context/ToastContext";
 import useGetLocation from "hooks/locations/useGetLocation";
 import useUpdateLocation from "hooks/locations/useUpdateLocation";
+import PageHeader from "components/ui/PageHeader";
 import InputField from "components/form/InputField";
 import ToggleInput from "components/form/toggle/ToggleInput";
 import Button from "components/ui/buttons/Button";
+import SearchableDropdown from "components/form/search/SearchableDropdown";
+import Loading from "components/loading/Loading";
+import { COUNTRIES } from "constants/lists";
+
+const COUNTRY_OPTIONS = COUNTRIES.map((c) => ({ value: c.name, label: c.name }));
 
 const LocationEditPage = () => {
   const { uid } = useParams<{ uid: string }>();
@@ -14,30 +20,34 @@ const LocationEditPage = () => {
   const { addToast } = useToast();
 
   const { location, loading: loadingLocation, error: loadError } = useGetLocation(uid);
-  const { updateLocation, loading: updating, error, fieldErrors } = useUpdateLocation();
+  const { updateLocation, loading: updating, error, fieldErrors, getLastError } = useUpdateLocation();
 
   const [form, setForm] = useState({
-    name:          "",
-    city:          "",
-    country:       "",
-    address:       "",
-    venue_details: "",
-    latitude:      "",
-    longitude:     "",
-    is_active:     true,
+    name:            "",
+    city:            "",
+    country:         "",
+    address:         "",
+    venue_details:   "",
+    latitude:        "",
+    longitude:       "",
+    is_active:       true,
+    contact_phone:   "",
+    whatsapp_number: "",
   });
 
   useEffect(() => {
     if (location) {
       setForm({
-        name:          location.name,
-        city:          location.city,
-        country:       location.country,
-        address:       location.address,
-        venue_details: location.venue_details,
-        latitude:      location.latitude,
-        longitude:     location.longitude,
-        is_active:     location.is_active,
+        name:            location.name            ?? "",
+        city:            location.city            ?? "",
+        country:         location.country         ?? "",
+        address:         location.address         ?? "",
+        venue_details:   location.venue_details   ?? "",
+        latitude:        location.latitude        ?? "",
+        longitude:       location.longitude       ?? "",
+        is_active:       location.is_active       ?? true,
+        contact_phone:   location.contact_phone   ?? "",
+        whatsapp_number: location.whatsapp_number ?? "",
       });
     }
   }, [location]);
@@ -51,16 +61,14 @@ const LocationEditPage = () => {
     if (updated) {
       addToast("Location updated successfully", "success");
       navigate(`/admin/locations/${uid}`);
+    } else {
+      const { fieldErrors: fe, error: ge } = getLastError();
+      const firstFieldError = Object.values(fe)[0];
+      addToast(firstFieldError ?? ge ?? "Failed to save changes. Please try again.", "error");
     }
   };
 
-  if (loadingLocation) {
-    return (
-      <div className="flex items-center justify-center py-20 text-sm text-gray-400">
-        Loading location...
-      </div>
-    );
-  }
+  if (loadingLocation) return <Loading text="Loading location..." />;
 
   if (loadError) {
     return (
@@ -71,14 +79,13 @@ const LocationEditPage = () => {
   }
 
   return (
-    <div className="">
-      <div className="bg-white dark:bg-navy-800 rounded-2xl border border-gray-100 dark:border-navy-700 shadow-sm">
-        <div className="px-6 py-4 border-b border-gray-100 dark:border-navy-700">
-          <h1 className="text-base font-bold text-navy-800 dark:text-white">Edit Location</h1>
-          <p className="text-xs text-gray-400 mt-0.5">
-            Update the details for <span className="font-semibold text-navy-700 dark:text-white">{location?.name}</span>
-          </p>
-        </div>
+    <div className="max-w-5xl mx-auto">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm">
+        <PageHeader
+          title="Edit Location"
+          subtitle={<>Update the details for <span className="font-semibold text-navy-700">{location?.name}</span></>}
+          bordered
+        />
 
         <form onSubmit={handleSubmit} className="px-6 py-5 grid grid-cols-1 gap-4">
           {error && (
@@ -104,19 +111,19 @@ const LocationEditPage = () => {
               errors={fieldErrors}
               updateFormData={updateFormData}
             />
-            <InputField
+            <SearchableDropdown
               label="Country"
               field="country"
-              placeholder="UAE"
+              options={COUNTRY_OPTIONS}
               formData={form}
               errors={fieldErrors}
               updateFormData={updateFormData}
+              placeholder="Select country..."
             />
             <InputField
               label="Address"
               field="address"
               placeholder="123 Main St"
-              required={false}
               formData={form}
               errors={fieldErrors}
               updateFormData={updateFormData}
@@ -135,6 +142,22 @@ const LocationEditPage = () => {
               field="longitude"
               placeholder="55.2708"
               required={false}
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={updateFormData}
+            />
+            <InputField
+              label="Contact Phone"
+              field="contact_phone"
+              placeholder="+971 50 000 0000"
+              formData={form}
+              errors={fieldErrors}
+              updateFormData={updateFormData}
+            />
+            <InputField
+              label="WhatsApp Number"
+              field="whatsapp_number"
+              placeholder="+971 50 000 0000"
               formData={form}
               errors={fieldErrors}
               updateFormData={updateFormData}
@@ -159,16 +182,16 @@ const LocationEditPage = () => {
             updateFormData={updateFormData}
           />
 
-          <div className="flex gap-2 border-t border-gray-100 pt-4">
+          <div className="flex gap-2 border-t border-slate-100 pt-4">
             <Button
               type="button"
               text="Cancel"
               onClick={() => navigate(`/admin/locations/${uid}`)}
-              className="flex-1 rounded-xl py-2.5"
+              className="flex-1 py-2.5"
               bgColor="bg-white"
-              textColor="text-gray-600"
-              borderColor="border-gray-200"
-              hoverBgColor="hover:bg-gray-50"
+              textColor="text-slate-600"
+              borderColor="border-slate-200"
+              hoverBgColor="hover:bg-slate-50"
               hoverTextColor=""
               hoverBorderColor=""
             />
@@ -177,7 +200,7 @@ const LocationEditPage = () => {
               variant="primary"
               text={updating ? "Saving..." : "Save Changes"}
               disabled={updating}
-              className="flex-1 rounded-xl py-2.5"
+              className="flex-1 py-2.5"
             />
           </div>
         </form>

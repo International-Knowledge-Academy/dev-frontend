@@ -1,13 +1,5 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
-import { MdCheckCircle } from "react-icons/md";
-
-const highlights = [
-  "Tailored programs designed for your organization's specific needs",
-  "Delivered by industry-leading experts with real-world experience",
-  "Flexible formats — on-site, remote, or intensive",
-  "Internationally recognized accredited certificates",
-];
 
 const fadeLeft = {
   hidden: { opacity: 0, x: -40 },
@@ -44,34 +36,29 @@ const About = () => {
             International Knowledge Academy
             <span className="block text-gold-500 mt-1">for Training & Management Development</span>
           </h2>
-          <p className="text-gray-500 mt-6 text-base leading-relaxed">
-            IKA provides high-quality training programs that blend deep theoretical knowledge with
-            practical experience. We believe that effective training is the cornerstone of
-            organizational excellence — empowering individuals and transforming institutions.
+          <p className="text-slate-500 mt-6 text-base leading-relaxed text-justify">
+            International Knowledge Academy – IKA is a global training and professional development
+            academy dedicated to empowering leaders, professionals, and institutions through
+            high-quality, practical, and internationally oriented training experiences.
           </p>
-          <p className="text-gray-500 mt-4 text-base leading-relaxed italic border-l-4 border-gold-500 pl-4">
-            "Invest in Your Employees and Invest in the Future of Your Institution."
+          <p className="text-slate-500 mt-4 text-base leading-relaxed text-justify">
+            Established and commercially registered in Türkiye, with operational presence and
+            partnerships in Malaysia, Europe, the United Kingdom, and beyond, IKA delivers
+            specialized training programs that combine academic depth, practical application,
+            and global exposure.
           </p>
-
-          {/* Highlights */}
-          <motion.ul
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            className="mt-8 space-y-3"
-          >
-            {highlights.map((item, i) => (
-              <motion.li
-                key={item}
-                custom={i}
-                variants={fadeUp}
-                className="flex items-start gap-3 text-gray-600 text-sm"
-              >
-                <MdCheckCircle size={20} className="text-gold-500 flex-shrink-0 mt-0.5" />
-                {item}
-              </motion.li>
-            ))}
-          </motion.ul>
+          <p className="text-slate-500 mt-4 text-base leading-relaxed text-justify">
+            We design our programs for professionals, executives, government employees, and
+            institutional leaders who seek more than traditional training — integrating expert-led
+            learning, interactive workshops, international study experiences, and real-world
+            application to deliver measurable professional value.
+          </p>
+          <p className="text-slate-500 mt-4 text-base leading-relaxed italic border-l-4 border-gold-500 pl-4 text-justify">
+            "At IKA, training is not only about gaining knowledge — it is about transforming
+            performance, developing leadership capability, and preparing professionals to meet
+            the demands of a rapidly changing world."
+          </p>
+       
         </motion.div>
 
         {/* Right — decorative card */}
@@ -83,18 +70,18 @@ const About = () => {
           className="relative"
         >
           <div className="absolute inset-0 bg-gold-500 opacity-5 rounded-3xl blur-2xl" />
-          <div className="relative bg-white border border-gray-100 shadow-sm rounded-3xl p-8 space-y-6">
+          <div className="relative bg-white border border-slate-100 shadow-sm rounded-3xl p-8 space-y-6">
             <img
               src="/brand/IKA-logo-bg.png"
               alt="IKA Logo"
               className="h-16 w-auto mx-auto"
             />
-            <div className="border-t border-gray-100 pt-6 grid grid-cols-2 gap-6 text-center">
+            <div className="border-t border-slate-100 pt-6 grid grid-cols-2 gap-6 text-center">
               {[
                 { value: "20+", label: "Training Fields" },
                 { value: "10",  label: "Countries" },
                 { value: "3",   label: "Program Types" },
-                { value: "5★",  label: "Hotel Partnerships" },
+                { value: "8",   label: "Strategic Goals" },
               ].map((s, i) => (
                 <motion.div
                   key={s.label}
@@ -105,13 +92,13 @@ const About = () => {
                   viewport={{ once: true }}
                 >
                   <p className="text-3xl font-extrabold text-gold-500">{s.value}</p>
-                  <p className="text-gray-400 text-sm mt-1">{s.label}</p>
+                  <p className="text-slate-400 text-sm mt-1">{s.label}</p>
                 </motion.div>
               ))}
             </div>
-            <div className="border-t border-gray-100 pt-5 text-center">
-              <p className="text-gray-400 text-xs">
-                Operating across the UAE, UK, Europe, Asia & the Middle East
+            <div className="border-t border-slate-100 pt-5 text-center">
+              <p className="text-slate-400 text-xs">
+                Operating across Malaysia, Europe, UK, Türkiye & beyond
               </p>
             </div>
           </div>

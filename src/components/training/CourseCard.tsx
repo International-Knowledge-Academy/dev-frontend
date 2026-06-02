@@ -26,7 +26,7 @@ const CourseCard = ({ course }: Props) => {
   return (
     <motion.div
       whileHover={{ y: -5, transition: { duration: 0.2 } }}
-      className="group bg-white border border-gray-100 hover:border-gold-300 hover:shadow-lg transition-colors duration-300 rounded-2xl overflow-hidden flex flex-col cursor-default"
+      className="group bg-white border border-slate-100 hover:border-gold-300 hover:shadow-lg transition-colors duration-300 rounded-2xl overflow-hidden flex flex-col cursor-default"
     >
       {/* Top accent line */}
       <div className="h-1 w-full bg-gradient-to-r from-navy-600 via-gold-500 to-navy-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -39,7 +39,7 @@ const CourseCard = ({ course }: Props) => {
             {badge.label}
           </span>
           {course.code && (
-            <span className="text-xs text-gray-300 font-mono">{course.code}</span>
+            <span className="text-xs text-slate-300 font-mono">{course.code}</span>
           )}
         </div>
 
@@ -60,22 +60,22 @@ const CourseCard = ({ course }: Props) => {
 
         {/* Short description */}
         {course.short_description && (
-          <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-4 flex-1">
+          <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4 flex-1">
             {course.short_description}
           </p>
         )}
 
         {/* Meta row */}
-        <div className="flex items-center gap-4 mt-auto pt-4 border-t border-gray-100">
+        <div className="flex items-center gap-4 mt-auto pt-4 border-t border-slate-100">
           {/* Duration */}
-          <div className="flex items-center gap-1.5 text-xs text-gray-400">
+          <div className="flex items-center gap-1.5 text-xs text-slate-400">
             <MdAccessTime size={13} className="flex-shrink-0" />
             <span>{course.duration_days} {course.duration_days === 1 ? "Day" : "Days"}</span>
           </div>
 
           {/* Location */}
           {course.location && (
-            <div className="flex items-center gap-1 text-xs text-gray-400 truncate">
+            <div className="flex items-center gap-1 text-xs text-slate-400 truncate">
               <span className="text-sm">{flag}</span>
               <MdLocationOn size={12} className="flex-shrink-0" />
               <span className="truncate">{course.location.city}</span>

@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 import React from "react";
 import CardMenu from "components/card/CardMenu";
 import Card from "components/card";
@@ -24,10 +24,10 @@ export default function ComplexTable(props) {
     columnHelper.accessor("name", {
       id: "name",
       header: () => (
-        <p className="text-sm font-bold text-gray-600 dark:text-white">NAME</p>
+        <p className="text-sm font-bold text-slate-600">NAME</p>
       ),
       cell: (info) => (
-        <p className="text-sm font-bold text-navy-700 dark:text-white">
+        <p className="text-sm font-bold text-navy-700">
           {info.getValue()}
         </p>
       ),
@@ -35,20 +35,20 @@ export default function ComplexTable(props) {
     columnHelper.accessor("status", {
       id: "status",
       header: () => (
-        <p className="text-sm font-bold text-gray-600 dark:text-white">
+        <p className="text-sm font-bold text-slate-600">
           STATUS
         </p>
       ),
       cell: (info) => (
         <div className="flex items-center">
           {info.getValue() === "Approved" ? (
-            <MdCheckCircle className="text-green-500 me-1 dark:text-green-300" />
+            <MdCheckCircle className="text-green-500 me-1" />
           ) : info.getValue() === "Disable" ? (
-            <MdCancel className="text-red-500 me-1 dark:text-red-300" />
+            <MdCancel className="text-red-500 me-1" />
           ) : info.getValue() === "Error" ? (
-            <MdOutlineError className="text-amber-500 me-1 dark:text-amber-300" />
+            <MdOutlineError className="text-amber-500 me-1" />
           ) : null}
-          <p className="text-sm font-bold text-navy-700 dark:text-white">
+          <p className="text-sm font-bold text-navy-700">
             {info.getValue()}
           </p>
         </div>
@@ -57,10 +57,10 @@ export default function ComplexTable(props) {
     columnHelper.accessor("date", {
       id: "date",
       header: () => (
-        <p className="text-sm font-bold text-gray-600 dark:text-white">DATE</p>
+        <p className="text-sm font-bold text-slate-600">DATE</p>
       ),
       cell: (info) => (
-        <p className="text-sm font-bold text-navy-700 dark:text-white">
+        <p className="text-sm font-bold text-navy-700">
           {info.getValue()}
         </p>
       ),
@@ -68,7 +68,7 @@ export default function ComplexTable(props) {
     columnHelper.accessor("progress", {
       id: "progress",
       header: () => (
-        <p className="text-sm font-bold text-gray-600 dark:text-white">
+        <p className="text-sm font-bold text-slate-600">
           PROGRESS
         </p>
       ),
@@ -94,7 +94,7 @@ export default function ComplexTable(props) {
   return (
     <Card extra={"w-full h-full px-6 pb-6 sm:overflow-x-auto"}>
       <div className="relative flex items-center justify-between pt-4">
-        <div className="text-xl font-bold text-navy-700 dark:text-white">
+        <div className="text-xl font-bold text-navy-700">
           Complex Table
         </div>
         <CardMenu />
@@ -104,16 +104,16 @@ export default function ComplexTable(props) {
         <table className="w-full">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id} className="!border-px !border-gray-400">
+              <tr key={headerGroup.id} className="!border-px !border-slate-400">
                 {headerGroup.headers.map((header) => {
                   return (
                     <th
                       key={header.id}
                       colSpan={header.colSpan}
                       onClick={header.column.getToggleSortingHandler()}
-                      className="cursor-pointer border-b-[1px] border-gray-200 pt-4 pb-2 pr-4 text-start"
+                      className="cursor-pointer border-b-[1px] border-slate-200 pt-4 pb-2 pr-4 text-start"
                     >
-                      <div className="items-center justify-between text-xs text-gray-200">
+                      <div className="items-center justify-between text-xs text-slate-200">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()

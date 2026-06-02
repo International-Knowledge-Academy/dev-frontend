@@ -1,28 +1,36 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
-import { FaLinkedinIn, FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { FaInstagram, FaWhatsapp, FaSnapchatGhost, FaFacebook } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 const socials = [
   {
-    icon: <FaLinkedinIn size={20} />,
-    label: "LinkedIn",
-    handle: "IKA Academy",
-    href: "#",
-    color: "hover:bg-[#0077B5] hover:border-[#0077B5]",
-  },
-  {
-    icon: <FaFacebookF size={20} />,
+    icon: <FaFacebook size={20} />,
     label: "Facebook",
-    handle: "@IKAcademy",
-    href: "#",
+    handle: "IKA Academy",
+    href: "https://www.facebook.com/share/1bDy9Uv8uH/?mibextid=wwXIfr",
     color: "hover:bg-[#1877F2] hover:border-[#1877F2]",
   },
   {
     icon: <FaInstagram size={20} />,
     label: "Instagram",
-    handle: "@ika_academy",
-    href: "#",
+    handle: "ika.academy",
+    href: "https://www.instagram.com/ika.academy?igsh=YWN4eTBqdHMxN2Nj&utm_source=qr",
     color: "hover:bg-[#E1306C] hover:border-[#E1306C]",
+  },
+  {
+    icon: <FaXTwitter size={20} />,
+    label: "X (Twitter)",
+    handle: "@internatio86032",
+    href: "https://x.com/internatio86032?s=11&t=FiEYk1tKhME8U_rENQfVOA",
+    color: "hover:bg-[#000000] hover:border-[#000000]",
+  },
+  {
+    icon: <FaSnapchatGhost size={20} />,
+    label: "Snapchat",
+    handle: "ika.academy",
+    href: "https://www.snapchat.com/add/ika.academy?share_id=rxFv-CM6ThGReTcwUW0mJw&locale=en_MY",
+    color: "hover:bg-[#FFFC00] hover:border-[#FFFC00]",
   },
   {
     icon: <FaWhatsapp size={20} />,

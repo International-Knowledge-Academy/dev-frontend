@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { Routes, Route, Navigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import routes from "routes";
 
 export default function Auth() {
@@ -17,7 +18,7 @@ export default function Auth() {
   document.documentElement.dir = "ltr";
   return (
     <div>
-      <div className="relative float-right h-full min-h-screen w-full !bg-white dark:!bg-navy-900">
+      <div className="relative float-right h-full min-h-screen w-full !bg-white">
         
         <main className={`mx-auto min-h-screen`}>
           <div className="relative flex">
@@ -40,13 +41,28 @@ export default function Auth() {
                     style={{ background: "radial-gradient(ellipse at center top, #D3AB5C18 0%, transparent 70%)" }}
                   />
 
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full border border-white/5 pointer-events-none" />
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] rounded-full border border-gold-500/10 pointer-events-none" />
+                  <motion.div
+                    animate={{ scale: [1, 1.04, 1], opacity: [0.05, 0.1, 0.05] }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full border border-white/5 pointer-events-none"
+                  />
+                  <motion.div
+                    animate={{ scale: [1, 1.06, 1], opacity: [0.1, 0.2, 0.1] }}
+                    transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] rounded-full border border-gold-500/10 pointer-events-none"
+                  />
 
-                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-10 gap-6">
-                    <img
+                  <motion.div
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+                    className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-10 gap-6"
+                  >
+                    <motion.img
                       src="/brand/IKA Logo-02.png"
                       alt="IKA"
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                       className="w-[160px] h-[160px] object-contain drop-shadow-xl"
                     />
                     <div>
@@ -71,7 +87,7 @@ export default function Auth() {
                       <span className="w-1.5 h-1.5 rounded-full bg-gold-500/60" />
                       <span className="w-8 h-px bg-gold-500/40" />
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             </div>

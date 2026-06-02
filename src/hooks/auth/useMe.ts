@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import authApi from "api/auth";
-import type { AuthUser } from "types/auth";
+import type { User } from "types/auth";
 
 interface UseMeReturn {
-  me: AuthUser | null;
+  me: User | null;
   loading: boolean;
   error: string | null;
   refetch: () => void;
 }
 
 const useMe = (): UseMeReturn => {
-  const [me, setMe]           = useState<AuthUser | null>(null);
+  const [me, setMe]           = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState<string | null>(null);
 

@@ -8,6 +8,8 @@ export interface Location {
   latitude: string;
   longitude: string;
   is_active: boolean;
+  contact_phone: string;
+  whatsapp_number: string;
   course_count: number;
   created_at: string;
   updated_at: string;

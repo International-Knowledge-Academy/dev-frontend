@@ -22,7 +22,7 @@ const useChangePassword = (): UseChangePasswordReturn => {
 
     try {
       const { data } = await axiosInstance.post<ChangePasswordResponse>(
-        "/auth/change_password",
+        "/auth/change-password",
         payload
       );
       setSuccess(data.message ?? "Password changed successfully.");

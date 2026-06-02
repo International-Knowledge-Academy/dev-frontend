@@ -1,165 +1,249 @@
 // @ts-nocheck
-"use client";
-
-import React, { useState, useRef, useEffect, useMemo } from "react";
-import { ChevronDown } from "lucide-react";
+import { useState, useRef, useEffect, useMemo } from "react";
+import { createPortal } from "react-dom";
+import { MdExpandMore, MdClose } from "react-icons/md";
 
 const getNestedValue = (obj, path) => {
   if (!path) return undefined;
-  return path
-    .split(/[\.\[\]]/)
-    .filter(Boolean)
-    .reduce((acc, key) => (acc ? acc[key] : undefined), obj);
+  return path.split(/[.[\]]/).filter(Boolean).reduce((acc, key) => (acc ? acc[key] : undefined), obj);
 };
 
-const CreatableSelectField = ({
-                                label,
-                                field,
-                                options = [],
-                                required = true,
-                                formData,
-                                errors,
-                                updateFormData,
-                                placeholder = "Select...",
-                                actions = []
-                              }) => {
-  const containerRef = useRef(null);
+const DROPDOWN_MAX_H = 260; // px — matches max-h-52 (208) + search bar (~52)
 
-  const selectedValue = getNestedValue(formData, field) ?? "";
+const SearchableSelect = ({
+  label,
+  field,
+  options = [],
+  required = false,
+  formData,
+  errors,
+  updateFormData,
+  placeholder = "Select...",
+  actions = [],
+  loading = false,
+  disabled = false,
+}) => {
+  const triggerRef  = useRef(null);
+  const dropRef     = useRef(null);
+  const searchRef   = useRef(null);
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  const selectedValue  = getNestedValue(formData, field) ?? "";
+  const selectedOption = options.find((opt) => opt.value === selectedValue);
+  const selectedLabel  = selectedOption?.label ?? "";
+  const hasError       = !!getNestedValue(errors, field);
 
-  const selectedOption = options.find(
-    (opt) => opt.value === selectedValue
+  const [isOpen,      setIsOpen]      = useState(false);
+  const [search,      setSearch]      = useState("");
+  const [activeIdx,   setActiveIdx]   = useState(-1);
+  const [dropPos,     setDropPos]     = useState({ top: 0, left: 0, width: 0, openUp: false });
+
+  const filteredOptions = useMemo(
+    () => options.filter((o) => o.label?.toLowerCase().includes(search.toLowerCase())),
+    [search, options]
   );
 
-  const selectedLabel = selectedOption?.label ?? selectedValue ?? "";
-
-  const filteredOptions = useMemo(() => {
-    return options.filter((opt) =>
-      opt.label.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [search, options]);
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target)
-      ) {
-        setIsOpen(false);
-        setSearch("");
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleSelect = (option) => {
-    updateFormData(field, option.value);
-    setIsOpen(false);
-    setSearch("");
+  /* ── position calculation ── */
+  const calcPos = () => {
+    if (!triggerRef.current) return;
+    const r = triggerRef.current.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - r.bottom;
+    const openUp = spaceBelow < DROPDOWN_MAX_H && r.top > spaceBelow;
+    setDropPos({
+      top:    openUp ? r.top - DROPDOWN_MAX_H - 4 : r.bottom + 4,
+      left:   r.left,
+      width:  r.width,
+      openUp,
+    });
   };
 
-  return (
-    <div className="mb-4" ref={containerRef}>
+  /* ── open / close helpers ── */
+  const open = () => {
+    if (disabled || loading) return;
+    calcPos();
+    setIsOpen(true);
+    setActiveIdx(-1);
+  };
 
-      <label className="block text-sm font-medium text-slate-900">
-        {label} {required && <span className="text-red-600">*</span>}
-      </label>
+  const close = () => {
+    setIsOpen(false);
+    setSearch("");
+    setActiveIdx(-1);
+  };
 
-      <div
-        onClick={() => setIsOpen((prev) => !prev)}
+  /* ── outside click ── */
+  useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e) => {
+      if (
+        !triggerRef.current?.contains(e.target) &&
+        !dropRef.current?.contains(e.target)
+      ) close();
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [isOpen]);
 
-        className={`mt-2 flex h-12 w-full items-center justify-between bg-white rounded-md border p-3 px-3 py-2 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-          getNestedValue(errors, field) ? "border-red-500" : "border-default"
-        }`}
+  /* ── close on scroll / resize ── */
+  useEffect(() => {
+    if (!isOpen) return;
+    const handler = () => close();
+    window.addEventListener("scroll", handler, true);
+    window.addEventListener("resize", handler);
+    return () => {
+      window.removeEventListener("scroll", handler, true);
+      window.removeEventListener("resize", handler);
+    };
+  }, [isOpen]);
 
-      >
-        <span
-          className={`${
-            selectedLabel ? "text-slate-900" : "text-slate-400"
-          }`}
-        >
-          {selectedLabel || placeholder}
-        </span>
-        <span className="text-xs text-slate-500">
-          <ChevronDown   className="h-5 w-5" />
-        </span>
+  /* ── auto-focus search ── */
+  useEffect(() => {
+    if (isOpen) setTimeout(() => searchRef.current?.focus(), 20);
+  }, [isOpen]);
+
+  /* ── keyboard — trigger ── */
+  const handleTriggerKey = (e) => {
+    if (["Enter", " ", "ArrowDown"].includes(e.key)) { e.preventDefault(); open(); }
+  };
+
+  /* ── keyboard — search input ── */
+  const handleSearchKey = (e) => {
+    if (e.key === "Escape")     { e.preventDefault(); close(); triggerRef.current?.focus(); return; }
+    if (e.key === "ArrowDown")  { e.preventDefault(); setActiveIdx((i) => Math.min(i + 1, filteredOptions.length - 1)); return; }
+    if (e.key === "ArrowUp")    { e.preventDefault(); setActiveIdx((i) => Math.max(i - 1, 0)); return; }
+    if (e.key === "Enter" && activeIdx >= 0 && filteredOptions[activeIdx]) {
+      e.preventDefault();
+      handleSelect(filteredOptions[activeIdx]);
+    }
+  };
+
+  const handleSelect = (opt) => {
+    updateFormData(field, opt.value);
+    close();
+  };
+
+  const handleClear = (e) => {
+    e.stopPropagation();
+    updateFormData(field, "");
+  };
+
+  /* ── portal dropdown ── */
+  const dropdown = isOpen && createPortal(
+    <div
+      ref={dropRef}
+      style={{ position: "fixed", top: dropPos.top, left: dropPos.left, width: dropPos.width, zIndex: 9999 }}
+      className="rounded-md lg:rounded-lg border border-slate-200 bg-white shadow-lg overflow-hidden"
+    >
+      {/* Search */}
+      <div className="p-2 border-b border-slate-100">
+        <input
+          ref={searchRef}
+          type="text"
+          value={search}
+          onChange={(e) => { setSearch(e.target.value); setActiveIdx(-1); }}
+          onKeyDown={handleSearchKey}
+          placeholder="Search..."
+          className="w-full rounded-md border border-slate-200 bg-slate-50 hover:bg-slate-100/70 px-3 py-2 text-sm text-navy-800 outline-none focus:ring-2 focus:ring-navy-300 focus:border-navy-400 transition"
+        />
       </div>
 
-      {isOpen && (
+      {/* Options */}
+      <ul className="max-h-52 overflow-y-auto py-1">
+        {loading ? (
+          <li className="px-4 py-3 text-sm text-slate-400 text-center">Loading…</li>
+        ) : filteredOptions.length > 0 ? (
+          filteredOptions.map((opt, i) => (
+            <li
+              key={opt.value}
+              onMouseDown={() => handleSelect(opt)}
+              className={`px-4 py-2.5 text-sm cursor-pointer transition-colors ${
+                i === activeIdx
+                  ? "bg-navy-100 text-navy-800"
+                  : opt.value === selectedValue
+                  ? "bg-navy-50 text-navy-700 font-medium"
+                  : "text-navy-800 hover:bg-slate-50"
+              }`}
+            >
+              {opt.label}
+            </li>
+          ))
+        ) : (
+          <li className="px-4 py-3 text-sm text-slate-400 text-center">
+            {search ? `No results for "${search}"` : "No options available"}
+          </li>
+        )}
 
-        <div
-          className="animate-in fade-in slide-in-from-top-2 absolute z-[9999] mt-1 rounded-md border bg-white p-3"
-          style={{
-            width: containerRef.current
-              ? containerRef.current.offsetWidth
-              : "100%",
-          }}
-        >
-
-          <input
-            type="text"
-            placeholder="Search..."
-            autoFocus
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className={`mt-2 flex h-10 w-full items-start justify-start rounded-md border p-3 px-3 py-2 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1  focus:ring-blue-500 ${
-              getNestedValue(errors, field) ? "border-red-500" : "border-default"
-            }`}
-          />
-
-          <ul className="max-h-60 overflow-y-auto text-sm">
-            {filteredOptions.map((opt) => (
+        {actions.length > 0 && filteredOptions.length === 0 && !loading && (
+          <div className="border-t border-slate-100 mt-1 pt-1">
+            {actions.map((action, i) => (
               <li
-                key={opt.value}
-                onClick={() => handleSelect(opt)}
-                className="mt-2 flex h-10 w-full pointer items-center justify-start rounded-md border p-3 px-3 py-2 text-p2 text-sm outline-none transition-colors focus:outline-none focus:ring-1 focus:ring-blue-500"
+                key={i}
+                onMouseDown={(e) => { e.stopPropagation(); action.onClick?.(); close(); }}
+                className="flex items-center gap-2 px-4 py-2.5 text-sm text-navy-600 hover:bg-navy-50 cursor-pointer transition"
               >
-                {opt.label}
+                {action.icon}
+                {action.label}
               </li>
             ))}
+          </div>
+        )}
+      </ul>
+    </div>,
+    document.body
+  );
 
-            {actions.length > 0 && !filteredOptions.length && (
-              <div className="border-t mt-2 pt-2">
+  return (
+    <div className="relative mb-4">
+      <label className="block text-sm font-medium text-navy-800 mb-2">
+        {label} {required && <span className="text-red-500">*</span>}
+      </label>
 
-                <li className="px-3 py-2 text-slate-400">
-                  No results found
-                </li>
+      <button
+        ref={triggerRef}
+        type="button"
+        onClick={() => isOpen ? close() : open()}
+        onKeyDown={handleTriggerKey}
+        disabled={disabled}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        className={`w-full flex items-center justify-between gap-2 rounded-md lg:rounded-lg border px-4 py-2.5 text-sm text-left outline-none transition ${
+          disabled
+            ? "bg-slate-100 cursor-not-allowed opacity-60"
+            : isOpen
+            ? "bg-slate-50"
+            : "bg-slate-50 hover:bg-slate-100/70"
+        } ${
+          hasError
+            ? isOpen ? "border-red-400 ring-2 ring-red-200" : "border-red-400"
+            : isOpen ? "border-navy-400 ring-2 ring-navy-300" : "border-slate-200"
+        }`}
+      >
+        <span className={`flex-1 truncate ${selectedLabel ? "text-navy-800" : "text-slate-400"}`}>
+          {loading ? "Loading…" : selectedLabel || placeholder}
+        </span>
 
-                {actions.map((action, index) => (
-                  <li
-                    key={index}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      action.onClick?.();
-                      setIsOpen(false);
-                      setSearch("");
-                    }}
-                    className="mt-2 flex h-10 w-full cursor-pointer items-center gap-2 rounded-md border p-3 text-sm transition hover:bg-slate-50"
-                  >
-                    {action.icon}
-                    <span>{action.label}</span>
-                  </li>
-                ))}
-              </div>
-            )}
+        <span className="flex items-center gap-0.5 flex-shrink-0 text-slate-400">
+          {selectedLabel && !disabled && (
+            <span
+              onClick={handleClear}
+              className="p-0.5 rounded hover:text-red-500 transition cursor-pointer"
+            >
+              <MdClose size={14} />
+            </span>
+          )}
+          <MdExpandMore
+            size={18}
+            className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+          />
+        </span>
+      </button>
 
-          </ul>
-        </div>
-      )}
+      {dropdown}
 
-      {getNestedValue(errors, field) && (
-        <p className="mt-1 text-xs text-red-600">
-          {getNestedValue(errors, field)}
-        </p>
+      {hasError && (
+        <p className="mt-1 text-xs text-red-500">{getNestedValue(errors, field)}</p>
       )}
     </div>
   );
 };
 
-export default CreatableSelectField;
+export default SearchableSelect;

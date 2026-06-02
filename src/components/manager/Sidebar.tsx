@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+﻿import { NavLink } from "react-router-dom";
 import { MdDashboard, MdPerson, MdLogout } from "react-icons/md";
 import useAuth from "hooks/auth/useAuth";
 
@@ -30,7 +30,7 @@ const ManagerSidebar = ({ open, onClose }: SidebarProps) => {
           ${open ? "translate-x-0" : "-translate-x-full"} xl:translate-x-0`}
       >
         {/* Logo */}
-        <div className="flex items-center gap-2 px-6 py-6 border-b border-gray-100">
+        <div className="flex items-center gap-2 px-6 py-6 border-b border-slate-100">
           <div className="h-8 w-8 rounded-lg bg-navy-700 flex items-center justify-center">
             <span className="text-white text-sm font-bold">M</span>
           </div>
@@ -48,7 +48,7 @@ const ManagerSidebar = ({ open, onClose }: SidebarProps) => {
                 `flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition
                 ${isActive
                   ? "bg-navy-700 text-white"
-                  : "text-gray-500 hover:bg-gray-100 hover:text-navy-700"
+                  : "text-slate-500 hover:bg-slate-100 hover:text-navy-700"
                 }`
               }
             >

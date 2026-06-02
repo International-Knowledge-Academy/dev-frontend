@@ -2,11 +2,11 @@
 import { motion } from "framer-motion";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
-import Locations from "components/home/Locations";
 import ContactHero from "components/contact/ContactHero";
 import ContactCards from "components/contact/ContactCards";
 import ContactForm from "components/contact/ContactForm";
 import SocialLinks from "components/contact/SocialLinks";
+import WorldMapSection from "components/home/WorldMapSection";
 import { MdInfo } from "react-icons/md";
 
 const ContactPage = () => {
@@ -47,7 +47,7 @@ const ContactPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55, ease: "easeOut", delay: 0.1 }}
-              className="bg-white border border-gray-100 rounded-3xl p-7"
+              className="bg-white border border-slate-100 rounded-3xl p-7"
             >
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-8 h-8 rounded-lg bg-gold-50 text-gold-500 flex items-center justify-center flex-shrink-0">
@@ -63,7 +63,7 @@ const ContactPage = () => {
                   "Custom contracted programs available",
                   "Training delivered in English & Arabic",
                 ].map((tip, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-gray-500 text-sm">
+                  <li key={i} className="flex items-start gap-2.5 text-slate-500 text-sm">
                     <span className="w-1.5 h-1.5 rounded-full bg-gold-500 flex-shrink-0 mt-1.5" />
                     {tip}
                   </li>
@@ -75,8 +75,8 @@ const ContactPage = () => {
         </div>
       </section>
 
-      {/* Locations */}
-      <Locations />
+      {/* World Map */}
+      <WorldMapSection />
 
       <Footer />
     </div>

@@ -60,7 +60,7 @@ const card = {
 
 const TargetAudience = () => {
   return (
-    <section className="py-24 px-6 bg-white">
+    <section className="py-24 px-6 bg-slate-50">
       <div className="max-w-6xl mx-auto">
 
         {/* Header */}
@@ -77,7 +77,7 @@ const TargetAudience = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             Our Target Audience
           </h2>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
             IKA's programs are designed to serve a wide range of organizations and individuals
             across both public and private sectors.
           </p>
@@ -96,13 +96,13 @@ const TargetAudience = () => {
               key={item.title}
               variants={card}
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
-              className="group p-7 rounded-2xl border border-gray-100 hover:border-gold-300 hover:shadow-lg transition-colors duration-300 bg-white cursor-default"
+              className="group p-7 rounded-2xl border border-slate-100 hover:border-gold-300 hover:shadow-lg transition-colors duration-300 bg-white cursor-default"
             >
               <div className="w-12 h-12 rounded-xl bg-navy-50 text-navy-600 flex items-center justify-center mb-5 group-hover:bg-gold-500 group-hover:text-white transition-all duration-300">
                 {item.icon}
               </div>
               <h3 className="text-base font-bold text-navy-800 mb-2">{item.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{item.description}</p>
+              <p className="text-slate-500 text-sm leading-relaxed">{item.description}</p>
             </motion.div>
           ))}
         </motion.div>

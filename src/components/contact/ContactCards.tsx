@@ -61,18 +61,18 @@ const ContactCards = () => {
           <motion.div
             variants={card}
             whileHover={{ y: -5, transition: { duration: 0.2 } }}
-            className="group relative bg-white border border-gray-100 hover:border-gold-300 hover:shadow-lg transition-all duration-300 rounded-2xl p-6 flex flex-col items-center text-center cursor-pointer overflow-hidden"
+            className="group relative bg-white border border-slate-100 hover:border-gold-300 hover:shadow-lg transition-all duration-300 rounded-2xl p-6 flex flex-col items-center text-center cursor-pointer overflow-hidden"
           >
             {/* Icon */}
             <div className={`w-14 h-14 rounded-2xl bg-navy-50 text-navy-600 flex items-center justify-center mb-4 transition-all duration-300 ${c.color} group-hover:text-white`}>
               {c.icon}
             </div>
 
-            <p className="text-xs text-gray-400 uppercase tracking-widest font-semibold mb-1">
+            <p className="text-xs text-slate-400 uppercase tracking-widest font-semibold mb-1">
               {c.label}
             </p>
             <p className="text-navy-800 font-bold text-base mb-1">{c.value}</p>
-            <p className="text-gray-400 text-xs">{c.sub}</p>
+            <p className="text-slate-400 text-xs">{c.sub}</p>
 
             {/* Bottom hover line */}
             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />

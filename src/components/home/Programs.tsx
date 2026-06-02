@@ -1,31 +1,28 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
-import { MdSchool, MdWorkspacePremium, MdHandshake } from "react-icons/md";
+import { MdTravelExplore, MdGroups, MdWorkspacePremium } from "react-icons/md";
 
 const programs = [
   {
-    icon: <MdSchool size={32} />,
-    title: "Training Courses",
-    duration: "5 Consecutive Days",
+    icon: <MdTravelExplore size={32} />,
+    title: "International Training Programs",
+    badge: "Core Program",
     description:
-      "Intensive short courses held at a professional training venue. Focused, structured, and designed to deliver immediate practical value.",
-    badge: "Most Popular",
+      "Delivered in selected international destinations, allowing participants to gain professional knowledge while experiencing new cultures, advanced environments, and global perspectives. Designed for employees, supervisors, managers, and senior leaders.",
   },
   {
     icon: <MdWorkspacePremium size={32} />,
-    title: "Training Diplomas",
-    duration: "10 Consecutive Days",
+    title: "Executive Workshops & Professional Development",
+    badge: "High Impact",
     description:
-      "In-depth diploma programs for professionals seeking comprehensive mastery. Covers both foundational and advanced aspects of the subject.",
-    badge: "In-Depth",
+      "Intensive workshops focused on leadership, management, governance, institutional excellence, quality, human resources, project management, and innovation — combining theory, case studies, group discussions, and practical exercises.",
   },
   {
-    icon: <MdHandshake size={32} />,
-    title: "Contracted Courses",
-    duration: "Fully Customized",
+    icon: <MdGroups size={32} />,
+    title: "Training Study Trips",
+    badge: "Immersive",
     description:
-      "Bespoke programs developed in partnership with your organization. Tailored content, schedule, and delivery method to match your exact requirements.",
-    badge: "Tailored",
+      "Specialized training study trips that combine professional learning with institutional visits, cultural exposure, and international networking — ideal for organizations seeking to develop staff through a rich benchmarking experience.",
   },
 ];
 
@@ -41,7 +38,7 @@ const cardVariant = {
 
 const Programs = () => {
   return (
-    <section className="py-24 px-6 bg-white">
+    <section className="py-24 px-6 bg-slate-50">
       <div className="max-w-6xl mx-auto">
 
         {/* Header */}
@@ -58,8 +55,9 @@ const Programs = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             Three Ways to Learn
           </h2>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
-            Choose the format that best fits your team's goals, timeline, and learning style.
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto ">
+            IKA offers a flexible and impactful learning experience designed for professionals
+            and organizations seeking international training opportunities outside their home countries.
           </p>
         </motion.div>
 
@@ -79,7 +77,7 @@ const Programs = () => {
               className={`relative rounded-3xl p-8 flex flex-col gap-5 border transition-all duration-300 cursor-default ${
                 i === 0
                   ? "bg-navy-600 border-navy-700 text-white shadow-xl shadow-navy-900/20"
-                  : "bg-white border-gray-100 hover:border-gold-300 hover:shadow-lg"
+                  : "bg-white border-slate-100 hover:border-gold-300 hover:shadow-lg"
               }`}
             >
               {/* Badge */}
@@ -107,10 +105,7 @@ const Programs = () => {
                 <h3 className={`text-xl font-bold ${i === 0 ? "text-white" : "text-navy-800"}`}>
                   {p.title}
                 </h3>
-                <p className={`text-sm font-medium mt-1 ${i === 0 ? "text-gold-400" : "text-gold-500"}`}>
-                  {p.duration}
-                </p>
-                <p className={`text-sm mt-3 leading-relaxed ${i === 0 ? "text-navy-200" : "text-gray-500"}`}>
+                <p className={`text-sm mt-3 leading-relaxed text-justify ${i === 0 ? "text-navy-200" : "text-slate-500"}`}>
                   {p.description}
                 </p>
               </div>

@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 
 "use client";
 
@@ -131,7 +131,7 @@ const CreatableMultiSelectField = ({
               <li
                 key={opt.value}
                 onClick={() => handleSelect(opt)}
-                className="mt-2 flex h-10 w-full cursor-pointer items-center gap-2 rounded-md border px-3 text-sm hover:bg-gray-50"
+                className="mt-2 flex h-10 w-full cursor-pointer items-center gap-2 rounded-md border px-3 text-sm hover:bg-slate-50"
               >
 
                 <input

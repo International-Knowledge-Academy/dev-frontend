@@ -15,6 +15,12 @@ import ProgramsPublicPage from "views/home/programs";
 import ProgramPage from "views/home/programs/ProgramPage";
 import CategoriesHubPage from "views/home/categories";
 import CategoryTypePage from "views/home/categories/CategoryTypePage";
+import CategoryDetailPage from "views/home/categories/CategoryDetailPage";
+import RegisterPage from "views/home/register/program";
+import RegisterSuccessPage from "views/home/register/program/SuccessPage";
+import RegisterTrainerPage from "views/home/register/trainer";
+import TrainerApplicationSuccessPage from "views/home/register/trainer/SuccessPage";
+import VerifyCertificatePage from "views/home/verify";
 
 import ProtectedRoute from "components/auth/ProtectedRoute";
 
@@ -35,7 +41,15 @@ const App = () => {
             <Route path="/programs/:uid" element={<ProgramPage />} />
             <Route path="/categories" element={<CategoriesHubPage />} />
             <Route path="/categories/:typeSlug" element={<CategoryTypePage />} />
+            <Route path="/category/:uid" element={<CategoryDetailPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/register/program" element={<RegisterPage />} />
+            <Route path="/register/success" element={<RegisterSuccessPage />} />
+            <Route path="/register/trainer" element={<RegisterTrainerPage />} />
+            <Route path="/register/trainer/success" element={<TrainerApplicationSuccessPage />} />
+            <Route path="/verify" element={<VerifyCertificatePage />} />
+            <Route path="/verify/:verification_code" element={<VerifyCertificatePage />} />
           </>
         )}
       </Route>
@@ -73,7 +87,7 @@ const App = () => {
         element={
           <div className="flex h-screen items-center justify-center flex-col gap-3">
             <h1 className="text-3xl font-bold text-navy-700">403</h1>
-            <p className="text-gray-500">You don't have access to this page.</p>
+            <p className="text-slate-500">You don't have access to this page.</p>
           </div>
         }
       />

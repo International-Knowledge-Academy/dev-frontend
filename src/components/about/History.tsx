@@ -30,7 +30,7 @@ const milestones = [
 
 const History = () => {
   return (
-    <section className="py-24 px-6 bg-white">
+    <section className="py-24 px-6 bg-slate-50">
       <div className="max-w-6xl mx-auto">
 
         {/* Header */}
@@ -47,7 +47,7 @@ const History = () => {
           <h2 className="text-4xl font-extrabold text-navy-800 mt-3">
             Background & History
           </h2>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
+          <p className="text-slate-500 mt-4 max-w-xl mx-auto">
             From a focused regional academy to a globally recognized training institution —
             rooted in a commitment to excellence.
           </p>
@@ -56,7 +56,7 @@ const History = () => {
         {/* Timeline */}
         <div className="relative">
           {/* Vertical line */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gray-200 hidden md:block" />
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-slate-200 hidden md:block" />
 
           <div className="space-y-12">
             {milestones.map((item, idx) => {
@@ -76,12 +76,12 @@ const History = () => {
                     viewport={{ once: true, margin: "-40px" }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                   >
-                    <div className="bg-white border border-gray-100 hover:border-gold-300 hover:shadow-md transition-all duration-200 rounded-2xl p-6">
+                    <div className="bg-white border border-slate-100 hover:border-gold-300 hover:shadow-md transition-all duration-200 rounded-2xl p-6">
                       <p className="text-gold-500 font-bold text-sm uppercase tracking-widest mb-1">
                         {item.year}
                       </p>
                       <h3 className="text-lg font-bold text-navy-800 mb-2">{item.title}</h3>
-                      <p className="text-gray-500 text-sm leading-relaxed">{item.description}</p>
+                      <p className="text-slate-500 text-sm leading-relaxed">{item.description}</p>
                     </div>
                   </motion.div>
 

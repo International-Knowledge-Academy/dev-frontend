@@ -62,10 +62,12 @@ const useUsers = (initialParams: UsersParams = {}): UseUsersReturn => {
     setParamsState((prev) => ({
       ...prev,
       ...updates,
-      // Reset to page 1 when search or ordering changes
-      page: updates.search !== undefined || updates.ordering !== undefined || updates.role !== undefined
-        ? 1
-        : (updates.page ?? prev.page),
+      page:
+        "search"   in updates ||
+        "ordering" in updates ||
+        "role"     in updates
+          ? 1
+          : (updates.page ?? prev.page),
     }));
   };
 

@@ -1,5 +1,5 @@
 import axiosInstance from "./axiosInstance";
-import type { LoginResponse, AuthUser } from "types/auth";
+import type { LoginResponse, User } from "types/auth";
 
 const authApi = {
   login: (email: string, password: string) =>
@@ -9,7 +9,7 @@ const authApi = {
     axiosInstance.post<{ access: string }>("/auth/token/refresh/", { refresh }),
 
   getMe: () =>
-    axiosInstance.get<AuthUser>("/auth/me"),
+    axiosInstance.get<User>("/auth/me"),
 };
 
 export default authApi;

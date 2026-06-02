@@ -67,9 +67,9 @@ const CategoryTypePage = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Navbar />
-        <div className="flex-1 flex items-center justify-center flex-col gap-3 pt-24">
+        <div className="flex-1 flex items-center justify-center flex-col gap-3 pt-[80px] sm:pt-[100px] lg:pt-[120px]">
           <h1 className="text-3xl font-bold text-navy-700">404</h1>
-          <p className="text-gray-500">Category type not found.</p>
+          <p className="text-slate-500">Category type not found.</p>
           <Link
             to="/categories"
             className="text-gold-600 font-semibold hover:underline text-sm mt-2"
@@ -105,7 +105,7 @@ const CategoryTypePage = () => {
           <h2 className="text-2xl font-extrabold text-navy-800 mb-2">
             Sub-Categories
           </h2>
-          <p className="text-gray-500 text-sm">
+          <p className="text-slate-500 text-sm">
             Browse specialized categories within{" "}
             <span className="font-semibold text-navy-700">{config.title}</span>.
             Click any category to view its available courses.
@@ -118,13 +118,13 @@ const CategoryTypePage = () => {
             {Array.from({ length: 6 }).map((_, i) => (
               <div
                 key={i}
-                className="bg-white rounded-2xl border border-gray-100 p-6 animate-pulse"
+                className="bg-white rounded-2xl border border-slate-100 p-6 animate-pulse"
               >
-                <div className="w-11 h-11 bg-gray-100 rounded-xl mb-4" />
-                <div className="h-4 bg-gray-100 rounded w-1/3 mb-3" />
-                <div className="h-5 bg-gray-100 rounded w-3/4 mb-2" />
-                <div className="h-4 bg-gray-100 rounded w-full mb-1" />
-                <div className="h-4 bg-gray-100 rounded w-5/6" />
+                <div className="w-11 h-11 bg-slate-100 rounded-xl mb-4" />
+                <div className="h-4 bg-slate-100 rounded w-1/3 mb-3" />
+                <div className="h-5 bg-slate-100 rounded w-3/4 mb-2" />
+                <div className="h-4 bg-slate-100 rounded w-full mb-1" />
+                <div className="h-4 bg-slate-100 rounded w-5/6" />
               </div>
             ))}
           </div>
@@ -146,7 +146,7 @@ const CategoryTypePage = () => {
               📂
             </div>
             <h3 className="text-navy-800 font-bold text-lg mb-2">No categories yet</h3>
-            <p className="text-gray-400 text-sm max-w-xs mx-auto">
+            <p className="text-slate-400 text-sm max-w-xs mx-auto">
               Categories for this field will appear here once added.
             </p>
           </motion.div>

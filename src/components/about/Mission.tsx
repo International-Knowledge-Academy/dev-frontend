@@ -94,7 +94,7 @@ const Mission = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="bg-white border border-gray-100 rounded-3xl p-10"
+          className="bg-white border border-slate-100 rounded-3xl p-10"
         >
           <div className="flex items-center gap-3 mb-8">
             <div className="w-10 h-10 rounded-xl bg-navy-50 text-navy-600 flex items-center justify-center">
@@ -114,7 +114,7 @@ const Mission = () => {
                 <span className="w-6 h-6 rounded-full bg-gold-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
                   {idx + 1}
                 </span>
-                <p className="text-gray-600 text-sm leading-relaxed">{goal}</p>
+                <p className="text-slate-600 text-sm leading-relaxed">{goal}</p>
               </motion.div>
             ))}
           </motion.div>

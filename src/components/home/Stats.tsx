@@ -1,11 +1,12 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
+import useDashboard from "hooks/dashboard/useDashboard";
 
-const stats = [
-  { value: "20+", label: "Training Fields", sub: "Across all major sectors" },
-  { value: "10",  label: "Countries",       sub: "UAE, UK, Europe, Asia & more" },
-  { value: "3",   label: "Program Types",   sub: "Courses, Diplomas & Contracted" },
-  { value: "100%", label: "Accredited",     sub: "Internationally recognized certificates" },
+const FALLBACK = [
+  { value: "20+",  label: "Training Fields", sub: "Across all major professional sectors" },
+  { value: "10+",  label: "Locations",       sub: "Malaysia, Europe, UK, Türkiye & beyond" },
+  { value: "50+",  label: "Programs",        sub: "Courses, diplomas & contracted programs" },
+  { value: "100%", label: "Accredited",      sub: "Professional certificates upon completion" },
 ];
 
 const container = {
@@ -14,11 +15,34 @@ const container = {
 };
 
 const item = {
-  hidden: { opacity: 0, y: 30, scale: 0.95 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: "easeOut" } },
+  hidden:   { opacity: 0, y: 30, scale: 0.95 },
+  visible:  { opacity: 1, y: 0,  scale: 1,   transition: { duration: 0.55, ease: "easeOut" } },
 };
 
 const Stats = () => {
+  const { data } = useDashboard();
+
+  const stats = data
+    ? [
+        {
+          value: data.summary?.total_fields    ? `${data.summary.total_fields}+`    : FALLBACK[0].value,
+          label: "Training Fields",
+          sub:   FALLBACK[0].sub,
+        },
+        {
+          value: data.summary?.total_locations ? `${data.summary.total_locations}+` : FALLBACK[1].value,
+          label: "Locations",
+          sub:   FALLBACK[1].sub,
+        },
+        {
+          value: data.summary?.total_programs  ? `${data.summary.total_programs}+`  : FALLBACK[2].value,
+          label: "Programs",
+          sub:   FALLBACK[2].sub,
+        },
+        FALLBACK[3],
+      ]
+    : FALLBACK;
+
   return (
     <section className="py-16 px-6 bg-gold-500">
       <motion.div
