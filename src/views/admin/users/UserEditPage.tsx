@@ -249,9 +249,27 @@ const UserEditPage = () => {
   if (loadingUser) return <Loading text="Loading user..." />;
 
   if (loadError) {
+    const isNotFound = loadError.toLowerCase().includes("no user") || loadError.includes("404") || loadError.includes("not found");
     return (
-      <div className="flex items-center justify-center py-20 text-sm text-red-500">
-        {loadError}
+      <div className="max-w-md mx-auto mt-20 text-center px-6">
+        <div className="w-14 h-14 rounded-full bg-red-50 border border-red-100 flex items-center justify-center mx-auto mb-4">
+          <span className="text-red-400 text-2xl">✕</span>
+        </div>
+        <h2 className="text-lg font-bold text-navy-800 mb-2">
+          {isNotFound ? "User Not Found" : "Failed to Load User"}
+        </h2>
+        <p className="text-sm text-slate-500 mb-6">
+          {isNotFound
+            ? "This user does not exist or may have been deleted."
+            : loadError}
+        </p>
+        <button
+          type="button"
+          onClick={() => navigate("/admin/users")}
+          className="inline-flex items-center gap-2 bg-navy-700 hover:bg-navy-800 text-white text-sm font-semibold px-5 py-2.5 rounded-md transition"
+        >
+          ← Back to Users
+        </button>
       </div>
     );
   }

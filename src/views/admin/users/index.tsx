@@ -301,9 +301,17 @@ const UsersPage = () => {
                           {/* Name */}
                           <td className="px-5 py-3.5">
                             <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-navy-50 border border-navy-100 flex items-center justify-center text-navy-600 font-bold text-xs flex-shrink-0 group-hover:bg-navy-100 transition-colors">
-                                {user.name?.[0]?.toUpperCase() ?? "?"}
-                              </div>
+                              {user.profile?.profile_picture?.public_url ? (
+                                <img
+                                  src={user.profile.profile_picture.public_url}
+                                  alt={user.name}
+                                  className="w-8 h-8 rounded-full object-cover flex-shrink-0 ring-1 ring-slate-200"
+                                />
+                              ) : (
+                                <div className="w-8 h-8 rounded-full bg-navy-50 border border-navy-100 flex items-center justify-center text-navy-600 font-bold text-xs flex-shrink-0 group-hover:bg-navy-100 transition-colors">
+                                  {user.name?.[0]?.toUpperCase() ?? "?"}
+                                </div>
+                              )}
                               <span className="font-semibold text-navy-800 truncate" title={user.name}>
                                 {user.name}
                               </span>
