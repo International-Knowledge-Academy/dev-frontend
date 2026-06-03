@@ -2,6 +2,7 @@
 import Navbar           from "components/home/Navbar";
 import Hero             from "components/home/Hero";
 import About            from "components/home/About";
+import FounderSpeech    from "components/home/FounderSpeech";
 import Stats            from "components/home/Stats";
 import Programs         from "components/home/Programs";
 import UpcomingPrograms from "components/home/UpcomingPrograms";
@@ -19,6 +20,7 @@ const HomePage = () => {
       <Navbar />
       <Hero />
       <About />
+      <FounderSpeech />
       <Stats />
       <Programs />
       <TrainingFields />
