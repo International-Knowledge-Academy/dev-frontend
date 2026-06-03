@@ -43,9 +43,17 @@ const ManagerTopbar = ({ onOpenSidebar, pageTitle }: TopbarProps) => {
           button={
             <button className="flex items-center gap-3 px-3 py-2 rounded-md lg:rounded-lg hover:bg-navy-50 transition-all group">
               <div className="relative">
-                <div className="w-9 h-9 rounded-full bg-navy-500 flex items-center justify-center text-white font-bold text-sm">
-                  {user?.name?.[0]?.toUpperCase() ?? "?"}
-                </div>
+                {user?.profile?.profile_picture?.public_url ? (
+                  <img
+                    src={user.profile.profile_picture.public_url}
+                    alt={user.name}
+                    className="w-9 h-9 rounded-full object-cover ring-2 ring-slate-200"
+                  />
+                ) : (
+                  <div className="w-9 h-9 rounded-full bg-navy-500 flex items-center justify-center text-white font-bold text-sm">
+                    {user?.name?.[0]?.toUpperCase() ?? "?"}
+                  </div>
+                )}
                 <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-400 border-2 border-white" />
               </div>
               <div className="hidden md:block text-left">
@@ -65,9 +73,17 @@ const ManagerTopbar = ({ onOpenSidebar, pageTitle }: TopbarProps) => {
           children={
             <div className="w-56 rounded-2xl bg-white shadow-xl border border-slate-100 overflow-hidden">
               <div className="flex items-center gap-3 px-4 py-3 bg-navy-50">
-                <div className="w-9 h-9 rounded-xl bg-navy-800 border-2 border-gold-400 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                  {user?.name?.[0]?.toUpperCase() ?? "?"}
-                </div>
+                {user?.profile?.profile_picture?.public_url ? (
+                  <img
+                    src={user.profile.profile_picture.public_url}
+                    alt={user.name}
+                    className="w-9 h-9 rounded-full object-cover ring-2 ring-gold-400 flex-shrink-0"
+                  />
+                ) : (
+                  <div className="w-9 h-9 rounded-xl bg-navy-800 border-2 border-gold-400 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                    {user?.name?.[0]?.toUpperCase() ?? "?"}
+                  </div>
+                )}
                 <div className="min-w-0">
                   <p className="text-sm font-bold text-navy-800 truncate">
                     {user?.name ?? "..."}

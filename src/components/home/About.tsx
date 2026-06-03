@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
+import usePublicStats from "hooks/public/usePublicStats";
 
 const fadeLeft = {
   hidden: { opacity: 0, x: -40 },
@@ -18,6 +19,15 @@ const fadeUp = {
 };
 
 const About = () => {
+  const { fields, locations, programs, loading } = usePublicStats();
+
+  const stats = [
+    { value: loading ? "—" : fields    ? `${fields}+`    : "20+", label: "Training Fields"  },
+    { value: loading ? "—" : locations ? `${locations}+` : "10+", label: "Locations"         },
+    { value: loading ? "—" : programs  ? `${programs}+`  : "50+", label: "Programs"          },
+    { value: "3",                                                   label: "Program Types"    },
+  ];
+
   return (
     <section className="py-24 px-6 bg-slate-50 overflow-hidden">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -77,12 +87,7 @@ const About = () => {
               className="h-16 w-auto mx-auto"
             />
             <div className="border-t border-slate-100 pt-6 grid grid-cols-2 gap-6 text-center">
-              {[
-                { value: "20+", label: "Training Fields" },
-                { value: "10",  label: "Countries" },
-                { value: "3",   label: "Program Types" },
-                { value: "8",   label: "Strategic Goals" },
-              ].map((s, i) => (
+              {stats.map((s, i) => (
                 <motion.div
                   key={s.label}
                   custom={i}

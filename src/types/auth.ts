@@ -16,7 +16,7 @@ export interface UserProfile {
   postal_code: string;
   phone: string;
   whatsapp: string;
-  profile_picture: string | null;
+  profile_picture: { file_key: string; public_url: string } | null;
   specializations: number[];
 }
 
