@@ -30,7 +30,7 @@ function DropdownItem({ item, onClick = undefined }) {
         {item.icon || <MdMenuBook size={15} />}
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold text-navy-800 group-hover:text-navy-700 leading-tight">
+        <p className="text-sm font-semibold text-navy-800 group-hover:text-navy-700 leading-tight truncate">
           {item.label}
         </p>
         {item.description && (
@@ -335,7 +335,7 @@ const Navbar = () => {
                               {child.icon || <MdMenuBook size={14} />}
                             </div>
                             <div className="min-w-0">
-                              <p className="text-sm font-semibold text-navy-700 leading-tight">
+                              <p className="text-sm font-semibold text-navy-700 leading-tight truncate">
                                 {child.label}
                               </p>
                               {child.description && (

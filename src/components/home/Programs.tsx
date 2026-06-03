@@ -102,7 +102,7 @@ const Programs = () => {
 
               {/* Content */}
               <div>
-                <h3 className={`text-xl font-bold ${i === 0 ? "text-white" : "text-navy-800"}`}>
+                <h3 className={`text-xl font-bold line-clamp-2 ${i === 0 ? "text-white" : "text-navy-800"}`}>
                   {p.title}
                 </h3>
                 <p className={`text-sm mt-3 leading-relaxed text-justify ${i === 0 ? "text-navy-200" : "text-slate-500"}`}>
