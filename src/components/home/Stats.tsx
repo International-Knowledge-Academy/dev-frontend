@@ -1,13 +1,6 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
-import useDashboard from "hooks/dashboard/useDashboard";
-
-const FALLBACK = [
-  { value: "20+",  label: "Training Fields", sub: "Across all major professional sectors" },
-  { value: "10+",  label: "Locations",       sub: "Malaysia, Europe, UK, Türkiye & beyond" },
-  { value: "50+",  label: "Programs",        sub: "Courses, diplomas & contracted programs" },
-  { value: "100%", label: "Accredited",      sub: "Professional certificates upon completion" },
-];
+import usePublicStats from "hooks/public/usePublicStats";
 
 const container = {
   hidden: {},
@@ -20,28 +13,30 @@ const item = {
 };
 
 const Stats = () => {
-  const { data } = useDashboard();
+  const { fields, locations, programs, loading } = usePublicStats();
 
-  const stats = data
-    ? [
-        {
-          value: data.summary?.total_fields    ? `${data.summary.total_fields}+`    : FALLBACK[0].value,
-          label: "Training Fields",
-          sub:   FALLBACK[0].sub,
-        },
-        {
-          value: data.summary?.total_locations ? `${data.summary.total_locations}+` : FALLBACK[1].value,
-          label: "Locations",
-          sub:   FALLBACK[1].sub,
-        },
-        {
-          value: data.summary?.total_programs  ? `${data.summary.total_programs}+`  : FALLBACK[2].value,
-          label: "Programs",
-          sub:   FALLBACK[2].sub,
-        },
-        FALLBACK[3],
-      ]
-    : FALLBACK;
+  const stats = [
+    {
+      value: loading ? "—" : fields    ? `${fields}+`    : "20+",
+      label: "Training Fields",
+      sub:   "Across all major professional sectors",
+    },
+    {
+      value: loading ? "—" : locations ? `${locations}+` : "10+",
+      label: "Locations",
+      sub:   "Malaysia, Europe, UK, Türkiye & beyond",
+    },
+    {
+      value: loading ? "—" : programs  ? `${programs}+`  : "50+",
+      label: "Programs",
+      sub:   "Courses, diplomas & contracted programs",
+    },
+    {
+      value: "100%",
+      label: "Accredited",
+      sub:   "Professional certificates upon completion",
+    },
+  ];
 
   return (
     <section className="py-16 px-6 bg-gold-500">
