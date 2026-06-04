@@ -10,7 +10,6 @@ import {
 import { usePDF } from "@react-pdf/renderer";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
-import Loading from "components/loading/Loading";
 import useGetProgram from "hooks/programs/useGetProgram";
 import usePrograms from "hooks/programs/usePrograms";
 import useAllLocations from "hooks/locations/useAllLocations";

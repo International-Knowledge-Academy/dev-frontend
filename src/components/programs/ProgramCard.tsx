@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
   BookOpen, Award, Briefcase, Clock, MapPin,
-  Calendar, Globe, Wifi, WifiOff, MonitorPlay, ArrowRight,
+  Calendar, Globe, ArrowRight,
 } from "lucide-react";
 import type { Program } from "types/program";
 
