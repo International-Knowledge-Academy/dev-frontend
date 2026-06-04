@@ -8,29 +8,47 @@ export interface PublicStats {
   loading:   boolean;
 }
 
+/* ── Module-level cache ────────────────────────────────────────────────────
+   Both About and Stats mount on the same page and call this hook.
+   Without a cache each mount fires 3 requests = 6 identical API calls.
+   The cache stores the resolved result so the second caller gets it instantly
+   and no duplicate requests are made across the session.
+─────────────────────────────────────────────────────────────────────────── */
+let cached: { fields: number; locations: number; programs: number } | null = null;
+let inflight: Promise<{ fields: number; locations: number; programs: number }> | null = null;
+
+const fetchStats = () => {
+  if (inflight) return inflight;
+  const params = { page_size: 1 };
+  inflight = Promise.all([
+    axiosInstance.get("/fields",    { params }),
+    axiosInstance.get("/locations", { params }),
+    axiosInstance.get("/programs",  { params }),
+  ]).then(([f, l, p]) => {
+    cached = {
+      fields:    f.data?.count ?? 0,
+      locations: l.data?.count ?? 0,
+      programs:  p.data?.count ?? 0,
+    };
+    return cached;
+  });
+  return inflight;
+};
+
 const usePublicStats = (): PublicStats => {
-  const [fields,    setFields]    = useState(0);
-  const [locations, setLocations] = useState(0);
-  const [programs,  setPrograms]  = useState(0);
-  const [loading,   setLoading]   = useState(true);
+  const [state, setState] = useState<{ fields: number; locations: number; programs: number }>(
+    cached ?? { fields: 0, locations: 0, programs: 0 }
+  );
+  const [loading, setLoading] = useState(!cached);
 
   useEffect(() => {
-    const params = { page_size: 1 };
-    Promise.all([
-      axiosInstance.get("/fields",    { params }),
-      axiosInstance.get("/locations", { params }),
-      axiosInstance.get("/programs",  { params }),
-    ])
-      .then(([f, l, p]) => {
-        setFields(f.data?.count    ?? 0);
-        setLocations(l.data?.count ?? 0);
-        setPrograms(p.data?.count  ?? 0);
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+    if (cached) { setLoading(false); return; }
+    fetchStats()
+      .then((data) => { setState(data); setLoading(false); })
+      .catch(() => setLoading(false));
   }, []);
 
-  return { fields, locations, programs, loading };
+  return { ...state, loading };
 };
 
 export default usePublicStats;

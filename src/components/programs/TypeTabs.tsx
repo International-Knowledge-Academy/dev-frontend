@@ -1,5 +1,4 @@
 // @ts-nocheck
-import { useRef } from "react";
 import { motion } from "framer-motion";
 import { MdSchool, MdWorkspacePremium, MdHandshake } from "react-icons/md";
 
@@ -18,18 +17,13 @@ interface Props {
 }
 
 const TypeTabs = ({ selected, counts, total, onSelect }: Props) => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
   const getCount = (value: string | null) =>
     value === null ? total : (counts[value] ?? 0);
 
   return (
     <div className="sticky top-0 z-20 bg-white border-b border-slate-100 shadow-sm">
       <div className="max-w-6xl mx-auto px-6">
-        <div
-          ref={scrollRef}
-          className="flex items-center gap-1 overflow-x-auto py-3 scrollbar-hide"
-        >
+        <div className="flex items-center gap-1 overflow-x-auto py-3 scrollbar-hide">
           {TYPES.map((t) => {
             const isActive = selected === t.value;
             const count = getCount(t.value);

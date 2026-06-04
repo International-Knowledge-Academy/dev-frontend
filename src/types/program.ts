@@ -26,14 +26,14 @@ export interface ProgramTrainer {
   user: { uid: string; name: string; email?: string; role?: string };
   bio?: string;
   title: string;
-  profile_picture: string;
+  profile_picture: { file_key: string; public_url: string } | null;
 }
 
 export interface ProgramTrainerFlat {
   uid: string;
   name: string;
   email: string;
-  profile_picture: string;
+  profile_picture: { file_key: string; public_url: string } | null;
   title: string;
   country: string;
   city: string;
