@@ -97,6 +97,7 @@ export interface ProgramsParams {
   start_date_to?: string;
   is_active?: boolean;
   trainer?: string;
+  category?: string;
 }
 
 export interface CreateProgramPayload {
