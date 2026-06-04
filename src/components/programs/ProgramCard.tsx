@@ -4,70 +4,65 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
   BookOpen, Award, Briefcase, Clock, MapPin,
-  ArrowRight, Users, Globe,
+  Calendar, Globe, Wifi, WifiOff, MonitorPlay,
+  ArrowRight,
 } from "lucide-react";
 import type { Program } from "types/program";
 
 /* ─── Config ─────────────────────────────────────────────────────────────── */
 
-const typeConfig: Record<string, { label: string; bg: string; text: string }> = {
-  course:     { label: "Course",     bg: "bg-navy-50/90",   text: "text-navy-600"  },
-  diploma:    { label: "Diploma",    bg: "bg-gold-50/90",   text: "text-gold-700"  },
-  contracted: { label: "Contracted", bg: "bg-slate-100/90", text: "text-slate-600" },
+const TYPE: Record<string, { label: string; Icon: React.ElementType }> = {
+  course:     { label: "Course",     Icon: BookOpen  },
+  diploma:    { label: "Diploma",    Icon: Award     },
+  contracted: { label: "Contracted", Icon: Briefcase },
 };
 
-const TypeIcon: Record<string, React.ElementType> = {
-  course:     BookOpen,
-  diploma:    Award,
-  contracted: Briefcase,
+const STATUS: Record<string, { dot: string; ring: string; label?: string }> = {
+  upcoming:  { dot: "bg-blue-400",  ring: "border-blue-200  text-blue-600  bg-blue-50"   },
+  ongoing:   { dot: "bg-green-400", ring: "border-green-200 text-green-600 bg-green-50"  },
+  completed: { dot: "bg-slate-300", ring: "border-slate-200 text-slate-500 bg-slate-50"  },
+  cancelled: { dot: "bg-red-400",   ring: "border-red-200   text-red-500   bg-red-50"    },
 };
 
-const statusConfig: Record<string, { dot: string; text: string; bg: string }> = {
-  upcoming:  { dot: "bg-blue-400",  text: "text-blue-600",  bg: "bg-blue-50/90"  },
-  ongoing:   { dot: "bg-green-400", text: "text-green-600", bg: "bg-green-50/90" },
-  completed: { dot: "bg-slate-300", text: "text-slate-500", bg: "bg-slate-100/90"},
-  cancelled: { dot: "bg-red-400",   text: "text-red-500",   bg: "bg-red-50/90"   },
+const MODE: Record<string, { label: string; Icon: React.ElementType; color: string }> = {
+  online:  { label: "Online",  Icon: Wifi,        color: "text-teal-500"  },
+  offline: { label: "On-site", Icon: WifiOff,     color: "text-slate-500" },
+  hybrid:  { label: "Hybrid",  Icon: MonitorPlay, color: "text-indigo-500"},
+};
+
+const formatDate = (d: string | null) => {
+  if (!d) return null;
+  return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 };
 
 /* ─── Card ───────────────────────────────────────────────────────────────── */
 
-interface Props {
-  program: Program;
-}
-
-const ProgramCard = ({ program }: Props) => {
-  const navigate           = useNavigate();
-  const [hovered, setHovered] = useState(false);
+const ProgramCard = ({ program }: { program: Program }) => {
+  const navigate = useNavigate();
   const [imgError, setImgError] = useState(false);
 
-  const type     = typeConfig[program.program_type] ?? typeConfig.course;
-  const Icon     = TypeIcon[program.program_type]   ?? BookOpen;
-  const status   = statusConfig[program.status]     ?? statusConfig.upcoming;
-  const fieldHex = program.field?.hex_color         ?? "#1B2A5E";
-
-  const showImage = !!program.thumbnail && !imgError;
+  const { label: typeLabel, Icon } = TYPE[program.program_type] ?? TYPE.course;
+  const statusCfg  = STATUS[program.status] ?? STATUS.upcoming;
+  const modeCfg    = MODE[program.mode];
+  const fieldHex   = program.field?.hex_color ?? "#1B2A5E";
+  const showImage  = !!program.thumbnail && !imgError;
+  const startDate  = formatDate(program.start_date);
+  const hasPrice   = !!program.price && program.price !== "0.00";
 
   return (
     <motion.article
-      whileHover={{ y: -5, transition: { duration: 0.2, ease: "easeOut" } }}
+      whileHover={{ y: -6, transition: { duration: 0.2, ease: "easeOut" } }}
       onClick={() => navigate(`/programs/${program.uid}`)}
       role="button"
       tabIndex={0}
       aria-label={`Program: ${program.name}`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        borderColor: hovered ? `${fieldHex}99` : `${fieldHex}33`,
-        boxShadow:   hovered ? `0 12px 32px ${fieldHex}28` : `0 2px 8px ${fieldHex}10`,
-      }}
-      className="group relative bg-white border rounded-2xl overflow-hidden flex flex-col cursor-pointer transition-all duration-300"
+      className="group relative bg-white rounded-2xl overflow-hidden flex flex-col cursor-pointer border border-slate-100 hover:border-gold-200 shadow-sm hover:shadow-xl hover:shadow-gold-100/40 transition-all duration-300"
     >
 
-      {/* ── Top visual panel ──────────────────────────────────────────── */}
-      <div className="relative h-48 flex-shrink-0 overflow-hidden">
+      {/* ── Visual header ─────────────────────────────────────────────── */}
+      <div className="relative h-44 flex-shrink-0 overflow-hidden">
 
         {showImage ? (
-          /* Real thumbnail */
           <>
             <img
               src={program.thumbnail}
@@ -75,118 +70,147 @@ const ProgramCard = ({ program }: Props) => {
               onError={() => setImgError(true)}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            {/* Gradient fade at bottom */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
           </>
         ) : (
-          /* Fallback: field-colored gradient with icon */
           <>
+            {/* Gradient bg */}
             <div
               className="absolute inset-0"
               style={{
-                background: `linear-gradient(135deg, ${fieldHex}ee 0%, ${fieldHex}88 60%, ${fieldHex}cc 100%)`,
+                background: `linear-gradient(145deg, ${fieldHex} 0%, ${fieldHex}aa 100%)`,
               }}
             />
-            {/* Subtle grid pattern */}
+            {/* Diagonal stripe texture */}
             <div
-              className="absolute inset-0 opacity-10"
+              className="absolute inset-0 opacity-[0.07]"
               style={{
                 backgroundImage:
-                  "repeating-linear-gradient(0deg,transparent,transparent 24px,rgba(255,255,255,.3) 24px,rgba(255,255,255,.3) 25px)," +
-                  "repeating-linear-gradient(90deg,transparent,transparent 24px,rgba(255,255,255,.3) 24px,rgba(255,255,255,.3) 25px)",
+                  "repeating-linear-gradient(45deg, rgba(255,255,255,.8) 0px, rgba(255,255,255,.8) 1px, transparent 1px, transparent 12px)",
               }}
             />
-            {/* Centered icon */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-              <div className="w-16 h-16 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center">
-                <Icon size={28} className="text-white" />
+            {/* Center icon */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5">
+              <div className="w-14 h-14 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center backdrop-blur-sm">
+                <Icon size={26} className="text-white" />
               </div>
-              {program.field && (
-                <span className="text-white/80 text-xs font-bold uppercase tracking-widest text-center px-4">
-                  {program.field.name}
-                </span>
-              )}
+              <span className="text-white/75 text-[11px] font-bold uppercase tracking-[0.15em] text-center px-6 line-clamp-1">
+                {program.field?.name ?? typeLabel}
+              </span>
             </div>
           </>
         )}
 
-        {/* Badges overlaid on image/fallback */}
+        {/* Top badges */}
         <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
-          <span className={`inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-md backdrop-blur-sm ${type.bg} ${type.text}`}>
-            <Icon size={11} />
-            {type.label}
+          {/* Type */}
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-md bg-white/90 backdrop-blur-sm text-navy-700">
+            <Icon size={10} />
+            {typeLabel}
           </span>
+          {/* Status */}
           {program.status && (
-            <span className={`inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-md backdrop-blur-sm ${status.bg} ${status.text}`}>
-              <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} />
+            <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-md backdrop-blur-sm border ${statusCfg.ring}`}>
+              <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${statusCfg.dot}`} />
               {program.status_display ?? program.status}
             </span>
           )}
         </div>
 
-        {/* Field pill at bottom (only when thumbnail shown, fallback already shows it) */}
-        {showImage && program.field && (
-          <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
-            <span
-              className="w-2 h-2 rounded-full flex-shrink-0"
-              style={{ backgroundColor: fieldHex }}
-            />
-            <span className="text-white text-xs font-semibold drop-shadow">
+        {/* Bottom: field name on image  /  mode badge */}
+        <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between gap-2">
+          {showImage && program.field && (
+            <span className="text-white text-[11px] font-semibold drop-shadow line-clamp-1">
               {program.field.name}
             </span>
-          </div>
-        )}
+          )}
+          {modeCfg && (
+            <span className="ml-auto inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-md bg-white/90 backdrop-blur-sm text-slate-600">
+              <modeCfg.Icon size={10} className={modeCfg.color} />
+              {modeCfg.label}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* ── Content ───────────────────────────────────────────────────── */}
       <div className="p-5 flex flex-col flex-1">
 
         {/* Title */}
-        <h3 className="text-navy-800 font-bold text-base leading-snug mb-2 line-clamp-2 group-hover:text-navy-600 transition-colors duration-200">
+        <h3 className="text-navy-800 font-bold text-[15px] leading-snug mb-2 line-clamp-2 group-hover:text-navy-600 transition-colors duration-200">
           {program.name}
         </h3>
 
         {/* Description */}
-        {program.description && (
-          <p className="text-slate-400 text-sm leading-relaxed line-clamp-2 flex-1 mb-4">
-            {program.description}
-          </p>
-        )}
+        <p className="text-slate-400 text-xs leading-relaxed line-clamp-2 flex-1 mb-4">
+          {program.description || "A professional training program designed to advance your career."}
+        </p>
 
-        {/* Meta row */}
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-4 border-t border-slate-100 group-hover:border-gold-100 transition-colors duration-300">
-          {program.duration && (
-            <span className="flex items-center gap-1 text-xs text-slate-400">
-              <Clock size={11} className="text-gold-400 flex-shrink-0" />
-              {program.duration}
-            </span>
-          )}
-          {program.language && (
-            <span className="flex items-center gap-1 text-xs text-slate-400">
-              <Globe size={11} className="text-gold-400 flex-shrink-0" />
-              {program.language}
+        {/* Meta grid */}
+        <div className="grid grid-cols-2 gap-x-3 gap-y-2 mb-5">
+          {startDate && (
+            <span className="flex items-center gap-1.5 text-xs text-slate-500 min-w-0">
+              <Calendar size={11} className="text-gold-400 flex-shrink-0" />
+              <span className="truncate">{startDate}</span>
             </span>
           )}
           {program.location && (
-            <span className="flex items-center gap-1 text-xs text-slate-400">
+            <span className="flex items-center gap-1.5 text-xs text-slate-500 min-w-0">
               <MapPin size={11} className="text-gold-400 flex-shrink-0" />
-              <span className="truncate max-w-[100px]">{program.location.city}</span>
+              <span className="truncate">{program.location.city}</span>
             </span>
           )}
-          {program.max_participants && (
-            <span className="flex items-center gap-1 text-xs text-slate-400">
-              <Users size={11} className="text-gold-400 flex-shrink-0" />
-              {program.max_participants}
+          {program.duration && (
+            <span className="flex items-center gap-1.5 text-xs text-slate-500 min-w-0">
+              <Clock size={11} className="text-gold-400 flex-shrink-0" />
+              <span className="truncate">{program.duration}</span>
             </span>
           )}
+          {program.language && (
+            <span className="flex items-center gap-1.5 text-xs text-slate-500 min-w-0">
+              <Globe size={11} className="text-gold-400 flex-shrink-0" />
+              <span className="truncate">{program.language}</span>
+            </span>
+          )}
+        </div>
 
-          <span className="ml-auto flex items-center gap-1 text-xs font-bold text-slate-300 group-hover:text-gold-500 transition-colors duration-300">
-            Explore
-            <ArrowRight size={11} className="group-hover:translate-x-0.5 transition-transform duration-300" />
-          </span>
+        {/* Footer: price + CTA */}
+        <div className="flex items-center justify-between gap-3 pt-4 border-t border-slate-100 group-hover:border-gold-100 transition-colors duration-300">
+          {/* Price */}
+          <div className="min-w-0">
+            {hasPrice ? (
+              <div>
+                <span className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold leading-none block mb-0.5">
+                  From
+                </span>
+                <span className="text-navy-800 font-extrabold text-sm leading-none">
+                  {program.currency ?? ""} {program.price}
+                </span>
+              </div>
+            ) : (
+              <span className="text-[11px] font-semibold text-slate-400">
+                Contact for pricing
+              </span>
+            )}
+          </div>
+
+          {/* CTA button */}
+          <button
+            type="button"
+            className="inline-flex items-center gap-1.5 bg-navy-700 group-hover:bg-gold-500 text-white group-hover:text-navy-900 text-xs font-bold px-4 py-2 rounded-md transition-all duration-200 flex-shrink-0"
+          >
+            Register
+            <ArrowRight size={11} className="group-hover:translate-x-0.5 transition-transform duration-200" />
+          </button>
         </div>
 
       </div>
+
+      {/* Left field-color accent bar */}
+      <div
+        className="absolute left-0 top-0 bottom-0 w-[3px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{ backgroundColor: fieldHex }}
+      />
     </motion.article>
   );
 };
