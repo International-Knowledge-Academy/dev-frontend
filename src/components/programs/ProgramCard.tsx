@@ -46,7 +46,7 @@ const ProgramCard = ({ program }: { program: Program }) => {
   const statusCfg = STATUS[program.status] ?? STATUS.upcoming;
   const modeCfg   = MODE[program.mode];
   const fieldHex  = program.field?.hex_color ?? "#1B2A5E";
-  const showImg   = !!program.thumbnail && !imgErr;
+  const showImg   = !!program.thumbnail?.public_url && !imgErr;
   const startDate = formatDate(program.start_date);
   const hasPrice  = !!program.price && program.price !== "0.00";
 
@@ -66,7 +66,7 @@ const ProgramCard = ({ program }: { program: Program }) => {
         {showImg ? (
           <>
             <img
-              src={program.thumbnail}
+              src={program.thumbnail.public_url}
               alt={program.name}
               onError={() => setImgErr(true)}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"

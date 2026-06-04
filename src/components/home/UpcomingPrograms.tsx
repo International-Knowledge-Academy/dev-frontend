@@ -70,7 +70,7 @@ const ProgramCard = ({ program }: { program: Program }) => {
   const statusClass = STATUS_STYLES[program.status] ?? STATUS_STYLES.upcoming;
   const fieldHex    = program.field?.hex_color ?? "#1B2A5E";
   const Icon        = TYPE_ICON[program.program_type] ?? BookOpen;
-  const showImage   = !!program.thumbnail && !imgError;
+  const showImage   = !!program.thumbnail?.public_url && !imgError;
 
   return (
     <motion.article
@@ -84,7 +84,7 @@ const ProgramCard = ({ program }: { program: Program }) => {
         {showImage ? (
           <>
             <img
-              src={program.thumbnail}
+              src={program.thumbnail.public_url}
               alt={program.name}
               onError={() => setImgError(true)}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
