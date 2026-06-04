@@ -1,7 +1,8 @@
 // @ts-nocheck
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Calendar, MapPin, Clock, ArrowRight, Layers, ChevronRight } from "lucide-react";
+import { Calendar, MapPin, Clock, ArrowRight, Layers, ChevronRight, BookOpen, Award, Briefcase } from "lucide-react";
 import usePrograms from "hooks/programs/usePrograms";
 import type { Program } from "types/program";
 
@@ -59,79 +60,129 @@ const SkeletonCard = () => (
 
 /* ─── Program card ─────────────────────────────────────────────────────────── */
 
+const TYPE_ICON: Record<string, React.ElementType> = {
+  course: BookOpen, diploma: Award, contracted: Briefcase,
+};
+
 const ProgramCard = ({ program }: { program: Program }) => {
   const navigate = useNavigate();
+  const [imgError, setImgError] = useState(false);
   const statusClass = STATUS_STYLES[program.status] ?? STATUS_STYLES.upcoming;
+  const fieldHex    = program.field?.hex_color ?? "#1B2A5E";
+  const Icon        = TYPE_ICON[program.program_type] ?? BookOpen;
+  const showImage   = !!program.thumbnail && !imgError;
 
   return (
     <motion.article
       variants={cardVariant}
       whileHover={{ y: -5, transition: { duration: 0.2, ease: "easeOut" } }}
       onClick={() => navigate(`/programs/${program.uid}`)}
-      className="group relative bg-white border border-slate-100 hover:border-gold-300 rounded-2xl p-6 flex flex-col cursor-pointer hover:shadow-[0_8px_32px_rgba(201,168,76,0.14)] transition-all duration-300 overflow-hidden"
+      className="group relative bg-white border border-slate-100 hover:border-gold-300 rounded-2xl flex flex-col cursor-pointer hover:shadow-[0_8px_32px_rgba(201,168,76,0.14)] transition-all duration-300 overflow-hidden"
     >
-      {/* Animated top-border sweep */}
-      <span className="absolute top-0 left-0 h-[2px] rounded-r-full bg-gradient-to-r from-gold-400 via-gold-500 to-gold-300 w-0 group-hover:w-full transition-[width] duration-500 ease-out pointer-events-none" />
-      {/* Hover background glow */}
-      <span className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 bg-gradient-to-br from-gold-50/60 via-transparent to-transparent transition-opacity duration-500 pointer-events-none" />
-
-      {/* Badges row */}
-      <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-        {program.field ? (
-          <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-navy-100 bg-navy-50 text-navy-600">
-            {program.field.name}
-          </span>
+      {/* ── Top visual panel ──────────────────────────────────────────── */}
+      <div className="relative h-44 flex-shrink-0 overflow-hidden">
+        {showImage ? (
+          <>
+            <img
+              src={program.thumbnail}
+              alt={program.name}
+              onError={() => setImgError(true)}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+          </>
         ) : (
-          <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-slate-200 bg-slate-50 text-slate-500">
-            {program.program_type_display ?? program.program_type}
-          </span>
+          <>
+            <div
+              className="absolute inset-0"
+              style={{
+                background: `linear-gradient(135deg, ${fieldHex}ee 0%, ${fieldHex}88 60%, ${fieldHex}cc 100%)`,
+              }}
+            />
+            <div
+              className="absolute inset-0 opacity-10"
+              style={{
+                backgroundImage:
+                  "repeating-linear-gradient(0deg,transparent,transparent 24px,rgba(255,255,255,.3) 24px,rgba(255,255,255,.3) 25px)," +
+                  "repeating-linear-gradient(90deg,transparent,transparent 24px,rgba(255,255,255,.3) 24px,rgba(255,255,255,.3) 25px)",
+              }}
+            />
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+              <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center">
+                <Icon size={26} className="text-white" />
+              </div>
+              {program.field && (
+                <span className="text-white/80 text-xs font-bold uppercase tracking-widest text-center px-4">
+                  {program.field.name}
+                </span>
+              )}
+            </div>
+          </>
         )}
-        <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full border ${statusClass}`}>
-          {program.status_display ?? program.status}
-        </span>
-      </div>
 
-      {/* Title */}
-      <h3 className="text-navy-800 font-bold text-lg leading-snug mb-2 line-clamp-2 flex-shrink-0">
-        {program.name}
-      </h3>
-
-      {/* Description */}
-      <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4 flex-1 text-justify">
-        {program.description || "A professional training program designed to advance your skills and expertise."}
-      </p>
-
-      {/* Meta info */}
-      <div className="flex flex-col gap-1.5 mb-5">
-        {program.location && (
-          <div className="flex items-center gap-2 text-xs text-slate-500">
-            <MapPin size={12} className="text-slate-400 flex-shrink-0" />
-            <span className="truncate">{program.location.city}, {program.location.country}</span>
-          </div>
-        )}
-        {(program.start_date || program.end_date) && (
-          <div className="flex items-center gap-2 text-xs text-slate-500">
-            <Calendar size={12} className="text-slate-400 flex-shrink-0" />
-            <span>
-              {formatDate(program.start_date)}
-              {program.end_date ? ` – ${formatDate(program.end_date)}` : ""}
+        {/* Badges */}
+        <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
+          {program.field ? (
+            <span className="text-[11px] font-bold px-2.5 py-1 rounded-md backdrop-blur-sm bg-white/90 text-navy-700 truncate max-w-[140px]">
+              {program.field.name}
             </span>
-          </div>
-        )}
-        {program.duration && (
-          <div className="flex items-center gap-2 text-xs text-slate-500">
-            <Clock size={12} className="text-slate-400 flex-shrink-0" />
-            <span>{program.duration}</span>
-          </div>
-        )}
+          ) : (
+            <span className="text-[11px] font-bold px-2.5 py-1 rounded-md backdrop-blur-sm bg-white/90 text-slate-600">
+              {program.program_type_display ?? program.program_type}
+            </span>
+          )}
+          <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-md backdrop-blur-sm border ${statusClass} flex-shrink-0`}>
+            {program.status_display ?? program.status}
+          </span>
+        </div>
+
+        {/* Animated gold sweep on hover */}
+        <span className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-gold-400 to-gold-300 w-0 group-hover:w-full transition-[width] duration-500 ease-out" />
       </div>
 
-      {/* Footer CTA */}
-      <div className="flex items-center gap-2 pt-4 border-t border-slate-100 group-hover:border-gold-100 transition-colors duration-300">
-        <span className="text-slate-400 group-hover:text-gold-500 text-xs font-bold uppercase tracking-widest transition-colors duration-300">
-          View & Register
-        </span>
-        <ArrowRight size={13} className="text-slate-400 group-hover:text-gold-500 group-hover:translate-x-1 transition-all duration-300" />
+      {/* ── Content ───────────────────────────────────────────────────── */}
+      <div className="p-5 flex flex-col flex-1">
+        {/* Hover glow */}
+        <span className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-gold-50/40 via-transparent to-transparent transition-opacity duration-500 pointer-events-none" />
+
+        <h3 className="text-navy-800 font-bold text-base leading-snug mb-2 line-clamp-2 flex-shrink-0 group-hover:text-navy-600 transition-colors duration-200">
+          {program.name}
+        </h3>
+
+        <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4 flex-1">
+          {program.description || "A professional training program designed to advance your skills and expertise."}
+        </p>
+
+        <div className="flex flex-col gap-1.5 mb-4">
+          {program.location && (
+            <div className="flex items-center gap-2 text-xs text-slate-500">
+              <MapPin size={11} className="text-gold-400 flex-shrink-0" />
+              <span className="truncate">{program.location.city}, {program.location.country}</span>
+            </div>
+          )}
+          {(program.start_date || program.end_date) && (
+            <div className="flex items-center gap-2 text-xs text-slate-500">
+              <Calendar size={11} className="text-gold-400 flex-shrink-0" />
+              <span>
+                {formatDate(program.start_date)}
+                {program.end_date ? ` – ${formatDate(program.end_date)}` : ""}
+              </span>
+            </div>
+          )}
+          {program.duration && (
+            <div className="flex items-center gap-2 text-xs text-slate-500">
+              <Clock size={11} className="text-gold-400 flex-shrink-0" />
+              <span>{program.duration}</span>
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2 pt-4 border-t border-slate-100 group-hover:border-gold-100 transition-colors duration-300">
+          <span className="text-slate-400 group-hover:text-gold-500 text-xs font-bold uppercase tracking-widest transition-colors duration-300">
+            View & Register
+          </span>
+          <ArrowRight size={12} className="text-slate-400 group-hover:text-gold-500 group-hover:translate-x-1 transition-all duration-300" />
+        </div>
       </div>
     </motion.article>
   );
