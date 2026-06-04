@@ -9,6 +9,8 @@ import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
 import useGetCategory from "hooks/categories/useGetCategory";
 import useCategoryFields from "hooks/categories/useCategoryFields";
+import usePrograms from "hooks/programs/usePrograms";
+import ProgramCard from "components/programs/ProgramCard";
 import type { Field } from "types/field";
 
 /* ─── Animation variants ─────────────────────────────────────────────────── */
@@ -148,6 +150,11 @@ const CategoryDetailPage = () => {
   const { category, loading: loadingCat, error: catError } = useGetCategory(uid);
   const { fields, count, loading: loadingFields, error: fieldsError } = useCategoryFields(uid, {
     ordering: "display_order",
+  });
+  const { programs, count: programCount, loading: loadingPrograms } = usePrograms({
+    category: uid,
+    is_active: true,
+    ordering: "-created_at",
   });
 
   const loading        = loadingCat || loadingFields;
@@ -359,6 +366,80 @@ const CategoryDetailPage = () => {
           </motion.div>
         )}
 
+      </section>
+
+      {/* ── Programs in this category ─────────────────────────────────────── */}
+      <section className="bg-slate-50 border-t border-slate-100">
+        <div className="max-w-6xl mx-auto w-full px-6 py-16">
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5 }}
+            className="flex items-end justify-between mb-10 gap-4"
+          >
+            <div>
+              <h2 className="text-xl font-extrabold text-navy-800 mb-1">
+                Programs in this Category
+              </h2>
+              <p className="text-slate-400 text-sm">
+                {loadingPrograms
+                  ? "Loading programs…"
+                  : programCount > 0
+                    ? `${programCount} program${programCount !== 1 ? "s" : ""} available`
+                    : "No programs available yet"}
+              </p>
+            </div>
+            {programCount > 0 && (
+              <Link
+                to={`/programs?category=${uid}`}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-navy-600 hover:text-gold-600 transition-colors whitespace-nowrap flex-shrink-0"
+              >
+                View all
+                <ArrowRight size={13} />
+              </Link>
+            )}
+          </motion.div>
+
+          {/* Skeleton */}
+          {loadingPrograms && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)}
+            </div>
+          )}
+
+          {/* Empty */}
+          {!loadingPrograms && programs.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-16 bg-white border border-slate-100 rounded-2xl gap-3">
+              <BookOpen size={32} className="text-slate-300" />
+              <p className="text-slate-400 text-sm text-center max-w-xs">
+                No programs are currently available in this category.
+                <br />Check back soon or{" "}
+                <Link to="/contact" className="text-navy-600 hover:underline">get in touch</Link>
+                .
+              </p>
+            </div>
+          )}
+
+          {/* Grid */}
+          {!loadingPrograms && programs.length > 0 && (
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-20px" }}
+              variants={container}
+            >
+              {programs.map((program) => (
+                <motion.div key={program.uid} variants={cardVariant}>
+                  <ProgramCard program={program} />
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+
+        </div>
       </section>
 
       <Footer />

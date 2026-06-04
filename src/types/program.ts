@@ -68,7 +68,7 @@ export interface Program {
   max_participants?: number | null;
   contact_email?: string;
   contact_phone?: string;
-  thumbnail?: string;
+  thumbnail?: { file_key: string; public_url: string } | null;
   price?: string;
   currency?: string;
   created_at?: string;
@@ -97,6 +97,7 @@ export interface ProgramsParams {
   start_date_to?: string;
   is_active?: boolean;
   trainer?: string;
+  category?: string;
 }
 
 export interface CreateProgramPayload {
@@ -120,7 +121,7 @@ export interface CreateProgramPayload {
   contact_phone?: string;
   status: ProgramStatus;
   is_active: boolean;
-  thumbnail?: string;
+  thumbnail?: { file_key: string; public_url: string } | null;
   price?: string;
   currency?: string;
 }

@@ -10,7 +10,6 @@ import {
 import { usePDF } from "@react-pdf/renderer";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
-import Loading from "components/loading/Loading";
 import useGetProgram from "hooks/programs/useGetProgram";
 import usePrograms from "hooks/programs/usePrograms";
 import useAllLocations from "hooks/locations/useAllLocations";
@@ -245,29 +244,143 @@ const ProgramPage = () => {
   const navigate = useNavigate();
   const { program, loading, error } = useGetProgram(uid);
 
+  /* ── Skeleton loader ─────────────────────────────────────────────────── */
   if (loading) return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
-      <div className="flex-1 flex items-center justify-center">
-        <Loading text="Loading program..." />
+
+      {/* Hero skeleton */}
+      <div className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-800 px-6 pt-10 pb-16 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.8) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.8) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />
+        <div className="max-w-6xl mx-auto animate-pulse">
+          {/* back button skeleton */}
+          <div className="h-4 w-12 rounded bg-navy-700 mb-8" />
+          {/* badges */}
+          <div className="flex gap-2 mb-5">
+            <div className="h-6 w-24 rounded-full bg-navy-700" />
+            <div className="h-6 w-20 rounded-full bg-navy-700" />
+          </div>
+          {/* title */}
+          <div className="h-10 w-3/4 rounded-xl bg-navy-700 mb-3" />
+          <div className="h-10 w-1/2 rounded-xl bg-navy-700 mb-5" />
+          {/* desc */}
+          <div className="h-4 w-full max-w-2xl rounded bg-navy-700 mb-2" />
+          <div className="h-4 w-2/3 max-w-xl rounded bg-navy-700 mb-8" />
+          {/* metric pills */}
+          <div className="flex flex-wrap gap-3 mb-8">
+            {[80, 96, 72, 88].map((w, i) => (
+              <div key={i} className="h-16 rounded-xl bg-navy-700" style={{ width: w }} />
+            ))}
+          </div>
+          {/* CTA buttons */}
+          <div className="flex gap-3">
+            <div className="h-11 w-36 rounded-lg bg-gold-600/30" />
+            <div className="h-11 w-28 rounded-lg bg-navy-700" />
+          </div>
+        </div>
       </div>
+
+      {/* Body skeleton */}
+      <div className="flex-1 max-w-6xl mx-auto w-full px-6 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left col */}
+          <div className="lg:col-span-2 space-y-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white rounded-2xl border border-slate-100 p-6 animate-pulse">
+                <div className="h-3.5 w-32 rounded bg-slate-200 mb-5" />
+                <div className="space-y-2.5">
+                  <div className="h-3 w-full rounded bg-slate-100" />
+                  <div className="h-3 w-5/6 rounded bg-slate-100" />
+                  <div className="h-3 w-4/5 rounded bg-slate-100" />
+                  <div className="h-3 w-3/4 rounded bg-slate-100" />
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Sidebar */}
+          <div className="space-y-5">
+            <div className="bg-navy-800 rounded-2xl p-6 animate-pulse">
+              <div className="h-3 w-20 rounded bg-navy-700 mb-3" />
+              <div className="h-9 w-32 rounded-lg bg-navy-700 mb-2" />
+              <div className="h-3 w-24 rounded bg-navy-700 mb-6" />
+              <div className="h-11 w-full rounded-lg bg-gold-500/20 mb-2" />
+              <div className="h-9 w-full rounded-lg bg-navy-700" />
+            </div>
+            {[1, 2].map((i) => (
+              <div key={i} className="bg-white rounded-2xl border border-slate-100 p-6 animate-pulse">
+                <div className="h-3 w-24 rounded bg-slate-200 mb-4" />
+                <div className="space-y-3">
+                  <div className="h-3 w-full rounded bg-slate-100" />
+                  <div className="h-3 w-4/5 rounded bg-slate-100" />
+                  <div className="h-3 w-3/5 rounded bg-slate-100" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <Footer />
     </div>
   );
 
+  /* ── Error / not found ────────────────────────────────────────────────── */
   if (error || !program) {
+    const isNotFound = !program || error?.includes("404") || error?.toLowerCase().includes("not found");
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col">
         <Navbar />
-        <div className="flex-1 flex flex-col items-center justify-center gap-4 py-20">
-          <p className="text-red-400 text-sm">{error ?? "Program not found."}</p>
-          <button
-            type="button"
-            onClick={() => navigate("/programs")}
-            className="text-sm font-semibold text-navy-700 hover:underline"
-          >
-            Back to Programs
-          </button>
+        <div className="flex-1 flex flex-col items-center justify-center px-6 py-24 text-center">
+
+          {/* Icon */}
+          <div className="w-20 h-20 rounded-full bg-navy-50 border border-navy-100 flex items-center justify-center mb-6">
+            <BookOpen size={32} className="text-navy-300" />
+          </div>
+
+          {/* Heading */}
+          <h1 className="text-2xl font-extrabold text-navy-800 mb-3">
+            {isNotFound ? "Program Not Found" : "Something Went Wrong"}
+          </h1>
+
+          {/* Message */}
+          <p className="text-slate-500 text-sm max-w-sm leading-relaxed mb-8">
+            {isNotFound
+              ? "This program may have been removed, renamed, or is no longer available."
+              : (error ?? "We couldn't load this program. Please try again.")}
+          </p>
+
+          {/* Actions */}
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="inline-flex items-center gap-2 border border-slate-200 hover:border-navy-300 text-navy-700 hover:text-navy-800 font-semibold text-sm px-5 py-2.5 rounded-full transition-all duration-200"
+            >
+              <ArrowLeft size={14} />
+              Go Back
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate("/programs")}
+              className="inline-flex items-center gap-2 bg-navy-800 hover:bg-gold-500 hover:text-navy-900 text-white font-bold text-sm px-6 py-2.5 rounded-full transition-all duration-200"
+            >
+              Browse Programs
+              <ArrowRight size={14} />
+            </button>
+          </div>
+
+          {/* Subtle divider + suggestion */}
+          <div className="mt-12 pt-8 border-t border-slate-100 max-w-sm w-full">
+            <p className="text-xs text-slate-400 mb-4">Looking for something specific?</p>
+            <button
+              type="button"
+              onClick={() => navigate("/contact")}
+              className="text-xs font-semibold text-navy-600 hover:text-gold-600 transition-colors"
+            >
+              Contact our team →
+            </button>
+          </div>
         </div>
         <Footer />
       </div>
@@ -460,6 +573,22 @@ const ProgramPage = () => {
 
           {/* ── Left column (70%) ── */}
           <div className="lg:col-span-2 space-y-6">
+
+            {/* Thumbnail */}
+            {program.thumbnail?.public_url && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="rounded-2xl overflow-hidden shadow-sm border border-slate-100"
+              >
+                <img
+                  src={program.thumbnail.public_url}
+                  alt={program.name}
+                  className="w-full h-56 sm:h-72 md:h-80 object-cover"
+                />
+              </motion.div>
+            )}
 
             {/* About */}
             {program.description && (
