@@ -4,7 +4,7 @@ export interface FieldTrainer {
   user: { uid: string; name: string; email: string; role: string };
   bio: string;
   title: string;
-  profile_picture: string;
+  profile_picture: { file_key: string; public_url: string } | null;
 }
 
 export interface FieldMedia {

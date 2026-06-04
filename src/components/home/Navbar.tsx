@@ -93,7 +93,19 @@ function CategoriesDropdown({ link, visible }) {
         </div>
 
         <div className="p-1.5 max-h-64 overflow-y-auto">
-          {link.children.length === 0 ? (
+          {link.loading ? (
+            <div className="space-y-1 px-1 py-1">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="flex items-center gap-2.5 px-3 py-2 animate-pulse">
+                  <div className="w-8 h-8 rounded-md bg-slate-100 flex-shrink-0" />
+                  <div className="flex-1 space-y-1.5">
+                    <div className="h-3 bg-slate-100 rounded w-3/4" />
+                    <div className="h-2.5 bg-slate-100 rounded w-1/2" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : link.children.length === 0 ? (
             <p className="text-xs text-slate-400 px-3 py-2.5">No categories yet</p>
           ) : (
             link.children.map((item) => (
@@ -192,10 +204,10 @@ function NavItem({ link, pathname }) {
 /* ── Navbar ───────────────────────────────────────────────────────────────── */
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mobileExpanded, setMobileExpanded] = useState(null);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const { pathname } = useLocation();
-  const { categories } = useCategories();
+  const { categories, loading: loadingCategories } = useCategories();
 
   const navLinks = [
     { label: "Home",      to: "/" },
@@ -204,6 +216,7 @@ const Navbar = () => {
       label: "Categories",
       to: "/categories",
       dropdown: "categories",
+      loading: loadingCategories,
       children: categories.map((c) => ({
         label: c.name,
         description: c.summary || "Explore programs in this category",

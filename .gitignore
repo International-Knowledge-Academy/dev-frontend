@@ -15,6 +15,11 @@
 
 # misc
 .DS_Store
+.idea/
+*.iml
+
+# local files not part of the project
+GITHUB_PROFILE_README.md
 
 # environment files — never commit real secrets
 .env

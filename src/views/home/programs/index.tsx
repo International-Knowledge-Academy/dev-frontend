@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Filter, X } from "lucide-react";
+import { Filter, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
@@ -10,10 +10,10 @@ import ProgramsHero from "components/programs/ProgramsHero";
 import TypeTabs from "components/programs/TypeTabs";
 import ProgramCard from "components/programs/ProgramCard";
 import SearchableDropdown from "components/form/search/SearchableDropdown";
-import InputField from "components/form/InputField";
+import SearchInput from "components/form/SearchInput";
 
 import usePrograms from "hooks/programs/usePrograms";
-import useLocations from "hooks/locations/useLocations";
+import useAllLocations from "hooks/locations/useAllLocations";
 import useFields from "hooks/fields/useFields";
 
 const container = {
@@ -22,26 +22,54 @@ const container = {
 };
 
 const cardItem = {
-  hidden: { opacity: 0, y: 28 },
+  hidden:  { opacity: 0, y: 28 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
 };
 
+/* ── Skeleton card matches the new image-top card design ─────────────────── */
+const SkeletonCard = () => (
+  <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden animate-pulse">
+    <div className="h-40 bg-slate-100" />
+    <div className="p-5">
+      <div className="h-4 bg-slate-100 rounded w-3/4 mb-2" />
+      <div className="h-3 bg-slate-100 rounded w-full mb-1.5" />
+      <div className="h-3 bg-slate-100 rounded w-5/6 mb-5" />
+      <div className="grid grid-cols-2 gap-2 mb-4">
+        <div className="h-3 bg-slate-100 rounded" />
+        <div className="h-3 bg-slate-100 rounded" />
+        <div className="h-3 bg-slate-100 rounded" />
+        <div className="h-3 bg-slate-100 rounded" />
+      </div>
+      <div className="h-px bg-slate-100 mb-4" />
+      <div className="flex items-center justify-between">
+        <div className="h-4 bg-slate-100 rounded w-20" />
+        <div className="h-8 bg-slate-100 rounded-full w-24" />
+      </div>
+    </div>
+  </div>
+);
+
 const ProgramsPublicPage = () => {
   const [searchParams] = useSearchParams();
-  const initialField = searchParams.get("field") ?? "";
+  const initialField    = searchParams.get("field")    ?? "";
+  const initialCategory = searchParams.get("category") ?? "";
 
-  const [selectedType, setSelectedType] = useState<string | null>(null);
-  const [search, setSearch]             = useState("");
-  const [locationUid, setLocationUid]   = useState("");
-  const [fieldUid, setFieldUid]         = useState(initialField);
-  const [filtersOpen, setFiltersOpen]   = useState(false);
+  const [selectedType, setSelectedType]   = useState<string | null>(null);
+  const [search, setSearch]               = useState("");
+  const [locationUid, setLocationUid]     = useState("");
+  const [fieldUid, setFieldUid]           = useState(initialField);
+  const [categoryUid, setCategoryUid]     = useState(initialCategory);
+  const [filtersOpen, setFiltersOpen]     = useState(false);
 
-  const { locations } = useLocations();
-  const { fields }    = useFields();
+  /* ── Data hooks ──────────────────────────────────────────────────────── */
+  // useAllLocations fetches all pages so dropdown shows every location
+  const { locations } = useAllLocations();
+  // page_size=100 ensures we get all fields in one request
+  const { fields }    = useFields({ page_size: 100 } as any);
 
   const locationOptions = [
     { value: "", label: "All Locations" },
-    ...locations.map((l) => ({ value: l.uid, label: `${l.name} — ${l.city}, ${l.country}` })),
+    ...locations.map((l) => ({ value: l.uid, label: `${l.name} — ${l.city}` })),
   ];
 
   const fieldOptions = [
@@ -49,41 +77,50 @@ const ProgramsPublicPage = () => {
     ...fields.map((f) => ({ value: f.uid, label: f.name })),
   ];
 
-  const { programs, count, loading, error, setParams } = usePrograms({
+  const { programs, count, loading, error, params, setParams } = usePrograms({
     is_active: true,
-    ...(initialField && { field: initialField }),
+    ...(initialField    && { field:    initialField    }),
+    ...(initialCategory && { category: initialCategory }),
   });
 
-  const handleTypeSelect = (type: string | null) => {
-    setSelectedType(type);
-    setParams({ program_type: type ?? undefined, location: locationUid || undefined, field: fieldUid || undefined, search: search || undefined, is_active: true });
-  };
+  const currentPage = params.page ?? 1;
+  // Back-derive page size from first page results; fall back to 10 (Django default)
+  const pageSize   = currentPage === 1 && programs.length > 0 ? programs.length : 10;
+  const totalPages = count > 0 ? Math.ceil(count / pageSize) : 0;
 
+  /* ── Filter handlers ─────────────────────────────────────────────────── */
+  // search: SearchInput already debounces, so just update params directly
   const handleSearchChange = (v: string) => {
     setSearch(v);
     setParams({ search: v || undefined, program_type: selectedType ?? undefined, location: locationUid || undefined, field: fieldUid || undefined, is_active: true });
   };
 
+  const handleTypeSelect = (type: string | null) => {
+    setSelectedType(type);
+    setParams({ program_type: type ?? undefined, location: locationUid || undefined, field: fieldUid || undefined, search: search || undefined, is_active: true, page: 1 });
+  };
+
   const handleLocationChange = (v: string) => {
     setLocationUid(v);
-    setParams({ location: v || undefined, program_type: selectedType ?? undefined, field: fieldUid || undefined, search: search || undefined, is_active: true });
+    setParams({ location: v || undefined, program_type: selectedType ?? undefined, field: fieldUid || undefined, search: search || undefined, is_active: true, page: 1 });
   };
 
   const handleFieldChange = (v: string) => {
     setFieldUid(v);
-    setParams({ field: v || undefined, program_type: selectedType ?? undefined, location: locationUid || undefined, search: search || undefined, is_active: true });
+    setParams({ field: v || undefined, program_type: selectedType ?? undefined, location: locationUid || undefined, search: search || undefined, is_active: true, page: 1 });
   };
 
   const clearAll = () => {
     setSearch("");
     setLocationUid("");
     setFieldUid("");
+    setCategoryUid("");
     setSelectedType(null);
     setFiltersOpen(false);
-    setParams({ search: undefined, program_type: undefined, location: undefined, field: undefined, is_active: true });
+    setParams({ search: undefined, program_type: undefined, location: undefined, field: undefined, category: undefined, is_active: true, page: 1 });
   };
 
-  const activeFilterCount = [!!search, !!locationUid, !!fieldUid].filter(Boolean).length;
+  const activeFilterCount = [!!search, !!locationUid, !!fieldUid, !!categoryUid, !!selectedType].filter(Boolean).length;
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
@@ -100,12 +137,11 @@ const ProgramsPublicPage = () => {
 
       <div className="flex-1 max-w-6xl mx-auto w-full px-6 py-12">
 
-        {/* Search + filters */}
+        {/* ── Filter bar ───────────────────────────────────────────────── */}
         <div className="bg-white border border-slate-100 rounded-xl px-4 py-3 mb-8">
 
-          {/* Row 1 — search + meta */}
+          {/* Row 1 */}
           <div className="flex items-center gap-2">
-
             <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
               <Filter size={15} className="text-slate-400" />
               <span className="text-sm font-semibold text-slate-600">Filters</span>
@@ -118,21 +154,19 @@ const ProgramsPublicPage = () => {
 
             <div className="hidden sm:block w-px h-5 bg-slate-200" />
 
-            <InputField
-              field="search"
+            {/* SearchInput has built-in 400ms debounce */}
+            <SearchInput
+              value={search}
+              onChange={handleSearchChange}
               placeholder="Search programs..."
-              formData={{ search }}
-              errors={{}}
-              updateFormData={(_, v) => handleSearchChange(v)}
-              required={false}
-              wrapperClassName="flex-1"
+              className="flex-1 max-w-sm"
             />
 
             <div className="hidden sm:block w-px h-5 bg-slate-200" />
 
             {!loading && (
               <span className="hidden sm:block text-xs text-slate-400 whitespace-nowrap flex-shrink-0">
-                Showing <span className="font-semibold text-slate-600">{count}</span> program{count !== 1 ? "s" : ""}
+                {count} program{count !== 1 ? "s" : ""}
               </span>
             )}
 
@@ -188,7 +222,7 @@ const ProgramsPublicPage = () => {
             </div>
           </div>
 
-          {/* Mobile: expanded filter panel */}
+          {/* Mobile expanded filters */}
           {filtersOpen && (
             <div className="sm:hidden mt-2 pt-2 border-t border-slate-100 flex flex-col gap-2">
               <SearchableDropdown
@@ -211,18 +245,13 @@ const ProgramsPublicPage = () => {
               />
               <div className="flex items-center justify-between">
                 {(search || locationUid || fieldUid) && (
-                  <button
-                    type="button"
-                    onClick={clearAll}
-                    className="flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition"
-                  >
-                    <X size={12} />
-                    Clear all
+                  <button type="button" onClick={clearAll} className="flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition">
+                    <X size={12} /> Clear all
                   </button>
                 )}
                 {!loading && (
                   <span className="text-xs text-slate-400 ml-auto">
-                    Showing <span className="font-semibold text-slate-600">{count}</span> program{count !== 1 ? "s" : ""}
+                    {count} program{count !== 1 ? "s" : ""}
                   </span>
                 )}
               </div>
@@ -230,31 +259,19 @@ const ProgramsPublicPage = () => {
           )}
         </div>
 
-        {/* Loading skeleton */}
+        {/* ── Loading ──────────────────────────────────────────────────── */}
         {loading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-slate-100 p-6 animate-pulse">
-                <div className="h-4 bg-slate-100 rounded w-1/3 mb-4" />
-                <div className="h-5 bg-slate-100 rounded w-3/4 mb-2" />
-                <div className="h-4 bg-slate-100 rounded w-full mb-1" />
-                <div className="h-4 bg-slate-100 rounded w-5/6 mb-6" />
-                <div className="h-px bg-slate-100 mb-4" />
-                <div className="flex gap-4">
-                  <div className="h-3 bg-slate-100 rounded w-16" />
-                  <div className="h-3 bg-slate-100 rounded w-20" />
-                </div>
-              </div>
-            ))}
+            {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
           </div>
         )}
 
-        {/* Error */}
+        {/* ── Error ────────────────────────────────────────────────────── */}
         {!loading && error && (
-          <div className="text-center py-16 text-red-400">{error}</div>
+          <div className="text-center py-16 text-red-400 text-sm">{error}</div>
         )}
 
-        {/* Empty */}
+        {/* ── Empty ────────────────────────────────────────────────────── */}
         {!loading && !error && programs.length === 0 && (
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -278,11 +295,11 @@ const ProgramsPublicPage = () => {
           </motion.div>
         )}
 
-        {/* Programs grid */}
+        {/* ── Programs grid ────────────────────────────────────────────── */}
         {!loading && !error && programs.length > 0 && (
           <AnimatePresence mode="wait">
             <motion.div
-              key={`${selectedType}-${locationUid}-${fieldUid}-${search}`}
+              key={`${selectedType}-${locationUid}-${fieldUid}-${search}-${currentPage}`}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
               initial="hidden"
               animate="visible"
@@ -295,6 +312,39 @@ const ProgramsPublicPage = () => {
               ))}
             </motion.div>
           </AnimatePresence>
+        )}
+
+        {/* ── Pagination ───────────────────────────────────────────────── */}
+        {!loading && totalPages > 1 && (
+          <div className="flex items-center justify-between mt-10 pt-6 border-t border-slate-100">
+            <p className="text-xs text-slate-400">
+              Page <span className="font-semibold text-slate-600">{currentPage}</span> of{" "}
+              <span className="font-semibold text-slate-600">{totalPages}</span>
+              <span className="hidden sm:inline">
+                {" "}— {count} program{count !== 1 ? "s" : ""} total
+              </span>
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                disabled={currentPage <= 1}
+                onClick={() => setParams({ page: currentPage - 1 })}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-full border border-slate-200 text-navy-700 hover:border-navy-300 hover:bg-navy-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              >
+                <ChevronLeft size={13} />
+                Previous
+              </button>
+              <button
+                type="button"
+                disabled={currentPage >= totalPages}
+                onClick={() => setParams({ page: currentPage + 1 })}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-full border border-slate-200 text-navy-700 hover:border-navy-300 hover:bg-navy-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              >
+                Next
+                <ChevronRight size={13} />
+              </button>
+            </div>
+          </div>
         )}
 
       </div>

@@ -30,9 +30,11 @@ const useCategories = (initialParams: CategoriesParams = {}): UseCategoriesRetur
     try {
       const { data } = await axiosInstance.get<PaginatedCategories>("/categories", {
         params: {
-          ...(params.page      && { page:      params.page }),
-          ...(params.search    && { search:    params.search }),
-          ...(params.ordering  && { ordering:  params.ordering }),
+          ...(params.page      && { page:        params.page      }),
+          ...(params.search    && { search:      params.search    }),
+          ...(params.ordering  && { ordering:    params.ordering  }),
+          ...(params.type      && { type:        params.type      }),
+          ...(params.is_active !== undefined && { is_active: params.is_active }),
         },
       });
 

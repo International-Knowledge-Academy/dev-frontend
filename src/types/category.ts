@@ -1,7 +1,13 @@
+export type CategoryType = "training" | "international_youth" | "research" | string;
+
 export interface Category {
   uid: string;
   name: string;
   summary?: string | null;
+  type?: CategoryType;
+  is_active?: boolean;
+  display_order?: number;
+  thumbnail?: { file_key: string; public_url: string } | null;
 }
 
 export interface PaginatedCategories {
@@ -15,6 +21,8 @@ export interface CategoriesParams {
   page?: number;
   search?: string;
   ordering?: string;
+  type?: string;
+  is_active?: boolean;
 }
 
 export interface CreateCategoryPayload {
