@@ -16,18 +16,6 @@ const TYPE: Record<string, { label: string; Icon: React.ElementType }> = {
   contracted: { label: "Contracted", Icon: Briefcase },
 };
 
-const STATUS: Record<string, { dot: string }> = {
-  upcoming:  { dot: "bg-blue-400"  },
-  ongoing:   { dot: "bg-green-400" },
-  completed: { dot: "bg-slate-300" },
-  cancelled: { dot: "bg-red-400"   },
-};
-
-const MODE: Record<string, { label: string }> = {
-  online:  { label: "Online"  },
-  offline: { label: "On-site" },
-  hybrid:  { label: "Hybrid"  },
-};
 
 const formatDate = (d: string | null) => {
   if (!d) return null;
@@ -43,8 +31,6 @@ const ProgramCard = ({ program }: { program: Program }) => {
   const [imgErr, setImgErr] = useState(false);
 
   const { label: typeLabel, Icon } = TYPE[program.program_type] ?? TYPE.course;
-  const statusCfg = STATUS[program.status] ?? STATUS.upcoming;
-  const modeCfg   = MODE[program.mode];
   const fieldHex  = program.field?.hex_color ?? "#1B2A5E";
   const showImg   = !!program.thumbnail?.public_url && !imgErr;
   const startDate = formatDate(program.start_date);
@@ -111,22 +97,6 @@ const ProgramCard = ({ program }: { program: Program }) => {
           </div>
         )}
 
-        {/* ── Top-right: status + mode pills ───────────────────────── */}
-        <div className="absolute top-2.5 sm:top-3 right-2.5 sm:right-3 flex items-center gap-1 sm:gap-1.5 max-w-[50%]">
-          {program.status && (
-            <span className="inline-flex items-center gap-1 sm:gap-1.5 bg-white/90 backdrop-blur-sm text-navy-700 text-[10px] sm:text-[11px] font-semibold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-navy-100/70 whitespace-nowrap">
-              <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${statusCfg.dot}`} />
-              {program.status_display ?? program.status}
-            </span>
-          )}
-          {/* Hide mode badge on very small viewports to avoid overlap */}
-          {modeCfg && (
-            <span className="hidden sm:inline-flex items-center bg-white/90 backdrop-blur-sm text-navy-700 text-[10px] sm:text-[11px] font-semibold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-navy-100/70 whitespace-nowrap">
-              {modeCfg.label}
-            </span>
-          )}
-        </div>
-
         {/* ── Bottom-left: type plain text ─────────────────────────── */}
         <div className="absolute bottom-2.5 sm:bottom-3 left-3 sm:left-4">
           <span className="text-white/80 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.18em]">
@@ -139,12 +109,12 @@ const ProgramCard = ({ program }: { program: Program }) => {
       <div className="px-4 sm:px-5 pt-4 sm:pt-5 pb-4 sm:pb-5 flex flex-col flex-1">
 
         {/* Title */}
-        <h3 className="text-navy-800 font-bold text-sm sm:text-[15px] leading-snug mb-2 sm:mb-2.5 line-clamp-2">
+        <h3 className="text-navy-800 font-bold text-sm sm:text-[15px] leading-snug mb-2 sm:mb-2.5 truncate">
           {program.name}
         </h3>
 
         {/* Description — gold brand tint */}
-        <p className="text-gold-700 text-xs leading-relaxed line-clamp-2 sm:line-clamp-3 flex-1 mb-3 sm:mb-4">
+        <p className="text-gold-700 text-xs leading-relaxed line-clamp-2 flex-1 mb-3 sm:mb-4">
           {program.description || "A professional training program designed to advance your career and develop key skills."}
         </p>
 

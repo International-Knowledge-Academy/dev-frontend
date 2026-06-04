@@ -8,12 +8,6 @@ import type { Program } from "types/program";
 
 /* ─── Helpers ──────────────────────────────────────────────────────────────── */
 
-const STATUS_STYLES = {
-  upcoming:  "bg-gold-50  text-gold-700  border-gold-200",
-  ongoing:   "bg-green-50 text-green-700 border-green-200",
-  completed: "bg-slate-100 text-slate-500 border-slate-200",
-  cancelled: "bg-red-50   text-red-600   border-red-200",
-};
 
 const formatDate = (d: string | null) => {
   if (!d) return null;
@@ -67,7 +61,6 @@ const TYPE_ICON: Record<string, React.ElementType> = {
 const ProgramCard = ({ program }: { program: Program }) => {
   const navigate = useNavigate();
   const [imgError, setImgError] = useState(false);
-  const statusClass = STATUS_STYLES[program.status] ?? STATUS_STYLES.upcoming;
   const fieldHex    = program.field?.hex_color ?? "#1B2A5E";
   const Icon        = TYPE_ICON[program.program_type] ?? BookOpen;
   const showImage   = !!program.thumbnail?.public_url && !imgError;
@@ -120,10 +113,10 @@ const ProgramCard = ({ program }: { program: Program }) => {
           </>
         )}
 
-        {/* Badges */}
-        <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
+        {/* Field badge */}
+        <div className="absolute top-3 left-3">
           {program.field ? (
-            <span className="text-[11px] font-bold px-2.5 py-1 rounded-md backdrop-blur-sm bg-white/90 text-navy-700 truncate max-w-[140px]">
+            <span className="text-[11px] font-bold px-2.5 py-1 rounded-md backdrop-blur-sm bg-navy-900/85 text-white truncate max-w-[140px] inline-block">
               {program.field.name}
             </span>
           ) : (
@@ -131,9 +124,6 @@ const ProgramCard = ({ program }: { program: Program }) => {
               {program.program_type_display ?? program.program_type}
             </span>
           )}
-          <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-md backdrop-blur-sm border ${statusClass} flex-shrink-0`}>
-            {program.status_display ?? program.status}
-          </span>
         </div>
 
         {/* Animated gold sweep on hover */}
@@ -145,7 +135,7 @@ const ProgramCard = ({ program }: { program: Program }) => {
         {/* Hover glow */}
         <span className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-gold-50/40 via-transparent to-transparent transition-opacity duration-500 pointer-events-none" />
 
-        <h3 className="text-navy-800 font-bold text-base leading-snug mb-2 line-clamp-2 flex-shrink-0 group-hover:text-navy-600 transition-colors duration-200">
+        <h3 className="text-navy-800 font-bold text-base leading-snug mb-2 truncate group-hover:text-navy-600 transition-colors duration-200">
           {program.name}
         </h3>
 

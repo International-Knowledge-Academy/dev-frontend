@@ -574,6 +574,22 @@ const ProgramPage = () => {
           {/* ── Left column (70%) ── */}
           <div className="lg:col-span-2 space-y-6">
 
+            {/* Thumbnail */}
+            {program.thumbnail?.public_url && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="rounded-2xl overflow-hidden shadow-sm border border-slate-100"
+              >
+                <img
+                  src={program.thumbnail.public_url}
+                  alt={program.name}
+                  className="w-full h-56 sm:h-72 md:h-80 object-cover"
+                />
+              </motion.div>
+            )}
+
             {/* About */}
             {program.description && (
               <motion.div
