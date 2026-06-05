@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import axiosInstance from "api/axiosInstance";
+import { requestCache } from "utils/requestCache";
 import type { PaginatedCategories, Category, CategoriesParams } from "types/category";
 
 interface UseCategoriesReturn {
@@ -14,6 +15,14 @@ interface UseCategoriesReturn {
   refetch: () => void;
 }
 
+const buildApiParams = (params: CategoriesParams) => ({
+  ...(params.page      && { page:      params.page      }),
+  ...(params.search    && { search:    params.search    }),
+  ...(params.ordering  && { ordering:  params.ordering  }),
+  ...(params.type      && { type:      params.type      }),
+  ...(params.is_active !== undefined && { is_active: params.is_active }),
+});
+
 const useCategories = (initialParams: CategoriesParams = {}): UseCategoriesReturn => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [count, setCount]           = useState(0);
@@ -23,21 +32,51 @@ const useCategories = (initialParams: CategoriesParams = {}): UseCategoriesRetur
   const [error, setError]           = useState<string | null>(null);
   const [params, setParamsState]    = useState<CategoriesParams>(initialParams);
 
-  const fetchCategories = useCallback(async () => {
+  const fetchCategories = useCallback(async (force = false) => {
+    const apiParams = buildApiParams(params);
+    const cacheKey  = requestCache.key("/categories", apiParams);
+
+    if (!force) {
+      const cached = requestCache.get<PaginatedCategories>(cacheKey);
+      if (cached) {
+        setCategories(Array.isArray(cached.results) ? cached.results : []);
+        setCount(cached.count ?? 0);
+        setNext(cached.next ?? null);
+        setPrevious(cached.previous ?? null);
+        setLoading(false);
+        return;
+      }
+
+      const inflight = requestCache.getInflight<PaginatedCategories>(cacheKey);
+      if (inflight) {
+        setLoading(true);
+        inflight
+          .then((data) => {
+            setCategories(Array.isArray(data.results) ? data.results : []);
+            setCount(data.count ?? 0);
+            setNext(data.next ?? null);
+            setPrevious(data.previous ?? null);
+            setLoading(false);
+          })
+          .catch(() => setLoading(false));
+        return;
+      }
+    }
+
     setLoading(true);
     setError(null);
 
-    try {
-      const { data } = await axiosInstance.get<PaginatedCategories>("/categories", {
-        params: {
-          ...(params.page      && { page:        params.page      }),
-          ...(params.search    && { search:      params.search    }),
-          ...(params.ordering  && { ordering:    params.ordering  }),
-          ...(params.type      && { type:        params.type      }),
-          ...(params.is_active !== undefined && { is_active: params.is_active }),
-        },
+    const promise = axiosInstance
+      .get<PaginatedCategories>("/categories", { params: apiParams })
+      .then(({ data }) => {
+        requestCache.set(cacheKey, data);
+        return data;
       });
 
+    requestCache.setInflight(cacheKey, promise);
+
+    try {
+      const data = await promise;
       setCategories(Array.isArray(data.results) ? data.results : []);
       setCount(data.count ?? 0);
       setNext(data.next ?? null);
@@ -69,7 +108,13 @@ const useCategories = (initialParams: CategoriesParams = {}): UseCategoriesRetur
     }));
   };
 
-  return { categories, count, next, previous, loading, error, params, setParams, refetch: fetchCategories };
+  const refetch = () => {
+    const apiParams = buildApiParams(params);
+    requestCache.invalidate(requestCache.key("/categories", apiParams));
+    fetchCategories(true);
+  };
+
+  return { categories, count, next, previous, loading, error, params, setParams, refetch };
 };
 
 export default useCategories;
