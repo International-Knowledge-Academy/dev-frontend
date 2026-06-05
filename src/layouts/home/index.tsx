@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import WhatsAppFloatButton from "components/home/WhatsAppFloatButton";
 
 const HomeLayout = () => {
   const { pathname } = useLocation();
@@ -20,6 +21,11 @@ const HomeLayout = () => {
           </motion.div>
         </AnimatePresence>
       </main>
+
+      <WhatsAppFloatButton
+        phone="601139936766"
+        message="Hi IKA, I'd like to know more about your programs!"
+      />
     </div>
   );
 };
