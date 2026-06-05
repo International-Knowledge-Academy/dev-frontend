@@ -49,6 +49,7 @@ export interface PaginatedFields {
 
 export interface FieldsParams {
   page?: number;
+  page_size?: number;
   search?: string;
   ordering?: string;
   is_active?: boolean;
