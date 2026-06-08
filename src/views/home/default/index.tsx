@@ -11,7 +11,6 @@ import HowToEnroll      from "components/home/HowToEnroll";
 import HowToBeTrainer   from "components/home/HowToBeTrainer";
 import Locations        from "components/home/Locations";
 import Features         from "components/home/Features";
-import Services         from "components/home/Services";
 import Footer           from "components/home/Footer";
 
 const HomePage = () => {
@@ -29,7 +28,6 @@ const HomePage = () => {
       <HowToEnroll />
       <HowToBeTrainer />
       <Locations />
-      <Services />
       <Footer />
     </div>
   );

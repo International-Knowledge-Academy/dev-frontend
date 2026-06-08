@@ -14,7 +14,7 @@ const fadeUp = {
 const paragraphs = [
   "When we established this academy, our goal was not simply to add a new name to the world of training and education, but to build a knowledge platform that creates meaningful impact for individuals, institutions, and society.",
   "In a rapidly changing world, the need for practical, future-oriented knowledge has become greater than ever. From this vision, International Knowledge Academy was founded to bring together modern knowledge, professional expertise, and international learning experiences in one place.",
-  "Our mission is to support learners, leaders, researchers, and institutions with knowledge that helps them grow, decide, and create impact — where knowledge begins as an idea, grows through experience, and transforms into impact.",
+  "Our mission is to support learners, leaders, researchers, and institutions with knowledge that helps them grow, decide, and create impact, where knowledge begins as an idea, grows through experience, and transforms into impact.",
 ];
 
 const FounderSpeech = () => {
@@ -79,7 +79,7 @@ const FounderSpeech = () => {
               <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-navy-900/15 aspect-[3/4]">
                 <img
                   src={founderImg}
-                  alt="Dr. Abdallah Isam Sadeq — Founding President, International Knowledge Academy"
+                  alt="Dr. Abdallah Isam Sadeq, Founding President, International Knowledge Academy"
                   className="w-full h-full object-cover object-top"
                 />
 
@@ -206,14 +206,7 @@ const FounderSpeech = () => {
               custom={0.6}
               className="flex items-center gap-5"
             >
-              {/* Small portrait thumbnail */}
-              <img
-                src={founderImg}
-                alt=""
-                aria-hidden="true"
-                className="w-14 h-14 rounded-full object-cover object-top border-2 border-gold-300 shadow-md flex-shrink-0"
-              />
-
+              
               <div>
                 {/* Handwritten-style signature using CSS */}
                 <p

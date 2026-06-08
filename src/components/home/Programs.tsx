@@ -15,14 +15,14 @@ const programs = [
     title: "Executive Workshops & Professional Development",
     badge: "High Impact",
     description:
-      "Intensive workshops focused on leadership, management, governance, institutional excellence, quality, human resources, project management, and innovation — combining theory, case studies, group discussions, and practical exercises.",
+      "Intensive workshops focused on leadership, management, governance, institutional excellence, quality, human resources, project management, and innovation combining theory, case studies, group discussions, and practical exercises.",
   },
   {
     icon: <MdGroups size={32} />,
     title: "Training Study Trips",
     badge: "Immersive",
     description:
-      "Specialized training study trips that combine professional learning with institutional visits, cultural exposure, and international networking — ideal for organizations seeking to develop staff through a rich benchmarking experience.",
+      "Specialized training study trips that combine professional learning with institutional visits, cultural exposure, and international networking ideal for organizations seeking to develop staff through a rich benchmarking experience.",
   },
 ];
 
