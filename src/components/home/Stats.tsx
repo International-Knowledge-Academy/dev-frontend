@@ -17,17 +17,17 @@ const Stats = () => {
 
   const stats = [
     {
-      value: loading ? "—" : fields    ? `${fields}+`    : "20+",
+      value: loading ? "20" : fields    ? `${fields}+`    : "20+",
       label: "Training Fields",
       sub:   "Across all major professional sectors",
     },
     {
-      value: loading ? "—" : locations ? `${locations}+` : "10+",
+      value: loading ? "10" : locations ? `${locations}+` : "10+",
       label: "Locations",
       sub:   "Malaysia, Europe, UK, Türkiye & beyond",
     },
     {
-      value: loading ? "—" : programs  ? `${programs}+`  : "50+",
+      value: loading ? "50" : programs  ? `${programs}+`  : "50+",
       label: "Programs",
       sub:   "Courses, diplomas & contracted programs",
     },

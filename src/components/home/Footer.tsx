@@ -14,11 +14,17 @@ const socials = [
 ];
 
 const quickLinks = [
-  { label: "Home",        to: "/" },
-  { label: "About IKA",   to: "/about" },
-  { label: "Programs",    to: "/training" },
-  { label: "Instructors", to: "/instructors" },
-  { label: "Contact",     to: "/contact" },
+  { label: "Home",      to: "/" },
+  { label: "About IKA", to: "/about" },
+  { label: "Programs",  to: "/programs" },
+  { label: "Training",  to: "/training" },
+  { label: "Contact",   to: "/contact" },
+];
+
+const registerLinks = [
+  { label: "Become a Trainer",  to: "/register/trainer" },
+  { label: "Register Program",  to: "/register/program" },
+  { label: "Verify Certificate", to: "/verify" },
 ];
 
 const stagger = {
@@ -62,7 +68,7 @@ const Footer = () => {
           className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-14"
         >
           <div>
-            <img src="/brand/IKA-logo-bg.png" alt="IKA" className="h-12 w-auto mb-2 brightness-200" />
+            <img src="/brand/IKA%20Logo-02.png" alt="IKA" className="h-12 w-auto mb-2 brightness-200" />
             <p className="text-slate-300 text-sm">
               International Knowledge Academy
             </p>
@@ -82,7 +88,7 @@ const Footer = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-40px" }}
           variants={stagger}
-          className="grid grid-cols-1 md:grid-cols-3 gap-12 pb-12 border-b border-slate-700"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-12 border-b border-slate-700"
         >
           {/* About */}
           <motion.div variants={item}>
@@ -116,6 +122,25 @@ const Footer = () => {
             <ul className="space-y-3">
               {quickLinks.map((l) => (
                 <li key={l.to + l.label}>
+                  <Link to={l.to}
+                    className="text-slate-300 text-sm hover:text-gold-400 transition-colors flex items-center gap-2 group"
+                  >
+                    <span className="h-px w-4 bg-gold-500 opacity-0 group-hover:opacity-100 transition-all duration-200 group-hover:w-5" />
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* Register */}
+          <motion.div variants={item}>
+            <h4 className="text-gold-500 font-bold text-xs uppercase tracking-widest mb-5">
+              Register
+            </h4>
+            <ul className="space-y-3">
+              {registerLinks.map((l) => (
+                <li key={l.to}>
                   <Link to={l.to}
                     className="text-slate-300 text-sm hover:text-gold-400 transition-colors flex items-center gap-2 group"
                   >

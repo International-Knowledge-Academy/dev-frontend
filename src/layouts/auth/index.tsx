@@ -59,7 +59,7 @@ export default function Auth() {
                     className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-10 gap-6"
                   >
                     <motion.img
-                      src="/brand/IKA Logo-02.png"
+                      src="/brand/IKA%20Logo-02.png"
                       alt="IKA"
                       animate={{ y: [0, -6, 0] }}
                       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}

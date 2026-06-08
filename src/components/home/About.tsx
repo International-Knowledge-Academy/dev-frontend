@@ -22,15 +22,16 @@ const About = () => {
   const { fields, locations, programs, loading } = usePublicStats();
 
   const stats = [
-    { value: loading ? "—" : fields    ? `${fields}+`    : "20+", label: "Training Fields"  },
-    { value: loading ? "—" : locations ? `${locations}+` : "10+", label: "Locations"         },
-    { value: loading ? "—" : programs  ? `${programs}+`  : "50+", label: "Programs"          },
+    { value: loading ? "10" : fields    ? `${fields}+`    : "20+", label: "Training Fields"  },
+    { value: loading ? "10" : locations ? `${locations}+` : "10+", label: "Locations"         },
+    { value: loading ? "50" : programs  ? `${programs}+`  : "50+", label: "Programs"          },
     { value: "3",                                                   label: "Program Types"    },
   ];
 
   return (
-    <section className="py-24 px-6 bg-slate-50 overflow-hidden">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <section className="relative py-24 px-6 bg-slate-50 overflow-hidden">
+      
+      <div className="relative max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
         {/* Left — text */}
         <motion.div
@@ -47,7 +48,7 @@ const About = () => {
             <span className="block text-gold-500 mt-1">for Training & Management Development</span>
           </h2>
           <p className="text-slate-500 mt-6 text-base leading-relaxed text-justify">
-            International Knowledge Academy – IKA is a global training and professional development
+            International Knowledge Academy IKA is a global training and professional development
             academy dedicated to empowering leaders, professionals, and institutions through
             high-quality, practical, and internationally oriented training experiences.
           </p>
@@ -59,12 +60,12 @@ const About = () => {
           </p>
           <p className="text-slate-500 mt-4 text-base leading-relaxed text-justify">
             We design our programs for professionals, executives, government employees, and
-            institutional leaders who seek more than traditional training — integrating expert-led
+            institutional leaders who seek more than traditional training integrating expert-led
             learning, interactive workshops, international study experiences, and real-world
             application to deliver measurable professional value.
           </p>
           <p className="text-slate-500 mt-4 text-base leading-relaxed italic border-l-4 border-gold-500 pl-4 text-justify">
-            "At IKA, training is not only about gaining knowledge — it is about transforming
+            "At IKA, training is not only about gaining knowledge, it is about transforming
             performance, developing leadership capability, and preparing professionals to meet
             the demands of a rapidly changing world."
           </p>

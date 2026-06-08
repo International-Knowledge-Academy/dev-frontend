@@ -38,7 +38,7 @@ export default function SignIn() {
 
         {/* Mobile logo */}
         <motion.div {...fadeUp(0)} className="flex flex-col items-center mb-8 md:hidden">
-          <img src="/brand/IKA Logo-02.png" alt="IKA" className="w-16 h-16 object-contain mb-3" />
+          <img src="/brand/IKA%20Logo-02.png" alt="IKA" className="w-16 h-16 object-contain mb-3" />
           <h2 className="text-lg font-black text-navy-800">International Knowledge Academy</h2>
         </motion.div>
 

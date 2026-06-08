@@ -11,6 +11,7 @@ import TypeTabs from "components/programs/TypeTabs";
 import ProgramCard from "components/programs/ProgramCard";
 import SearchableDropdown from "components/form/search/SearchableDropdown";
 import SearchInput from "components/form/SearchInput";
+import Services    from "components/home/Services";
 
 import usePrograms from "hooks/programs/usePrograms";
 import { useAppData } from "context/AppDataContext";
@@ -360,7 +361,10 @@ const ProgramsPublicPage = () => {
 
       </div>
 
+        <Services />
+
       <Footer />
+
     </div>
   );
 };

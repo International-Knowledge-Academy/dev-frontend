@@ -60,8 +60,10 @@ const card = {
 
 const Features = () => {
   return (
-    <section className="py-24 px-6 bg-slate-50">
-      <div className="max-w-6xl mx-auto">
+    <section className="relative py-24 px-6 bg-slate-50 overflow-hidden">
+      <div className="absolute -top-24 left-1/3  w-[480px] h-[480px] bg-gold-100/40  rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0  right-1/4 w-[360px] h-[360px] bg-navy-100/30 rounded-full blur-3xl pointer-events-none" />
+      <div className="relative max-w-6xl mx-auto">
 
         {/* Header */}
         <motion.div

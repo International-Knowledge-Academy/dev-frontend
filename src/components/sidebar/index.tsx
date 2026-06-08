@@ -47,7 +47,7 @@ const Sidebar = ({ open, onClose }) => {
         <div className="flex items-center gap-3 px-5 pt-6 pb-5">
           <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 bg-white/10 flex items-center justify-center">
             <img
-              src="/brand/IKA Logo-01.png"
+              src="/brand/IKA%20Logo-01.png"
               alt="IKA"
               className="w-full h-full object-cover"
             />
