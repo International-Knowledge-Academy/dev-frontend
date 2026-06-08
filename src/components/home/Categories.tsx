@@ -105,7 +105,7 @@ const CategoryCard = ({
 
 /* ─── Main section ───────────────────────────────────────────────────────── */
 
-const TrainingFields = ({ onCardClick }: { onCardClick?: (c: Category) => void }) => {
+const Categories = ({ onCardClick }: { onCardClick?: (c: Category) => void }) => {
   const navigate = useNavigate();
   const { categories, count, loading, error } = useCategories({
     ordering: "display_order",
@@ -223,4 +223,4 @@ const TrainingFields = ({ onCardClick }: { onCardClick?: (c: Category) => void }
   );
 };
 
-export default TrainingFields;
+export default Categories;
