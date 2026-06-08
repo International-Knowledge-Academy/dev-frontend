@@ -151,7 +151,7 @@ function NavItem({ link, pathname }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const baseCls = `relative text-sm font-medium pb-0.5 transition-colors group ${
+  const baseCls = `relative text-base font-medium pb-0.5 transition-colors group ${
     isActive ? "text-gold-500" : "text-slate-600 hover:text-navy-800"
   }`;
 
@@ -276,7 +276,7 @@ const Navbar = () => {
             <p className="text-navy-800 font-bold text-sm leading-tight">
               International Knowledge Academy
             </p>
-            <p className="text-gold-600 text-[10px] font-medium tracking-wide">
+            <p className="text-gold-600 text-xs font-medium tracking-wide">
               for Training & Management Development
             </p>
           </div>
