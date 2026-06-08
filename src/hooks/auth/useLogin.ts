@@ -5,7 +5,7 @@ import useAuth from "hooks/auth/useAuth";
 import type { LoginPayload } from "types/auth";
 
 interface UseLoginReturn {
-  login: (payload: LoginPayload) => Promise<void>;
+  login: (payload: LoginPayload) => Promise<boolean>;
   loading: boolean;
   error: string | null;
 }
@@ -16,7 +16,7 @@ const useLogin = (): UseLoginReturn => {
   const navigate = useNavigate();
   const { setUserFromData } = useAuth();
 
-  const login = async ({ email, password }: LoginPayload): Promise<void> => {
+  const login = async ({ email, password }: LoginPayload): Promise<boolean> => {
     setLoading(true);
     setError(null);
 
@@ -35,8 +35,8 @@ const useLogin = (): UseLoginReturn => {
         account_manager: "/account-manager",
       };
       navigate(roleRedirect[me.role] ?? "/");
+      return true;
     } catch (err: unknown) {
-      console.error("❌ Login failed:", err);
       const message =
         (err as { response?: { data?: { detail?: string; message?: string } } })
           ?.response?.data?.detail ??
@@ -46,6 +46,7 @@ const useLogin = (): UseLoginReturn => {
       setError(message);
       localStorage.removeItem("access");
       localStorage.removeItem("refresh");
+      return false;
     } finally {
       setLoading(false);
     }

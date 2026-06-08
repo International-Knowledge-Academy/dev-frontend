@@ -1,10 +1,15 @@
 // @ts-nocheck
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import InputField from "components/form/InputField";
 import PasswordField from "components/form/PasswordField";
 import Checkbox from "components/checkbox";
 import useLogin from "hooks/auth/useLogin";
+
+const MAX_ATTEMPTS      = 5;
+const LOCKOUT_MS        = 15 * 60 * 1000; // 15 minutes
+const ATTEMPTS_KEY      = "ika_login_attempts";
+const LOCKOUT_UNTIL_KEY = "ika_login_lockout_until";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 20 },
@@ -12,11 +17,55 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.5, ease: "easeOut", delay },
 });
 
+const formatCountdown = (seconds: number) => {
+  const m = Math.floor(seconds / 60).toString().padStart(2, "0");
+  const s = (seconds % 60).toString().padStart(2, "0");
+  return `${m}:${s}`;
+};
+
 export default function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors]     = useState({});
   const { login, loading, error } = useLogin();
 
+  /* ── Lockout state (persisted in localStorage) ─────────────────────────── */
+  const [attempts, setAttempts] = useState<number>(() => {
+    const stored = localStorage.getItem(ATTEMPTS_KEY);
+    return stored ? parseInt(stored, 10) : 0;
+  });
+
+  const [lockoutUntil, setLockoutUntil] = useState<number | null>(() => {
+    const stored = localStorage.getItem(LOCKOUT_UNTIL_KEY);
+    if (!stored) return null;
+    const ts = parseInt(stored, 10);
+    return ts > Date.now() ? ts : null;
+  });
+
+  const [remaining, setRemaining] = useState<number>(0);
+
+  /* ── Countdown ticker ───────────────────────────────────────────────────── */
+  useEffect(() => {
+    if (!lockoutUntil) return;
+    const tick = () => {
+      const left = lockoutUntil - Date.now();
+      if (left <= 0) {
+        setLockoutUntil(null);
+        setAttempts(0);
+        localStorage.removeItem(ATTEMPTS_KEY);
+        localStorage.removeItem(LOCKOUT_UNTIL_KEY);
+        setRemaining(0);
+      } else {
+        setRemaining(Math.ceil(left / 1000));
+      }
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [lockoutUntil]);
+
+  const isLocked = !!lockoutUntil;
+
+  /* ── Handlers ───────────────────────────────────────────────────────────── */
   const updateFormData = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: undefined }));
@@ -24,13 +73,32 @@ export default function SignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isLocked || loading) return;
+
     const newErrors = {};
-    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.email)    newErrors.email    = "Email is required";
     if (!formData.password) newErrors.password = "Password is required";
     if (Object.keys(newErrors).length) return setErrors(newErrors);
 
-    await login({ email: formData.email, password: formData.password });
+    const success = await login({ email: formData.email, password: formData.password });
+
+    if (success) {
+      localStorage.removeItem(ATTEMPTS_KEY);
+      localStorage.removeItem(LOCKOUT_UNTIL_KEY);
+    } else {
+      const next = attempts + 1;
+      setAttempts(next);
+      localStorage.setItem(ATTEMPTS_KEY, String(next));
+
+      if (next >= MAX_ATTEMPTS) {
+        const until = Date.now() + LOCKOUT_MS;
+        setLockoutUntil(until);
+        localStorage.setItem(LOCKOUT_UNTIL_KEY, String(until));
+      }
+    }
   };
+
+  const attemptsLeft = MAX_ATTEMPTS - attempts;
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center px-5 md:mx-0 md:px-0 md:items-center md:justify-start">
@@ -49,6 +117,21 @@ export default function SignIn() {
           Enter your email and password to sign in.
         </motion.p>
 
+        {/* Lockout banner */}
+        {isLocked && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 rounded-md lg:rounded-lg bg-red-50 border border-red-200 px-4 py-3"
+          >
+            <p className="text-sm font-semibold text-red-600 mb-0.5">Account temporarily locked</p>
+            <p className="text-xs text-red-400">
+              Too many failed attempts. Try again in{" "}
+              <span className="font-bold tabular-nums">{formatCountdown(remaining)}</span>
+            </p>
+          </motion.div>
+        )}
+
         <motion.form {...fadeUp(0.16)} onSubmit={handleSubmit}>
           <InputField
             label="Email"
@@ -58,6 +141,7 @@ export default function SignIn() {
             formData={formData}
             errors={errors}
             updateFormData={updateFormData}
+            disabled={isLocked}
           />
 
           <PasswordField
@@ -65,6 +149,7 @@ export default function SignIn() {
             formData={formData}
             errors={errors}
             updateFormData={updateFormData}
+            disabled={isLocked}
           />
 
           <div className="mb-5 flex items-center justify-between px-1">
@@ -77,16 +162,27 @@ export default function SignIn() {
             </a>
           </div>
 
-          {(errors.general || error) && (
-            <p className="mb-3 text-sm text-red-500">{errors.general ?? error}</p>
+          {(errors.general || error) && !isLocked && (
+            <div className="mb-3">
+              <p className="text-sm text-red-500">{errors.general ?? error}</p>
+              {attempts > 0 && attempts < MAX_ATTEMPTS && (
+                <p className="text-xs text-slate-400 mt-1">
+                  {attemptsLeft} attempt{attemptsLeft !== 1 ? "s" : ""} remaining before lockout.
+                </p>
+              )}
+            </div>
           )}
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || isLocked}
             className="mt-2 w-full rounded-md lg:rounded-lg bg-navy-800 py-3 text-base font-semibold text-white transition duration-200 hover:bg-navy-900 active:bg-navy-700 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {isLocked
+              ? `Locked — ${formatCountdown(remaining)}`
+              : loading
+              ? "Signing in..."
+              : "Sign In"}
           </button>
         </motion.form>
       </div>
