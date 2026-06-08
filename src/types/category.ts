@@ -19,6 +19,7 @@ export interface PaginatedCategories {
 
 export interface CategoriesParams {
   page?: number;
+  page_size?: number;
   search?: string;
   ordering?: string;
   type?: string;

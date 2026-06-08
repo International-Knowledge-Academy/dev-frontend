@@ -8,7 +8,7 @@ import {
   MdSchool, MdWorkspacePremium, MdVerified,
 } from "react-icons/md";
 
-import useCategories from "hooks/categories/useCategories";
+import { useAppData } from "context/AppDataContext";
 import ikaLogo from "assets/img/brand/IKA-logo-bg.png";
 
 const slideDown = {
@@ -207,7 +207,7 @@ const Navbar = () => {
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const { pathname } = useLocation();
-  const { categories, loading: loadingCategories } = useCategories();
+  const { categories, loadingCategories } = useAppData();
 
   const navLinks = [
     { label: "Home",      to: "/" },

@@ -17,6 +17,7 @@ interface UseCategoriesReturn {
 
 const buildApiParams = (params: CategoriesParams) => ({
   ...(params.page      && { page:      params.page      }),
+  ...(params.page_size && { page_size: params.page_size }),
   ...(params.search    && { search:    params.search    }),
   ...(params.ordering  && { ordering:  params.ordering  }),
   ...(params.type      && { type:      params.type      }),
