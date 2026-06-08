@@ -361,9 +361,9 @@ const ProgramsPublicPage = () => {
 
       </div>
 
-      <Footer />
+        <Services />
 
-      <Services />
+      <Footer />
 
     </div>
   );
