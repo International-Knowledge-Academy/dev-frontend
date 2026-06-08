@@ -14,11 +14,11 @@ const socials = [
 ];
 
 const quickLinks = [
-  { label: "Home",        to: "/" },
-  { label: "About IKA",   to: "/about" },
-  { label: "Programs",    to: "/training" },
-  { label: "Instructors", to: "/instructors" },
-  { label: "Contact",     to: "/contact" },
+  { label: "Home",      to: "/" },
+  { label: "About IKA", to: "/about" },
+  { label: "Programs",  to: "/programs" },
+  { label: "Training",  to: "/training" },
+  { label: "Contact",   to: "/contact" },
 ];
 
 const stagger = {
