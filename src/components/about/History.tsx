@@ -81,7 +81,7 @@ const History = () => {
                         {item.year}
                       </p>
                       <h3 className="text-lg font-bold text-navy-800 mb-2">{item.title}</h3>
-                      <p className="text-slate-500 text-sm leading-relaxed">{item.description}</p>
+                      <p className="text-slate-500 text-sm leading-relaxed text-start">{item.description}</p>
                     </div>
                   </motion.div>
 
