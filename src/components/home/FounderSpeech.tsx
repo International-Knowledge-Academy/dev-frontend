@@ -31,6 +31,8 @@ const FounderSpeech = () => {
             "radial-gradient(circle at 85% 30%, rgba(201,168,76,0.06) 0%, transparent 55%)",
         }}
       />
+      <div className="absolute -top-24 left-1/3  w-[480px] h-[480px] bg-gold-100/40  rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0  right-1/4 w-[360px] h-[360px] bg-navy-100/30 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-6xl mx-auto">
 
