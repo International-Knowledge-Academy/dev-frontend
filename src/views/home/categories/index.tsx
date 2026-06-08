@@ -6,6 +6,7 @@ import Footer from "components/home/Footer";
 import CategoriesHero from "components/categories/CategoriesHero";
 import CategoryCard from "components/categories/CategoryCard";
 import useCategories from "hooks/categories/useCategories";
+import EmptyState from "components/empty/empty";
 
 /* ─── Animation variants ─────────────────────────────────────────────────── */
 
@@ -81,9 +82,10 @@ const CategoriesHubPage = () => {
 
         {/* Empty */}
         {!loading && !error && categories.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-20 bg-white border border-slate-100 rounded-2xl gap-3">
-            <p className="text-slate-400 text-sm">No categories available yet.</p>
-          </div>
+          <EmptyState
+            title="No categories yet"
+            description="Training categories will appear here once they are available."
+          />
         )}
 
         {/* Grid */}

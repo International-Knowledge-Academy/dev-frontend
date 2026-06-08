@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { BookOpen, ArrowRight, Zap } from "lucide-react";
 import useCategories from "hooks/categories/useCategories";
 import type { Category } from "types/category";
+import EmptyState from "components/empty/empty";
 
 /* ─── Animation variants ─────────────────────────────────────────────────── */
 
@@ -196,10 +197,11 @@ const Categories = ({ onCardClick }: { onCardClick?: (c: Category) => void }) =>
             <p className="text-red-500 text-sm text-center">{error}</p>
           </div>
         ) : categories.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 bg-white border border-slate-100 rounded-2xl gap-3">
-            <BookOpen size={32} className="text-slate-300" aria-hidden="true" />
-            <p className="text-slate-400 text-sm">No training categories available yet.</p>
-          </div>
+          <EmptyState
+            icon={<BookOpen size={24} />}
+            title="No categories yet"
+            description="Training categories will appear here once they are available."
+          />
         ) : (
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"

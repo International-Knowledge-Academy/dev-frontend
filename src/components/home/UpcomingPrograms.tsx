@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Calendar, MapPin, Clock, ArrowRight, Layers, ChevronRight, BookOpen, Award, Briefcase } from "lucide-react";
 import usePrograms from "hooks/programs/usePrograms";
+import EmptyState from "components/empty/empty";
 import type { Program } from "types/program";
 
 /* ─── Helpers ──────────────────────────────────────────────────────────────── */
@@ -255,10 +256,11 @@ const UpcomingPrograms = () => {
             <p className="text-red-500 text-sm text-center">{error}</p>
           </div>
         ) : displayed.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 bg-slate-50 border border-slate-100 rounded-2xl gap-3">
-            <Layers size={32} className="text-slate-300" />
-            <p className="text-slate-400 text-sm">No programs available right now. Check back soon.</p>
-          </div>
+          <EmptyState
+            icon={<Layers size={24} />}
+            title="No programs available"
+            description="No programs available right now. Check back soon."
+          />
         ) : (
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
