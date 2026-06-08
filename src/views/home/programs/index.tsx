@@ -1,8 +1,8 @@
 // @ts-nocheck
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Filter, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Filter, X, Loader2 } from "lucide-react";
 
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
@@ -13,20 +13,20 @@ import SearchableDropdown from "components/form/search/SearchableDropdown";
 import SearchInput from "components/form/SearchInput";
 
 import usePrograms from "hooks/programs/usePrograms";
-import useAllLocations from "hooks/locations/useAllLocations";
-import useFields from "hooks/fields/useFields";
+import { useAppData } from "context/AppDataContext";
+
+const PAGE_SIZE = 12;
 
 const container = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.07 } },
+  visible: { transition: { staggerChildren: 0.06 } },
 };
 
 const cardItem = {
-  hidden:  { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+  hidden:  { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
-/* ── Skeleton card matches the new image-top card design ─────────────────── */
 const SkeletonCard = () => (
   <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden animate-pulse">
     <div className="h-40 bg-slate-100" />
@@ -54,18 +54,16 @@ const ProgramsPublicPage = () => {
   const initialField    = searchParams.get("field")    ?? "";
   const initialCategory = searchParams.get("category") ?? "";
 
-  const [selectedType, setSelectedType]   = useState<string | null>(null);
-  const [search, setSearch]               = useState("");
-  const [locationUid, setLocationUid]     = useState("");
-  const [fieldUid, setFieldUid]           = useState(initialField);
-  const [categoryUid, setCategoryUid]     = useState(initialCategory);
-  const [filtersOpen, setFiltersOpen]     = useState(false);
+  /* ── Filter state ────────────────────────────────────────────────────── */
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [search, setSearch]             = useState("");
+  const [locationUid, setLocationUid]   = useState("");
+  const [fieldUid, setFieldUid]         = useState(initialField);
+  const [categoryUid, setCategoryUid]   = useState(initialCategory);
+  const [filtersOpen, setFiltersOpen]   = useState(false);
 
-  /* ── Data hooks ──────────────────────────────────────────────────────── */
-  // useAllLocations fetches all pages so dropdown shows every location
-  const { locations } = useAllLocations();
-  // page_size=100 ensures we get all fields in one request
-  const { fields }    = useFields({ page_size: 100 } as any);
+  /* ── Shared data from context (fetched once on app boot) ─────────────── */
+  const { fields, locations } = useAppData();
 
   const locationOptions = [
     { value: "", label: "All Locations" },
@@ -77,50 +75,74 @@ const ProgramsPublicPage = () => {
     ...fields.map((f) => ({ value: f.uid, label: f.name })),
   ];
 
-  const { programs, count, loading, error, params, setParams } = usePrograms({
+  /* ── Programs hook ───────────────────────────────────────────────────── */
+  const { programs, count, next, loading, error, params, setParams } = usePrograms({
     is_active: true,
+    page_size: PAGE_SIZE,
     ...(initialField    && { field:    initialField    }),
     ...(initialCategory && { category: initialCategory }),
   });
 
-  const currentPage = params.page ?? 1;
-  // Back-derive page size from first page results; fall back to 10 (Django default)
-  const pageSize   = currentPage === 1 && programs.length > 0 ? programs.length : 10;
-  const totalPages = count > 0 ? Math.ceil(count / pageSize) : 0;
+  /* ── Accumulated list for Load More ─────────────────────────────────── */
+  const [accumulated, setAccumulated] = useState<typeof programs>([]);
+  const prevPageRef = useRef(1);
 
-  /* ── Filter handlers ─────────────────────────────────────────────────── */
-  // search: SearchInput already debounces, so just update params directly
+  useEffect(() => {
+    if (loading) return;
+    const currentPage = params.page ?? 1;
+    if (currentPage === 1) {
+      setAccumulated(programs);
+    } else if (currentPage > prevPageRef.current) {
+      setAccumulated((prev) => {
+        const seen = new Set(prev.map((p) => p.uid));
+        return [...prev, ...programs.filter((p) => !seen.has(p.uid))];
+      });
+    }
+    prevPageRef.current = currentPage;
+  }, [programs, loading]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const hasMore = !!next;
+
+  /* ── Filter helpers ──────────────────────────────────────────────────── */
+  const resetToPage1 = (overrides: object) => {
+    prevPageRef.current = 0; // force replace on next effect
+    setAccumulated([]);
+    setParams({ search: search || undefined, program_type: selectedType ?? undefined, location: locationUid || undefined, field: fieldUid || undefined, category: categoryUid || undefined, is_active: true, page: 1, page_size: PAGE_SIZE, ...overrides });
+  };
+
   const handleSearchChange = (v: string) => {
     setSearch(v);
-    setParams({ search: v || undefined, program_type: selectedType ?? undefined, location: locationUid || undefined, field: fieldUid || undefined, is_active: true });
+    resetToPage1({ search: v || undefined });
   };
 
   const handleTypeSelect = (type: string | null) => {
     setSelectedType(type);
-    setParams({ program_type: type ?? undefined, location: locationUid || undefined, field: fieldUid || undefined, search: search || undefined, is_active: true, page: 1 });
+    resetToPage1({ program_type: type ?? undefined });
   };
 
   const handleLocationChange = (v: string) => {
     setLocationUid(v);
-    setParams({ location: v || undefined, program_type: selectedType ?? undefined, field: fieldUid || undefined, search: search || undefined, is_active: true, page: 1 });
+    resetToPage1({ location: v || undefined });
   };
 
   const handleFieldChange = (v: string) => {
     setFieldUid(v);
-    setParams({ field: v || undefined, program_type: selectedType ?? undefined, location: locationUid || undefined, search: search || undefined, is_active: true, page: 1 });
+    resetToPage1({ field: v || undefined });
   };
 
   const clearAll = () => {
-    setSearch("");
-    setLocationUid("");
-    setFieldUid("");
-    setCategoryUid("");
-    setSelectedType(null);
-    setFiltersOpen(false);
-    setParams({ search: undefined, program_type: undefined, location: undefined, field: undefined, category: undefined, is_active: true, page: 1 });
+    setSearch(""); setLocationUid(""); setFieldUid(""); setCategoryUid(""); setSelectedType(null); setFiltersOpen(false);
+    prevPageRef.current = 0;
+    setAccumulated([]);
+    setParams({ search: undefined, program_type: undefined, location: undefined, field: undefined, category: undefined, is_active: true, page: 1, page_size: PAGE_SIZE });
+  };
+
+  const handleLoadMore = () => {
+    setParams({ page: (params.page ?? 1) + 1 });
   };
 
   const activeFilterCount = [!!search, !!locationUid, !!fieldUid, !!categoryUid, !!selectedType].filter(Boolean).length;
+  const isInitialLoad = loading && accumulated.length === 0;
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
@@ -137,10 +159,9 @@ const ProgramsPublicPage = () => {
 
       <div className="flex-1 max-w-6xl mx-auto w-full px-6 py-12">
 
-        {/* ── Filter bar ───────────────────────────────────────────────── */}
+        {/* ── Filter bar ─────────────────────────────────────────────── */}
         <div className="bg-white border border-slate-100 rounded-xl px-4 py-3 mb-8">
 
-          {/* Row 1 */}
           <div className="flex items-center gap-2">
             <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
               <Filter size={15} className="text-slate-400" />
@@ -154,7 +175,6 @@ const ProgramsPublicPage = () => {
 
             <div className="hidden sm:block w-px h-5 bg-slate-200" />
 
-            {/* SearchInput has built-in 400ms debounce */}
             <SearchInput
               value={search}
               onChange={handleSearchChange}
@@ -164,13 +184,13 @@ const ProgramsPublicPage = () => {
 
             <div className="hidden sm:block w-px h-5 bg-slate-200" />
 
-            {!loading && (
+            {!isInitialLoad && (
               <span className="hidden sm:block text-xs text-slate-400 whitespace-nowrap flex-shrink-0">
-                {count} program{count !== 1 ? "s" : ""}
+                {accumulated.length} / {count} program{count !== 1 ? "s" : ""}
               </span>
             )}
 
-            {(search || locationUid || fieldUid || selectedType) && (
+            {activeFilterCount > 0 && (
               <button
                 type="button"
                 onClick={clearAll}
@@ -181,7 +201,6 @@ const ProgramsPublicPage = () => {
               </button>
             )}
 
-            {/* Mobile filter toggle */}
             <button
               type="button"
               onClick={() => setFiltersOpen((o) => !o)}
@@ -196,7 +215,7 @@ const ProgramsPublicPage = () => {
             </button>
           </div>
 
-          {/* Row 2 — desktop dropdowns */}
+          {/* Desktop dropdowns */}
           <div className="hidden sm:flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-slate-100">
             <div className="min-w-[200px]">
               <SearchableDropdown
@@ -244,14 +263,14 @@ const ProgramsPublicPage = () => {
                 required={false}
               />
               <div className="flex items-center justify-between">
-                {(search || locationUid || fieldUid) && (
+                {activeFilterCount > 0 && (
                   <button type="button" onClick={clearAll} className="flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition">
                     <X size={12} /> Clear all
                   </button>
                 )}
-                {!loading && (
+                {!isInitialLoad && (
                   <span className="text-xs text-slate-400 ml-auto">
-                    {count} program{count !== 1 ? "s" : ""}
+                    {accumulated.length} / {count} program{count !== 1 ? "s" : ""}
                   </span>
                 )}
               </div>
@@ -259,20 +278,20 @@ const ProgramsPublicPage = () => {
           )}
         </div>
 
-        {/* ── Loading ──────────────────────────────────────────────────── */}
-        {loading && (
+        {/* ── Initial skeleton ───────────────────────────────────────── */}
+        {isInitialLoad && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
+            {Array.from({ length: PAGE_SIZE }).map((_, i) => <SkeletonCard key={i} />)}
           </div>
         )}
 
-        {/* ── Error ────────────────────────────────────────────────────── */}
+        {/* ── Error ──────────────────────────────────────────────────── */}
         {!loading && error && (
           <div className="text-center py-16 text-red-400 text-sm">{error}</div>
         )}
 
-        {/* ── Empty ────────────────────────────────────────────────────── */}
-        {!loading && !error && programs.length === 0 && (
+        {/* ── Empty ──────────────────────────────────────────────────── */}
+        {!isInitialLoad && !error && accumulated.length === 0 && (
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -295,17 +314,17 @@ const ProgramsPublicPage = () => {
           </motion.div>
         )}
 
-        {/* ── Programs grid ────────────────────────────────────────────── */}
-        {!loading && !error && programs.length > 0 && (
+        {/* ── Programs grid ──────────────────────────────────────────── */}
+        {!isInitialLoad && !error && accumulated.length > 0 && (
           <AnimatePresence mode="wait">
             <motion.div
-              key={`${selectedType}-${locationUid}-${fieldUid}-${search}-${currentPage}`}
+              key={`${selectedType}-${locationUid}-${fieldUid}-${search}`}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
               initial="hidden"
               animate="visible"
               variants={container}
             >
-              {programs.map((program) => (
+              {accumulated.map((program) => (
                 <motion.div key={program.uid} variants={cardItem}>
                   <ProgramCard program={program} />
                 </motion.div>
@@ -314,36 +333,28 @@ const ProgramsPublicPage = () => {
           </AnimatePresence>
         )}
 
-        {/* ── Pagination ───────────────────────────────────────────────── */}
-        {!loading && totalPages > 1 && (
-          <div className="flex items-center justify-between mt-10 pt-6 border-t border-slate-100">
+        {/* ── Load More ──────────────────────────────────────────────── */}
+        {!isInitialLoad && !error && (hasMore || (loading && accumulated.length > 0)) && (
+          <div className="flex flex-col items-center mt-10 gap-3">
             <p className="text-xs text-slate-400">
-              Page <span className="font-semibold text-slate-600">{currentPage}</span> of{" "}
-              <span className="font-semibold text-slate-600">{totalPages}</span>
-              <span className="hidden sm:inline">
-                {" "}— {count} program{count !== 1 ? "s" : ""} total
-              </span>
+              Showing <span className="font-semibold text-slate-600">{accumulated.length}</span> of{" "}
+              <span className="font-semibold text-slate-600">{count}</span> programs
             </p>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                disabled={currentPage <= 1}
-                onClick={() => setParams({ page: currentPage - 1 })}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-full border border-slate-200 text-navy-700 hover:border-navy-300 hover:bg-navy-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
-              >
-                <ChevronLeft size={13} />
-                Previous
-              </button>
-              <button
-                type="button"
-                disabled={currentPage >= totalPages}
-                onClick={() => setParams({ page: currentPage + 1 })}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-full border border-slate-200 text-navy-700 hover:border-navy-300 hover:bg-navy-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
-              >
-                Next
-                <ChevronRight size={13} />
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={handleLoadMore}
+              disabled={loading}
+              className="inline-flex items-center gap-2 px-8 py-2.5 rounded-md lg:rounded-lg bg-navy-700 hover:bg-navy-800 text-white text-sm font-semibold transition disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <>
+                  <Loader2 size={15} className="animate-spin" />
+                  Loading…
+                </>
+              ) : (
+                "Load More"
+              )}
+            </button>
           </div>
         )}
 

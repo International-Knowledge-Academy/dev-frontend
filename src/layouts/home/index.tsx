@@ -2,11 +2,13 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import WhatsAppFloatButton from "components/home/WhatsAppFloatButton";
+import { AppDataProvider } from "context/AppDataContext";
 
 const HomeLayout = () => {
   const { pathname } = useLocation();
 
   return (
+    <AppDataProvider>
     <div className="min-h-screen flex flex-col">
       <main className="flex-1">
         <AnimatePresence mode="popLayout">
@@ -27,6 +29,7 @@ const HomeLayout = () => {
         message="Hi IKA, I'd like to know more about your programs!"
       />
     </div>
+    </AppDataProvider>
   );
 };
 

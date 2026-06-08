@@ -84,6 +84,7 @@ export interface PaginatedPrograms {
 
 export interface ProgramsParams {
   page?: number;
+  page_size?: number;
   search?: string;
   ordering?: string;
   field?: string;
