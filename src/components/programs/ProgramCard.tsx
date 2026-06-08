@@ -34,7 +34,6 @@ const ProgramCard = ({ program }: { program: Program }) => {
   const fieldHex  = program.field?.hex_color ?? "#1B2A5E";
   const showImg   = !!program.thumbnail?.public_url && !imgErr;
   const startDate = formatDate(program.start_date);
-  const hasPrice  = !!program.price && program.price !== "0.00";
 
   return (
     <motion.article
@@ -149,35 +148,14 @@ const ProgramCard = ({ program }: { program: Program }) => {
         {/* Divider */}
         <div className="h-px bg-navy-50 mb-3 sm:mb-4" />
 
-        {/* Footer: price + CTA */}
-        <div className="flex items-center justify-between gap-2 sm:gap-3">
-          {/* Price */}
-          <div className="min-w-0 flex-1">
-            {hasPrice ? (
-              <>
-                <p className="text-[9px] sm:text-[10px] text-navy-400 uppercase tracking-wider font-semibold leading-none mb-1">
-                  From
-                </p>
-                <p className="text-navy-800 font-extrabold text-xs sm:text-sm leading-none truncate">
-                  {program.currency ?? ""} {program.price}
-                </p>
-              </>
-            ) : (
-              <p className="text-[11px] sm:text-xs text-navy-400 font-medium">
-                Contact for pricing
-              </p>
-            )}
-          </div>
-
-          {/* CTA button */}
-          <button
-            type="button"
-            className="inline-flex items-center gap-1.5 bg-navy-800 hover:bg-gold-500 hover:text-navy-900 text-white text-[11px] sm:text-xs font-bold px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full transition-all duration-200 flex-shrink-0 whitespace-nowrap"
-          >
-            Register
-            <ArrowRight size={11} className="group-hover:translate-x-0.5 transition-transform duration-200" />
-          </button>
-        </div>
+        {/* Footer: CTA */}
+        <button
+          type="button"
+          className="w-full inline-flex items-center justify-center gap-1.5 bg-navy-800 hover:bg-gold-500 hover:text-navy-900 text-white text-[11px] sm:text-xs font-bold px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full transition-all duration-200 whitespace-nowrap"
+        >
+          Register
+          <ArrowRight size={11} className="group-hover:translate-x-0.5 transition-transform duration-200" />
+        </button>
 
       </div>
     </motion.article>

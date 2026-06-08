@@ -439,10 +439,6 @@ const ProgramQuotationPDF = ({ program, locations = [] }: { program: Program; lo
   const locationStr = program.location
     ? [program.location.name, program.location.city, program.location.country].filter(Boolean).join(", ")
     : null;
-  const priceStr = program.price
-    ? `${program.currency ?? "$"}${program.price} per person`
-    : null;
-
   const today = new Date().toLocaleDateString("en-US", {
     year: "numeric", month: "long", day: "numeric",
   });
@@ -456,7 +452,6 @@ const ProgramQuotationPDF = ({ program, locations = [] }: { program: Program; lo
     ...(program.mode            ? [{ label: "Mode",          value: program.mode_display  ?? program.mode  }] : []),
     ...(program.duration        ? [{ label: "Duration",      value: program.duration }]                       : []),
     ...(program.max_participants ? [{ label: "Seats",        value: String(program.max_participants) }]       : []),
-    ...(priceStr                ? [{ label: "Price",         value: priceStr }]                               : []),
     ...(program.contact_email   ? [{ label: "Contact",       value: program.contact_email }]                  : []),
   ];
 

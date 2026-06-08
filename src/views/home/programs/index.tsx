@@ -14,6 +14,7 @@ import SearchInput from "components/form/SearchInput";
 import Services    from "components/home/Services";
 
 import usePrograms from "hooks/programs/usePrograms";
+import EmptyState from "components/empty/empty";
 import { useAppData } from "context/AppDataContext";
 
 const PAGE_SIZE = 12;
@@ -293,26 +294,19 @@ const ProgramsPublicPage = () => {
 
         {/* ── Empty ──────────────────────────────────────────────────── */}
         {!isInitialLoad && !error && accumulated.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center py-20"
-          >
-            <div className="w-16 h-16 rounded-2xl bg-navy-50 text-navy-300 flex items-center justify-center mx-auto mb-4 text-3xl">
-              🎓
-            </div>
-            <h3 className="text-navy-800 font-bold text-lg mb-2">No programs found</h3>
-            <p className="text-slate-400 text-sm max-w-xs mx-auto mb-5">
-              Try adjusting your filters or clearing them to see all available programs.
-            </p>
-            <button
-              type="button"
-              onClick={clearAll}
-              className="text-sm font-semibold text-gold-600 hover:text-gold-700 underline underline-offset-2 transition"
-            >
-              Clear all filters
-            </button>
-          </motion.div>
+          <EmptyState
+            title="No programs found"
+            description="Try adjusting your filters or clearing them to see all available programs."
+            actionButton={
+              <button
+                type="button"
+                onClick={clearAll}
+                className="text-sm font-semibold text-gold-600 hover:text-gold-700 underline underline-offset-2 transition"
+              >
+                Clear all filters
+              </button>
+            }
+          />
         )}
 
         {/* ── Programs grid ──────────────────────────────────────────── */}

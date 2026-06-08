@@ -210,7 +210,7 @@ const RelatedProgramsSection = ({
 
 /* ─── Quotation download button ──────────────────────────────────────────── */
 
-const QuotationDownloadButton = ({ program }: { program: any }) => {
+const QuotationDownloadButton = ({ program, variant = "default" }: { program: any; variant?: "default" | "hero" }) => {
   const { locations } = useAllLocations();
   const [instance] = usePDF({ document: <ProgramQuotationPDF program={program} locations={locations} /> });
 
@@ -223,6 +223,20 @@ const QuotationDownloadButton = ({ program }: { program: any }) => {
     a.click();
     document.body.removeChild(a);
   };
+
+  if (variant === "hero") {
+    return (
+      <button
+        type="button"
+        onClick={handleDownload}
+        disabled={instance.loading}
+        className="inline-flex items-center gap-2.5 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-8 py-3.5 rounded-md lg:rounded-lg text-sm transition-all duration-200 shadow-lg hover:shadow-gold-500/25 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+      >
+        <FileText size={16} />
+        {instance.loading ? "Preparing PDF..." : "Download Quotation PDF"}
+      </button>
+    );
+  }
 
   return (
     <button
@@ -590,135 +604,146 @@ const ProgramPage = () => {
               </motion.div>
             )}
 
-            {/* About */}
-            {program.description && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <SectionCard title="About This Program" icon={BookOpen}>
-                  <p className="text-slate-600 leading-relaxed text-sm whitespace-pre-wrap">
-                    {program.description}
-                  </p>
-                </SectionCard>
-              </motion.div>
-            )}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
 
-            {/* Objectives */}
-            {objectives.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.05 }}
-              >
-                <SectionCard title="Program Objectives" icon={CheckCircle2} iconColor="text-emerald-500">
-                  <ul className="space-y-3">
-                    {objectives.map((obj, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <CheckCircle2 size={15} className="text-emerald-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                        <span className="text-slate-600 text-sm leading-relaxed">{obj}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </SectionCard>
-              </motion.div>
-            )}
+              <div className="grid grid-cols-1 space-y-6 px-4 py-6 bg-white rounded-2xl border border-slate-100 shadow-sm">
 
-            {/* Target Audience */}
-            {program.target_audience && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.08 }}
-              >
-                <SectionCard title="Target Audience" icon={Users} iconColor="text-navy-600">
-                  {audience.length > 1 ? (
-                    <ul className="space-y-2">
-                      {audience.map((line, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0 mt-1.5" />
-                          <span className="text-slate-600 text-sm leading-relaxed">{line}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">
-                      {program.target_audience}
-                    </p>
-                  )}
-                </SectionCard>
-              </motion.div>
-            )}
+                {/* About */}
+                {program.description && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <SectionCard title="About This Program" icon={BookOpen}>
+                      <p className="text-slate-600 leading-relaxed text-sm whitespace-pre-wrap">
+                        {program.description}
+                      </p>
+                    </SectionCard>
+                  </motion.div>
+                )}
 
-            {/* Prerequisites */}
-            {program.prerequisites && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.11 }}
-              >
-                <SectionCard title="Prerequisites" icon={Award} iconColor="text-gold-500">
-                  {prereqs.length > 1 ? (
-                    <ul className="space-y-2">
-                      {prereqs.map((line, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0 mt-1.5" />
-                          <span className="text-slate-600 text-sm leading-relaxed">{line}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">
-                      {program.prerequisites}
-                    </p>
-                  )}
-                </SectionCard>
-              </motion.div>
-            )}
+                {/* Objectives */}
+                {objectives.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.05 }}
+                  >
+                    <SectionCard title="Program Objectives" icon={CheckCircle2} iconColor="text-emerald-500">
+                      <ul className="space-y-3">
+                        {objectives.map((obj, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <CheckCircle2 size={15} className="text-emerald-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                            <span className="text-slate-600 text-sm leading-relaxed">{obj}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </SectionCard>
+                  </motion.div>
+                )}
 
-            {/* Schedule */}
-            {(startDate || endDate) && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.14 }}
-              >
-                <SectionCard title="Training Schedule" icon={Calendar}>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {startDate && (
-                      <div className="bg-slate-50 rounded-xl p-4">
-                        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1.5">Start Date</p>
-                        <p className="text-sm font-bold text-navy-800">{startDate}</p>
+                {/* Target Audience */}
+                {program.target_audience && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.08 }}
+                  >
+                    <SectionCard title="Target Audience" icon={Users} iconColor="text-navy-600">
+                      {audience.length > 1 ? (
+                        <ul className="space-y-2">
+                          {audience.map((line, i) => (
+                            <li key={i} className="flex items-start gap-3">
+                              <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0 mt-1.5" />
+                              <span className="text-slate-600 text-sm leading-relaxed">{line}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">
+                          {program.target_audience}
+                        </p>
+                      )}
+                    </SectionCard>
+                  </motion.div>
+                )}
+
+                {/* Prerequisites */}
+                {program.prerequisites && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.11 }}
+                  >
+                    <SectionCard title="Prerequisites" icon={Award} iconColor="text-gold-500">
+                      {prereqs.length > 1 ? (
+                        <ul className="space-y-2">
+                          {prereqs.map((line, i) => (
+                            <li key={i} className="flex items-start gap-3">
+                              <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0 mt-1.5" />
+                              <span className="text-slate-600 text-sm leading-relaxed">{line}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">
+                          {program.prerequisites}
+                        </p>
+                      )}
+                    </SectionCard>
+                  </motion.div>
+                )}
+
+                {/* Schedule */}
+                {(startDate || endDate) && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.14 }}
+                  >
+                    <SectionCard title="Training Schedule" icon={Calendar}>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {startDate && (
+                          <div className="bg-slate-50 rounded-xl p-4">
+                            <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1.5">Start Date</p>
+                            <p className="text-sm font-bold text-navy-800">{startDate}</p>
+                          </div>
+                        )}
+                        {endDate && (
+                          <div className="bg-slate-50 rounded-xl p-4">
+                            <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1.5">End Date</p>
+                            <p className="text-sm font-bold text-navy-800">{endDate}</p>
+                          </div>
+                        )}
                       </div>
-                    )}
-                    {endDate && (
-                      <div className="bg-slate-50 rounded-xl p-4">
-                        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1.5">End Date</p>
-                        <p className="text-sm font-bold text-navy-800">{endDate}</p>
-                      </div>
-                    )}
-                  </div>
-                </SectionCard>
-              </motion.div>
-            )}
+                    </SectionCard>
+                  </motion.div>
+                )}
 
-            {/* Trainers */}
-            {program.trainer_profiles?.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.17 }}
-              >
-                <SectionCard title="Your Trainers" icon={GraduationCap} iconColor="text-navy-600">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {program.trainer_profiles.map((trainer) => (
-                      <TrainerCard key={trainer.uid} trainer={trainer} />
-                    ))}
-                  </div>
-                </SectionCard>
-              </motion.div>
-            )}
+                {/* Trainers */}
+                {program.trainer_profiles?.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.17 }}
+                  >
+                    <SectionCard title="Your Trainers" icon={GraduationCap} iconColor="text-navy-600">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {program.trainer_profiles.map((trainer) => (
+                          <TrainerCard key={trainer.uid} trainer={trainer} />
+                        ))}
+                      </div>
+                    </SectionCard>
+                  </motion.div>
+                )}
+
+              </div>
+            </motion.div>
 
           </div>
 
@@ -734,25 +759,13 @@ const ProgramPage = () => {
             >
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-300" />
 
-              {program.price ? (
-                <>
-                  <p className="text-[10px] text-navy-400 uppercase tracking-widest font-semibold mb-1">Investment</p>
-                  <p className="text-3xl font-extrabold text-white leading-tight">
-                    {program.currency ?? "$"}{program.price}
-                  </p>
-                  <p className="text-xs text-navy-400 mt-0.5 mb-5">per person</p>
-                </>
-              ) : (
-                <>
-                  <div className="w-10 h-10 rounded-lg bg-gold-500/20 flex items-center justify-center mb-4">
-                    <GraduationCap size={20} className="text-gold-400" />
-                  </div>
-                  <p className="font-bold text-base mb-1.5">Ready to enroll?</p>
-                  <p className="text-navy-300 text-xs leading-relaxed mb-5">
-                    Contact our team to learn more and reserve your seat.
-                  </p>
-                </>
-              )}
+              <div className="w-10 h-10 rounded-lg bg-gold-500/20 flex items-center justify-center mb-4">
+                <GraduationCap size={20} className="text-gold-400" />
+              </div>
+              <p className="font-bold text-base mb-1.5">Ready to enroll?</p>
+              <p className="text-navy-300 text-xs leading-relaxed mb-5">
+                Contact our team to learn more and reserve your seat.
+              </p>
 
               {startDate && (
                 <div className="flex items-center gap-2 text-xs text-navy-300 mb-5">
@@ -928,6 +941,44 @@ const ProgramPage = () => {
           </div>
         </div>
       </div>
+
+      {/* ── Quotation Download Section ── */}
+      <section className="relative bg-navy-800 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.8) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gold-500 opacity-[0.06] rounded-full blur-3xl translate-x-1/3 -translate-y-1/2 pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-[300px] h-[300px] bg-navy-400 opacity-[0.08] rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative max-w-6xl mx-auto px-6 py-14">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+
+            {/* Left — text */}
+            <div className="flex items-start gap-5">
+              <div className="w-14 h-14 rounded-xl bg-gold-500/15 border border-gold-500/20 flex items-center justify-center flex-shrink-0">
+                <FileText size={24} className="text-gold-400" />
+              </div>
+              <div>
+                <p className="text-[10px] text-navy-400 uppercase tracking-widest font-semibold mb-1.5">
+                  Official Document
+                </p>
+                <h2 className="text-xl font-extrabold text-white mb-2">
+                  Download Program Quotation
+                </h2>
+                <p className="text-navy-300 text-sm leading-relaxed max-w-lg">
+                  Get the full program details, schedule, objectives, and overview in a professionally formatted PDF document ready to share with your organization.
+                </p>
+              </div>
+            </div>
+
+            {/* Right — CTA */}
+            <div className="flex-shrink-0 flex flex-col items-center gap-3">
+              <QuotationDownloadButton program={program} variant="hero" />
+              <p className="text-navy-500 text-[10px]">Free · No sign-in required</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
 
       {/* ── Related Programs ── */}
       {program.field?.uid && (
