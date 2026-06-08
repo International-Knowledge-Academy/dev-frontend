@@ -210,7 +210,7 @@ const RelatedProgramsSection = ({
 
 /* ─── Quotation download button ──────────────────────────────────────────── */
 
-const QuotationDownloadButton = ({ program }: { program: any }) => {
+const QuotationDownloadButton = ({ program, variant = "default" }: { program: any; variant?: "default" | "hero" }) => {
   const { locations } = useAllLocations();
   const [instance] = usePDF({ document: <ProgramQuotationPDF program={program} locations={locations} /> });
 
@@ -223,6 +223,20 @@ const QuotationDownloadButton = ({ program }: { program: any }) => {
     a.click();
     document.body.removeChild(a);
   };
+
+  if (variant === "hero") {
+    return (
+      <button
+        type="button"
+        onClick={handleDownload}
+        disabled={instance.loading}
+        className="inline-flex items-center gap-2.5 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-8 py-3.5 rounded-md lg:rounded-lg text-sm transition-all duration-200 shadow-lg hover:shadow-gold-500/25 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+      >
+        <FileText size={16} />
+        {instance.loading ? "Preparing PDF..." : "Download Quotation PDF"}
+      </button>
+    );
+  }
 
   return (
     <button
@@ -928,6 +942,44 @@ const ProgramPage = () => {
           </div>
         </div>
       </div>
+
+      {/* ── Quotation Download Section ── */}
+      <section className="relative bg-navy-800 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.8) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gold-500 opacity-[0.06] rounded-full blur-3xl translate-x-1/3 -translate-y-1/2 pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-[300px] h-[300px] bg-navy-400 opacity-[0.08] rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative max-w-6xl mx-auto px-6 py-14">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+
+            {/* Left — text */}
+            <div className="flex items-start gap-5">
+              <div className="w-14 h-14 rounded-xl bg-gold-500/15 border border-gold-500/20 flex items-center justify-center flex-shrink-0">
+                <FileText size={24} className="text-gold-400" />
+              </div>
+              <div>
+                <p className="text-[10px] text-navy-400 uppercase tracking-widest font-semibold mb-1.5">
+                  Official Document
+                </p>
+                <h2 className="text-xl font-extrabold text-white mb-2">
+                  Download Program Quotation
+                </h2>
+                <p className="text-navy-300 text-sm leading-relaxed max-w-lg">
+                  Get the full program details, schedule, objectives, and overview in a professionally formatted PDF document ready to share with your organization.
+                </p>
+              </div>
+            </div>
+
+            {/* Right — CTA */}
+            <div className="flex-shrink-0 flex flex-col items-center gap-3">
+              <QuotationDownloadButton program={program} variant="hero" />
+              <p className="text-navy-500 text-[10px]">Free · No sign-in required</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
 
       {/* ── Related Programs ── */}
       {program.field?.uid && (
