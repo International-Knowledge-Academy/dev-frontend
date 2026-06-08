@@ -604,135 +604,146 @@ const ProgramPage = () => {
               </motion.div>
             )}
 
-            {/* About */}
-            {program.description && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <SectionCard title="About This Program" icon={BookOpen}>
-                  <p className="text-slate-600 leading-relaxed text-sm whitespace-pre-wrap">
-                    {program.description}
-                  </p>
-                </SectionCard>
-              </motion.div>
-            )}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
 
-            {/* Objectives */}
-            {objectives.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.05 }}
-              >
-                <SectionCard title="Program Objectives" icon={CheckCircle2} iconColor="text-emerald-500">
-                  <ul className="space-y-3">
-                    {objectives.map((obj, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <CheckCircle2 size={15} className="text-emerald-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                        <span className="text-slate-600 text-sm leading-relaxed">{obj}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </SectionCard>
-              </motion.div>
-            )}
+              <div className="grid grid-cols-1 space-y-6 px-4 py-6 bg-white rounded-2xl border border-slate-100 shadow-sm">
 
-            {/* Target Audience */}
-            {program.target_audience && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.08 }}
-              >
-                <SectionCard title="Target Audience" icon={Users} iconColor="text-navy-600">
-                  {audience.length > 1 ? (
-                    <ul className="space-y-2">
-                      {audience.map((line, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0 mt-1.5" />
-                          <span className="text-slate-600 text-sm leading-relaxed">{line}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">
-                      {program.target_audience}
-                    </p>
-                  )}
-                </SectionCard>
-              </motion.div>
-            )}
+                {/* About */}
+                {program.description && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <SectionCard title="About This Program" icon={BookOpen}>
+                      <p className="text-slate-600 leading-relaxed text-sm whitespace-pre-wrap">
+                        {program.description}
+                      </p>
+                    </SectionCard>
+                  </motion.div>
+                )}
 
-            {/* Prerequisites */}
-            {program.prerequisites && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.11 }}
-              >
-                <SectionCard title="Prerequisites" icon={Award} iconColor="text-gold-500">
-                  {prereqs.length > 1 ? (
-                    <ul className="space-y-2">
-                      {prereqs.map((line, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0 mt-1.5" />
-                          <span className="text-slate-600 text-sm leading-relaxed">{line}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">
-                      {program.prerequisites}
-                    </p>
-                  )}
-                </SectionCard>
-              </motion.div>
-            )}
+                {/* Objectives */}
+                {objectives.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.05 }}
+                  >
+                    <SectionCard title="Program Objectives" icon={CheckCircle2} iconColor="text-emerald-500">
+                      <ul className="space-y-3">
+                        {objectives.map((obj, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <CheckCircle2 size={15} className="text-emerald-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                            <span className="text-slate-600 text-sm leading-relaxed">{obj}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </SectionCard>
+                  </motion.div>
+                )}
 
-            {/* Schedule */}
-            {(startDate || endDate) && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.14 }}
-              >
-                <SectionCard title="Training Schedule" icon={Calendar}>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {startDate && (
-                      <div className="bg-slate-50 rounded-xl p-4">
-                        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1.5">Start Date</p>
-                        <p className="text-sm font-bold text-navy-800">{startDate}</p>
+                {/* Target Audience */}
+                {program.target_audience && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.08 }}
+                  >
+                    <SectionCard title="Target Audience" icon={Users} iconColor="text-navy-600">
+                      {audience.length > 1 ? (
+                        <ul className="space-y-2">
+                          {audience.map((line, i) => (
+                            <li key={i} className="flex items-start gap-3">
+                              <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0 mt-1.5" />
+                              <span className="text-slate-600 text-sm leading-relaxed">{line}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">
+                          {program.target_audience}
+                        </p>
+                      )}
+                    </SectionCard>
+                  </motion.div>
+                )}
+
+                {/* Prerequisites */}
+                {program.prerequisites && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.11 }}
+                  >
+                    <SectionCard title="Prerequisites" icon={Award} iconColor="text-gold-500">
+                      {prereqs.length > 1 ? (
+                        <ul className="space-y-2">
+                          {prereqs.map((line, i) => (
+                            <li key={i} className="flex items-start gap-3">
+                              <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0 mt-1.5" />
+                              <span className="text-slate-600 text-sm leading-relaxed">{line}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">
+                          {program.prerequisites}
+                        </p>
+                      )}
+                    </SectionCard>
+                  </motion.div>
+                )}
+
+                {/* Schedule */}
+                {(startDate || endDate) && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.14 }}
+                  >
+                    <SectionCard title="Training Schedule" icon={Calendar}>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {startDate && (
+                          <div className="bg-slate-50 rounded-xl p-4">
+                            <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1.5">Start Date</p>
+                            <p className="text-sm font-bold text-navy-800">{startDate}</p>
+                          </div>
+                        )}
+                        {endDate && (
+                          <div className="bg-slate-50 rounded-xl p-4">
+                            <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1.5">End Date</p>
+                            <p className="text-sm font-bold text-navy-800">{endDate}</p>
+                          </div>
+                        )}
                       </div>
-                    )}
-                    {endDate && (
-                      <div className="bg-slate-50 rounded-xl p-4">
-                        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1.5">End Date</p>
-                        <p className="text-sm font-bold text-navy-800">{endDate}</p>
-                      </div>
-                    )}
-                  </div>
-                </SectionCard>
-              </motion.div>
-            )}
+                    </SectionCard>
+                  </motion.div>
+                )}
 
-            {/* Trainers */}
-            {program.trainer_profiles?.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.17 }}
-              >
-                <SectionCard title="Your Trainers" icon={GraduationCap} iconColor="text-navy-600">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {program.trainer_profiles.map((trainer) => (
-                      <TrainerCard key={trainer.uid} trainer={trainer} />
-                    ))}
-                  </div>
-                </SectionCard>
-              </motion.div>
-            )}
+                {/* Trainers */}
+                {program.trainer_profiles?.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.17 }}
+                  >
+                    <SectionCard title="Your Trainers" icon={GraduationCap} iconColor="text-navy-600">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {program.trainer_profiles.map((trainer) => (
+                          <TrainerCard key={trainer.uid} trainer={trainer} />
+                        ))}
+                      </div>
+                    </SectionCard>
+                  </motion.div>
+                )}
+
+              </div>
+            </motion.div>
 
           </div>
 
@@ -748,25 +759,13 @@ const ProgramPage = () => {
             >
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-300" />
 
-              {program.price ? (
-                <>
-                  <p className="text-[10px] text-navy-400 uppercase tracking-widest font-semibold mb-1">Investment</p>
-                  <p className="text-3xl font-extrabold text-white leading-tight">
-                    {program.currency ?? "$"}{program.price}
-                  </p>
-                  <p className="text-xs text-navy-400 mt-0.5 mb-5">per person</p>
-                </>
-              ) : (
-                <>
-                  <div className="w-10 h-10 rounded-lg bg-gold-500/20 flex items-center justify-center mb-4">
-                    <GraduationCap size={20} className="text-gold-400" />
-                  </div>
-                  <p className="font-bold text-base mb-1.5">Ready to enroll?</p>
-                  <p className="text-navy-300 text-xs leading-relaxed mb-5">
-                    Contact our team to learn more and reserve your seat.
-                  </p>
-                </>
-              )}
+              <div className="w-10 h-10 rounded-lg bg-gold-500/20 flex items-center justify-center mb-4">
+                <GraduationCap size={20} className="text-gold-400" />
+              </div>
+              <p className="font-bold text-base mb-1.5">Ready to enroll?</p>
+              <p className="text-navy-300 text-xs leading-relaxed mb-5">
+                Contact our team to learn more and reserve your seat.
+              </p>
 
               {startDate && (
                 <div className="flex items-center gap-2 text-xs text-navy-300 mb-5">
