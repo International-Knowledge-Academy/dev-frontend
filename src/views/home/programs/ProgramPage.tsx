@@ -1,18 +1,19 @@
 // @ts-nocheck
+import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   ArrowLeft, Share2, MapPin, Users, Clock,
   Globe, CheckCircle2, Mail, Phone, Calendar, GraduationCap,
   BookOpen, Award, Briefcase, Monitor, LayoutGrid, Layers,
-  ChevronRight, ArrowRight, FileText,
+  ChevronRight, ArrowRight, FileText, Download, Check,
 } from "lucide-react";
 import { usePDF } from "@react-pdf/renderer";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
 import useGetProgram from "hooks/programs/useGetProgram";
 import usePrograms from "hooks/programs/usePrograms";
-import useAllLocations from "hooks/locations/useAllLocations";
+import { useAppData } from "context/AppDataContext";
 import ProgramCard from "components/programs/ProgramCard";
 import ProgramQuotationPDF from "components/pdf/ProgramQuotationPDF";
 import type { ProgramTrainer } from "types/program";
@@ -20,8 +21,8 @@ import type { ProgramTrainer } from "types/program";
 /* ─── Config maps ────────────────────────────────────────────────────────── */
 
 const typeConfig = {
-  course:     { label: "Training Course",    Icon: BookOpen,  bg: "bg-navy-50",  text: "text-navy-700",  border: "border-navy-200"  },
-  diploma:    { label: "Training Diploma",   Icon: Award,     bg: "bg-gold-50",  text: "text-gold-700",  border: "border-gold-200"  },
+  course:     { label: "Training Course",    Icon: BookOpen,  bg: "bg-navy-50",   text: "text-navy-700",  border: "border-navy-200"  },
+  diploma:    { label: "Training Diploma",   Icon: Award,     bg: "bg-gold-50",   text: "text-gold-700",  border: "border-gold-200"  },
   contracted: { label: "Contracted Program", Icon: Briefcase, bg: "bg-slate-100", text: "text-slate-700", border: "border-slate-200" },
 };
 
@@ -68,9 +69,9 @@ const SectionCard = ({
   iconColor?: string;
   children: React.ReactNode;
 }) => (
-  <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
-    <h3 className="flex items-center gap-2 text-xs font-bold text-navy-800 uppercase tracking-widest mb-5">
-      <Icon size={15} className={iconColor} aria-hidden="true" />
+  <div className="border-b border-slate-100 pb-6">
+    <h3 className="flex items-center gap-2 text-[11px] font-bold text-navy-800 uppercase tracking-widest mb-5">
+      <Icon size={14} className={iconColor} aria-hidden="true" />
       {title}
     </h3>
     {children}
@@ -110,38 +111,29 @@ const cardVariant = {
   hidden:  { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
 };
-
 const cardContainer = {
   hidden:  {},
   visible: { transition: { staggerChildren: 0.08 } },
 };
 
 const RelatedProgramsSection = ({
-  fieldUid,
-  fieldName,
-  excludeUid,
-}: {
-  fieldUid: string;
-  fieldName: string;
-  excludeUid: string;
-}) => {
-  const { programs, loading } = usePrograms({
-    field: fieldUid,
-    is_active: true,
-  });
-
+  fieldUid, fieldName, excludeUid,
+}: { fieldUid: string; fieldName: string; excludeUid: string }) => {
+  const { programs, loading } = usePrograms({ field: fieldUid, is_active: true });
   const related = programs.filter((p) => p.uid !== excludeUid).slice(0, 3);
-
   if (!loading && related.length === 0) return null;
 
   return (
     <section className="border-t border-slate-100 bg-white">
       <div className="max-w-6xl mx-auto px-6 py-14">
-
-        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-xl font-extrabold text-navy-800">Related Programs</h2>
+            <h2
+              className="text-xl font-extrabold text-navy-800"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              Related Programs
+            </h2>
             <p className="text-slate-400 text-sm mt-1">
               More programs in{" "}
               <span className="font-semibold text-navy-600">{fieldName}</span>
@@ -156,7 +148,6 @@ const RelatedProgramsSection = ({
           </Link>
         </div>
 
-        {/* Skeleton */}
         {loading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
@@ -175,7 +166,6 @@ const RelatedProgramsSection = ({
           </div>
         )}
 
-        {/* Cards */}
         {!loading && related.length > 0 && (
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -192,17 +182,14 @@ const RelatedProgramsSection = ({
           </motion.div>
         )}
 
-        {/* Mobile: view all link */}
         <div className="sm:hidden mt-6 text-center">
           <Link
             to={`/programs?field=${fieldUid}`}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-600 hover:text-gold-600 transition-colors"
           >
-            View all programs
-            <ArrowRight size={14} />
+            View all programs <ArrowRight size={14} />
           </Link>
         </div>
-
       </div>
     </section>
   );
@@ -210,8 +197,15 @@ const RelatedProgramsSection = ({
 
 /* ─── Quotation download button ──────────────────────────────────────────── */
 
-const QuotationDownloadButton = ({ program, variant = "default" }: { program: any; variant?: "default" | "hero" }) => {
-  const { locations } = useAllLocations();
+const QuotationDownloadButton = ({
+  program,
+  variant = "default",
+}: {
+  program: any;
+  variant?: "default" | "hero";
+}) => {
+  const { locations } = useAppData();
+  const [downloaded, setDownloaded] = useState(false);
   const [instance] = usePDF({ document: <ProgramQuotationPDF program={program} locations={locations} /> });
 
   const handleDownload = () => {
@@ -222,6 +216,8 @@ const QuotationDownloadButton = ({ program, variant = "default" }: { program: an
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+    setDownloaded(true);
+    setTimeout(() => setDownloaded(false), 3000);
   };
 
   if (variant === "hero") {
@@ -232,8 +228,13 @@ const QuotationDownloadButton = ({ program, variant = "default" }: { program: an
         disabled={instance.loading}
         className="inline-flex items-center gap-2.5 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-8 py-3.5 rounded-md lg:rounded-lg text-sm transition-all duration-200 shadow-lg hover:shadow-gold-500/25 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
       >
-        <FileText size={16} />
-        {instance.loading ? "Preparing PDF..." : "Download Quotation PDF"}
+        {downloaded ? (
+          <><Check size={16} className="text-navy-800" /> Downloaded!</>
+        ) : instance.loading ? (
+          <><FileText size={16} /> Preparing PDF…</>
+        ) : (
+          <><Download size={16} /> Download Quotation PDF</>
+        )}
       </button>
     );
   }
@@ -245,8 +246,13 @@ const QuotationDownloadButton = ({ program, variant = "default" }: { program: an
       disabled={instance.loading}
       className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-slate-700 hover:bg-slate-800 border border-slate-600 px-3 py-2 rounded-md lg:rounded-lg transition-all duration-200 disabled:opacity-60"
     >
-      <FileText size={12} />
-      {instance.loading ? "Preparing..." : "Download Quotation"}
+      {downloaded ? (
+        <><Check size={12} /> Done</>
+      ) : instance.loading ? (
+        <><FileText size={12} /> Preparing…</>
+      ) : (
+        <><FileText size={12} /> Download Quotation</>
+      )}
     </button>
   );
 };
@@ -260,61 +266,48 @@ const ProgramPage = () => {
 
   /* ── Skeleton loader ─────────────────────────────────────────────────── */
   if (loading) return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-[#F8F5F0] flex flex-col">
       <Navbar />
-
-      {/* Hero skeleton */}
-      <div className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-800 px-6 pt-10 pb-16 overflow-hidden">
+      <div className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-900 px-6 pt-10 pb-16 overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.8) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.8) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />
         <div className="max-w-6xl mx-auto animate-pulse">
-          {/* back button skeleton */}
           <div className="h-4 w-12 rounded bg-navy-700 mb-8" />
-          {/* badges */}
           <div className="flex gap-2 mb-5">
             <div className="h-6 w-24 rounded-full bg-navy-700" />
             <div className="h-6 w-20 rounded-full bg-navy-700" />
           </div>
-          {/* title */}
-          <div className="h-10 w-3/4 rounded-xl bg-navy-700 mb-3" />
-          <div className="h-10 w-1/2 rounded-xl bg-navy-700 mb-5" />
-          {/* desc */}
+          <div className="h-12 w-3/4 rounded-xl bg-navy-700 mb-3" />
+          <div className="h-12 w-1/2 rounded-xl bg-navy-700 mb-5" />
           <div className="h-4 w-full max-w-2xl rounded bg-navy-700 mb-2" />
           <div className="h-4 w-2/3 max-w-xl rounded bg-navy-700 mb-8" />
-          {/* metric pills */}
           <div className="flex flex-wrap gap-3 mb-8">
             {[80, 96, 72, 88].map((w, i) => (
               <div key={i} className="h-16 rounded-xl bg-navy-700" style={{ width: w }} />
             ))}
           </div>
-          {/* CTA buttons */}
           <div className="flex gap-3">
             <div className="h-11 w-36 rounded-lg bg-gold-600/30" />
             <div className="h-11 w-28 rounded-lg bg-navy-700" />
           </div>
         </div>
       </div>
-
-      {/* Body skeleton */}
       <div className="flex-1 max-w-6xl mx-auto w-full px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left col */}
           <div className="lg:col-span-2 space-y-6">
             {[1, 2, 3].map((i) => (
               <div key={i} className="bg-white rounded-2xl border border-slate-100 p-6 animate-pulse">
                 <div className="h-3.5 w-32 rounded bg-slate-200 mb-5" />
                 <div className="space-y-2.5">
-                  <div className="h-3 w-full rounded bg-slate-100" />
-                  <div className="h-3 w-5/6 rounded bg-slate-100" />
-                  <div className="h-3 w-4/5 rounded bg-slate-100" />
-                  <div className="h-3 w-3/4 rounded bg-slate-100" />
+                  {[1, 2, 3, 4].map((j) => (
+                    <div key={j} className="h-3 rounded bg-slate-100" style={{ width: `${90 - j * 8}%` }} />
+                  ))}
                 </div>
               </div>
             ))}
           </div>
-          {/* Sidebar */}
           <div className="space-y-5">
-            <div className="bg-navy-800 rounded-2xl p-6 animate-pulse">
+            <div className="bg-navy-900 rounded-2xl p-6 animate-pulse">
               <div className="h-3 w-20 rounded bg-navy-700 mb-3" />
               <div className="h-9 w-32 rounded-lg bg-navy-700 mb-2" />
               <div className="h-3 w-24 rounded bg-navy-700 mb-6" />
@@ -325,16 +318,15 @@ const ProgramPage = () => {
               <div key={i} className="bg-white rounded-2xl border border-slate-100 p-6 animate-pulse">
                 <div className="h-3 w-24 rounded bg-slate-200 mb-4" />
                 <div className="space-y-3">
-                  <div className="h-3 w-full rounded bg-slate-100" />
-                  <div className="h-3 w-4/5 rounded bg-slate-100" />
-                  <div className="h-3 w-3/5 rounded bg-slate-100" />
+                  {[1, 2, 3].map((j) => (
+                    <div key={j} className="h-3 rounded bg-slate-100" style={{ width: `${100 - j * 15}%` }} />
+                  ))}
                 </div>
               </div>
             ))}
           </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );
@@ -343,48 +335,39 @@ const ProgramPage = () => {
   if (error || !program) {
     const isNotFound = !program || error?.includes("404") || error?.toLowerCase().includes("not found");
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col">
+      <div className="min-h-screen bg-[#F8F5F0] flex flex-col">
         <Navbar />
         <div className="flex-1 flex flex-col items-center justify-center px-6 py-24 text-center">
-
-          {/* Icon */}
           <div className="w-20 h-20 rounded-full bg-navy-50 border border-navy-100 flex items-center justify-center mb-6">
             <BookOpen size={32} className="text-navy-300" />
           </div>
-
-          {/* Heading */}
-          <h1 className="text-2xl font-extrabold text-navy-800 mb-3">
+          <h1
+            className="text-2xl font-extrabold text-navy-800 mb-3"
+            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+          >
             {isNotFound ? "Program Not Found" : "Something Went Wrong"}
           </h1>
-
-          {/* Message */}
           <p className="text-slate-500 text-sm max-w-sm leading-relaxed mb-8">
             {isNotFound
               ? "This program may have been removed, renamed, or is no longer available."
               : (error ?? "We couldn't load this program. Please try again.")}
           </p>
-
-          {/* Actions */}
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="inline-flex items-center gap-2 border border-slate-200 hover:border-navy-300 text-navy-700 hover:text-navy-800 font-semibold text-sm px-5 py-2.5 rounded-full transition-all duration-200"
+              className="inline-flex items-center gap-2 border border-slate-200 hover:border-navy-300 text-navy-700 font-semibold text-sm px-5 py-2.5 rounded-full transition-all duration-200"
             >
-              <ArrowLeft size={14} />
-              Go Back
+              <ArrowLeft size={14} /> Go Back
             </button>
             <button
               type="button"
               onClick={() => navigate("/programs")}
               className="inline-flex items-center gap-2 bg-navy-800 hover:bg-gold-500 hover:text-navy-900 text-white font-bold text-sm px-6 py-2.5 rounded-full transition-all duration-200"
             >
-              Browse Programs
-              <ArrowRight size={14} />
+              Browse Programs <ArrowRight size={14} />
             </button>
           </div>
-
-          {/* Subtle divider + suggestion */}
           <div className="mt-12 pt-8 border-t border-slate-100 max-w-sm w-full">
             <p className="text-xs text-slate-400 mb-4">Looking for something specific?</p>
             <button
@@ -413,13 +396,13 @@ const ProgramPage = () => {
   const prereqs    = parseLines(program.prerequisites);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-[#F8F5F0] flex flex-col">
       <Navbar />
 
-      {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-800 overflow-hidden">
+      {/* ── Hero ─────────────────────────────────────────────────────────── */}
+      <section className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-900 overflow-hidden">
 
-        {/* Grid pattern */}
+        {/* Subtle grid */}
         <div
           className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{
@@ -428,9 +411,8 @@ const ProgramPage = () => {
             backgroundSize: "48px 48px",
           }}
         />
-
-        {/* Decorative blobs */}
-        <div className="absolute top-0 right-0 w-[520px] h-[520px] bg-gold-500 opacity-[0.06] rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" />
+        {/* Blobs */}
+        <div className="absolute top-0 right-0 w-[520px] h-[520px] bg-gold-500 opacity-[0.07] rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" />
         <div className="absolute bottom-0 left-1/3 w-[320px] h-[320px] bg-navy-400 opacity-[0.08] rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative max-w-6xl mx-auto px-6 pt-10 pb-16">
@@ -450,15 +432,13 @@ const ProgramPage = () => {
               <ArrowLeft size={15} className="group-hover:-translate-x-0.5 transition-transform duration-200" />
               Back
             </button>
-
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => handleShare(program.name)}
                 className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy-300 hover:text-white border border-navy-600 hover:border-navy-500 px-3 py-2 rounded-md lg:rounded-lg transition-all duration-200"
               >
-                <Share2 size={12} />
-                Share
+                <Share2 size={12} /> Share
               </button>
               <QuotationDownloadButton program={program} />
             </div>
@@ -472,9 +452,7 @@ const ProgramPage = () => {
             className="flex flex-wrap items-center gap-2 mb-5"
           >
             {program.field && (
-              <span
-                className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border border-white/10 bg-white/10 text-white"
-              >
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border border-white/10 bg-white/10 text-white">
                 <Layers size={10} aria-hidden="true" />
                 {program.field.name}
               </span>
@@ -489,12 +467,13 @@ const ProgramPage = () => {
             </span>
           </motion.div>
 
-          {/* Title */}
+          {/* Title — Playfair Display */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.1 }}
             className="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-4 max-w-3xl"
+            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
           >
             {program.name}
           </motion.h1>
@@ -511,7 +490,7 @@ const ProgramPage = () => {
             </motion.p>
           )}
 
-          {/* Metrics row */}
+          {/* Metrics */}
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
@@ -519,7 +498,7 @@ const ProgramPage = () => {
             className="flex flex-wrap gap-3 mb-8"
           >
             {startDate && (
-              <div className="flex items-center gap-2.5 bg-navy-700 border border-navy-600 rounded-xl px-4 py-3">
+              <div className="flex items-center gap-2.5 bg-navy-800/80 border border-navy-700 rounded-xl px-4 py-3">
                 <Calendar size={14} className="text-gold-400 flex-shrink-0" />
                 <div>
                   <p className="text-[10px] text-navy-400 uppercase tracking-widest font-semibold leading-none mb-1">Starts</p>
@@ -528,7 +507,7 @@ const ProgramPage = () => {
               </div>
             )}
             {program.duration && (
-              <div className="flex items-center gap-2.5 bg-navy-700 border border-navy-600 rounded-xl px-4 py-3">
+              <div className="flex items-center gap-2.5 bg-navy-800/80 border border-navy-700 rounded-xl px-4 py-3">
                 <Clock size={14} className="text-gold-400 flex-shrink-0" />
                 <div>
                   <p className="text-[10px] text-navy-400 uppercase tracking-widest font-semibold leading-none mb-1">Duration</p>
@@ -537,7 +516,7 @@ const ProgramPage = () => {
               </div>
             )}
             {program.max_participants && (
-              <div className="flex items-center gap-2.5 bg-navy-700 border border-navy-600 rounded-xl px-4 py-3">
+              <div className="flex items-center gap-2.5 bg-navy-800/80 border border-navy-700 rounded-xl px-4 py-3">
                 <Users size={14} className="text-gold-400 flex-shrink-0" />
                 <div>
                   <p className="text-[10px] text-navy-400 uppercase tracking-widest font-semibold leading-none mb-1">Seats</p>
@@ -546,7 +525,7 @@ const ProgramPage = () => {
               </div>
             )}
             {program.language && (
-              <div className="flex items-center gap-2.5 bg-navy-700 border border-navy-600 rounded-xl px-4 py-3">
+              <div className="flex items-center gap-2.5 bg-navy-800/80 border border-navy-700 rounded-xl px-4 py-3">
                 <Globe size={14} className="text-gold-400 flex-shrink-0" />
                 <div>
                   <p className="text-[10px] text-navy-400 uppercase tracking-widest font-semibold leading-none mb-1">Language</p>
@@ -567,8 +546,7 @@ const ProgramPage = () => {
               onClick={() => navigate(`/register?uid=${program.uid}`)}
               className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-8 py-3 rounded-md lg:rounded-lg text-sm transition-all duration-200 shadow-lg hover:shadow-gold-500/25 hover:-translate-y-0.5"
             >
-              Enroll Now
-              <ChevronRight size={15} />
+              Enroll Now <ChevronRight size={15} />
             </button>
             <button
               onClick={() => navigate("/contact")}
@@ -583,9 +561,9 @@ const ProgramPage = () => {
 
       {/* ── Main content ──────────────────────────────────────────────────── */}
       <div className="flex-1 max-w-6xl mx-auto w-full px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
-          {/* ── Left column (70%) ── */}
+          {/* ── Left column ── */}
           <div className="lg:col-span-2 space-y-6">
 
             {/* Thumbnail */}
@@ -594,7 +572,7 @@ const ProgramPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="rounded-2xl overflow-hidden shadow-sm border border-slate-100"
+                className="rounded-2xl overflow-hidden shadow-sm border border-slate-200/60"
               >
                 <img
                   src={program.thumbnail.public_url}
@@ -604,176 +582,142 @@ const ProgramPage = () => {
               </motion.div>
             )}
 
+            {/* Content card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
+              className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-6 space-y-6"
             >
+              {program.description && (
+                <SectionCard title="About This Program" icon={BookOpen}>
+                  <p className="text-slate-600 leading-relaxed text-sm whitespace-pre-wrap">{program.description}</p>
+                </SectionCard>
+              )}
 
-              <div className="grid grid-cols-1 space-y-6 px-4 py-6 bg-white rounded-2xl border border-slate-100 shadow-sm">
+              {objectives.length > 0 && (
+                <SectionCard title="Program Objectives" icon={CheckCircle2} iconColor="text-emerald-500">
+                  <ul className="space-y-3">
+                    {objectives.map((obj, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <CheckCircle2 size={15} className="text-emerald-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                        <span className="text-slate-600 text-sm leading-relaxed">{obj}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </SectionCard>
+              )}
 
-                {/* About */}
-                {program.description && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <SectionCard title="About This Program" icon={BookOpen}>
-                      <p className="text-slate-600 leading-relaxed text-sm whitespace-pre-wrap">
-                        {program.description}
-                      </p>
-                    </SectionCard>
-                  </motion.div>
-                )}
+              {program.target_audience && (
+                <SectionCard title="Target Audience" icon={Users} iconColor="text-navy-600">
+                  {audience.length > 1 ? (
+                    <ul className="space-y-2">
+                      {audience.map((line, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0 mt-1.5" />
+                          <span className="text-slate-600 text-sm leading-relaxed">{line}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">{program.target_audience}</p>
+                  )}
+                </SectionCard>
+              )}
 
-                {/* Objectives */}
-                {objectives.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.05 }}
-                  >
-                    <SectionCard title="Program Objectives" icon={CheckCircle2} iconColor="text-emerald-500">
-                      <ul className="space-y-3">
-                        {objectives.map((obj, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <CheckCircle2 size={15} className="text-emerald-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                            <span className="text-slate-600 text-sm leading-relaxed">{obj}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </SectionCard>
-                  </motion.div>
-                )}
+              {program.prerequisites && (
+                <SectionCard title="Prerequisites" icon={Award} iconColor="text-gold-500">
+                  {prereqs.length > 1 ? (
+                    <ul className="space-y-2">
+                      {prereqs.map((line, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0 mt-1.5" />
+                          <span className="text-slate-600 text-sm leading-relaxed">{line}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">{program.prerequisites}</p>
+                  )}
+                </SectionCard>
+              )}
 
-                {/* Target Audience */}
-                {program.target_audience && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.08 }}
-                  >
-                    <SectionCard title="Target Audience" icon={Users} iconColor="text-navy-600">
-                      {audience.length > 1 ? (
-                        <ul className="space-y-2">
-                          {audience.map((line, i) => (
-                            <li key={i} className="flex items-start gap-3">
-                              <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0 mt-1.5" />
-                              <span className="text-slate-600 text-sm leading-relaxed">{line}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">
-                          {program.target_audience}
-                        </p>
-                      )}
-                    </SectionCard>
-                  </motion.div>
-                )}
-
-                {/* Prerequisites */}
-                {program.prerequisites && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.11 }}
-                  >
-                    <SectionCard title="Prerequisites" icon={Award} iconColor="text-gold-500">
-                      {prereqs.length > 1 ? (
-                        <ul className="space-y-2">
-                          {prereqs.map((line, i) => (
-                            <li key={i} className="flex items-start gap-3">
-                              <span className="w-1.5 h-1.5 rounded-full bg-gold-400 flex-shrink-0 mt-1.5" />
-                              <span className="text-slate-600 text-sm leading-relaxed">{line}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap">
-                          {program.prerequisites}
-                        </p>
-                      )}
-                    </SectionCard>
-                  </motion.div>
-                )}
-
-                {/* Schedule */}
-                {(startDate || endDate) && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.14 }}
-                  >
-                    <SectionCard title="Training Schedule" icon={Calendar}>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {startDate && (
-                          <div className="bg-slate-50 rounded-xl p-4">
-                            <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1.5">Start Date</p>
-                            <p className="text-sm font-bold text-navy-800">{startDate}</p>
-                          </div>
-                        )}
-                        {endDate && (
-                          <div className="bg-slate-50 rounded-xl p-4">
-                            <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1.5">End Date</p>
-                            <p className="text-sm font-bold text-navy-800">{endDate}</p>
-                          </div>
-                        )}
+              {(startDate || endDate) && (
+                <SectionCard title="Training Schedule" icon={Calendar}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {startDate && (
+                      <div className="bg-slate-50 rounded-xl p-4">
+                        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1.5">Start Date</p>
+                        <p className="text-sm font-bold text-navy-800">{startDate}</p>
                       </div>
-                    </SectionCard>
-                  </motion.div>
-                )}
-
-                {/* Trainers */}
-                {program.trainer_profiles?.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.17 }}
-                  >
-                    <SectionCard title="Your Trainers" icon={GraduationCap} iconColor="text-navy-600">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {program.trainer_profiles.map((trainer) => (
-                          <TrainerCard key={trainer.uid} trainer={trainer} />
-                        ))}
+                    )}
+                    {endDate && (
+                      <div className="bg-slate-50 rounded-xl p-4">
+                        <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1.5">End Date</p>
+                        <p className="text-sm font-bold text-navy-800">{endDate}</p>
                       </div>
-                    </SectionCard>
-                  </motion.div>
-                )}
+                    )}
+                  </div>
+                </SectionCard>
+              )}
 
-              </div>
+              {program.trainer_profiles?.length > 0 && (
+                <SectionCard title="Your Trainers" icon={GraduationCap} iconColor="text-navy-600">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {program.trainer_profiles.map((trainer) => (
+                      <TrainerCard key={trainer.uid} trainer={trainer} />
+                    ))}
+                  </div>
+                </SectionCard>
+              )}
             </motion.div>
-
           </div>
 
-          {/* ── Right sidebar (30%) ── */}
-          <div className="space-y-5">
+          {/* ── Sticky sidebar ── */}
+          <div className="space-y-5 lg:sticky lg:top-36 lg:self-start">
 
-            {/* Enroll / Pricing card */}
+            {/* Program thumbnail */}
+            {program.thumbnail?.public_url && (
+              <motion.div
+                initial={{ opacity: 0, x: 24 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+                className="rounded-2xl overflow-hidden border border-slate-200/60 shadow-sm"
+              >
+                <img
+                  src={program.thumbnail.public_url}
+                  alt={program.name}
+                  className="w-full h-44 object-cover"
+                />
+              </motion.div>
+            )}
+
+            {/* Enroll card */}
             <motion.div
               initial={{ opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="relative bg-navy-800 rounded-2xl p-6 text-white shadow-lg overflow-hidden"
+              className="relative bg-navy-900 rounded-2xl p-6 text-white shadow-lg overflow-hidden"
             >
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-300" />
-
               <div className="w-10 h-10 rounded-lg bg-gold-500/20 flex items-center justify-center mb-4">
                 <GraduationCap size={20} className="text-gold-400" />
               </div>
-              <p className="font-bold text-base mb-1.5">Ready to enroll?</p>
+              <p
+                className="font-bold text-base mb-1.5"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                Ready to enroll?
+              </p>
               <p className="text-navy-300 text-xs leading-relaxed mb-5">
                 Contact our team to learn more and reserve your seat.
               </p>
-
               {startDate && (
                 <div className="flex items-center gap-2 text-xs text-navy-300 mb-5">
                   <Calendar size={12} className="text-gold-400 flex-shrink-0" />
                   Starts {startDate}
                 </div>
               )}
-
               <button
                 onClick={() => navigate(`/register?uid=${program.uid}`)}
                 className="w-full bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold py-3 rounded-md lg:rounded-lg text-sm transition-all duration-200 mb-2.5"
@@ -782,23 +726,22 @@ const ProgramPage = () => {
               </button>
               <button
                 onClick={() => navigate("/contact")}
-                className="w-full border border-navy-600 hover:border-navy-500 text-navy-300 hover:text-white font-semibold py-2.5 rounded-md lg:rounded-lg text-xs transition-all duration-200"
+                className="w-full border border-navy-700 hover:border-navy-600 text-navy-300 hover:text-white font-semibold py-2.5 rounded-md lg:rounded-lg text-xs transition-all duration-200"
               >
                 Request More Info
               </button>
             </motion.div>
 
-            {/* Location card */}
+            {/* Location */}
             {program.location && (
               <motion.div
                 initial={{ opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.25 }}
-                className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm"
+                className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm"
               >
                 <h3 className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">
-                  <MapPin size={13} className="text-gold-500" />
-                  Location
+                  <MapPin size={13} className="text-gold-500" /> Location
                 </h3>
                 <p className="font-bold text-navy-800 text-sm mb-1">{program.location.name}</p>
                 {program.location.address && (
@@ -808,16 +751,13 @@ const ProgramPage = () => {
                   {[program.location.city, program.location.country].filter(Boolean).join(", ")}
                 </p>
                 {program.location.contact_phone && (
-                  <a
-                    href={`tel:${program.location.contact_phone}`}
-                    className="flex items-center gap-2 mt-3 text-xs text-navy-600 hover:text-gold-600 transition-colors"
-                  >
+                  <a href={`tel:${program.location.contact_phone}`} className="flex items-center gap-2 mt-3 text-xs text-navy-600 hover:text-gold-600 transition-colors">
                     <Phone size={12} className="text-gold-500" />
                     {program.location.contact_phone}
                   </a>
                 )}
                 {program.location.venue_details && (
-                  <p className="text-xs text-slate-400 mt-3 leading-relaxed border-t border-slate-50 pt-3">
+                  <p className="text-xs text-slate-400 mt-3 leading-relaxed border-t border-slate-100 pt-3">
                     {program.location.venue_details}
                   </p>
                 )}
@@ -829,11 +769,9 @@ const ProgramPage = () => {
               initial={{ opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm"
+              className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm"
             >
-              <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">
-                Program Details
-              </h3>
+              <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">Program Details</h3>
               <div className="space-y-3">
                 {program.level && (
                   <div className="flex items-center justify-between">
@@ -888,71 +826,59 @@ const ProgramPage = () => {
                 initial={{ opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.35 }}
-                className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm space-y-3"
+                className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm space-y-3"
               >
-                <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                  Contact
-                </h3>
+                <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Contact</h3>
                 {program.contact_email && (
-                  <a
-                    href={`mailto:${program.contact_email}`}
-                    className="flex items-center gap-3 hover:text-gold-600 transition-colors group"
-                  >
+                  <a href={`mailto:${program.contact_email}`} className="flex items-center gap-3 hover:text-gold-600 transition-colors group">
                     <Mail size={15} className="text-gold-500 flex-shrink-0" />
-                    <span className="text-xs text-navy-700 group-hover:text-gold-600 truncate transition-colors">
-                      {program.contact_email}
-                    </span>
+                    <span className="text-xs text-navy-700 group-hover:text-gold-600 truncate transition-colors">{program.contact_email}</span>
                   </a>
                 )}
                 {program.contact_phone && (
-                  <a
-                    href={`tel:${program.contact_phone}`}
-                    className="flex items-center gap-3 hover:text-gold-600 transition-colors group"
-                  >
+                  <a href={`tel:${program.contact_phone}`} className="flex items-center gap-3 hover:text-gold-600 transition-colors group">
                     <Phone size={15} className="text-gold-500 flex-shrink-0" />
-                    <span className="text-xs text-navy-700 group-hover:text-gold-600 transition-colors">
-                      {program.contact_phone}
-                    </span>
+                    <span className="text-xs text-navy-700 group-hover:text-gold-600 transition-colors">{program.contact_phone}</span>
                   </a>
                 )}
               </motion.div>
             )}
 
-
             {/* Share */}
             <motion.div
               initial={{ opacity: 0, x: 24 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.43 }}
-              className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm"
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm"
             >
-              <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">
-                Share This Program
-              </h3>
+              <h3 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">Share</h3>
               <button
                 onClick={() => handleShare(program.name)}
                 className="w-full flex items-center justify-center gap-2 border border-slate-200 hover:border-navy-300 hover:bg-navy-50 text-navy-700 font-semibold py-2.5 rounded-md lg:rounded-lg text-xs transition-all duration-200"
               >
-                <Share2 size={12} />
-                Copy Link
+                <Share2 size={12} /> Copy Link
               </button>
             </motion.div>
-
           </div>
+
         </div>
       </div>
 
-      {/* ── Quotation Download Section ── */}
-      <section className="relative bg-navy-800 overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.8) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />
+      {/* ── Quotation download — single, polished CTA ────────────────────── */}
+      <section className="relative bg-navy-900 overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.8) 1px,transparent 1px)",
+            backgroundSize: "48px 48px",
+          }}
+        />
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gold-500 opacity-[0.06] rounded-full blur-3xl translate-x-1/3 -translate-y-1/2 pointer-events-none" />
         <div className="absolute bottom-0 left-1/4 w-[300px] h-[300px] bg-navy-400 opacity-[0.08] rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative max-w-6xl mx-auto px-6 py-14">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-
-            {/* Left — text */}
             <div className="flex items-start gap-5">
               <div className="w-14 h-14 rounded-xl bg-gold-500/15 border border-gold-500/20 flex items-center justify-center flex-shrink-0">
                 <FileText size={24} className="text-gold-400" />
@@ -961,26 +887,27 @@ const ProgramPage = () => {
                 <p className="text-[10px] text-navy-400 uppercase tracking-widest font-semibold mb-1.5">
                   Official Document
                 </p>
-                <h2 className="text-xl font-extrabold text-white mb-2">
+                <h2
+                  className="text-xl font-extrabold text-white mb-2"
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
                   Download Program Quotation
                 </h2>
                 <p className="text-navy-300 text-sm leading-relaxed max-w-lg">
-                  Get the full program details, schedule, objectives, and overview in a professionally formatted PDF document ready to share with your organization.
+                  Get the full program details, schedule, objectives, and overview in a professionally
+                  formatted PDF document ready to share with your organization.
                 </p>
               </div>
             </div>
-
-            {/* Right — CTA */}
             <div className="flex-shrink-0 flex flex-col items-center gap-3">
               <QuotationDownloadButton program={program} variant="hero" />
               <p className="text-navy-500 text-[10px]">Free · No sign-in required</p>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* ── Related Programs ── */}
+      {/* ── Related programs ─────────────────────────────────────────────── */}
       {program.field?.uid && (
         <RelatedProgramsSection
           fieldUid={program.field.uid}
