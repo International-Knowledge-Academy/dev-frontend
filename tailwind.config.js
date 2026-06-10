@@ -108,6 +108,7 @@ module.exports = {
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
         dm: ["DM Sans", "sans-serif"],
+        playfair: ["Playfair Display", "Georgia", "serif"],
       },
       keyframes: {
         shimmer: {
