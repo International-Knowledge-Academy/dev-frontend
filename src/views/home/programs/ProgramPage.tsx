@@ -566,22 +566,6 @@ const ProgramPage = () => {
           {/* ── Left column ── */}
           <div className="lg:col-span-2 space-y-6">
 
-            {/* Thumbnail */}
-            {program.thumbnail?.public_url && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="rounded-2xl overflow-hidden shadow-sm border border-slate-200/60"
-              >
-                <img
-                  src={program.thumbnail.public_url}
-                  alt={program.name}
-                  className="w-full h-56 sm:h-72 md:h-80 object-cover"
-                />
-              </motion.div>
-            )}
-
             {/* Content card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -589,6 +573,17 @@ const ProgramPage = () => {
               transition={{ duration: 0.5 }}
               className="bg-white rounded-2xl border border-slate-200/60 shadow-sm p-6 space-y-6"
             >
+              {/* Thumbnail — full-bleed header inside card */}
+              {program.thumbnail?.public_url && (
+                <div className="-mx-6 -mt-6 mb-2 rounded-t-2xl overflow-hidden">
+                  <img
+                    src={program.thumbnail.public_url}
+                    alt={program.name}
+                    className="w-full h-56 sm:h-72 md:h-80 object-cover"
+                  />
+                </div>
+              )}
+
               {program.description && (
                 <SectionCard title="About This Program" icon={BookOpen}>
                   <p className="text-slate-600 leading-relaxed text-sm whitespace-pre-wrap">{program.description}</p>
@@ -675,22 +670,6 @@ const ProgramPage = () => {
 
           {/* ── Sticky sidebar ── */}
           <div className="space-y-5 lg:sticky lg:top-36 lg:self-start">
-
-            {/* Program thumbnail */}
-            {program.thumbnail?.public_url && (
-              <motion.div
-                initial={{ opacity: 0, x: 24 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.15 }}
-                className="rounded-2xl overflow-hidden border border-slate-200/60 shadow-sm"
-              >
-                <img
-                  src={program.thumbnail.public_url}
-                  alt={program.name}
-                  className="w-full h-44 object-cover"
-                />
-              </motion.div>
-            )}
 
             {/* Enroll card */}
             <motion.div
