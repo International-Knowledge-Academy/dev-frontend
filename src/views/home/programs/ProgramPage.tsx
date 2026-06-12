@@ -16,6 +16,7 @@ import usePrograms from "hooks/programs/usePrograms";
 import { useAppData } from "context/AppDataContext";
 import ProgramCard from "components/programs/ProgramCard";
 import ProgramQuotationPDF from "components/pdf/ProgramQuotationPDF";
+import TestimonialsSection from "components/home/TestimonialsSection";
 import type { ProgramTrainer } from "types/program";
 
 /* ─── Config maps ────────────────────────────────────────────────────────── */
@@ -885,6 +886,9 @@ const ProgramPage = () => {
           </div>
         </div>
       </section>
+
+      {/* ── Testimonials ─────────────────────────────────────────────────── */}
+      <TestimonialsSection programUid={program.uid} />
 
       {/* ── Related programs ─────────────────────────────────────────────── */}
       {program.field?.uid && (

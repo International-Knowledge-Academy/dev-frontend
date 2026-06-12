@@ -9,9 +9,11 @@ import UpcomingPrograms from "components/home/UpcomingPrograms";
 import Categories       from "components/home/Categories";
 import HowToEnroll      from "components/home/HowToEnroll";
 import HowToBeTrainer   from "components/home/HowToBeTrainer";
-import Locations        from "components/home/Locations";
-import Features         from "components/home/Features";
-import Footer           from "components/home/Footer";
+import Locations            from "components/home/Locations";
+import Features             from "components/home/Features";
+import ClientStrip          from "components/home/ClientStrip";
+import TestimonialsSection  from "components/home/TestimonialsSection";
+import Footer               from "components/home/Footer";
 
 const HomePage = () => {
   return (
@@ -28,6 +30,8 @@ const HomePage = () => {
       <HowToEnroll />
       <HowToBeTrainer />
       <Locations />
+      <ClientStrip />
+      <TestimonialsSection />
       <Footer />
     </div>
   );
