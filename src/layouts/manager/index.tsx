@@ -54,6 +54,7 @@ import ManagerFeedbacksPage           from "views/account-manager/feedbacks";
 import ManagerFeedbackCreatePage      from "views/account-manager/feedbacks/FeedbackCreatePage";
 import ManagerFeedbackDetailPage      from "views/account-manager/feedbacks/FeedbackDetailPage";
 import ManagerFeedbackEditPage        from "views/account-manager/feedbacks/FeedbackEditPage";
+import ManagerEmailsPage              from "views/account-manager/emails";
 
 const ManagerLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -161,6 +162,9 @@ const ManagerLayout = () => {
             <Route path="feedbacks/create"      element={<ManagerFeedbackCreatePage />} />
             <Route path="feedbacks/:uid"        element={<ManagerFeedbackDetailPage />} />
             <Route path="feedbacks/:uid/edit"   element={<ManagerFeedbackEditPage />} />
+
+            {/* Mailing List */}
+            <Route path="emails" element={<ManagerEmailsPage />} />
 
             <Route path="/" element={<Navigate to="/account-manager/dashboard" replace />} />
           </Routes>

@@ -20,6 +20,7 @@ import ServicesPage from "views/admin/services";
 import PartnershipsPage       from "views/admin/partnerships";
 import CertificatesPage from "views/admin/certificates";
 import FeedbacksPage    from "views/admin/feedbacks";
+import EmailsPage       from "views/admin/emails";
 
 // Account Manager Imports
 import ManagerDashboard      from "views/account-manager/default";
@@ -36,6 +37,7 @@ import ManagerContactsPage        from "views/account-manager/contact";
 import ManagerPartnershipsPage    from "views/account-manager/partnerships";
 import ManagerCertificatesPage   from "views/account-manager/certificates";
 import ManagerFeedbacksPage      from "views/account-manager/feedbacks";
+import ManagerEmailsPage         from "views/account-manager/emails";
 
 // Icon Imports
 import {
@@ -55,6 +57,7 @@ import {
   MdMiscellaneousServices,
   MdVerified,
   MdRateReview,
+  MdEmail,
 } from "react-icons/md";
 
 const routes = [
@@ -186,6 +189,14 @@ const routes = [
 
   // Admin
   {
+    name: "Mailing List",
+    layout: "/admin",
+    path: "emails",
+    icon: <MdEmail className="h-6 w-6" />,
+    component: <EmailsPage />,
+    group: "Admin",
+  },
+  {
     name: "Users",
     layout: "/admin",
     path: "users",
@@ -309,6 +320,14 @@ const routes = [
     icon: <MdVerified className="h-6 w-6" />,
     component: <ManagerCertificatesPage />,
     group: "Manage",
+  },
+  {
+    name: "Mailing List",
+    layout: "/account-manager",
+    path: "emails",
+    icon: <MdEmail className="h-6 w-6" />,
+    component: <ManagerEmailsPage />,
+    group: "Admin",
   },
 
 ];
