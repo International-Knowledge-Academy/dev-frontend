@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { MapPin, GraduationCap, ArrowRight, Globe, PauseCircle } from "lucide-react";
+import { MapPin, GraduationCap, Globe, PauseCircle } from "lucide-react";
 import useLocations from "hooks/locations/useLocations";
 import type { Location } from "types/location";
 
@@ -57,15 +57,12 @@ const LocationCard = ({ location }: { location: Location }) => (
       </span>
     )}
 
-    {/* Top area — thumbnail or icon placeholder */}
+    {/* Top area — thumbnail bg or icon placeholder */}
     {location.thumbnail ? (
-      <div className="h-32 w-full overflow-hidden">
-        <img
-          src={location.thumbnail}
-          alt={location.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-      </div>
+      <div
+        className="h-32 w-full bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
+        style={{ backgroundImage: `url(${location.thumbnail})` }}
+      />
     ) : (
       <div className="h-32 w-full bg-navy-50 flex items-center justify-center group-hover:bg-gold-50 transition-colors duration-300">
         <MapPin size={28} className="text-navy-200 group-hover:text-gold-400 transition-colors duration-300" />
