@@ -7,6 +7,8 @@ import ToggleInput from "components/form/toggle/ToggleInput";
 import Button from "components/ui/buttons/Button";
 import SearchableDropdown from "components/form/search/SearchableDropdown";
 import useCreateLocation from "hooks/locations/useCreateLocation";
+import MediaUploadField from "components/form/filesUpload/MediaUploadField";
+import type { PresignedUploadResult } from "hooks/storage/usePresignedUpload";
 import { COUNTRIES } from "constants/lists";
 import PageHeader from "components/ui/PageHeader";
 
@@ -29,6 +31,13 @@ const LocationCreatePage = () => {
     contact_phone:   "",
     whatsapp_number: "",
   });
+  const [thumbnailKey, setThumbnailKey] = useState("");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
+
+  const handleThumbnailChange = (result: PresignedUploadResult | null) => {
+    setThumbnailKey(result ? result.file_key  : "");
+    setThumbnailUrl(result ? result.public_url : "");
+  };
 
   const updateFormData = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
@@ -43,7 +52,10 @@ const LocationCreatePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { location: created, fieldErrors: fe, error: ge } = await createLocation(form);
+    const { location: created, fieldErrors: fe, error: ge } = await createLocation({
+      ...form,
+      ...(thumbnailKey && { thumbnail: thumbnailKey }),
+    });
     if (created) {
       addToast("Location created successfully", "success");
       navigate("/admin/locations");
@@ -147,6 +159,15 @@ const LocationCreatePage = () => {
             formData={form}
             errors={fieldErrors}
             updateFormData={updateFormData}
+          />
+
+          <MediaUploadField
+            label="Thumbnail"
+            type="image"
+            folder="locations/thumbnails"
+            displayUrl={thumbnailUrl}
+            onChange={handleThumbnailChange}
+            error={fieldErrors?.thumbnail}
           />
 
           <ToggleInput

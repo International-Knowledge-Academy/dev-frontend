@@ -10,6 +10,7 @@ export interface Location {
   is_active: boolean;
   contact_phone: string;
   whatsapp_number: string;
+  thumbnail?: string;
   course_count: number;
   created_at: string;
   updated_at: string;

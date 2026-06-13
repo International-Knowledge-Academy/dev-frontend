@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "context/ToastContext";
 import useGetLocation from "hooks/locations/useGetLocation";
 import useUpdateLocation from "hooks/locations/useUpdateLocation";
+import MediaUploadField from "components/form/filesUpload/MediaUploadField";
+import type { PresignedUploadResult } from "hooks/storage/usePresignedUpload";
 import PageHeader from "components/ui/PageHeader";
 import InputField from "components/form/InputField";
 import ToggleInput from "components/form/toggle/ToggleInput";
@@ -34,6 +36,8 @@ const LocationEditPage = () => {
     contact_phone:   "",
     whatsapp_number: "",
   });
+  const [thumbnailKey, setThumbnailKey] = useState<string | null>(null);
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
 
   useEffect(() => {
     if (location) {
@@ -49,15 +53,23 @@ const LocationEditPage = () => {
         contact_phone:   location.contact_phone   ?? "",
         whatsapp_number: location.whatsapp_number ?? "",
       });
+      setThumbnailUrl(location.thumbnail ?? "");
     }
   }, [location]);
+
+  const handleThumbnailChange = (result: PresignedUploadResult | null) => {
+    setThumbnailKey(result ? result.file_key  : "");
+    setThumbnailUrl(result ? result.public_url : "");
+  };
 
   const updateFormData = (key: string, value: any) =>
     setForm((p) => ({ ...p, [key]: value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const updated = await updateLocation(uid, form);
+    const payload: any = { ...form };
+    if (thumbnailKey !== null) payload.thumbnail = thumbnailKey;
+    const updated = await updateLocation(uid, payload);
     if (updated) {
       addToast("Location updated successfully", "success");
       navigate(`/account-manager/locations/${uid}`);
@@ -172,6 +184,15 @@ const LocationEditPage = () => {
             formData={form}
             errors={fieldErrors}
             updateFormData={updateFormData}
+          />
+
+          <MediaUploadField
+            label="Thumbnail"
+            type="image"
+            folder="locations/thumbnails"
+            displayUrl={thumbnailUrl}
+            onChange={handleThumbnailChange}
+            error={fieldErrors?.thumbnail}
           />
 
           <ToggleInput
