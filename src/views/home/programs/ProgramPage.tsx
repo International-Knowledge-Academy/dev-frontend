@@ -294,7 +294,7 @@ const ProgramPage = () => {
 
   /* ── Skeleton loader ─────────────────────────────────────────────────── */
   if (loading) return (
-    <div className="min-h-screen bg-[#F8F5F0] flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       <Navbar />
       <div className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-900 px-6 pt-10 pb-16 overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
