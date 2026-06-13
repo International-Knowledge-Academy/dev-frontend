@@ -40,13 +40,6 @@ const TestimonialCard = ({ fb, index }: { fb: any; index: number }) => (
       "{fb.message}"
     </p>
 
-    {/* Program badge */}
-    {fb.program && (
-      <span className="self-start inline-flex items-center text-[10px] font-semibold text-navy-600 bg-navy-50 border border-navy-100 px-2.5 py-1 rounded-full line-clamp-1">
-        {fb.program.name}
-      </span>
-    )}
-
     {/* Author */}
     <div className="flex items-center gap-3 pt-3 border-t border-slate-100">
       <div className="w-10 h-10 rounded-full bg-navy-800 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
