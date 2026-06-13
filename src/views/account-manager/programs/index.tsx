@@ -3,10 +3,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Award, Layers, Calendar, Monitor, Plus, Pencil, Trash2,
-  RefreshCw, Filter, X, ToggleLeft, Activity, CheckCircle,
+  RefreshCw, Filter, X, ToggleLeft, Activity, CheckCircle, Tag,
 } from "lucide-react";
 import usePrograms from "hooks/programs/usePrograms";
 import useDeleteProgram from "hooks/programs/useDeleteProgram";
+import useFields from "hooks/fields/useFields";
+import useCategories from "hooks/categories/useCategories";
 import DeleteProgramModal from "./components/DeleteProgramModal";
 import Loading from "components/loading/Loading";
 import EmptyState from "components/empty/empty";
@@ -91,6 +93,11 @@ const ProgramsPage = () => {
   const { addToast } = useToast();
   const { programs, count, loading, error, params, setParams, refetch } = usePrograms();
   const { deleteProgram, loading: deleting } = useDeleteProgram();
+  const { fields }      = useFields({ page_size: 100 });
+  const { categories }  = useCategories({ page_size: 100 });
+
+  const fieldOptions    = fields.map((f) => ({ value: f.uid, label: f.name }));
+  const categoryOptions = categories.map((c) => ({ value: c.uid, label: c.name }));
 
   const [deleteOpen, setDeleteOpen]           = useState(false);
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
@@ -117,13 +124,15 @@ const ProgramsPage = () => {
     !!params.status,
     !!params.level,
     !!params.mode,
+    !!params.field,
+    !!params.category,
     params.is_active !== undefined,
   ].filter(Boolean).length;
 
   const hasAnyFilter = activeFilterCount > 0 || !!params.search;
 
   const clearAllFilters = () =>
-    setParams({ program_type: undefined, status: undefined, level: undefined, mode: undefined, is_active: undefined, search: undefined });
+    setParams({ program_type: undefined, status: undefined, level: undefined, mode: undefined, is_active: undefined, search: undefined, field: undefined, category: undefined });
 
   const totalPages = Math.ceil(count / 10);
 
@@ -269,6 +278,20 @@ const ProgramsPage = () => {
               { value: "false", label: "Inactive" },
             ]}
           />
+          <FilterSelectField
+            value={params.field ?? "all"}
+            onChange={(val) => setParams({ field: val === "all" ? undefined : val })}
+            icon={Layers}
+            defaultOption="All Fields"
+            options={fieldOptions}
+          />
+          <FilterSelectField
+            value={params.category ?? "all"}
+            onChange={(val) => setParams({ category: val === "all" ? undefined : val })}
+            icon={Tag}
+            defaultOption="All Categories"
+            options={categoryOptions}
+          />
         </div>
 
         {/* Mobile: expanded filter panel */}
@@ -311,6 +334,20 @@ const ProgramsPage = () => {
                 { value: "true",  label: "Active"   },
                 { value: "false", label: "Inactive" },
               ]}
+            />
+            <FilterSelectField
+              value={params.field ?? "all"}
+              onChange={(val) => setParams({ field: val === "all" ? undefined : val })}
+              icon={Layers}
+              defaultOption="All Fields"
+              options={fieldOptions}
+            />
+            <FilterSelectField
+              value={params.category ?? "all"}
+              onChange={(val) => setParams({ category: val === "all" ? undefined : val })}
+              icon={Tag}
+              defaultOption="All Categories"
+              options={categoryOptions}
             />
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">

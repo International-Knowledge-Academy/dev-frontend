@@ -7,6 +7,8 @@ import {
 } from "lucide-react";
 import usePrograms from "hooks/programs/usePrograms";
 import useDeleteProgram from "hooks/programs/useDeleteProgram";
+import useFields from "hooks/fields/useFields";
+import useCategories from "hooks/categories/useCategories";
 import DeleteProgramModal from "./components/DeleteProgramModal";
 import Loading from "components/loading/Loading";
 import EmptyState from "components/empty/empty";
@@ -91,6 +93,11 @@ const ProgramsPage = () => {
   const { addToast } = useToast();
   const { programs, count, loading, error, params, setParams, refetch } = usePrograms();
   const { deleteProgram, loading: deleting } = useDeleteProgram();
+  const { fields }      = useFields({ page_size: 100 });
+  const { categories }  = useCategories({ page_size: 100 });
+
+  const fieldOptions    = fields.map((f) => ({ value: f.uid, label: f.name }));
+  const categoryOptions = categories.map((c) => ({ value: c.uid, label: c.name }));
 
   const [deleteOpen, setDeleteOpen]           = useState(false);
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
@@ -117,13 +124,15 @@ const ProgramsPage = () => {
     !!params.status,
     !!params.level,
     !!params.mode,
+    !!params.field,
+    !!params.category,
     params.is_active !== undefined,
   ].filter(Boolean).length;
 
   const hasAnyFilter = activeFilterCount > 0 || !!params.search;
 
   const clearAllFilters = () =>
-    setParams({ program_type: undefined, status: undefined, level: undefined, mode: undefined, is_active: undefined, search: undefined });
+    setParams({ program_type: undefined, status: undefined, level: undefined, mode: undefined, is_active: undefined, search: undefined, field: undefined, category: undefined });
 
   const totalPages = Math.ceil(count / 10);
 
@@ -293,6 +302,28 @@ const ProgramsPage = () => {
               required={false}
             />
           </div>
+          <div className="min-w-[150px]">
+            <SearchableDropdown
+              field="field"
+              options={[{ value: "", label: "All Fields" }, ...fieldOptions]}
+              formData={{ field: params.field ?? "" }}
+              errors={{}}
+              updateFormData={(_, v) => setParams({ field: v || undefined })}
+              placeholder="All Fields"
+              required={false}
+            />
+          </div>
+          <div className="min-w-[150px]">
+            <SearchableDropdown
+              field="category"
+              options={[{ value: "", label: "All Categories" }, ...categoryOptions]}
+              formData={{ category: params.category ?? "" }}
+              errors={{}}
+              updateFormData={(_, v) => setParams({ category: v || undefined })}
+              placeholder="All Categories"
+              required={false}
+            />
+          </div>
         </div>
 
         {/* Mobile: expanded filter panel */}
@@ -345,6 +376,24 @@ const ProgramsPage = () => {
               errors={{}}
               updateFormData={(_, v) => setParams({ is_active: v === "" ? undefined : v === "true" })}
               placeholder="All"
+              required={false}
+            />
+            <SearchableDropdown
+              field="field"
+              options={[{ value: "", label: "All Fields" }, ...fieldOptions]}
+              formData={{ field: params.field ?? "" }}
+              errors={{}}
+              updateFormData={(_, v) => setParams({ field: v || undefined })}
+              placeholder="All Fields"
+              required={false}
+            />
+            <SearchableDropdown
+              field="category"
+              options={[{ value: "", label: "All Categories" }, ...categoryOptions]}
+              formData={{ category: params.category ?? "" }}
+              errors={{}}
+              updateFormData={(_, v) => setParams({ category: v || undefined })}
+              placeholder="All Categories"
               required={false}
             />
             <div className="flex items-center justify-between">
