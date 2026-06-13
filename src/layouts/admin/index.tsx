@@ -48,6 +48,10 @@ import CertificatesPage from "views/admin/certificates";
 import CertificateCreatePage from "views/admin/certificates/CertificateCreatePage";
 import CertificateDetailPage from "views/admin/certificates/CertificateDetailPage";
 import CertificateEditPage from "views/admin/certificates/CertificateEditPage";
+import FeedbackCreatePage from "views/admin/feedbacks/FeedbackCreatePage";
+import FeedbackDetailPage from "views/admin/feedbacks/FeedbackDetailPage";
+import FeedbackEditPage from "views/admin/feedbacks/FeedbackEditPage";
+import EmailsPage from "views/admin/emails";
 
 export default function Admin(props) {
   const { ...rest } = props;
@@ -172,6 +176,10 @@ export default function Admin(props) {
                 <Route path="/certificates/create"        element={<CertificateCreatePage />} />
                 <Route path="/certificates/:uid"          element={<CertificateDetailPage />} />
                 <Route path="/certificates/:uid/edit"     element={<CertificateEditPage />} />
+                <Route path="/feedbacks/create"           element={<FeedbackCreatePage />} />
+                <Route path="/feedbacks/:uid"             element={<FeedbackDetailPage />} />
+                <Route path="/feedbacks/:uid/edit"        element={<FeedbackEditPage />} />
+                <Route path="/emails"                     element={<EmailsPage />} />
 
                 <Route
                   path="/"

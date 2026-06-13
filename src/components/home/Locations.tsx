@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { MapPin, GraduationCap, ArrowRight, Globe, PauseCircle } from "lucide-react";
+import { MapPin, GraduationCap, Globe, PauseCircle } from "lucide-react";
 import useLocations from "hooks/locations/useLocations";
 import type { Location } from "types/location";
 
@@ -47,44 +47,47 @@ const LocationCard = ({ location }: { location: Location }) => (
   <motion.div
     whileHover={{ y: -4, scale: 1.02 }}
     transition={{ duration: 0.2, ease: "easeOut" }}
-    className="group relative flex-shrink-0 w-60 bg-white border border-slate-100 hover:border-gold-300 rounded-2xl p-5 transition-colors duration-300 hover:shadow-[0_8px_28px_rgba(201,168,76,0.12)] cursor-default select-none"
+    className="group relative flex-shrink-0 w-60 bg-white border border-slate-100 hover:border-gold-300 rounded-2xl overflow-hidden transition-colors duration-300 hover:shadow-[0_8px_28px_rgba(201,168,76,0.12)] cursor-default select-none"
   >
     {/* Active pulse dot */}
     {location.is_active && (
-      <span className="absolute top-4 right-4 flex items-center justify-center">
+      <span className="absolute top-3 right-3 z-10 flex items-center justify-center">
         <span className="absolute w-3 h-3 rounded-full bg-gold-400/40 animate-ping" />
         <span className="w-2 h-2 rounded-full bg-gold-500" />
       </span>
     )}
 
-    {/* Pin icon */}
-    <div className="w-10 h-10 rounded-xl bg-navy-50 border border-navy-100 flex items-center justify-center mb-4 group-hover:bg-gold-50 group-hover:border-gold-200 transition-colors duration-300">
-      <MapPin size={17} className="text-navy-600 group-hover:text-gold-500 transition-colors duration-300" />
+    {/* Top area — thumbnail or icon placeholder */}
+    <div className="h-32 w-full overflow-hidden">
+      {location.thumbnail?.public_url ? (
+        <img
+          src={location.thumbnail.public_url}
+          alt={location.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+      ) : (
+        <div className="w-full h-full bg-navy-50 flex items-center justify-center group-hover:bg-gold-50 transition-colors duration-300">
+          <MapPin size={28} className="text-navy-200 group-hover:text-gold-400 transition-colors duration-300" />
+        </div>
+      )}
     </div>
 
-    {/* Name */}
-    <h3 className="text-navy-800 font-bold text-sm leading-snug pr-5 line-clamp-2 min-h-[36px]">
-      {location.name}
-    </h3>
-
-    {/* Divider */}
-    <div className="h-px bg-slate-100 my-3" />
-
-    {/* Footer */}
-    <div className="flex items-center justify-between gap-2">
-      <div className="flex items-center gap-1.5 text-slate-400 text-xs min-w-0">
-        <Globe size={11} className="flex-shrink-0" />
-        <span className="truncate">{location.city}, {location.country}</span>
+    {/* Content */}
+    <div className="px-5 py-4">
+      <h3 className="text-navy-800 font-bold text-sm leading-snug line-clamp-2 min-h-[36px]">
+        {location.name}
+      </h3>
+      <div className="h-px bg-slate-100 my-3" />
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5 text-slate-400 text-xs min-w-0">
+          <Globe size={11} className="flex-shrink-0" />
+          <span className="truncate">{location.city}, {location.country}</span>
+        </div>
+        <div className="flex items-center gap-1 text-gold-500 text-xs font-semibold flex-shrink-0">
+          <GraduationCap size={13} />
+          <span>{location.course_count ?? 0}</span>
+        </div>
       </div>
-      <div className="flex items-center gap-1 text-gold-500 text-xs font-semibold flex-shrink-0">
-        <GraduationCap size={13} />
-        <span>{location.course_count ?? 0}</span>
-      </div>
-    </div>
-
-    {/* Hover arrow */}
-    <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-1 group-hover:translate-x-0">
-      <ArrowRight size={13} className="text-gold-500" />
     </div>
   </motion.div>
 );
@@ -92,7 +95,13 @@ const LocationCard = ({ location }: { location: Location }) => (
 /* ─── Skeleton card ─────────────────────────────────────────────────────── */
 
 const SkeletonCard = () => (
-  <div className="flex-shrink-0 w-60 h-[148px] rounded-2xl bg-slate-100 animate-pulse border border-slate-100" />
+  <div className="flex-shrink-0 w-60 rounded-2xl bg-slate-100 animate-pulse border border-slate-100 overflow-hidden">
+    <div className="h-32 w-full bg-slate-200" />
+    <div className="px-5 py-4 space-y-2">
+      <div className="h-3 bg-slate-200 rounded w-3/4" />
+      <div className="h-3 bg-slate-200 rounded w-1/2" />
+    </div>
+  </div>
 );
 
 /* ─── Infinite carousel ─────────────────────────────────────────────────── */

@@ -117,7 +117,8 @@ const usePrograms = (initialParams: ProgramsParams = {}): UseProgramsReturn => {
         "start_date_from" in updates ||
         "start_date_to"   in updates ||
         "is_active"       in updates ||
-        "trainer"         in updates
+        "trainer"         in updates ||
+        "category"        in updates
           ? 1
           : (updates.page ?? prev.page),
     }));

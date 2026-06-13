@@ -16,6 +16,9 @@ import usePrograms from "hooks/programs/usePrograms";
 import { useAppData } from "context/AppDataContext";
 import ProgramCard from "components/programs/ProgramCard";
 import ProgramQuotationPDF from "components/pdf/ProgramQuotationPDF";
+import TestimonialsSection from "components/home/TestimonialsSection";
+import LeadCaptureModal from "components/home/LeadCaptureModal";
+import useSubscribeEmail from "hooks/emails/useSubscribeEmail";
 import type { ProgramTrainer } from "types/program";
 
 /* ─── Config maps ────────────────────────────────────────────────────────── */
@@ -205,10 +208,12 @@ const QuotationDownloadButton = ({
   variant?: "default" | "hero";
 }) => {
   const { locations } = useAppData();
-  const [downloaded, setDownloaded] = useState(false);
+  const [downloaded, setDownloaded]   = useState(false);
+  const [showModal, setShowModal]     = useState(false);
   const [instance] = usePDF({ document: <ProgramQuotationPDF program={program} locations={locations} /> });
+  const { subscribe, loading: subscribing } = useSubscribeEmail();
 
-  const handleDownload = () => {
+  const triggerDownload = () => {
     if (!instance.url) return;
     const a = document.createElement("a");
     a.href = instance.url;
@@ -220,40 +225,63 @@ const QuotationDownloadButton = ({
     setTimeout(() => setDownloaded(false), 3000);
   };
 
-  if (variant === "hero") {
-    return (
-      <button
-        type="button"
-        onClick={handleDownload}
-        disabled={instance.loading}
-        className="inline-flex items-center gap-2.5 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-8 py-3.5 rounded-md lg:rounded-lg text-sm transition-all duration-200 shadow-lg hover:shadow-gold-500/25 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-      >
-        {downloaded ? (
-          <><Check size={16} className="text-navy-800" /> Downloaded!</>
-        ) : instance.loading ? (
-          <><FileText size={16} /> Preparing PDF…</>
-        ) : (
-          <><Download size={16} /> Download Quotation PDF</>
-        )}
-      </button>
-    );
-  }
+  const handleButtonClick = () => {
+    if (instance.loading) return;
+    setShowModal(true);
+  };
+
+  const handleModalSubmit = async (email: string, phone: string) => {
+    setShowModal(false);
+    triggerDownload();
+    subscribe(email, phone);
+  };
+
+  const handleModalSkip = () => {
+    setShowModal(false);
+    triggerDownload();
+  };
 
   return (
-    <button
-      type="button"
-      onClick={handleDownload}
-      disabled={instance.loading}
-      className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-slate-700 hover:bg-slate-800 border border-slate-600 px-3 py-2 rounded-md lg:rounded-lg transition-all duration-200 disabled:opacity-60"
-    >
-      {downloaded ? (
-        <><Check size={12} /> Done</>
-      ) : instance.loading ? (
-        <><FileText size={12} /> Preparing…</>
+    <>
+      <LeadCaptureModal
+        open={showModal}
+        onSubmit={handleModalSubmit}
+        onSkip={handleModalSkip}
+        loading={subscribing}
+      />
+
+      {variant === "hero" ? (
+        <button
+          type="button"
+          onClick={handleButtonClick}
+          disabled={instance.loading}
+          className="inline-flex items-center gap-2.5 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-8 py-3.5 rounded-md lg:rounded-lg text-sm transition-all duration-200 shadow-lg hover:shadow-gold-500/25 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+        >
+          {downloaded ? (
+            <><Check size={16} className="text-navy-800" /> Downloaded!</>
+          ) : instance.loading ? (
+            <><FileText size={16} /> Preparing PDF…</>
+          ) : (
+            <><Download size={16} /> Download Quotation PDF</>
+          )}
+        </button>
       ) : (
-        <><FileText size={12} /> Download Quotation</>
+        <button
+          type="button"
+          onClick={handleButtonClick}
+          disabled={instance.loading}
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-slate-700 hover:bg-slate-800 border border-slate-600 px-3 py-2 rounded-md lg:rounded-lg transition-all duration-200 disabled:opacity-60"
+        >
+          {downloaded ? (
+            <><Check size={12} /> Done</>
+          ) : instance.loading ? (
+            <><FileText size={12} /> Preparing…</>
+          ) : (
+            <><FileText size={12} /> Download Quotation</>
+          )}
+        </button>
       )}
-    </button>
+    </>
   );
 };
 
@@ -266,7 +294,7 @@ const ProgramPage = () => {
 
   /* ── Skeleton loader ─────────────────────────────────────────────────── */
   if (loading) return (
-    <div className="min-h-screen bg-[#F8F5F0] flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       <Navbar />
       <div className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-900 px-6 pt-10 pb-16 overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
@@ -885,6 +913,9 @@ const ProgramPage = () => {
           </div>
         </div>
       </section>
+
+      {/* ── Testimonials ─────────────────────────────────────────────────── */}
+      <TestimonialsSection programUid={program.uid} />
 
       {/* ── Related programs ─────────────────────────────────────────────── */}
       {program.field?.uid && (

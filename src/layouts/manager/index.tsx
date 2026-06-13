@@ -50,6 +50,11 @@ import ManagerCertificatesPage        from "views/account-manager/certificates";
 import ManagerCertificateCreatePage   from "views/account-manager/certificates/CertificateCreatePage";
 import ManagerCertificateDetailPage   from "views/account-manager/certificates/CertificateDetailPage";
 import ManagerCertificateEditPage     from "views/account-manager/certificates/CertificateEditPage";
+import ManagerFeedbacksPage           from "views/account-manager/feedbacks";
+import ManagerFeedbackCreatePage      from "views/account-manager/feedbacks/FeedbackCreatePage";
+import ManagerFeedbackDetailPage      from "views/account-manager/feedbacks/FeedbackDetailPage";
+import ManagerFeedbackEditPage        from "views/account-manager/feedbacks/FeedbackEditPage";
+import ManagerEmailsPage              from "views/account-manager/emails";
 
 const ManagerLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -151,6 +156,15 @@ const ManagerLayout = () => {
             <Route path="certificates/create"      element={<ManagerCertificateCreatePage />} />
             <Route path="certificates/:uid"        element={<ManagerCertificateDetailPage />} />
             <Route path="certificates/:uid/edit"   element={<ManagerCertificateEditPage />} />
+
+            {/* Feedbacks */}
+            <Route path="feedbacks"             element={<ManagerFeedbacksPage />} />
+            <Route path="feedbacks/create"      element={<ManagerFeedbackCreatePage />} />
+            <Route path="feedbacks/:uid"        element={<ManagerFeedbackDetailPage />} />
+            <Route path="feedbacks/:uid/edit"   element={<ManagerFeedbackEditPage />} />
+
+            {/* Mailing List */}
+            <Route path="emails" element={<ManagerEmailsPage />} />
 
             <Route path="/" element={<Navigate to="/account-manager/dashboard" replace />} />
           </Routes>
