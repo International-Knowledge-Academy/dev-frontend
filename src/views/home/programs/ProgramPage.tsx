@@ -231,9 +231,9 @@ const QuotationDownloadButton = ({
   };
 
   const handleModalSubmit = async (email: string, phone: string) => {
-    await subscribe(email, phone);
     setShowModal(false);
     triggerDownload();
+    subscribe(email, phone);
   };
 
   const handleModalSkip = () => {
