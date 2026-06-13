@@ -73,12 +73,12 @@ const LocationDetailPage = () => {
         </div>
 
         {/* Thumbnail */}
-        {location.thumbnail && (
+        {location.thumbnail?.public_url && (
           <>
             <SectionTitle title="Thumbnail" />
             <div className="px-4 sm:px-6 pb-4">
               <img
-                src={location.thumbnail}
+                src={location.thumbnail.public_url}
                 alt={location.name}
                 className="w-full max-h-56 object-cover rounded-lg border border-slate-100"
               />

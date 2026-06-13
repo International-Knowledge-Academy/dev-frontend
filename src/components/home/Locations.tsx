@@ -57,17 +57,20 @@ const LocationCard = ({ location }: { location: Location }) => (
       </span>
     )}
 
-    {/* Top area — thumbnail bg or icon placeholder */}
-    {location.thumbnail ? (
-      <div
-        className="h-32 w-full bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
-        style={{ backgroundImage: `url(${location.thumbnail})` }}
-      />
-    ) : (
-      <div className="h-32 w-full bg-navy-50 flex items-center justify-center group-hover:bg-gold-50 transition-colors duration-300">
-        <MapPin size={28} className="text-navy-200 group-hover:text-gold-400 transition-colors duration-300" />
-      </div>
-    )}
+    {/* Top area — thumbnail or icon placeholder */}
+    <div className="h-32 w-full overflow-hidden">
+      {location.thumbnail?.public_url ? (
+        <img
+          src={location.thumbnail.public_url}
+          alt={location.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+      ) : (
+        <div className="w-full h-full bg-navy-50 flex items-center justify-center group-hover:bg-gold-50 transition-colors duration-300">
+          <MapPin size={28} className="text-navy-200 group-hover:text-gold-400 transition-colors duration-300" />
+        </div>
+      )}
+    </div>
 
     {/* Content */}
     <div className="px-5 py-4">

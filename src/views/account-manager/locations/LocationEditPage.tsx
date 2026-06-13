@@ -53,7 +53,7 @@ const LocationEditPage = () => {
         contact_phone:   location.contact_phone   ?? "",
         whatsapp_number: location.whatsapp_number ?? "",
       });
-      setThumbnailUrl(location.thumbnail ?? "");
+      setThumbnailUrl(location.thumbnail?.public_url ?? "");
     }
   }, [location]);
 
