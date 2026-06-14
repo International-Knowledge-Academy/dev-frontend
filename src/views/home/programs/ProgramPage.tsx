@@ -619,7 +619,7 @@ const ProgramPage = () => {
               )}
 
               {objectives.length > 0 && (
-                <SectionCard title="Program Objectives" icon={CheckCircle2} iconColor="text-emerald-500">
+                <SectionCard title="Program Objectives" iconColor="text-emerald-500">
                   <ul className="space-y-3">
                     {objectives.map((obj, i) => (
                       <li key={i} className="flex items-start gap-3">
