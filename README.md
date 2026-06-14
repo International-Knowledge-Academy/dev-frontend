@@ -2,7 +2,7 @@
 
 **International Knowledge Academy** — Training & Management Development Platform.
 
-React + TypeScript frontend for the IKA public website and admin dashboard.
+React + TypeScript frontend for the IKA public website, admin dashboard, and account manager panel.
 
 ---
 
@@ -17,7 +17,7 @@ React + TypeScript frontend for the IKA public website and admin dashboard.
 | Animations | Framer Motion |
 | Icons | React Icons, Lucide React |
 | Charts | ApexCharts |
-| Tables | TanStack React Table |
+| PDF Generation | @react-pdf/renderer |
 
 ---
 
@@ -26,15 +26,19 @@ React + TypeScript frontend for the IKA public website and admin dashboard.
 ```
 src/
 ├── api/              # Axios instance + auth interceptors
+├── assets/           # Static assets and content copy
 ├── components/       # Reusable UI components (organized by feature)
-├── context/          # React context (Auth, Toast)
-├── hooks/            # API hooks (auth, users, courses, programs, locations, categories)
+│   ├── home/         # Public-facing components (Navbar, Footer, sections)
+│   ├── pdf/          # PDF document templates
+│   └── ui/           # Shared UI primitives (PageHeader, MediaUploadField, etc.)
+├── context/          # React context (Auth, AppData, Toast)
+├── hooks/            # API hooks organized by resource
 ├── layouts/          # Layout wrappers (home, auth, admin, manager)
 ├── types/            # TypeScript interfaces
-├── views/            # Page components
-│   ├── home/         # Public pages (home, about, categories, training, programs, contact)
-│   └── admin/        # Admin dashboard pages
-└── App.tsx           # Route configuration
+└── views/            # Page components
+    ├── home/         # Public pages
+    ├── admin/        # Admin dashboard pages
+    └── account-manager/ # Account manager panel pages
 ```
 
 ---
@@ -46,13 +50,8 @@ src/
 |---|---|
 | `/` | Home |
 | `/about` | About IKA |
-| `/categories` | Training Categories hub |
-| `/categories/training-development` | Training & Development |
-| `/categories/international-youth` | International & Youth Programs |
-| `/categories/research` | Research and Knowledge Services |
-| `/training` | Course listings |
 | `/programs` | Program listings |
-| `/programs/:uid` | Program detail |
+| `/programs/:uid` | Program detail + quotation download |
 | `/contact` | Contact |
 
 ### Admin (protected — admin role)
@@ -60,10 +59,47 @@ src/
 |---|---|
 | `/admin/default` | Dashboard |
 | `/admin/users` | User management |
-| `/admin/courses` | Course management |
+| `/admin/trainers` | Trainer management |
 | `/admin/programs` | Program management |
+| `/admin/registrations` | Registration management |
+| `/admin/payments` | Payment management |
 | `/admin/locations` | Location management |
 | `/admin/categories` | Category management |
+| `/admin/fields` | Field management |
+| `/admin/services` | Services management |
+| `/admin/partnerships` | Partnership management |
+| `/admin/certificates` | Certificate management |
+| `/admin/feedbacks` | Feedback management |
+| `/admin/contact` | Contact submissions |
+| `/admin/emails` | Mailing list (subscribers) |
+
+### Account Manager (protected — manager role)
+| Route | Page |
+|---|---|
+| `/account-manager/dashboard` | Dashboard |
+| `/account-manager/programs` | Program management |
+| `/account-manager/registrations` | Registration management |
+| `/account-manager/payments` | Payment management |
+| `/account-manager/trainers` | Trainer management |
+| `/account-manager/locations` | Location management |
+| `/account-manager/categories` | Category management |
+| `/account-manager/fields` | Field management |
+| `/account-manager/services` | Services management |
+| `/account-manager/partnerships` | Partnership management |
+| `/account-manager/certificates` | Certificate management |
+| `/account-manager/feedbacks` | Feedback management |
+| `/account-manager/contact` | Contact submissions |
+| `/account-manager/emails` | Mailing list (subscribers) |
+
+---
+
+## Key Features
+
+- **Quotation PDF** — Program detail page generates a branded PDF quotation via `@react-pdf/renderer`. Download is gated behind a soft lead-capture modal (email + phone) that subscribes the user to the mailing list before triggering the download.
+- **Mailing List** — Subscribers collected via the quotation flow are visible in both admin and manager panels at `/emails`.
+- **Location Thumbnails** — Locations support an image thumbnail (uploaded via presigned S3 URL) displayed on the public home page location cards.
+- **Media Uploads** — All image fields use `MediaUploadField` + `usePresignedUpload` for direct S3 upload; the API receives only the file key.
+- **Role-based panels** — Admin and Account Manager views are always separate files; never shared.
 
 ---
 
@@ -82,8 +118,6 @@ npm install
 ```
 
 ### Environment Setup
-
-Copy the example env file and fill in your API URL:
 
 ```bash
 cp .env.example .env
@@ -112,16 +146,16 @@ npm run build
 | Branch | Environment | Domain |
 |---|---|---|
 | `main` | Production | `ika-edu.com` |
-| `dev` | Staging | `dev.ika-edu.com` |
+| `staging` | Staging | `staging.ika-edu.com` |
 
 **Workflow:**
 ```
-feature/xxx  →  PR  →  dev  (auto-deploys to staging)
-                             ↓  review & QA
-             dev  →  PR  →  main  (auto-deploys to production)
+feature/xxx  →  PR  →  staging  (auto-deploys to staging)
+                                ↓  review & QA
+             staging  →  PR  →  main  (auto-deploys to production)
 ```
 
-Deployments are handled via **Vercel**. Environment variables (`REACT_APP_API_URL`) are configured per environment in the Vercel dashboard — never commit `.env` to git.
+Deployments are handled via **Vercel**. Environment variables are configured per environment in the Vercel dashboard — never commit `.env` to git.
 
 ---
 
