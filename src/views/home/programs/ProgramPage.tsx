@@ -363,7 +363,7 @@ const ProgramPage = () => {
   if (error || !program) {
     const isNotFound = !program || error?.includes("404") || error?.toLowerCase().includes("not found");
     return (
-      <div className="min-h-screen bg-[#F8F5F0] flex flex-col">
+      <div className="min-h-screen bg-white flex flex-col">
         <Navbar />
         <div className="flex-1 flex flex-col items-center justify-center px-6 py-24 text-center">
           <div className="w-20 h-20 rounded-full bg-navy-50 border border-navy-100 flex items-center justify-center mb-6">
@@ -619,7 +619,7 @@ const ProgramPage = () => {
               )}
 
               {objectives.length > 0 && (
-                <SectionCard title="Program Objectives" icon={CheckCircle2} iconColor="text-emerald-500">
+                <SectionCard title="Program Objectives" iconColor="text-emerald-500">
                   <ul className="space-y-3">
                     {objectives.map((obj, i) => (
                       <li key={i} className="flex items-start gap-3">
