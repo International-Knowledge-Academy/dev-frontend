@@ -424,7 +424,7 @@ const ProgramPage = () => {
   const prereqs    = parseLines(program.prerequisites);
 
   return (
-    <div className="min-h-screen bg-[#F8F5F0] flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       <Navbar />
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
