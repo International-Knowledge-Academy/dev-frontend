@@ -160,7 +160,7 @@ const Footer = () => {
             <ul className="space-y-4">
               {[
                 { icon: <MdEmail size={16} />, label: "Email",   text: "info@ika-edu.com",     href: "mailto:info@ika-edu.com" },
-                { icon: <MdPhone size={16} />, label: "Phone",   text: "+601139936766",         href: "https://wa.me/601139936766" },
+                { icon: <MdPhone size={16} />, label: "Phone",   text: "+60 11-6878 6103",      href: "https://wa.me/601168786103" },
                 { icon: <MdLanguage size={16} />, label: "Web",  text: "www.ika-edu.com",       href: "https://ika-edu.com" },
               ].map((c) => (
                 <li key={c.text}>
