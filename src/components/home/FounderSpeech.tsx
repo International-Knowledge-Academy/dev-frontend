@@ -110,7 +110,7 @@ const FounderSpeech = () => {
               >
                 <span className="text-navy-900 font-extrabold text-lg leading-none">IKA</span>
                 <span className="text-navy-900/70 text-[8px] font-bold uppercase tracking-widest mt-0.5">
-                  Founder
+                  Director
                 </span>
               </motion.div>
             </div>
