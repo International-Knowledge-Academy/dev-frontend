@@ -5,7 +5,6 @@ import About               from "components/home/About";
 import FounderSpeech       from "components/home/FounderSpeech";
 import Stats               from "components/home/Stats";
 import Programs            from "components/home/Programs";
-import Services            from "components/home/Services";
 import UpcomingPrograms    from "components/home/UpcomingPrograms";
 import Categories          from "components/home/Categories";
 import HowToEnroll         from "components/home/HowToEnroll";
@@ -26,7 +25,6 @@ const HomePage = () => {
       <FounderSpeech />
       <Stats />
       <Programs />
-      <Services />
       <Categories />
       <UpcomingPrograms />
       <Features />

@@ -45,7 +45,7 @@ const FounderSpeech = () => {
         >
           <span className="inline-flex items-center gap-2 bg-navy-50 border border-navy-100 text-navy-600 text-[11px] font-bold uppercase tracking-[0.15em] px-4 py-2 rounded-full">
             <Quote size={11} />
-            Message from the Founding President
+            Message from the Director
           </span>
         </motion.div>
 
@@ -79,7 +79,7 @@ const FounderSpeech = () => {
               <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-navy-900/15 aspect-[3/4]">
                 <img
                   src={founderImg}
-                  alt="Dr. Abdallah Isam Sadeq, Founding President, International Knowledge Academy"
+                  alt="Dr. Abdallah Isam Sadeq, Director, International Knowledge Academy"
                   className="w-full h-full object-cover object-top"
                 />
 
@@ -92,7 +92,7 @@ const FounderSpeech = () => {
                     Dr. Abdallah Isam Sadeq
                   </p>
                   <p className="text-gold-300 text-sm font-medium mt-0.5">
-                    Founding President
+                    Director
                   </p>
                   <p className="text-white/70 text-xs mt-0.5">
                     International Knowledge Academy
@@ -216,7 +216,7 @@ const FounderSpeech = () => {
                   Dr. Abdallah Isam Sadeq
                 </p>
                 <p className="text-gold-600 text-sm font-semibold mt-0.5">
-                  Founding President
+                  Director
                 </p>
                 <p className="text-slate-400 text-xs mt-0.5">
                   International Knowledge Academy
