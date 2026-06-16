@@ -25,7 +25,7 @@ const HomeLayout = () => {
       </main>
 
       <WhatsAppFloatButton
-        phone="601139936766"
+        phone="601168786103"
         message="Hi IKA, I'd like to know more about your programs!"
       />
     </div>

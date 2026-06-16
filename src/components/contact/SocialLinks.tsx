@@ -35,8 +35,8 @@ const socials = [
   {
     icon: <FaWhatsapp size={20} />,
     label: "WhatsApp",
-    handle: "+601139936766",
-    href: "https://wa.me/601139936766",
+    handle: "+60 11-6878 6103",
+    href: "https://wa.me/601168786103",
     color: "hover:bg-[#25D366] hover:border-[#25D366]",
   },
 ];
