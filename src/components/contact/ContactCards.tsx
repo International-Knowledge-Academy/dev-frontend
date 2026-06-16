@@ -15,9 +15,9 @@ const cards = [
   {
     icon: <FaWhatsapp size={24} />,
     label: "WhatsApp",
-    value: "+601139936766",
+    value: "+60 11-6878 6103",
     sub: "Chat with us directly",
-    href: "https://wa.me/601139936766",
+    href: "https://wa.me/601168786103",
     color: "group-hover:bg-green-600",
   },
   {

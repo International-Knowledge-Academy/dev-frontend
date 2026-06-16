@@ -10,15 +10,15 @@ const socials = [
   { icon: <FaInstagram     size={14} />, href: "https://www.instagram.com/ika.academy?igsh=YWN4eTBqdHMxN2Nj&utm_source=qr",                           label: "Instagram" },
   { icon: <FaXTwitter      size={14} />, href: "https://x.com/internatio86032?s=11&t=FiEYk1tKhME8U_rENQfVOA",                                          label: "X"         },
   { icon: <FaSnapchatGhost size={14} />, href: "https://www.snapchat.com/add/ika.academy?share_id=rxFv-CM6ThGReTcwUW0mJw&locale=en_MY",               label: "Snapchat"  },
-  { icon: <FaWhatsapp      size={14} />, href: "https://wa.me/601139936766",                                                                            label: "WhatsApp"  },
+  { icon: <FaWhatsapp      size={14} />, href: "https://wa.me/601168786103",                                                                            label: "WhatsApp"  },
 ];
 
 const quickLinks = [
-  { label: "Home",      to: "/" },
-  { label: "About IKA", to: "/about" },
-  { label: "Programs",  to: "/programs" },
-  { label: "Training",  to: "/training" },
-  { label: "Contact",   to: "/contact" },
+  { label: "Home",       to: "/" },
+  { label: "About IKA",  to: "/about" },
+  { label: "Categories", to: "/categories" },
+  { label: "Programs",   to: "/programs" },
+  { label: "Contact",    to: "/contact" },
 ];
 
 const registerLinks = [
@@ -160,7 +160,7 @@ const Footer = () => {
             <ul className="space-y-4">
               {[
                 { icon: <MdEmail size={16} />, label: "Email",   text: "info@ika-edu.com",     href: "mailto:info@ika-edu.com" },
-                { icon: <MdPhone size={16} />, label: "Phone",   text: "+601139936766",         href: "https://wa.me/601139936766" },
+                { icon: <MdPhone size={16} />, label: "Phone",   text: "+60 11-6878 6103",      href: "https://wa.me/601168786103" },
                 { icon: <MdLanguage size={16} />, label: "Web",  text: "www.ika-edu.com",       href: "https://ika-edu.com" },
               ].map((c) => (
                 <li key={c.text}>

@@ -387,7 +387,7 @@ const PageFooter = () => (
     </View>
     <View style={s.footerColRight}>
       <Text style={s.footerText}>info@ika-edu.com  |  www.ika-edu.com</Text>
-      <Text style={s.footerText}>00601139936766  |  00905345699372</Text>
+      <Text style={s.footerText}>+60 11-6878 6103</Text>
     </View>
   </View>
 );

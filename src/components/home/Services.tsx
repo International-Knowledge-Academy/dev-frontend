@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import useServices from "hooks/services/useServices";
 
-const WHATSAPP_NUMBER = "601139936766";
+const WHATSAPP_NUMBER = "601168786103";
 
 const ICONS = [
   Home, Wrench, ClipboardList, Building2,
