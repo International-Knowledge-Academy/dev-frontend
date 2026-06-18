@@ -1,12 +1,14 @@
 // @ts-nocheck
 import Navbar              from "components/home/Navbar";
-import Hero                from "components/home/Hero";
 import About               from "components/home/About";
 import FounderSpeech       from "components/home/FounderSpeech";
 import Stats               from "components/home/Stats";
 import Programs            from "components/home/Programs";
 import UpcomingPrograms    from "components/home/UpcomingPrograms";
 import Categories          from "components/home/Categories";
+import CampCarousel        from "components/home/camp/CampCarousel";
+import CampObjectives      from "components/home/camp/CampObjectives";
+import CampCTA             from "components/home/camp/CampCTA";
 import HowToEnroll         from "components/home/HowToEnroll";
 import HowToBeTrainer      from "components/home/HowToBeTrainer";
 import Features            from "components/home/Features";
@@ -18,9 +20,11 @@ import Footer              from "components/home/Footer";
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen">
+    <div className="">
       <Navbar />
-      <Hero />
+      <CampCarousel />
+      <CampObjectives />
+      <CampCTA />
       <About />
       <FounderSpeech />
       <Stats />

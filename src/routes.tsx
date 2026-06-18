@@ -21,6 +21,7 @@ import PartnershipsPage       from "views/admin/partnerships";
 import CertificatesPage from "views/admin/certificates";
 import FeedbacksPage    from "views/admin/feedbacks";
 import EmailsPage       from "views/admin/emails";
+import CampRegistrationsPage from "views/admin/camp-registrations";
 
 // Account Manager Imports
 import ManagerDashboard      from "views/account-manager/default";
@@ -38,6 +39,7 @@ import ManagerPartnershipsPage    from "views/account-manager/partnerships";
 import ManagerCertificatesPage   from "views/account-manager/certificates";
 import ManagerFeedbacksPage      from "views/account-manager/feedbacks";
 import ManagerEmailsPage         from "views/account-manager/emails";
+import ManagerCampRegistrationsPage from "views/account-manager/camp-registrations";
 
 // Icon Imports
 import {
@@ -58,6 +60,7 @@ import {
   MdVerified,
   MdRateReview,
   MdEmail,
+  MdOutdoorGrill,
 } from "react-icons/md";
 
 const routes = [
@@ -101,6 +104,14 @@ const routes = [
     path: "registrations",
     icon: <MdAssignment className="h-6 w-6" />,
     component: <RegistrationsPage />,
+    group: "Manage",
+  },
+  {
+    name: "Camp Registrations",
+    layout: "/admin",
+    path: "camp-registrations",
+    icon: <MdOutdoorGrill className="h-6 w-6" />,
+    component: <CampRegistrationsPage />,
     group: "Manage",
   },
   {
@@ -237,6 +248,14 @@ const routes = [
     path: "registrations",
     icon: <MdAssignment className="h-6 w-6" />,
     component: <ManagerRegistrationsPage />,
+    group: "Manage",
+  },
+  {
+    name: "Camp Registrations",
+    layout: "/account-manager",
+    path: "camp-registrations",
+    icon: <MdOutdoorGrill className="h-6 w-6" />,
+    component: <ManagerCampRegistrationsPage />,
     group: "Manage",
   },
   {

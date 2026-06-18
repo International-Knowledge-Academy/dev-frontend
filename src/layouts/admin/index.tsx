@@ -52,6 +52,8 @@ import FeedbackCreatePage from "views/admin/feedbacks/FeedbackCreatePage";
 import FeedbackDetailPage from "views/admin/feedbacks/FeedbackDetailPage";
 import FeedbackEditPage from "views/admin/feedbacks/FeedbackEditPage";
 import EmailsPage from "views/admin/emails";
+import CampRegistrationsPage from "views/admin/camp-registrations";
+import CampRegistrationDetailPage from "views/admin/camp-registrations/CampRegistrationDetailPage";
 
 export default function Admin(props) {
   const { ...rest } = props;
@@ -180,6 +182,8 @@ export default function Admin(props) {
                 <Route path="/feedbacks/:uid"             element={<FeedbackDetailPage />} />
                 <Route path="/feedbacks/:uid/edit"        element={<FeedbackEditPage />} />
                 <Route path="/emails"                     element={<EmailsPage />} />
+                <Route path="/camp-registrations"         element={<CampRegistrationsPage />} />
+                <Route path="/camp-registrations/:uid"    element={<CampRegistrationDetailPage />} />
 
                 <Route
                   path="/"
