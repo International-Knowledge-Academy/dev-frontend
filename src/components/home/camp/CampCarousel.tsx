@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Download, Calendar, Users, Clock, MapPin } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download, Users, Clock, MapPin } from "lucide-react";
 
 /* ── slides ──────────────────────────────────────────────────────────────── */
 const slides = [
