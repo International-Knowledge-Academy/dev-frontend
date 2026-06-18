@@ -24,6 +24,7 @@ const quickLinks = [
 const registerLinks = [
   { label: "Become a Trainer",  to: "/register/trainer" },
   { label: "Register Program",  to: "/register/program" },
+  { label: "Register for Camp", to: "/register/camp" },
   { label: "Verify Certificate", to: "/verify" },
 ];
 

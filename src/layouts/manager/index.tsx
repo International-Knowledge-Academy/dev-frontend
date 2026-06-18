@@ -55,6 +55,8 @@ import ManagerFeedbackCreatePage      from "views/account-manager/feedbacks/Feed
 import ManagerFeedbackDetailPage      from "views/account-manager/feedbacks/FeedbackDetailPage";
 import ManagerFeedbackEditPage        from "views/account-manager/feedbacks/FeedbackEditPage";
 import ManagerEmailsPage              from "views/account-manager/emails";
+import ManagerCampRegistrationsPage   from "views/account-manager/camp-registrations";
+import ManagerCampRegistrationDetailPage from "views/account-manager/camp-registrations/CampRegistrationDetailPage";
 
 const ManagerLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -165,6 +167,10 @@ const ManagerLayout = () => {
 
             {/* Mailing List */}
             <Route path="emails" element={<ManagerEmailsPage />} />
+
+            {/* Camp Registrations */}
+            <Route path="camp-registrations"       element={<ManagerCampRegistrationsPage />} />
+            <Route path="camp-registrations/:uid"  element={<ManagerCampRegistrationDetailPage />} />
 
             <Route path="/" element={<Navigate to="/account-manager/dashboard" replace />} />
           </Routes>

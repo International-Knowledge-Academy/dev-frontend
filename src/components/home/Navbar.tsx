@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   MdMenu, MdClose, MdKeyboardArrowDown,
   MdArrowForward, MdGridView, MdMenuBook,
-  MdSchool, MdWorkspacePremium, MdVerified,
+  MdSchool, MdWorkspacePremium, MdVerified, MdOutdoorGrill,
 } from "react-icons/md";
 
 import { useAppData } from "context/AppDataContext";
@@ -135,7 +135,7 @@ function CategoriesDropdown({ link, visible }) {
 }
 
 /* ── Nav item ─────────────────────────────────────────────────────────────── */
-function NavItem({ link, pathname }) {
+function NavItem({ link, pathname, scrolled = true }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   const hasChildren = link.children?.length > 0;
@@ -151,8 +151,12 @@ function NavItem({ link, pathname }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const baseCls = `relative text-base font-medium pb-0.5 transition-colors group ${
-    isActive ? "text-gold-500" : "text-slate-600 hover:text-navy-800"
+  const baseCls = `relative text-base font-medium pb-0.5 transition-colors duration-300 group ${
+    isActive
+      ? "text-gold-400"
+      : scrolled
+        ? "text-slate-600 hover:text-navy-800"
+        : "text-white/80 hover:text-white"
   }`;
 
   const underline = (
@@ -242,6 +246,12 @@ const Navbar = () => {
           to: "/register/trainer",
         },
         {
+          label: "Register for Camp",
+          description: "Apply for an IKA youth or professional camp.",
+          icon: <MdOutdoorGrill size={16} />,
+          to: "/register/camp",
+        },
+        {
           label: "Verify Certificate",
           description: "Check the authenticity of an issued certificate.",
           icon: <MdVerified size={16} />,
@@ -259,8 +269,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 w-full z-50 bg-white transition-all duration-300 ${
-        scrolled ? "shadow-sm border-b border-slate-100" : "border-b border-slate-100/60"
+      className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-white shadow-sm border-b border-slate-100"
+          : "bg-transparent border-b border-white/10"
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 h-[80px] sm:h-[100px] lg:h-[120px] flex items-center justify-between gap-6">
@@ -270,13 +282,15 @@ const Navbar = () => {
           <img
             src={ikaLogo}
             alt="IKA Logo"
-            className="w-20 sm:w-28 lg:w-36 h-auto max-h-14 sm:max-h-20 lg:max-h-24 object-contain"
+            className={`w-20 sm:w-28 lg:w-36 h-auto max-h-14 sm:max-h-20 lg:max-h-24 object-contain transition-all duration-300 ${
+              scrolled ? "" : "brightness-0 invert"
+            }`}
           />
           <div className="hidden lg:block">
-            <p className="text-navy-800 font-bold text-sm leading-tight">
+            <p className={`font-bold text-sm leading-tight transition-colors duration-300 ${scrolled ? "text-navy-800" : "text-white"}`}>
               International Knowledge Academy
             </p>
-            <p className="text-gold-600 text-xs font-medium tracking-wide">
+            <p className={`text-xs font-medium tracking-wide transition-colors duration-300 ${scrolled ? "text-gold-600" : "text-gold-300"}`}>
               for Training & Management Development
             </p>
           </div>
@@ -285,7 +299,7 @@ const Navbar = () => {
         {/* Desktop nav links */}
         <div className="hidden lg:flex items-center gap-7 flex-1 justify-center">
           {navLinks.map((link) => (
-            <NavItem key={link.to} link={link} pathname={pathname} />
+            <NavItem key={link.to} link={link} pathname={pathname} scrolled={scrolled} />
           ))}
         </div>
 
@@ -294,7 +308,11 @@ const Navbar = () => {
           type="button"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           onClick={() => { if (menuOpen) setMobileExpanded(null); setMenuOpen(!menuOpen); }}
-          className="lg:hidden flex items-center justify-center w-9 h-9 rounded-md lg:rounded-lg text-slate-600 hover:text-navy-800 hover:bg-slate-50 transition"
+          className={`lg:hidden flex items-center justify-center w-9 h-9 rounded-md lg:rounded-lg transition ${
+            scrolled
+              ? "text-slate-600 hover:text-navy-800 hover:bg-slate-50"
+              : "text-white hover:text-gold-300 hover:bg-white/10"
+          }`}
         >
           {menuOpen ? <MdClose size={20} /> : <MdMenu size={20} />}
         </button>
@@ -305,7 +323,7 @@ const Navbar = () => {
       {menuOpen && (
         <motion.div
           {...slideDown}
-          className="lg:hidden border-t border-slate-100 overflow-hidden"
+          className="lg:hidden bg-white border-t border-slate-100 overflow-hidden"
         >
         <div className="px-4 py-4 flex flex-col gap-1">
           {navLinks.map((link) => {
