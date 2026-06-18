@@ -7,8 +7,8 @@ import { FaXTwitter } from "react-icons/fa6";
 
 const socials = [
   { icon: <FaFacebook      size={14} />, href: "https://www.facebook.com/share/1bDy9Uv8uH/?mibextid=wwXIfr",                                          label: "Facebook"  },
-  { icon: <FaInstagram     size={14} />, href: "https://www.instagram.com/ika.academy?igsh=YWN4eTBqdHMxN2Nj&utm_source=qr",                           label: "Instagram" },
-  { icon: <FaXTwitter      size={14} />, href: "https://x.com/internatio86032?s=11&t=FiEYk1tKhME8U_rENQfVOA",                                          label: "X"         },
+  { icon: <FaInstagram     size={14} />, href: "https://www.instagram.com/academy.ika?igsh=MTJkbWE4dDdidWt6ZQ%3D%3D&utm_source=qr",              label: "Instagram" },
+  { icon: <FaXTwitter      size={14} />, href: "https://x.com/academy_ika?s=11&t=FiEYk1tKhME8U_rENQfVOA",                                             label: "X"         },
   { icon: <FaSnapchatGhost size={14} />, href: "https://www.snapchat.com/add/ika.academy?share_id=rxFv-CM6ThGReTcwUW0mJw&locale=en_MY",               label: "Snapchat"  },
   { icon: <FaWhatsapp      size={14} />, href: "https://wa.me/601168786103",                                                                            label: "WhatsApp"  },
 ];

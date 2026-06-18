@@ -170,7 +170,7 @@ const ComingSoon = () => {
 
             <div className="flex items-center gap-2">
               <a
-                href="https://www.instagram.com/ika.academy?igsh=YWN4eTBqdHMxN2Nj&utm_source=qr"
+                href="https://www.instagram.com/academy.ika?igsh=MTJkbWE4dDdidWt6ZQ%3D%3D&utm_source=qr"
                 target="_blank"
                 rel="noreferrer"
                 title="Instagram"
@@ -179,7 +179,7 @@ const ComingSoon = () => {
                 <FaInstagram size={15} style={{ color: "#b8934a" }} />
               </a>
               <a
-                href="https://x.com/internatio86032?s=11&t=FiEYk1tKhME8U_rENQfVOA"
+                href="https://x.com/academy_ika?s=11&t=FiEYk1tKhME8U_rENQfVOA"
                 target="_blank"
                 rel="noreferrer"
                 title="X (Twitter)"
