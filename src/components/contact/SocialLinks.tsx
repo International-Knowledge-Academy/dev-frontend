@@ -14,15 +14,15 @@ const socials = [
   {
     icon: <FaInstagram size={20} />,
     label: "Instagram",
-    handle: "ika.academy",
-    href: "https://www.instagram.com/ika.academy?igsh=YWN4eTBqdHMxN2Nj&utm_source=qr",
+    handle: "academy.ika",
+    href: "https://www.instagram.com/academy.ika?igsh=MTJkbWE4dDdidWt6ZQ%3D%3D&utm_source=qr",
     color: "hover:bg-[#E1306C] hover:border-[#E1306C]",
   },
   {
     icon: <FaXTwitter size={20} />,
     label: "X (Twitter)",
-    handle: "@internatio86032",
-    href: "https://x.com/internatio86032?s=11&t=FiEYk1tKhME8U_rENQfVOA",
+    handle: "@academy_ika",
+    href: "https://x.com/academy_ika?s=11&t=FiEYk1tKhME8U_rENQfVOA",
     color: "hover:bg-[#000000] hover:border-[#000000]",
   },
   {
