@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ChevronRight, Download, MessageCircle, CalendarCheck } from "lucide-react";
+import { ChevronRight, Download, MessageCircle } from "lucide-react";
 
 const fadeUp = {
   hidden:  { opacity: 0, y: 24 },

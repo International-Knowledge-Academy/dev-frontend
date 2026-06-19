@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Tent, User, Shield, Check, Loader2, ChevronRight, ChevronLeft } from "lucide-react";
+import { User, Shield, Check, Loader2, ChevronRight, ChevronLeft } from "lucide-react";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
 import useCreateCampRegistration from "hooks/campRegistrations/useCreateCampRegistration";
