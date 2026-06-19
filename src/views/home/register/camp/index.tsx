@@ -157,22 +157,32 @@ const RegisterCampPage = () => {
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
 
-      <main className="flex-1 pt-[120px] lg:pt-[140px] pb-20">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6">
-
-          {/* Page header */}
-          <div className="text-center mb-10">
-            <span className="inline-flex items-center gap-2 bg-navy-50 border border-navy-100 text-navy-600 text-[11px] font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-5">
-              <Tent size={12} /> Camp Registration
-            </span>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-navy-800 leading-tight"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-              Register for the Camp
-            </h1>
-            <p className="text-slate-400 text-sm mt-3 max-w-md mx-auto">
-              Fill in the details below and our team will follow up within 24 hours.
-            </p>
+      {/* Hero */}
+      <section className="w-full bg-navy-800 pt-[100px] sm:pt-[120px] lg:pt-[150px] pb-14 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400/60 to-transparent" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] bg-gold-500 opacity-[0.06] rounded-full blur-3xl pointer-events-none" />
+        <div className="max-w-3xl mx-auto px-6 text-center relative">
+          <span className="inline-block bg-gold-500/10 border border-gold-500/25 text-gold-400 text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5">
+            Camp Registration
+          </span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-4">
+            Register for the Camp
+          </h1>
+          <p className="text-navy-300 text-sm sm:text-base max-w-md mx-auto leading-relaxed mb-10">
+            Fill in the details below and our team will follow up within 24 hours.
+          </p>
+          <div className="inline-flex items-center gap-2 sm:gap-3 text-[11px] font-semibold uppercase tracking-widest text-navy-400">
+            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-gold-400" />Participant</span>
+            <span className="text-navy-600">›</span>
+            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-navy-500" />Details</span>
+            <span className="text-navy-600">›</span>
+            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-navy-500" />Submit</span>
           </div>
+        </div>
+      </section>
+
+      <main className="flex-1 pb-20">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-12">
 
           {submitted ? (
             <motion.div

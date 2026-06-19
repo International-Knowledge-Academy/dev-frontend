@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, ShieldCheck, ShieldX, Award, Clock, Download, FileText, ExternalLink } from "lucide-react";
+import { Search, ShieldCheck, ShieldX, Clock, Download, FileText, ExternalLink } from "lucide-react";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
 import useVerifyCertificate from "hooks/certificates/useVerifyCertificate";
@@ -41,26 +41,25 @@ const VerifyCertificatePage = () => {
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Navbar />
 
-      <main className="flex-1 pt-[80px] sm:pt-[100px] lg:pt-[150px] pb-16 px-4 sm:px-6">
-        <div className="max-w-2xl mx-auto">
+      {/* Hero */}
+      <section className="w-full bg-navy-800 pt-[100px] sm:pt-[120px] lg:pt-[150px] pb-14 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400/60 to-transparent" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] bg-gold-500 opacity-[0.06] rounded-full blur-3xl pointer-events-none" />
+        <div className="max-w-3xl mx-auto px-6 text-center relative">
+          <span className="inline-block bg-gold-500/10 border border-gold-500/25 text-gold-400 text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5">
+            Certificate Verification
+          </span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-4">
+            Verify Certificate
+          </h1>
+          <p className="text-navy-300 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
+            Enter the verification code found on your certificate to confirm its authenticity.
+          </p>
+        </div>
+      </section>
 
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-10"
-          >
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-navy-800 mb-5">
-              <Award size={26} className="text-gold-400" />
-            </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-navy-800 leading-tight">
-              Verify Certificate
-            </h1>
-            <p className="text-slate-500 mt-3 text-sm sm:text-base leading-relaxed max-w-md mx-auto text-justify">
-              Enter the verification code found on your certificate to confirm its authenticity.
-            </p>
-          </motion.div>
+      <main className="flex-1 pb-16 px-4 sm:px-6">
+        <div className="max-w-2xl mx-auto pt-12">
 
           {/* Form card */}
           <motion.div

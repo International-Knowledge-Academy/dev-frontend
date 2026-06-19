@@ -205,24 +205,27 @@ const RegisterTrainerPage = () => {
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Navbar />
 
-      {/* Hero — unchanged */}
-      <section className="bg-navy-800 mt-[80px] sm:mt-[100px] lg:mt-[120px] pt-16 pb-12 relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.03] pointer-events-none"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.8) 1px,transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gold-500 opacity-[0.06] rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-        <div className="max-w-3xl mx-auto px-6 relative text-center">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-3">
+      {/* Hero */}
+      <section className="w-full bg-navy-800 pt-[100px] sm:pt-[120px] lg:pt-[150px] pb-14 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400/60 to-transparent" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] bg-gold-500 opacity-[0.06] rounded-full blur-3xl pointer-events-none" />
+        <div className="max-w-3xl mx-auto px-6 text-center relative">
+          <span className="inline-block bg-gold-500/10 border border-gold-500/25 text-gold-400 text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5">
+            Trainer Application
+          </span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-4">
             Apply to Be a Trainer
           </h1>
-          <p className="text-navy-300 text-base max-w-xl mx-auto">
-            Share your expertise with professionals across industries. Fill in your details and our team will be in touch within 3 business days.
+          <p className="text-navy-300 text-sm sm:text-base max-w-md mx-auto leading-relaxed mb-10">
+            Share your expertise with professionals across industries. Our team will be in touch within 3 business days.
           </p>
+          <div className="inline-flex items-center gap-2 sm:gap-3 text-[11px] font-semibold uppercase tracking-widest text-navy-400">
+            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-gold-400" />Your Details</span>
+            <span className="text-navy-600">›</span>
+            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-navy-500" />Experience</span>
+            <span className="text-navy-600">›</span>
+            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-navy-500" />Submit</span>
+          </div>
         </div>
       </section>
 
