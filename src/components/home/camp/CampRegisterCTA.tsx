@@ -16,7 +16,7 @@ const CampRegisterCTA = ({ brochureUrl = "#" }: { brochureUrl?: string }) => (
     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400/50 to-transparent" />
     <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-400/20 to-transparent" />
 
-    <div className="relative max-w-4xl mx-auto px-6 sm:px-8 lg:px-10 text-center">
+    <div className="relative max-w-6xl mx-auto px-6 sm:px-8 lg:px-10 text-center">
 
       <motion.div
         initial="hidden" whileInView="visible" viewport={{ once: true }}

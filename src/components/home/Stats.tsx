@@ -39,7 +39,7 @@ const Stats = () => {
   ];
 
   return (
-    <section className="py-16 px-6 bg-gold-500">
+    <section className="py-20 px-6 bg-gold-500">
       <motion.div
         className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8"
         initial="hidden"

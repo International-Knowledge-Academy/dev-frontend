@@ -5,13 +5,10 @@ const objectives = [
   "Build greater confidence, independence, and self-awareness.",
   "Develop leadership skills and a stronger sense of responsibility.",
   "Improve communication, presentation, and influencing skills.",
-  "Strengthen teamwork and problem-solving abilities.",
   "Expand participants' awareness of future skills.",
   "Introduce practical uses of artificial intelligence in learning and productivity.",
   "Encourage entrepreneurial thinking and turn ideas into initiatives.",
   "Help participants explore their academic and career pathways.",
-  "Strengthen cultural awareness and confidence in international environments.",
-  "Deliver a balanced experience combining learning, enjoyment, and achievement.",
 ];
 
 const fadeUp = {

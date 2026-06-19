@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ChevronRight, Download, MessageCircle } from "lucide-react";
 
 const CampCTA = ({ brochureUrl = "#" }: { brochureUrl?: string }) => (
-  <section className="w-full bg-navy-800 py-16 lg:py-20 relative overflow-hidden">
+  <section className="w-full bg-navy-800 py-20 lg:py-28 relative overflow-hidden">
 
     {/* Subtle gold glow */}
     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/40 to-transparent" />

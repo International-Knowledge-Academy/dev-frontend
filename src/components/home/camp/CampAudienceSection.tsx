@@ -5,14 +5,10 @@ import { CheckCircle2, Target } from "lucide-react";
 const outcomes = [
   "Understand their strengths and personal capabilities.",
   "Express their ideas with confidence and clarity.",
-  "Work effectively within a team.",
-  "Take responsibility and make decisions.",
   "Lead tasks and initiatives.",
   "Think in a more innovative and solution-focused way.",
   "Use artificial intelligence tools responsibly and effectively.",
   "Plan their academic or professional pathway.",
-  "Navigate international experiences with greater independence.",
-  "Present a project or initiative to an audience.",
   "Build new relationships with participants from different Gulf backgrounds.",
 ];
 
@@ -23,7 +19,6 @@ const audience = [
   "Wish to explore study opportunities in Malaysia.",
   "Want to develop future-ready skills.",
   "Prefer learning through experience and participation.",
-  "Enjoy teamwork and organised adventure.",
   "Ready to take part in a new international experience.",
 ];
 
@@ -36,7 +31,7 @@ const CampAudienceSection = () => (
   <section className="py-20 lg:py-28 bg-white">
     <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-10">
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 
         {/* Expected Outcomes */}
         <motion.div

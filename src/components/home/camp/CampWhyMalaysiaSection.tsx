@@ -8,8 +8,6 @@ const accommodation = [
   "Organised internal transportation.",
   "Airport reception and departure assistance.",
   "General supervision and team supervisors.",
-  "Attendance and movement monitoring.",
-  "Clear accommodation and activity guidelines.",
   "Organised communication with parents.",
   "Safety and emergency procedures.",
 ];
@@ -70,7 +68,7 @@ const CampWhyMalaysiaSection = () => (
       </div>
 
       {/* Accommodation + Requirements */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
         <motion.div
           initial="hidden" whileInView="visible" viewport={{ once: true }}

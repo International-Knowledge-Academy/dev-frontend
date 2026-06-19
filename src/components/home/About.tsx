@@ -29,7 +29,7 @@ const About = () => {
   ];
 
   return (
-    <section className="w-full relative py-16 px-6 bg-slate-50 overflow-hidden">
+    <section className="w-full relative py-24 px-6 bg-slate-50 overflow-hidden">
       
       <div className="relative max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
