@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ChevronRight, Download, MessageCircle } from "lucide-react";
 
 const CampCTA = ({ brochureUrl = "#" }: { brochureUrl?: string }) => (
-  <section className="bg-navy-800 py-16 lg:py-20 relative overflow-hidden">
+  <section className="w-full bg-navy-800 py-16 lg:py-20 relative overflow-hidden">
 
     {/* Subtle gold glow */}
     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/40 to-transparent" />
@@ -49,17 +49,6 @@ const CampCTA = ({ brochureUrl = "#" }: { brochureUrl?: string }) => (
             >
               Register Your Interest <ChevronRight size={15} />
             </Link>
-          </motion.div>
-
-          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-            <a
-              href="https://wa.me/601168786103"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 border border-navy-600 text-navy-200 hover:border-gold-500 hover:text-gold-400 font-semibold px-7 py-3 rounded-md lg:rounded-lg text-sm transition-all duration-200"
-            >
-              <MessageCircle size={15} /> WhatsApp Us
-            </a>
           </motion.div>
 
           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>

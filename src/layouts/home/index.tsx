@@ -9,8 +9,8 @@ const HomeLayout = () => {
 
   return (
     <AppDataProvider>
-    <div className="min-h-screen flex flex-col w-full overflow-x-hidden">
-      <main className="flex-1">
+    <div className="min-h-screen flex flex-col w-full overflow-x-hidden" style={{ background: "#0b1228" }}>
+      <main className="flex-1 w-full">
         <AnimatePresence mode="wait">
           <motion.div
             key={pathname}

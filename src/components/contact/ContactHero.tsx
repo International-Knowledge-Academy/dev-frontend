@@ -4,7 +4,7 @@ import { MdHeadsetMic } from "react-icons/md";
 
 const ContactHero = () => {
   return (
-    <section className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-600 overflow-hidden">
+    <section className="w-full relative pt-[80px] sm:pt-[100px] lg:pt-[120px] bg-navy-600 overflow-hidden">
       {/* Grid pattern */}
       <div
         className="absolute inset-0 opacity-[0.04] pointer-events-none"

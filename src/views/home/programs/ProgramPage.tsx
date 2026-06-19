@@ -296,7 +296,7 @@ const ProgramPage = () => {
   if (loading) return (
     <div className="min-h-screen bg-white flex flex-col">
       <Navbar />
-      <div className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-900 px-6 pt-10 pb-16 overflow-hidden">
+      <div className="w-full relative bg-navy-900 px-6 pt-[80px] sm:pt-[100px] lg:pt-[120px] pb-16 overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.8) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.8) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />
         <div className="max-w-6xl mx-auto animate-pulse">
@@ -428,7 +428,7 @@ const ProgramPage = () => {
       <Navbar />
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-900 overflow-hidden">
+      <section className="w-full relative pt-[80px] sm:pt-[100px] lg:pt-[120px] bg-navy-900 overflow-hidden">
 
         {/* Subtle grid */}
         <div

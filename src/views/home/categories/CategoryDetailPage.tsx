@@ -38,7 +38,7 @@ const handleShare = async (title: string) => {
 /* ─── Skeleton ───────────────────────────────────────────────────────────── */
 
 const SkeletonHero = () => (
-  <div className="bg-navy-800 px-6 pt-8 pb-16">
+  <div className="w-full bg-navy-800 px-6 pt-[88px] sm:pt-[108px] lg:pt-[128px] pb-16">
     <div className="max-w-6xl mx-auto space-y-4 animate-pulse">
       <div className="h-4 w-20 rounded bg-navy-600" />
       <div className="flex gap-2 pt-1">
@@ -170,7 +170,7 @@ const CategoryDetailPage = () => {
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       {loadingCat ? <SkeletonHero /> : (
-        <section className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-800 overflow-hidden">
+        <section className="w-full relative pt-[80px] sm:pt-[100px] lg:pt-[120px] bg-navy-800 overflow-hidden">
 
           {/* Grid pattern */}
           <div
