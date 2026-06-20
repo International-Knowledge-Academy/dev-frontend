@@ -20,7 +20,6 @@ const HomePage = () => {
     <div className="w-full flex flex-col">
       <Navbar />
 
-      {/* ── HOOK ───────────────────────────────── */}
       <CarouselHero />
 
       {/* ── WHO WE ARE ─────────────────────────── */}
