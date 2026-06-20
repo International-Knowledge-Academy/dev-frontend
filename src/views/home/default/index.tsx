@@ -1,16 +1,8 @@
 // @ts-nocheck
 import Navbar                from "components/home/Navbar";
-import CampCarousel          from "components/home/camp/CampCarousel";
-import CampTypesSection      from "components/home/camp/CampTypesSection";
-import CampObjectivesSection from "components/home/camp/CampObjectivesSection";
-import CampCurriculumSection from "components/home/camp/CampCurriculumSection";
-import CampAdvantagesSection from "components/home/camp/CampAdvantagesSection";
-import CampAudienceSection   from "components/home/camp/CampAudienceSection";
-import CampWhyMalaysiaSection from "components/home/camp/CampWhyMalaysiaSection";
-import CampRegisterCTA       from "components/home/camp/CampRegisterCTA";
+import CarouselHero          from "components/home/CarouselHero";
 import About                 from "components/home/About";
 import FounderSpeech         from "components/home/FounderSpeech";
-import Stats                 from "components/home/Stats";
 import Programs              from "components/home/Programs";
 import UpcomingPrograms      from "components/home/UpcomingPrograms";
 import Categories            from "components/home/Categories";
@@ -29,20 +21,11 @@ const HomePage = () => {
       <Navbar />
 
       {/* ── HOOK ───────────────────────────────── */}
-      <CampCarousel />
+      <CarouselHero />
 
       {/* ── WHO WE ARE ─────────────────────────── */}
       <About />
-      <Stats />
       <FounderSpeech />
-
-      {/* ── CAMP DEEP-DIVE ─────────────────────── */}
-      <CampTypesSection />
-      <CampAudienceSection />
-      <CampObjectivesSection />
-      <CampCurriculumSection />
-      <CampWhyMalaysiaSection />
-      <CampAdvantagesSection />
 
       {/* ── TRAINING PROGRAMMES ────────────────── */}
       <Programs />
@@ -60,9 +43,6 @@ const HomePage = () => {
       {/* ── PROCESS ────────────────────────────── */}
       <HowToEnroll />
       <HowToBeTrainer />
-
-      {/* ── CONVERT ────────────────────────────── */}
-      <CampRegisterCTA />
 
       <Footer />
       <WhatsAppFloatButton />

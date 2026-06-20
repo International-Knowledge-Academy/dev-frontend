@@ -184,10 +184,12 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
               >
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                   <Link
-                    to="/register/camp"
+                    to={slide.id === "corporate" ? "/programs" : "/register/camp"}
                     className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-6 py-3 rounded-md lg:rounded-lg text-sm transition-colors duration-200"
                   >
-                    {slide.id === "overview" ? "Register Your Interest" : "Register for This Camp"}
+                    {slide.id === "corporate"
+                      ? "Explore Our Programs"
+                      : "Register for Camp"}
                   </Link>
                 </motion.div>
 

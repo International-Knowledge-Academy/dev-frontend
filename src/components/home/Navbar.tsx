@@ -228,6 +228,7 @@ const Navbar = () => {
       })),
     },
     { label: "Programs", to: "/programs" },
+    { label: "Camp", to: "/camp" },
     { label: "Contact",  to: "/contact" },
     {
       label: "Register",

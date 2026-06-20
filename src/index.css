@@ -13,6 +13,37 @@
 	}
 }
 
+/* ── Tiptap editor ─────────────────────────────────────────────────────── */
+.tiptap p.is-editor-empty:first-child::before {
+  color: #94a3b8;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap h1 { font-size: 1.375rem; font-weight: 700; color: #0f172a; margin-bottom: 0.4rem; }
+.tiptap h2 { font-size: 1.125rem; font-weight: 700; color: #0f172a; margin-bottom: 0.35rem; }
+.tiptap p  { margin-bottom: 0.4rem; }
+.tiptap p:last-child { margin-bottom: 0; }
+.tiptap ul { list-style-type: disc;    padding-left: 1.25rem; margin-bottom: 0.4rem; }
+.tiptap ol { list-style-type: decimal; padding-left: 1.25rem; margin-bottom: 0.4rem; }
+.tiptap li { margin-bottom: 0.2rem; }
+.tiptap strong { font-weight: 700; }
+.tiptap a  { color: #1e3a6e; text-decoration: underline; }
+.tiptap a:hover { color: #b8934a; }
+
+/* ── Rich text display (public program page) ───────────────────────────── */
+.rich-content h1 { font-size: 1.25rem; font-weight: 700; color: #0f172a; margin-bottom: 0.5rem; }
+.rich-content h2 { font-size: 1.1rem;  font-weight: 700; color: #0f172a; margin-bottom: 0.4rem; }
+.rich-content p  { margin-bottom: 0.5rem; }
+.rich-content p:last-child { margin-bottom: 0; }
+.rich-content ul { list-style-type: disc;    padding-left: 1.25rem; margin-bottom: 0.5rem; }
+.rich-content ol { list-style-type: decimal; padding-left: 1.25rem; margin-bottom: 0.5rem; }
+.rich-content li { margin-bottom: 0.25rem; }
+.rich-content strong { font-weight: 700; }
+.rich-content a  { color: #1e3a6e; text-decoration: underline; }
+
 input.defaultCheckbox::before {
 	content: url(../src/assets/svg/checked.svg); 
 	color: white;

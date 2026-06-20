@@ -21,6 +21,7 @@ import RegisterSuccessPage from "views/home/register/program/SuccessPage";
 import RegisterTrainerPage from "views/home/register/trainer";
 import TrainerApplicationSuccessPage from "views/home/register/trainer/SuccessPage";
 import RegisterCampPage from "views/home/register/camp";
+import CampPage from "views/home/camp";
 import VerifyCertificatePage from "views/home/verify";
 
 import ProtectedRoute from "components/auth/ProtectedRoute";
@@ -50,6 +51,7 @@ const App = () => {
             <Route path="/register/trainer" element={<RegisterTrainerPage />} />
             <Route path="/register/trainer/success" element={<TrainerApplicationSuccessPage />} />
             <Route path="/register/camp" element={<RegisterCampPage />} />
+            <Route path="/camp" element={<CampPage />} />
             <Route path="/verify" element={<VerifyCertificatePage />} />
             <Route path="/verify/:verification_code" element={<VerifyCertificatePage />} />
           </>

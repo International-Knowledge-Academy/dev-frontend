@@ -514,7 +514,7 @@ const ProgramPage = () => {
               transition={{ duration: 0.5, delay: 0.18 }}
               className="text-navy-300 text-base leading-relaxed max-w-2xl mb-8 line-clamp-2"
             >
-              {program.description}
+              {program.description.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim()}
             </motion.p>
           )}
 
@@ -614,19 +614,19 @@ const ProgramPage = () => {
 
               {program.description && (
                 <SectionCard title="About This Program" icon={BookOpen}>
-                  <p className="text-slate-600 leading-relaxed text-sm whitespace-pre-wrap">{program.description}</p>
+                  <div
+                    className="text-slate-600 text-sm leading-relaxed rich-content"
+                    dangerouslySetInnerHTML={{ __html: program.description }}
+                  />
                 </SectionCard>
               )}
 
-              {objectives.length > 0 && (
+              {program.objectives && (
                 <SectionCard title="Program Objectives" icon={CheckCircle2} iconColor="text-emerald-500">
-                  <ul className="space-y-3">
-                    {objectives.map((obj, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <span className="text-slate-600 text-sm leading-relaxed">{obj}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div
+                    className="text-slate-600 text-sm leading-relaxed rich-content"
+                    dangerouslySetInnerHTML={{ __html: program.objectives }}
+                  />
                 </SectionCard>
               )}
 
