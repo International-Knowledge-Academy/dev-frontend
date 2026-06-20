@@ -419,7 +419,6 @@ const ProgramPage = () => {
   const ModeIcon  = modeIconMap[program.mode]         ?? Monitor;
   const startDate = formatDate(program.start_date);
   const endDate   = formatDate(program.end_date);
-  const objectives = parseLines(program.objectives);
   const audience   = parseLines(program.target_audience);
   const prereqs    = parseLines(program.prerequisites);
 
