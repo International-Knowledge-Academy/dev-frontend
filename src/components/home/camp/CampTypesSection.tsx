@@ -55,7 +55,7 @@ const CampTypesSection = () => (
         <span className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] text-gold-600 mb-3">
           Malaysia 2026
         </span>
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-navy-900">Available Camps</h2>
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-navy-900">Available Clubs</h2>
         <p className="mt-3 text-slate-500 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
           Two tailored programmes designed for different age groups — each built around a distinct leadership journey.
         </p>

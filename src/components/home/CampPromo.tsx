@@ -55,7 +55,7 @@ const CampPromo = () => (
             IKA Signature Programme · Malaysia 2026
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-navy-900 leading-tight">
-            Gulf Young <span className="text-gold-500">Leaders Camps</span>
+            Gulf Young <span className="text-gold-500">Leaders Club</span>
           </h2>
           <p className="mt-3 text-slate-500 text-sm sm:text-base max-w-xl leading-relaxed">
             An integrated leadership and entrepreneurship experience for Gulf youth — combining practical training,

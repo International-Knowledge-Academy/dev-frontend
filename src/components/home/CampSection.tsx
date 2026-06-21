@@ -169,7 +169,7 @@ const CampSection = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
             variants={fadeUp}
             className="text-[11px] font-bold uppercase tracking-[0.2em] text-gold-600 mb-6"
           >
-            Available Camps
+            Available Clubs
           </motion.p>
 
           <motion.div
