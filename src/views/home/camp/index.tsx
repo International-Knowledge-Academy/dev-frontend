@@ -9,6 +9,7 @@ import CampAdvantagesSection from "components/home/camp/CampAdvantagesSection";
 import CampAudienceSection from "components/home/camp/CampAudienceSection";
 import CampWhyMalaysiaSection from "components/home/camp/CampWhyMalaysiaSection";
 import CampRegisterCTA from "components/home/camp/CampRegisterCTA";
+import RegisterFloatButton from "components/home/RegisterFloatButton";
 
 const CampPage = () => {
   return (
@@ -23,6 +24,7 @@ const CampPage = () => {
       <CampWhyMalaysiaSection />
       <CampRegisterCTA />
       <Footer />
+      <RegisterFloatButton />
     </>
   );
 };

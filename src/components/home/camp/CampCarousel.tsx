@@ -145,7 +145,7 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
                 >
                   {[
                     { value: "12",    label: "Days per programme", icon: Clock  },
-                    { value: "20–25", label: "Seats per camp",     icon: Users  },
+                    { value: "20",    label: "Seats per club",    icon: Users  },
                     { value: "4",     label: "Gulf countries",     icon: MapPin },
                   ].map(({ value, label, icon: Icon }) => (
                     <div

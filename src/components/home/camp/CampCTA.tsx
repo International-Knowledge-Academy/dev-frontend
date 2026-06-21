@@ -30,7 +30,7 @@ const CampCTA = ({ brochureUrl = "#" }: { brochureUrl?: string }) => (
             Ready to Join?
           </h2>
           <p className="text-navy-200 text-sm mt-2 max-w-md leading-relaxed">
-            Seats are capped at 20–25 per camp to guarantee quality, close supervision, and a truly personal experience. Secure your place early.
+            Seats are capped at 20 per club to guarantee quality, close supervision, and a truly personal experience. Secure your place early.
           </p>
         </motion.div>
 
