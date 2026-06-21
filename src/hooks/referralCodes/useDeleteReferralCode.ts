@@ -15,7 +15,7 @@ const useDeleteReferralCode = (): UseDeleteReferralCodeReturn => {
     setLoading(true);
     setError(null);
     try {
-      await axiosInstance.delete(`/registrations/referral-codes/${uid}`);
+      await axiosInstance.delete(`/registrations/referral-codes/${uid}/`);
       return true;
     } catch (err: unknown) {
       const d = (err as any)?.response?.data;

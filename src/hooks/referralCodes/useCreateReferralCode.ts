@@ -25,7 +25,7 @@ const useCreateReferralCode = (): UseCreateReferralCodeReturn => {
     setError(null);
     setFieldErrors({});
     try {
-      const { data } = await axiosInstance.post<ReferralCode>("/registrations/referral-codes", payload);
+      const { data } = await axiosInstance.post<ReferralCode>("/registrations/referral-codes/", payload);
       return { referralCode: data, fieldErrors: {}, error: null };
     } catch (err: unknown) {
       const responseData = (err as any)?.response?.data;

@@ -28,7 +28,7 @@ const useReferralCodes = (initialParams: ReferralCodesParams = {}): UseReferralC
     setError(null);
     try {
       const { data } = await axiosInstance.get<PaginatedReferralCodes>(
-        "/registrations/referral-codes",
+        "/registrations/referral-codes/",
         {
           params: {
             ...(params.page      && { page:      params.page }),

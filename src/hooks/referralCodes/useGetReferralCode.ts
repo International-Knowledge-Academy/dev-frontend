@@ -18,7 +18,7 @@ const useGetReferralCode = (uid: string | undefined): UseGetReferralCodeReturn =
     setLoading(true);
     setError(null);
     axiosInstance
-      .get<ReferralCode>(`/registrations/referral-codes/${uid}`)
+      .get<ReferralCode>(`/registrations/referral-codes/${uid}/`)
       .then(({ data }) => setReferralCode(data))
       .catch((err) => {
         const d = err?.response?.data;
