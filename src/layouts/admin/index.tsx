@@ -54,6 +54,10 @@ import FeedbackEditPage from "views/admin/feedbacks/FeedbackEditPage";
 import EmailsPage from "views/admin/emails";
 import CampRegistrationsPage from "views/admin/camp-registrations";
 import CampRegistrationDetailPage from "views/admin/camp-registrations/CampRegistrationDetailPage";
+import ReferralCodesPage from "views/admin/referral-codes";
+import ReferralCodeCreatePage from "views/admin/referral-codes/ReferralCodeCreatePage";
+import ReferralCodeDetailPage from "views/admin/referral-codes/ReferralCodeDetailPage";
+import ReferralCodeEditPage from "views/admin/referral-codes/ReferralCodeEditPage";
 
 export default function Admin(props) {
   const { ...rest } = props;
@@ -184,6 +188,10 @@ export default function Admin(props) {
                 <Route path="/emails"                     element={<EmailsPage />} />
                 <Route path="/camp-registrations"         element={<CampRegistrationsPage />} />
                 <Route path="/camp-registrations/:uid"    element={<CampRegistrationDetailPage />} />
+                <Route path="/referral-codes"             element={<ReferralCodesPage />} />
+                <Route path="/referral-codes/create"      element={<ReferralCodeCreatePage />} />
+                <Route path="/referral-codes/:uid"        element={<ReferralCodeDetailPage />} />
+                <Route path="/referral-codes/:uid/edit"   element={<ReferralCodeEditPage />} />
 
                 <Route
                   path="/"
