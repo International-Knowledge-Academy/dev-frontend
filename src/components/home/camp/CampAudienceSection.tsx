@@ -39,7 +39,7 @@ const CampAudienceSection = () => (
           variants={fadeUp}
         >
           <span className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] text-gold-600 mb-3">
-            After the Camp
+            After the Club
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-navy-900 mb-6">Expected Outcomes</h2>
           <ul className="space-y-3">
@@ -65,9 +65,9 @@ const CampAudienceSection = () => (
           <span className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] text-gold-600 mb-3">
             Right For You?
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-navy-900 mb-4">Who Is the Camp Designed For?</h2>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-navy-900 mb-4">Who Is the Club Designed For?</h2>
           <p className="text-sm text-slate-500 mb-6 leading-relaxed">
-            The camp is designed for young people who:
+            The club is designed for young people who:
           </p>
           <div className="bg-navy-800 rounded-2xl p-6 space-y-3">
             {audience.map((a, i) => (

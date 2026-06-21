@@ -163,10 +163,10 @@ const RegisterCampPage = () => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] bg-gold-500 opacity-[0.06] rounded-full blur-3xl pointer-events-none" />
         <div className="max-w-3xl mx-auto px-6 text-center relative">
           <span className="inline-block bg-gold-500/10 border border-gold-500/25 text-gold-400 text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5">
-            Camp Registration
+            Club Registration
           </span>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-4">
-            Register for the Camp
+            Register for the Club
           </h1>
           <p className="text-navy-300 text-sm sm:text-base max-w-md mx-auto leading-relaxed mb-10">
             Fill in the details below and our team will follow up within 24 hours.

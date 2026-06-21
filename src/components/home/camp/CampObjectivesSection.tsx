@@ -44,7 +44,7 @@ const CampObjectivesSection = () => (
             What We Aim For
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
-            Camp Objectives
+            Club Objectives
           </h2>
         </div>
         <p className="text-navy-300 text-sm sm:text-base max-w-sm lg:text-right leading-relaxed">

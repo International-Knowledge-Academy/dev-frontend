@@ -50,8 +50,8 @@ const App = () => {
             <Route path="/register/success" element={<RegisterSuccessPage />} />
             <Route path="/register/trainer" element={<RegisterTrainerPage />} />
             <Route path="/register/trainer/success" element={<TrainerApplicationSuccessPage />} />
-            <Route path="/register/camp" element={<RegisterCampPage />} />
-            <Route path="/camp" element={<CampPage />} />
+            <Route path="/register/club" element={<RegisterCampPage />} />
+            <Route path="/club" element={<CampPage />} />
             <Route path="/verify" element={<VerifyCertificatePage />} />
             <Route path="/verify/:verification_code" element={<VerifyCertificatePage />} />
           </>

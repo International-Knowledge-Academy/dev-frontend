@@ -228,7 +228,7 @@ const Navbar = () => {
       })),
     },
     { label: "Programs", to: "/programs" },
-    { label: "Camp", to: "/camp" },
+    { label: "Club", to: "/club" },
     { label: "Contact",  to: "/contact" },
     {
       label: "Register",
@@ -247,10 +247,10 @@ const Navbar = () => {
           to: "/register/trainer",
         },
         {
-          label: "Register for Camp",
-          description: "Apply for an IKA youth or professional camp.",
+          label: "Register for Club",
+          description: "Apply for an IKA youth or professional club programme.",
           icon: <MdOutdoorGrill size={16} />,
-          to: "/register/camp",
+          to: "/register/club",
         },
         {
           label: "Verify Certificate",

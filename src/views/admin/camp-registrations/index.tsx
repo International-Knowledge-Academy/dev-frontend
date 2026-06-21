@@ -83,8 +83,8 @@ const CampRegistrationsPage = () => {
   return (
     <div>
       <PageHeader
-        title="Camp Registrations"
-        subtitle="Manage camp registration submissions"
+        title="Club Registrations"
+        subtitle="Manage club registration submissions"
         className="mb-4 px-0 sm:px-0"
       />
 
@@ -193,7 +193,7 @@ const CampRegistrationsPage = () => {
             ) : error ? (
               <div className="flex items-center justify-center py-16 text-sm text-red-500">{error}</div>
             ) : registrations.length === 0 ? (
-              <EmptyState icon={<Tent />} title="No registrations yet" description="Camp registration submissions will appear here." />
+              <EmptyState icon={<Tent />} title="No registrations yet" description="Club registration submissions will appear here." />
             ) : (
               <div className="overflow-x-auto">
                 <table className="min-w-full text-sm">

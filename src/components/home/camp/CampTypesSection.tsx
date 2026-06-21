@@ -5,7 +5,7 @@ import { Calendar, Users, ChevronRight } from "lucide-react";
 
 const camps = [
   {
-    title:     "Gulf Youth Camp",
+    title:     "Gulf Youth Club",
     ageGroup:  "16 – 18",
     dates:     "12 – 23 July 2026",
     duration:  "12 Days",
@@ -17,11 +17,11 @@ const camps = [
       "Future Skills",
     ],
     description:
-      "The camp focuses on confidence building, personal development, leadership, university readiness, and future skills within an organised, engaging, and internationally oriented environment.",
+      "The club focuses on confidence building, personal development, leadership, university readiness, and future skills within an organised, engaging, and internationally oriented environment.",
     accent: "gold",
   },
   {
-    title:     "Gulf Future Leaders Camp",
+    title:     "Gulf Future Leaders Club",
     ageGroup:  "19 – 22",
     dates:     "26 July – 6 August 2026",
     duration:  "12 Days",
@@ -33,7 +33,7 @@ const camps = [
       "Innovative Thinking",
     ],
     description:
-      "The camp focuses on advanced leadership, career planning, artificial intelligence, entrepreneurship, innovative thinking, and the development of future-focused initiatives and projects.",
+      "The club focuses on advanced leadership, career planning, artificial intelligence, entrepreneurship, innovative thinking, and the development of future-focused initiatives and projects.",
     accent: "navy",
   },
 ];
@@ -106,7 +106,7 @@ const CampTypesSection = () => (
 
               <div className="mt-auto">
                 <Link
-                  to="/register/camp"
+                  to="/register/club"
                   className={`inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-md lg:rounded-lg transition-all duration-200 ${
                     accent === "gold"
                       ? "bg-gold-500 hover:bg-gold-400 text-navy-900"

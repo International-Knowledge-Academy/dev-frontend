@@ -107,7 +107,7 @@ const routes = [
     group: "Manage",
   },
   {
-    name: "Camp Registrations",
+    name: "Club Registrations",
     layout: "/admin",
     path: "camp-registrations",
     icon: <MdOutdoorGrill className="h-6 w-6" />,
@@ -251,7 +251,7 @@ const routes = [
     group: "Manage",
   },
   {
-    name: "Camp Registrations",
+    name: "Club Registrations",
     layout: "/account-manager",
     path: "camp-registrations",
     icon: <MdOutdoorGrill className="h-6 w-6" />,

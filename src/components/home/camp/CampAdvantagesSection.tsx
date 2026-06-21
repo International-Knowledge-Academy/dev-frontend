@@ -50,11 +50,11 @@ const CampAdvantagesSection = () => (
         className="text-center mb-14"
       >
         <span className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] text-gold-600 mb-3">
-          Why Choose This Camp
+          Why Choose This Club
         </span>
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-navy-900">Camp Advantages</h2>
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-navy-900">Club Advantages</h2>
         <p className="mt-3 text-slate-500 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
-          Six reasons why the Gulf Young Leaders Camp stands apart from ordinary youth programmes.
+          Six reasons why the Gulf Young Leaders Club stands apart from ordinary youth programmes.
         </p>
       </motion.div>
 

@@ -43,7 +43,7 @@ const stats = [
 
 const camps = [
   {
-    title:       "Gulf Youth Camp",
+    title:       "Gulf Youth Club",
     age:         "Ages 16–18",
     dates:       "12–23 July 2026",
     description: "Confidence building, personal development, leadership, and university readiness in an organised international environment.",
@@ -51,7 +51,7 @@ const camps = [
     highlight:   false,
   },
   {
-    title:       "Gulf Future Leaders Camp",
+    title:       "Gulf Future Leaders Club",
     age:         "Ages 19–22",
     dates:       "26 July–6 Aug 2026",
     description: "Advanced leadership, career planning, AI, entrepreneurship, and building future-focused initiatives and projects.",
@@ -102,7 +102,7 @@ const CampSection = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
             initial="hidden" animate="visible"
             className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-4"
           >
-            Gulf Young Leaders Camps<br className="hidden sm:block" /> Malaysia 2026
+            Gulf Young Leaders Club<br className="hidden sm:block" /> Malaysia 2026
           </motion.h2>
 
           <motion.p
@@ -143,7 +143,7 @@ const CampSection = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
           >
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
               <Link
-                to="/register/camp"
+                to="/register/club"
                 className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-6 py-2.5 rounded-md lg:rounded-lg text-sm transition-colors duration-200"
               >
                 Register your interest
@@ -221,10 +221,10 @@ const CampSection = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
 
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
                   <Link
-                    to="/register/camp"
+                    to="/register/club"
                     className="block w-full text-center border border-navy-500 text-white hover:bg-gold-500 hover:text-navy-900 hover:border-gold-500 font-semibold py-2.5 rounded-md lg:rounded-lg text-sm transition-all duration-200"
                   >
-                    Register for this camp
+                    Register for this club
                   </Link>
                 </motion.div>
               </motion.div>

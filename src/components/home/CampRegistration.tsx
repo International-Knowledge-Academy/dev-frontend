@@ -196,10 +196,10 @@ const CampRegistration = () => {
         {/* Header */}
         <div className="text-center mb-10">
           <span className="inline-flex items-center gap-2 bg-gold-500/10 border border-gold-500/30 text-gold-400 text-[11px] font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-5">
-            <Tent size={12} /> Camp Registration
+            <Tent size={12} /> Club Registration
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-            Register for the Camp
+            Register for the Club
           </h2>
           <p className="text-slate-400 text-sm mt-3 max-w-md mx-auto">
             Fill in the details below and our team will follow up with you within 24 hours.

@@ -12,14 +12,14 @@ const slides = [
   {
     id:          "overview",
     badge:       "IKA · Malaysia 2026",
-    title:       ["Gulf Young", "Leaders Camps"],
+    title:       ["Gulf Young", "Leaders Club"],
     description: "A carefully designed international experience for Gulf youth — combining leadership training, future skills, educational visits, and adventure in Malaysia.",
     image:       campImg1,
   },
   {
     id:          "youth",
     badge:       "Ages 16–18  ·  12–23 July 2026",
-    title:       ["Gulf Youth", "Camp"],
+    title:       ["Gulf Youth", "Club"],
     description: "Confidence building, personal development, leadership, and university readiness in an organised, engaging, and internationally oriented environment.",
     image:       campImg2,
     tags:        ["Leadership", "Confidence", "Future Skills", "Teamwork", "University Readiness"],
@@ -27,7 +27,7 @@ const slides = [
   {
     id:          "leaders",
     badge:       "Ages 19–22  ·  26 July – 6 Aug 2026",
-    title:       ["Gulf Future", "Leaders Camp"],
+    title:       ["Gulf Future", "Leaders Club"],
     description: "Advanced leadership, career planning, artificial intelligence, entrepreneurship, and building future-focused initiatives and projects.",
     image:       campImg1,
     tags:        ["Advanced Leadership", "AI", "Entrepreneurship", "Career Planning", "Innovation"],
@@ -184,12 +184,12 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
               >
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                   <Link
-                    to={slide.id === "corporate" ? "/programs" : "/register/camp"}
+                    to={slide.id === "corporate" ? "/programs" : "/register/club"}
                     className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-6 py-3 rounded-md lg:rounded-lg text-sm transition-colors duration-200"
                   >
                     {slide.id === "corporate"
                       ? "Explore Our Programs"
-                      : "Register for Camp"}
+                      : "Register for Club"}
                   </Link>
                 </motion.div>
 

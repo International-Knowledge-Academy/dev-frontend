@@ -45,7 +45,7 @@ const CampRegisterCTA = ({ brochureUrl = "#" }: { brochureUrl?: string }) => (
         className="flex flex-col sm:flex-row items-center justify-center gap-4"
       >
         <Link
-          to="/register/camp"
+          to="/register/club"
           className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-7 py-3.5 rounded-md lg:rounded-lg text-sm transition-all duration-200 shadow-lg hover:-translate-y-0.5"
         >
           <ChevronRight size={15} />
