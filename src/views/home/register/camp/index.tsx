@@ -6,12 +6,31 @@ import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
 import useCreateCampRegistration from "hooks/campRegistrations/useCreateCampRegistration";
 import type { CampRegistrationType, CampNationality, GuardianRelationship } from "types/campRegistration";
+import { HEAR_ABOUT_US_OPTIONS } from "constants/lists";
 
 const NATIONALITIES = [
-  { value: "SA", label: "Saudi Arabia" },
-  { value: "KW", label: "Kuwait"       },
-  { value: "QA", label: "Qatar"        },
-  { value: "OM", label: "Oman"         },
+  { value: "AE", label: "United Arab Emirates" },
+  { value: "BH", label: "Bahrain"              },
+  { value: "DZ", label: "Algeria"              },
+  { value: "DJ", label: "Djibouti"             },
+  { value: "EG", label: "Egypt"                },
+  { value: "IQ", label: "Iraq"                 },
+  { value: "JO", label: "Jordan"               },
+  { value: "KM", label: "Comoros"              },
+  { value: "KW", label: "Kuwait"               },
+  { value: "LB", label: "Lebanon"              },
+  { value: "LY", label: "Libya"                },
+  { value: "MA", label: "Morocco"              },
+  { value: "MR", label: "Mauritania"           },
+  { value: "OM", label: "Oman"                 },
+  { value: "PS", label: "Palestine"            },
+  { value: "QA", label: "Qatar"                },
+  { value: "SA", label: "Saudi Arabia"         },
+  { value: "SD", label: "Sudan"                },
+  { value: "SO", label: "Somalia"              },
+  { value: "SY", label: "Syria"                },
+  { value: "TN", label: "Tunisia"              },
+  { value: "YE", label: "Yemen"                },
 ];
 
 const RELATIONSHIPS = [
@@ -310,8 +329,12 @@ const RegisterCampPage = () => {
                               value={healthNotes} onChange={(e) => setHealthNotes(e.target.value)} />
                           </Field>
                           <Field label="How did you hear about us?">
-                            <input className={inputCls} placeholder="Friend, social media, school..."
-                              value={howDidYouHear} onChange={(e) => setHowDidYouHear(e.target.value)} />
+                            <select className={selectCls} value={howDidYouHear} onChange={(e) => setHowDidYouHear(e.target.value)}>
+                              <option value="">Select an option</option>
+                              {HEAR_ABOUT_US_OPTIONS.map((o) => (
+                                <option key={o.code} value={o.code}>{o.name}</option>
+                              ))}
+                            </select>
                           </Field>
                           <Field label="Referral Code">
                             <input className={inputCls} placeholder="Enter influencer or referral code (optional)"

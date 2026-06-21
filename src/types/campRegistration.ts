@@ -1,4 +1,7 @@
-export type CampNationality        = "KW" | "OM" | "QA" | "SA";
+export type CampNationality =
+  | "AE" | "BH" | "DZ" | "DJ" | "EG" | "IQ" | "JO" | "KM"
+  | "KW" | "LB" | "LY" | "MA" | "MR" | "OM" | "PS" | "QA"
+  | "SA" | "SD" | "SO" | "SY" | "TN" | "YE";
 export type CampRegistrationType   = "self" | "child";
 export type CampRegistrationStatus = "pending" | "interview_scheduled" | "accepted" | "rejected";
 export type CampRegistrationSource = "website" | "whatsapp" | "referral";

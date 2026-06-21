@@ -63,6 +63,38 @@ export const COUNTRIES = [
   { name: "Yemen", code: "yemen" },
 ];
 
+export const ARAB_COUNTRIES = [
+  { name: "Algeria", code: "algeria" },
+  { name: "Bahrain", code: "bahrain" },
+  { name: "Egypt", code: "egypt" },
+  { name: "Iraq", code: "iraq" },
+  { name: "Jordan", code: "jordan" },
+  { name: "Kuwait", code: "kuwait" },
+  { name: "Lebanon", code: "lebanon" },
+  { name: "Morocco", code: "morocco" },
+  { name: "Oman", code: "oman" },
+  { name: "Palestine", code: "palestine" },
+  { name: "Qatar", code: "qatar" },
+  { name: "Saudi Arabia", code: "saudi arabia" },
+  { name: "Syria", code: "syria" },
+  { name: "United Arab Emirates", code: "united arab emirates" },
+  { name: "Yemen", code: "yemen" },
+];
+
+export const HEAR_ABOUT_US_OPTIONS = [
+  { name: "Google Search", code: "google_search" },
+  { name: "Facebook", code: "facebook" },
+  { name: "Instagram", code: "instagram" },
+  { name: "LinkedIn", code: "linkedin" },
+  { name: "TikTok", code: "tiktok" },
+  { name: "Friend or Family", code: "friend_family" },
+  { name: "Educational Agent", code: "educational_agent" },
+  { name: "School / University", code: "school_university" },
+  { name: "Event / Exhibition", code: "event_exhibition" },
+  { name: "WhatsApp", code: "whatsapp" },
+  { name: "Other", code: "other" },
+];
+
 export const NATIONALITIES = [
   { name: "Afghan", label: "Afghan" },
   { name: "Albanian", label: "Albanian" },

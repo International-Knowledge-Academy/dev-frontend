@@ -57,6 +57,10 @@ import ManagerFeedbackEditPage        from "views/account-manager/feedbacks/Feed
 import ManagerEmailsPage              from "views/account-manager/emails";
 import ManagerCampRegistrationsPage   from "views/account-manager/camp-registrations";
 import ManagerCampRegistrationDetailPage from "views/account-manager/camp-registrations/CampRegistrationDetailPage";
+import ManagerReferralCodesPage          from "views/account-manager/referral-codes";
+import ManagerReferralCodeCreatePage     from "views/account-manager/referral-codes/ReferralCodeCreatePage";
+import ManagerReferralCodeDetailPage     from "views/account-manager/referral-codes/ReferralCodeDetailPage";
+import ManagerReferralCodeEditPage       from "views/account-manager/referral-codes/ReferralCodeEditPage";
 
 const ManagerLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -171,6 +175,12 @@ const ManagerLayout = () => {
             {/* Camp Registrations */}
             <Route path="camp-registrations"       element={<ManagerCampRegistrationsPage />} />
             <Route path="camp-registrations/:uid"  element={<ManagerCampRegistrationDetailPage />} />
+
+            {/* Referral Codes */}
+            <Route path="referral-codes"           element={<ManagerReferralCodesPage />} />
+            <Route path="referral-codes/create"    element={<ManagerReferralCodeCreatePage />} />
+            <Route path="referral-codes/:uid"      element={<ManagerReferralCodeDetailPage />} />
+            <Route path="referral-codes/:uid/edit" element={<ManagerReferralCodeEditPage />} />
 
             <Route path="/" element={<Navigate to="/account-manager/dashboard" replace />} />
           </Routes>

@@ -41,6 +41,7 @@ import ManagerCertificatesPage   from "views/account-manager/certificates";
 import ManagerFeedbacksPage      from "views/account-manager/feedbacks";
 import ManagerEmailsPage         from "views/account-manager/emails";
 import ManagerCampRegistrationsPage from "views/account-manager/camp-registrations";
+import ManagerReferralCodesPage from "views/account-manager/referral-codes";
 
 // Icon Imports
 import {
@@ -266,6 +267,14 @@ const routes = [
     path: "camp-registrations",
     icon: <MdOutdoorGrill className="h-6 w-6" />,
     component: <ManagerCampRegistrationsPage />,
+    group: "Manage",
+  },
+  {
+    name: "Referral Codes",
+    layout: "/account-manager",
+    path: "referral-codes",
+    icon: <MdShare className="h-6 w-6" />,
+    component: <ManagerReferralCodesPage />,
     group: "Manage",
   },
   {
