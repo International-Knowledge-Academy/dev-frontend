@@ -235,10 +235,10 @@ const CampRegistrationsPage = () => {
                         <td className="px-5 py-3.5">
                           <span className="capitalize text-slate-500 text-sm">{reg.source}</span>
                         </td>
-                        <td className="px-5 py-3.5">
-                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${STATUS_COLORS[reg.status]}`}>
-                            <span className={`w-1.5 h-1.5 rounded-full ${DOT_COLORS[reg.status]}`} />
-                            {STATUS_LABELS[reg.status]}
+                        <td className="px-5 py-3.5" title={STATUS_LABELS[reg.status]}>
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border max-w-[140px] overflow-hidden ${STATUS_COLORS[reg.status]}`}>
+                            <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${DOT_COLORS[reg.status]}`} />
+                            <span className="truncate">{STATUS_LABELS[reg.status]}</span>
                           </span>
                         </td>
                         <td className="px-5 py-3.5 text-slate-400 text-xs whitespace-nowrap">
