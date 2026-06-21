@@ -265,8 +265,17 @@ const ReferralCodesPage = () => {
                         </td>
 
                         {/* Platform */}
-                        <td className="px-5 py-3.5 text-slate-500">
-                          {rc.influencer_platform || "—"}
+                        <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
+                          {rc.influencer_platform ? (
+                            <a
+                              href={rc.influencer_platform}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-navy-600 underline hover:text-navy-800 transition text-sm"
+                            >
+                              Social Media
+                            </a>
+                          ) : "—"}
                         </td>
 
                         {/* Registrations count */}
