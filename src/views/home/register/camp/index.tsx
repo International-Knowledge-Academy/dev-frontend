@@ -89,11 +89,12 @@ const RegisterCampPage = () => {
     whatsapp: "", email: "",
   });
 
-  const [minAge]         = useState("18");
-  const [maxAge]         = useState("22");
-  const [healthNotes,    setHealthNotes]    = useState("");
-  const [referralSource, setReferralSource] = useState("");
-  const [errors, setErrors]                 = useState<Record<string, string>>({});
+  const [minAge]           = useState("18");
+  const [maxAge]           = useState("22");
+  const [healthNotes,      setHealthNotes]      = useState("");
+  const [howDidYouHear,    setHowDidYouHear]    = useState("");
+  const [referredByCode,   setReferredByCode]   = useState("");
+  const [errors, setErrors]                     = useState<Record<string, string>>({});
 
   const updateP = (k: string, v: string) => setParticipant((p) => ({ ...p, [k]: v }));
   const updateG = (k: string, v: string) => setGuardian((g)  => ({ ...g, [k]: v }));
@@ -137,8 +138,9 @@ const RegisterCampPage = () => {
       source: "website",
       min_age: Number(minAge),
       max_age: Number(maxAge),
-      ...(healthNotes.trim()    && { health_notes:    healthNotes.trim() }),
-      ...(referralSource.trim() && { referral_source: referralSource.trim() }),
+      ...(healthNotes.trim()    && { health_notes:              healthNotes.trim() }),
+      ...(howDidYouHear.trim()  && { how_did_you_hear_about_us: howDidYouHear.trim() }),
+      ...(referredByCode.trim() && { referred_by_code:          referredByCode.trim() }),
     });
     if (result) setSubmitted(true);
   };
@@ -147,7 +149,7 @@ const RegisterCampPage = () => {
     setSubmitted(false); setStep(1); setErrors({});
     setParticipant({ first_name: "", last_name: "", dob: "", nationality: "", passport_no: "", whatsapp: "", email: "" });
     setGuardian({ full_name: "", relationship: "", whatsapp: "", email: "" });
-    setHealthNotes(""); setReferralSource("");
+    setHealthNotes(""); setHowDidYouHear(""); setReferredByCode("");
   };
 
   const err = (k: string) =>
@@ -309,7 +311,11 @@ const RegisterCampPage = () => {
                           </Field>
                           <Field label="How did you hear about us?">
                             <input className={inputCls} placeholder="Friend, social media, school..."
-                              value={referralSource} onChange={(e) => setReferralSource(e.target.value)} />
+                              value={howDidYouHear} onChange={(e) => setHowDidYouHear(e.target.value)} />
+                          </Field>
+                          <Field label="Referral Code">
+                            <input className={inputCls} placeholder="Enter influencer or referral code (optional)"
+                              value={referredByCode} onChange={(e) => setReferredByCode(e.target.value.toUpperCase())} />
                           </Field>
                         </div>
 

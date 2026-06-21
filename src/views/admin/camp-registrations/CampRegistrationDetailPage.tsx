@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   User, Shield, Phone, Mail, Calendar, Globe,
-  FileText, CalendarClock, CheckCircle2, XCircle, AlertTriangle,
+  FileText, CalendarClock, CheckCircle2, XCircle, AlertTriangle, Tag,
 } from "lucide-react";
 import { MdClose } from "react-icons/md";
 import DropdownButton from "components/ui/buttons/DropdownButton";
@@ -75,7 +75,7 @@ const CampRegistrationDetailPage = () => {
     );
   }
 
-  const { participant, guardian, status, registration_type, source, health_notes, referral_source, submitted_at } = registration;
+  const { participant, guardian, status, registration_type, source, health_notes, how_did_you_hear_about_us, referral_code, submitted_at } = registration;
 
   const handleAccept = async () => {
     const result = await accept(uid);
@@ -190,8 +190,20 @@ const CampRegistrationDetailPage = () => {
           <InfoRow icon={User}     label="Registration Type" value={registration_type === "child" ? "Child" : "Self"} />
           <InfoRow icon={Globe}    label="Source"            value={source === "whatsapp" ? "WhatsApp" : source?.charAt(0).toUpperCase() + source?.slice(1)} />
           <InfoRow icon={Calendar} label="Submitted"         value={formatDate(submitted_at)} />
-          {referral_source && <InfoRow icon={FileText} label="Referral Source" value={referral_source} />}
-          {health_notes    && <InfoRow icon={FileText} label="Health Notes"    value={health_notes} />}
+          {how_did_you_hear_about_us && <InfoRow icon={FileText} label="How Did They Hear" value={how_did_you_hear_about_us} />}
+          {health_notes              && <InfoRow icon={FileText} label="Health Notes"       value={health_notes} />}
+          {referral_code && (
+            <InfoRow
+              icon={Tag}
+              label="Referral Code"
+              value={
+                <span>
+                  <span className="font-mono font-semibold text-navy-700">{referral_code.code}</span>
+                  <span className="text-slate-400 ml-2 text-xs">— {referral_code.influencer_name}</span>
+                </span>
+              }
+            />
+          )}
         </div>
 
         {/* Footer actions */}

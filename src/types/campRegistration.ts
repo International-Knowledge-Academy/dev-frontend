@@ -21,18 +21,29 @@ export interface CampGuardian {
   email:        string;
 }
 
+export interface ReferralCodeSummary {
+  uid:             string;
+  code:            string;
+  influencer_name: string;
+}
+
 export interface CampRegistration {
-  uid:               string;
-  participant:       CampParticipant;
-  guardian:          CampGuardian | null;
-  min_age:           number | null;
-  max_age:           number | null;
-  registration_type: CampRegistrationType;
-  status:            CampRegistrationStatus;
-  source:            CampRegistrationSource;
-  health_notes:      string;
-  referral_source:   string;
-  submitted_at:      string;
+  uid:                       string;
+  participant:               CampParticipant;
+  guardian:                  CampGuardian | null;
+  min_age:                   number | null;
+  max_age:                   number | null;
+  registration_type:         CampRegistrationType;
+  status:                    CampRegistrationStatus;
+  source:                    CampRegistrationSource;
+  health_notes:              string;
+  referral_source:           string;
+  how_did_you_hear_about_us: string;
+  referred_by_code:          string;
+  referral_code:             ReferralCodeSummary | null;
+  brochure_ar:               string;
+  brochure_en:               string;
+  submitted_at:              string;
 }
 
 export interface PaginatedCampRegistrations {
@@ -51,12 +62,14 @@ export interface CampRegistrationsParams {
 }
 
 export interface CreateCampRegistrationPayload {
-  participant:       CampParticipant;
-  guardian?:         CampGuardian;
-  min_age:           number;
-  max_age:           number;
-  registration_type: CampRegistrationType;
-  source:            CampRegistrationSource;
-  health_notes?:     string;
-  referral_source?:  string;
+  participant:                CampParticipant;
+  guardian?:                  CampGuardian;
+  min_age:                    number;
+  max_age:                    number;
+  registration_type:          CampRegistrationType;
+  source:                     CampRegistrationSource;
+  health_notes?:              string;
+  referral_source?:           string;
+  how_did_you_hear_about_us?: string;
+  referred_by_code?:          string;
 }
