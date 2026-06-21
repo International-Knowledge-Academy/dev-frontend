@@ -96,7 +96,7 @@ const ReferralCodeEditPage = () => {
             label="Platform"
             field="influencer_platform"
             required
-            placeholder="e.g. Instagram, TikTok, YouTube"
+            placeholder="e.g. https://instagram.com/username"
             formData={form}
             errors={fieldErrors}
             updateFormData={updateFormData}

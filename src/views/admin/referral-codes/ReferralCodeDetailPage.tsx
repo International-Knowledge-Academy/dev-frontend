@@ -88,7 +88,18 @@ const ReferralCodeDetailPage = () => {
           <InfoRow
             icon={<MdPhoneAndroid size={18} />}
             label="Platform"
-            value={referralCode.influencer_platform || "—"}
+            value={
+              referralCode.influencer_platform ? (
+                <a
+                  href={referralCode.influencer_platform}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-navy-600 underline hover:text-navy-800 transition"
+                >
+                  Social Media
+                </a>
+              ) : "—"
+            }
           />
           <InfoRow
             icon={<MdToggleOn size={18} />}
