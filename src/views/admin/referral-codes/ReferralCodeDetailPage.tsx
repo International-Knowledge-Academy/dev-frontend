@@ -1,16 +1,11 @@
 // @ts-nocheck
-import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   MdEdit, MdTag, MdPerson, MdPhoneAndroid,
-  MdCalendarToday, MdToggleOn, MdGroup, MdDelete,
+  MdCalendarToday, MdToggleOn, MdGroup,
 } from "react-icons/md";
 import useGetReferralCode from "hooks/referralCodes/useGetReferralCode";
-import useDeleteReferralCode from "hooks/referralCodes/useDeleteReferralCode";
-import { useToast } from "context/ToastContext";
 import Loading from "components/loading/Loading";
-import ConfirmModal from "components/ui/modals/ConfirmModal";
-import { AlertTriangle } from "lucide-react";
 
 const InfoRow = ({ icon, label, value }) => (
   <div className="flex items-start gap-4 py-4">
@@ -38,20 +33,7 @@ const formatDate = (dateStr: string) =>
 const ReferralCodeDetailPage = () => {
   const { uid } = useParams<{ uid: string }>();
   const navigate = useNavigate();
-  const { addToast } = useToast();
   const { referralCode, loading, error } = useGetReferralCode(uid);
-  const { deleteReferralCode, loading: deleting } = useDeleteReferralCode();
-  const [confirmDelete, setConfirmDelete] = useState(false);
-
-  const handleDelete = async () => {
-    const ok = await deleteReferralCode(uid);
-    if (ok) {
-      addToast("Referral code deleted.", "success");
-      navigate("/admin/referral-codes");
-    } else {
-      addToast("Failed to delete referral code.", "error");
-    }
-  };
 
   if (loading) return <Loading text="Loading referral code..." />;
 
@@ -160,35 +142,10 @@ const ReferralCodeDetailPage = () => {
             <MdEdit size={16} />
             Edit Code
           </button>
-          <button
-            type="button"
-            onClick={() => setConfirmDelete(true)}
-            className="flex-1 rounded-md lg:rounded-lg border border-red-200 bg-red-50 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-100 transition flex items-center justify-center gap-2"
-          >
-            <MdDelete size={16} />
-            Delete
-          </button>
         </div>
 
       </div>
 
-      <ConfirmModal
-        open={confirmDelete}
-        title="Delete Referral Code"
-        message={
-          <>
-            Are you sure you want to delete{" "}
-            <span className="font-semibold text-navy-800">{referralCode.code}</span>?{" "}
-            This action cannot be undone.
-          </>
-        }
-        confirmText="Delete"
-        cancelText="Cancel"
-        loading={deleting}
-        icon={<AlertTriangle size={20} className="text-red-500" />}
-        onClose={() => setConfirmDelete(false)}
-        onConfirm={handleDelete}
-      />
     </div>
   );
 };
