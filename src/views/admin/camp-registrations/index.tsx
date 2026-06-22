@@ -1,15 +1,13 @@
 // @ts-nocheck
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Tent, Clock, CheckCircle2, XCircle, RefreshCw,
-  Trash2, AlertTriangle, Filter, X, CalendarClock, Search, Pencil,
-  FileText, Upload, Download,
+  Tent, Clock, CheckCircle2, RefreshCw,
+  Trash2, AlertTriangle, X, CalendarClock, Search, Pencil,
 } from "lucide-react";
 import useCampRegistrations from "hooks/campRegistrations/useCampRegistrations";
 import useDeleteCampRegistration from "hooks/campRegistrations/useDeleteCampRegistration";
 import useCamps from "hooks/camps/useCamps";
-import useCampBrochure from "hooks/camps/useCampBrochure";
 import { useToast } from "context/ToastContext";
 import Loading from "components/loading/Loading";
 import PageHeader from "components/ui/PageHeader";
@@ -62,16 +60,9 @@ const CampRegistrationsPage = () => {
   const { registrations, count, next, previous, loading, error, params, setParams, refetch } =
     useCampRegistrations();
   const { deleteCampRegistration, loading: deleting } = useDeleteCampRegistration();
-  const { camps, loading: campsLoading } = useCamps();
-  const activeCampUid = camps[0]?.uid;
-  const {
-    hasBrochure, fileName: brochureFileName, downloadUrl: brochureDownloadUrl,
-    loading: brochureLoading, uploading: brochureUploading, progress: brochureProgress,
-    upload: uploadBrochure, update: updateBrochure, remove: removeBrochure,
-  } = useCampBrochure(activeCampUid);
-  const brochureInputRef = useRef(null);
+  const { camps } = useCamps();
+  const campNameMap = Object.fromEntries(camps.map((c) => [c.uid, c.name]));
 
-  const [showFilters, setShowFilters]   = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<CampRegistration | null>(null);
 
   const activeFilterCount = [params.nationality, params.registration_type, params.source, params.status]
@@ -88,21 +79,6 @@ const CampRegistrationsPage = () => {
     setDeleteTarget(null);
   };
 
-  const handleBrochureFile = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    e.target.value = "";
-    const ok = hasBrochure ? await updateBrochure(file) : await uploadBrochure(file);
-    if (ok) addToast("Brochure saved.", "success");
-    else    addToast("Failed to save brochure.", "error");
-  };
-
-  const handleBrochureRemove = async () => {
-    const ok = await removeBrochure();
-    if (ok) addToast("Brochure removed.", "success");
-    else    addToast("Failed to remove brochure.", "error");
-  };
-
   const pending   = registrations.filter((r) => r.status === "pending").length;
   const accepted  = registrations.filter((r) => r.status === "accepted").length;
   const interview = registrations.filter((r) => r.status === "interview_scheduled").length;
@@ -116,7 +92,7 @@ const CampRegistrationsPage = () => {
       />
 
       {/* Stats */}
-      <div className="flex flex-wrap gap-3 mb-4">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
         <StatCard icon={Tent}          label="Total"     value={count} />
         <StatCard icon={Clock}         label="Pending"   value={pending} />
         <StatCard icon={CalendarClock} label="Interview" value={interview} accent />
@@ -126,7 +102,6 @@ const CampRegistrationsPage = () => {
       {/* Filter bar */}
       <div className="bg-white border border-slate-100 rounded-xl px-4 py-3 mb-4">
         <div className="flex items-center gap-2 flex-wrap">
-          {/* Search */}
           <div className="relative flex-1 min-w-[180px]">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
             <input
@@ -137,24 +112,6 @@ const CampRegistrationsPage = () => {
               className="w-full pl-8 pr-3 py-2 text-sm border border-slate-200 rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-100 transition text-navy-800 placeholder-slate-400"
             />
           </div>
-
-          <button
-            type="button"
-            onClick={() => setShowFilters((v) => !v)}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-md lg:rounded-lg text-sm font-medium border transition ${
-              showFilters || activeFilterCount > 0
-                ? "bg-navy-50 border-navy-200 text-navy-700"
-                : "border-slate-200 text-slate-600 hover:border-slate-300"
-            }`}
-          >
-            <Filter size={14} />
-            Filters
-            {activeFilterCount > 0 && (
-              <span className="ml-1 bg-navy-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                {activeFilterCount}
-              </span>
-            )}
-          </button>
 
           {activeFilterCount > 0 && (
             <button type="button" onClick={clearAllFilters}
@@ -176,51 +133,49 @@ const CampRegistrationsPage = () => {
           )}
         </div>
 
-        {showFilters && (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-3 pt-3 border-t border-slate-100">
-            <FilterSelectField
-              label="Status"
-              value={params.status ?? ""}
-              onChange={(v) => setParams({ status: v as any })}
-              options={[
-                { value: "pending",             label: "Pending" },
-                { value: "interview_scheduled", label: "Interview Scheduled" },
-                { value: "accepted",            label: "Accepted" },
-                { value: "rejected",            label: "Rejected" },
-              ]}
-            />
-            <FilterSelectField
-              label="Type"
-              value={params.registration_type ?? ""}
-              onChange={(v) => setParams({ registration_type: v as any })}
-              options={[
-                { value: "self",  label: "Self" },
-                { value: "child", label: "Child" },
-              ]}
-            />
-            <FilterSelectField
-              label="Source"
-              value={params.source ?? ""}
-              onChange={(v) => setParams({ source: v as any })}
-              options={[
-                { value: "website",  label: "Website" },
-                { value: "whatsapp", label: "WhatsApp" },
-                { value: "referral", label: "Referral" },
-              ]}
-            />
-            <FilterSelectField
-              label="Nationality"
-              value={params.nationality ?? ""}
-              onChange={(v) => setParams({ nationality: v as any })}
-              options={[
-                { value: "KW", label: "Kuwait" },
-                { value: "OM", label: "Oman" },
-                { value: "QA", label: "Qatar" },
-                { value: "SA", label: "Saudi Arabia" },
-              ]}
-            />
-          </div>
-        )}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-3 pt-3 border-t border-slate-100">
+          <FilterSelectField
+            label="Status"
+            value={params.status ?? ""}
+            onChange={(v) => setParams({ status: v as any })}
+            options={[
+              { value: "pending",             label: "Pending" },
+              { value: "interview_scheduled", label: "Interview Scheduled" },
+              { value: "accepted",            label: "Accepted" },
+              { value: "rejected",            label: "Rejected" },
+            ]}
+          />
+          <FilterSelectField
+            label="Type"
+            value={params.registration_type ?? ""}
+            onChange={(v) => setParams({ registration_type: v as any })}
+            options={[
+              { value: "self",  label: "Self" },
+              { value: "child", label: "Child" },
+            ]}
+          />
+          <FilterSelectField
+            label="Source"
+            value={params.source ?? ""}
+            onChange={(v) => setParams({ source: v as any })}
+            options={[
+              { value: "website",  label: "Website" },
+              { value: "whatsapp", label: "WhatsApp" },
+              { value: "referral", label: "Referral" },
+            ]}
+          />
+          <FilterSelectField
+            label="Nationality"
+            value={params.nationality ?? ""}
+            onChange={(v) => setParams({ nationality: v as any })}
+            options={[
+              { value: "KW", label: "Kuwait" },
+              { value: "OM", label: "Oman" },
+              { value: "QA", label: "Qatar" },
+              { value: "SA", label: "Saudi Arabia" },
+            ]}
+          />
+        </div>
       </div>
 
       {/* Table */}
@@ -238,7 +193,7 @@ const CampRegistrationsPage = () => {
                 <table className="min-w-full text-sm">
                   <thead>
                     <tr className="border-b border-slate-100 bg-slate-50/60">
-                      {["Participant", "Type", "Nationality", "Source", "Status", "Submitted", "Edit", "Del"].map((h) => (
+                      {["Participant", "Club", "Type", "Nationality", "Source", "Status", "Submitted", "Edit", "Del"].map((h) => (
                         <th key={h} className={`px-5 py-3 text-left text-xs font-bold tracking-widest uppercase text-slate-400 whitespace-nowrap ${h === "Edit" || h === "Del" ? "w-10" : ""}`}>
                           {h === "Edit" || h === "Del" ? "" : h}
                         </th>
@@ -264,6 +219,11 @@ const CampRegistrationsPage = () => {
                               <p className="text-xs text-slate-400 truncate max-w-[160px]">{reg.participant.email}</p>
                             </div>
                           </div>
+                        </td>
+                        <td className="px-5 py-3.5 text-slate-600 text-sm">
+                          <span className="truncate max-w-[140px] block" title={campNameMap[reg.camp]}>
+                            {campNameMap[reg.camp] ?? "—"}
+                          </span>
                         </td>
                         <td className="px-5 py-3.5">
                           <span className="capitalize text-slate-600 text-sm">{reg.registration_type}</span>

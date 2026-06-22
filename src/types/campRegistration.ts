@@ -32,6 +32,7 @@ export interface ReferralCodeSummary {
 
 export interface CampRegistration {
   uid:                       string;
+  camp:                      string;
   participant:               CampParticipant;
   guardian:                  CampGuardian | null;
   min_age:                   number | null;
@@ -65,10 +66,11 @@ export interface CampRegistrationsParams {
 }
 
 export interface CreateCampRegistrationPayload {
+  camp:                       string;
   participant:                CampParticipant;
   guardian?:                  CampGuardian;
-  min_age:                    number;
-  max_age:                    number;
+  min_age?:                   number;
+  max_age?:                   number;
   registration_type:          CampRegistrationType;
   source:                     CampRegistrationSource;
   health_notes?:              string;

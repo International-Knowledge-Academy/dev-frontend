@@ -4,10 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   User, Shield, Phone, Mail, Calendar, Globe,
   FileText, CalendarClock, CheckCircle2, XCircle, AlertTriangle, Tag,
+  Tent, MapPin, Users, DollarSign,
 } from "lucide-react";
 import { MdClose } from "react-icons/md";
 import DropdownButton from "components/ui/buttons/DropdownButton";
 import useGetCampRegistration from "hooks/campRegistrations/useGetCampRegistration";
+import useGetCamp from "hooks/camps/useGetCamp";
 import useCampRegistrationActions from "hooks/campRegistrations/useCampRegistrationActions";
 import useDeleteCampRegistration from "hooks/campRegistrations/useDeleteCampRegistration";
 import { useToast } from "context/ToastContext";
@@ -32,8 +34,18 @@ const STATUS_LABELS = {
   accepted:            "Accepted",
   rejected:            "Rejected",
 };
-import { ARAB_COUNTRIES } from "constants/lists";
-const NATIONALITY_LABELS = Object.fromEntries(ARAB_COUNTRIES.map((c) => [c.code, c.name]));
+const CAMP_STATUS_COLORS = {
+  upcoming:  "bg-blue-50 text-blue-600 border-blue-200",
+  open:      "bg-green-50 text-green-600 border-green-200",
+  closed:    "bg-red-50 text-red-500 border-red-200",
+  completed: "bg-slate-50 text-slate-500 border-slate-200",
+};
+const CAMP_STATUS_LABELS = {
+  upcoming: "Upcoming", open: "Open", closed: "Closed", completed: "Completed",
+};
+import { ARAB_COUNTRIES, HEAR_ABOUT_US_OPTIONS } from "constants/lists";
+const NATIONALITY_LABELS    = Object.fromEntries(ARAB_COUNTRIES.map((c) => [c.code, c.name]));
+const HEAR_ABOUT_US_LABELS  = Object.fromEntries(HEAR_ABOUT_US_OPTIONS.map((o) => [o.code, o.name]));
 
 const InfoRow = ({ icon: Icon, label, value }) => (
   <div className="flex items-start gap-4 py-3.5">
@@ -56,12 +68,27 @@ const SectionTitle = ({ title }) => (
 const formatDate = (d: string | null) =>
   d ? new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "—";
 
+const formatDateRange = (start: string | null, end: string | null) => {
+  if (!start) return null;
+  const s = new Date(start);
+  const fmtDay = (d: Date) => d.getDate();
+  const fmtMon = (d: Date) => d.toLocaleDateString("en-GB", { month: "short" });
+  const fmtYear = (d: Date) => d.getFullYear();
+  if (!end) return `${fmtDay(s)} ${fmtMon(s)} ${fmtYear(s)}`;
+  const e = new Date(end);
+  if (s.getMonth() === e.getMonth() && s.getFullYear() === e.getFullYear()) {
+    return `${fmtDay(s)} – ${fmtDay(e)} ${fmtMon(e)} ${fmtYear(e)}`;
+  }
+  return `${fmtDay(s)} ${fmtMon(s)} – ${fmtDay(e)} ${fmtMon(e)} ${fmtYear(e)}`;
+};
+
 const CampRegistrationDetailPage = () => {
   const { uid } = useParams<{ uid: string }>();
   const navigate = useNavigate();
   const { addToast } = useToast();
 
   const { registration, loading, error, refetch } = useGetCampRegistration(uid);
+  const { camp } = useGetCamp(registration?.camp);
   const { accept, reject, scheduleInterview, loading: actioning, error: actionError, fieldErrors, clearErrors } = useCampRegistrationActions();
   const { deleteCampRegistration, loading: deleting } = useDeleteCampRegistration();
 
@@ -76,7 +103,7 @@ const CampRegistrationDetailPage = () => {
     );
   }
 
-  const { participant, guardian, status, registration_type, source, health_notes, how_did_you_hear_about_us, referral_code, submitted_at } = registration;
+  const { participant, guardian, status, registration_type, source, health_notes, referral_source, how_did_you_hear_about_us, referral_code, submitted_at } = registration;
 
   const handleAccept = async () => {
     const result = await accept(uid);
@@ -161,6 +188,45 @@ const CampRegistrationDetailPage = () => {
           </div>
         )}
 
+        {/* Club */}
+        {camp && (
+          <>
+            <SectionTitle title="Club" />
+            <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
+              <InfoRow
+                icon={Tent}
+                label="Club Name"
+                value={
+                  <span className="flex items-center gap-2">
+                    {camp.name}
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold border ${CAMP_STATUS_COLORS[camp.status] ?? "bg-slate-50 text-slate-400 border-slate-200"}`}>
+                      {CAMP_STATUS_LABELS[camp.status] ?? camp.status}
+                    </span>
+                  </span>
+                }
+              />
+              {(camp.start_date || camp.end_date) && (
+                <InfoRow icon={Calendar} label="Dates" value={formatDateRange(camp.start_date, camp.end_date)} />
+              )}
+              {camp.location && (
+                <InfoRow icon={MapPin} label="Location" value={camp.location} />
+              )}
+              {camp.min_age != null && camp.max_age != null && (
+                <InfoRow icon={Users} label="Age Range" value={`${camp.min_age} – ${camp.max_age} years`} />
+              )}
+              {camp.capacity != null && (
+                <InfoRow icon={Users} label="Capacity" value={`${camp.capacity} seats`} />
+              )}
+              {camp.camp_fee && (
+                <InfoRow icon={DollarSign} label="Fee" value={camp.camp_fee} />
+              )}
+              {camp.deadline && (
+                <InfoRow icon={Calendar} label="Registration Deadline" value={formatDate(camp.deadline)} />
+              )}
+            </div>
+          </>
+        )}
+
         {/* Participant */}
         <SectionTitle title="Participant" />
         <div className="px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2">
@@ -191,8 +257,9 @@ const CampRegistrationDetailPage = () => {
           <InfoRow icon={User}     label="Registration Type" value={registration_type === "child" ? "Child" : "Self"} />
           <InfoRow icon={Globe}    label="Source"            value={source === "whatsapp" ? "WhatsApp" : source?.charAt(0).toUpperCase() + source?.slice(1)} />
           <InfoRow icon={Calendar} label="Submitted"         value={formatDate(submitted_at)} />
-          {how_did_you_hear_about_us && <InfoRow icon={FileText} label="How Did They Hear" value={how_did_you_hear_about_us} />}
-          {health_notes              && <InfoRow icon={FileText} label="Health Notes"       value={health_notes} />}
+          {how_did_you_hear_about_us && <InfoRow icon={FileText} label="How Did They Hear" value={HEAR_ABOUT_US_LABELS[how_did_you_hear_about_us] ?? how_did_you_hear_about_us} />}
+          {referral_source           && <InfoRow icon={FileText} label="Referral Source"    value={referral_source} />}
+          {health_notes              && <InfoRow icon={FileText} label="Health Notes"        value={health_notes} />}
           {referral_code && (
             <InfoRow
               icon={Tag}

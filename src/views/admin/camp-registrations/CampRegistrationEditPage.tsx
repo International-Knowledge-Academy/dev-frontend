@@ -57,6 +57,7 @@ const CampRegistrationEditPage = () => {
     guardian_email:            "",
     health_notes:              "",
     how_did_you_hear_about_us: "",
+    referral_source:           "",
     referred_by_code:          "",
   });
 
@@ -79,6 +80,7 @@ const CampRegistrationEditPage = () => {
       guardian_email:            g?.email                                ?? "",
       health_notes:              registration.health_notes               ?? "",
       how_did_you_hear_about_us: registration.how_did_you_hear_about_us  ?? "",
+      referral_source:           registration.referral_source            ?? "",
       referred_by_code:          registration.referred_by_code           ?? "",
     });
   }, [registration]);
@@ -104,6 +106,7 @@ const CampRegistrationEditPage = () => {
       },
       health_notes:              form.health_notes              || undefined,
       how_did_you_hear_about_us: form.how_did_you_hear_about_us || undefined,
+      referral_source:           form.referral_source           || undefined,
       referred_by_code:          form.referred_by_code          || undefined,
     };
 
@@ -189,6 +192,7 @@ const CampRegistrationEditPage = () => {
           <SectionLabel>Additional Information</SectionLabel>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <SearchableSelect label="How Did You Hear About Us" field="how_did_you_hear_about_us" required={false} options={HEAR_OPTIONS} formData={form} errors={fieldErrors} updateFormData={update} placeholder="Select source..." />
+            <InputField label="Referral Source" field="referral_source" required={false} placeholder="e.g. Instagram, friend, event..." formData={form} errors={fieldErrors} updateFormData={update} />
             <InputField label="Referral Code" field="referred_by_code" required={false} placeholder="CODE123" formData={form} errors={fieldErrors} updateFormData={update} />
           </div>
           <TextareaField label="Health Notes" field="health_notes" required={false} rows={3} placeholder="Any health conditions or notes..." formData={form} errors={fieldErrors} updateFormData={update} />

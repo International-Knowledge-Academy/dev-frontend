@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Download, Users, Clock, MapPin } from "lucide-react";
@@ -7,40 +7,45 @@ import { ChevronLeft, ChevronRight, Download, Users, Clock, MapPin } from "lucid
 import campImg1 from "assets/img/camp/Gulf Young 1.png";
 import campImg2 from "assets/img/camp/Gulf Young 2.png";
 import ikaBg from "assets/img/camp/IKA-bg.png";
+import useCamps from "hooks/camps/useCamps";
+import usePresignedDownload from "hooks/storage/usePresignedDownload";
 
-/* ── slides ──────────────────────────────────────────────────────────────── */
-const slides = [
-  {
-    id:          "corporate",
-    badge:       "IKA · Corporate Training",
-    title:       ["Invest in Your Employees.", "Invest in Your Future."],
-    description: "Empower your team with world-class training programmes in leadership, future skills, and professional development — tailored for organisations across the Gulf.",
-    image:       ikaBg,
-  },
-  {
-    id:          "overview",
-    badge:       "IKA · Malaysia 2026",
-    title:       ["Gulf Young", "Leaders Club"],
-    description: "A carefully designed international experience for Gulf youth — combining leadership training, future skills, educational visits, and adventure in Malaysia.",
-    image:       campImg1,
-  },
-  {
-    id:          "youth",
-    badge:       "Ages 16–18  ·  12–23 July 2026",
-    title:       ["Gulf Youth", "Club"],
-    description: "Confidence building, personal development, leadership, and university readiness in an organised, engaging, and internationally oriented environment.",
-    image:       campImg2,
-    tags:        ["Leadership", "Confidence", "Future Skills", "Teamwork", "University Readiness"],
-  },
-  {
-    id:          "leaders",
-    badge:       "Ages 19–22  ·  26 July – 6 Aug 2026",
-    title:       ["Gulf Future", "Leaders Club"],
-    description: "Advanced leadership, career planning, artificial intelligence, entrepreneurship, and building future-focused initiatives and projects.",
-    image:       campImg1,
-    tags:        ["Advanced Leadership", "AI", "Entrepreneurship", "Career Planning", "Innovation"],
-  },
-];
+const CAMP_IMAGES = [campImg1, campImg2];
+
+const formatDateRange = (start: string | null, end: string | null) => {
+  if (!start) return null;
+  const s = new Date(start);
+  const fmtDay  = (d: Date) => d.getDate();
+  const fmtMon  = (d: Date) => d.toLocaleDateString("en-GB", { month: "short" });
+  const fmtYear = (d: Date) => d.getFullYear();
+  if (!end) return `${fmtDay(s)} ${fmtMon(s)} ${fmtYear(s)}`;
+  const e = new Date(end);
+  if (s.getMonth() === e.getMonth() && s.getFullYear() === e.getFullYear()) {
+    return `${fmtDay(s)} – ${fmtDay(e)} ${fmtMon(e)} ${fmtYear(e)}`;
+  }
+  return `${fmtDay(s)} ${fmtMon(s)} – ${fmtDay(e)} ${fmtMon(e)} ${fmtYear(e)}`;
+};
+
+const parseHighlights = (highlights: string | null): string[] => {
+  if (!highlights) return [];
+  return highlights.split(/[,\n]/).map((s) => s.trim()).filter(Boolean);
+};
+
+const splitTitle = (name: string): [string, string] => {
+  const words = name.trim().split(" ");
+  if (words.length === 1) return [words[0], ""];
+  const last = words.pop();
+  return [words.join(" "), last];
+};
+
+/* ── static slides ───────────────────────────────────────────────────────── */
+const CORPORATE_SLIDE = {
+  id:          "corporate",
+  badge:       "IKA · Corporate Training",
+  title:       ["Invest in Your Employees.", "Invest in Your Future."],
+  description: "Empower your team with world-class training programmes in leadership, future skills, and professional development — tailored for organisations across the Gulf.",
+  image:       ikaBg,
+};
 
 /* ── animation ───────────────────────────────────────────────────────────── */
 const textVariants = {
@@ -55,10 +60,47 @@ const fadeUp = {
 };
 
 /* ── main carousel ───────────────────────────────────────────────────────── */
-const CarouselHero = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
+const CarouselHero = () => {
   const [index, setIndex]   = useState(0);
   const [dir, setDir]       = useState(1);
   const [paused, setPaused] = useState(false);
+
+  const { camps: allCamps } = useCamps();
+  const activeCamps = useMemo(() => {
+    const open     = allCamps.filter((c) => c.status === "open");
+    const upcoming = allCamps.filter((c) => c.status === "upcoming");
+    return [...open, ...upcoming];
+  }, [allCamps]);
+
+  const slides = useMemo(() => [
+    CORPORATE_SLIDE,
+    ...activeCamps.map((camp, i) => {
+      const badge = [
+        camp.min_age != null && camp.max_age != null ? `Ages ${camp.min_age}–${camp.max_age}` : null,
+        formatDateRange(camp.start_date, camp.end_date),
+      ].filter(Boolean).join("  ·  ");
+
+      return {
+        id:       camp.uid,
+        badge:    badge || "IKA · Malaysia 2026",
+        title:    splitTitle(camp.name),
+        description: camp.description ?? "",
+        image:    CAMP_IMAGES[i % CAMP_IMAGES.length],
+        tags:     parseHighlights(camp.highlights),
+        brochure: camp.brochure ?? null,
+        isOpen:   camp.status === "open",
+      };
+    }),
+  ], [activeCamps]);
+
+  const slide = slides[index];
+  const { getDownloadUrl, loading: brochureLoading } = usePresignedDownload();
+
+  const handleBrochureDownload = async () => {
+    if (!slide?.brochure) return;
+    const url = await getDownloadUrl(slide.brochure);
+    if (url) window.open(url, "_blank");
+  };
 
   const goTo = useCallback((next: number, direction: number) => {
     setDir(direction);
@@ -69,15 +111,17 @@ const CarouselHero = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
   const next = () => goTo((index + 1) % slides.length, 1);
 
   useEffect(() => {
+    setIndex((i) => Math.min(i, slides.length - 1));
+  }, [slides.length]);
+
+  useEffect(() => {
     if (paused) return;
     const id = setInterval(() => {
       setDir(1);
       setIndex((i) => (i + 1) % slides.length);
     }, 5000);
     return () => clearInterval(id);
-  }, [paused]);
-
-  const slide = slides[index];
+  }, [paused, slides.length]);
 
   return (
     <section
@@ -101,9 +145,7 @@ const CarouselHero = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
             aria-hidden="true"
             className="w-full h-full object-cover"
           />
-          {/* left-heavy gradient keeps text legible */}
           <div className="absolute inset-0 bg-gradient-to-r from-navy-900/95 via-navy-900/80 to-navy-900/40" />
-          {/* top + bottom fade */}
           <div className="absolute inset-0 bg-gradient-to-t from-navy-900/80 via-transparent to-navy-900/50" />
         </motion.div>
       </AnimatePresence>
@@ -111,7 +153,6 @@ const CarouselHero = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
       {/* ── Foreground content ── */}
       <div className="relative z-10 flex-1 flex flex-col max-w-6xl mx-auto w-full px-6 sm:px-8 lg:px-10 pt-[110px] sm:pt-[130px] lg:pt-[160px] pb-14 lg:pb-20">
 
-        {/* Slide text */}
         <div className="flex-1 flex items-center">
           <AnimatePresence mode="wait" custom={dir}>
             <motion.div
@@ -135,41 +176,22 @@ const CarouselHero = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
                 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-[1.05] mb-5"
               >
                 {slide.title[0]}
-                <span className="block text-gold-400">{slide.title[1]}</span>
+                {slide.title[1] && (
+                  <span className="block text-gold-400">{slide.title[1]}</span>
+                )}
               </motion.h2>
 
-              <motion.p
-                variants={fadeUp} initial="hidden" animate="visible" custom={0.14}
-                className="text-white/75 text-base sm:text-lg leading-relaxed max-w-xl mb-6"
-              >
-                {slide.description}
-              </motion.p>
-
-              {/* Stats strip — overview slide only */}
-              {slide.id === "overview" && (
-                <motion.div
-                  variants={fadeUp} initial="hidden" animate="visible" custom={0.19}
-                  className="flex flex-wrap gap-3 mb-7"
+              {slide.description && (
+                <motion.p
+                  variants={fadeUp} initial="hidden" animate="visible" custom={0.14}
+                  className="text-white/75 text-base sm:text-lg leading-relaxed max-w-xl mb-6"
                 >
-                  {[
-                    { value: "12",    label: "Days per programme", icon: Clock  },
-                    { value: "20–25", label: "Seats per camp",     icon: Users  },
-                    { value: "4",     label: "Gulf countries",     icon: MapPin },
-                  ].map(({ value, label, icon: Icon }) => (
-                    <div
-                      key={label}
-                      className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-2"
-                    >
-                      <Icon size={13} className="text-gold-400 flex-shrink-0" />
-                      <span className="text-gold-300 font-bold text-sm">{value}</span>
-                      <span className="text-white/60 text-xs">{label}</span>
-                    </div>
-                  ))}
-                </motion.div>
+                  {slide.description}
+                </motion.p>
               )}
 
               {/* Focus area tags — camp slides */}
-              {slide.tags && (
+              {slide.tags && slide.tags.length > 0 && (
                 <motion.div
                   variants={fadeUp} initial="hidden" animate="visible" custom={0.19}
                   className="flex flex-wrap gap-2 mb-7"
@@ -195,24 +217,20 @@ const CarouselHero = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
                     to={slide.id === "corporate" ? "/programs" : "/register/club"}
                     className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-6 py-3 rounded-md lg:rounded-lg text-sm transition-colors duration-200"
                   >
-                    {slide.id === "corporate"
-                      ? "Explore Our Programs"
-                      : slide.id === "overview"
-                      ? "Register Your Interest"
-                      : "Register for This Club"}
+                    {slide.id === "corporate" ? "Explore Our Programs" : "Register for This Club"}
                   </Link>
                 </motion.div>
 
-                {slide.id === "overview" && brochureUrl && brochureUrl !== "#" && (
+                {"brochure" in slide && slide.brochure && (
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                    <a
-                      href={brochureUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 border border-white/30 text-white hover:border-gold-400 hover:text-gold-400 font-semibold px-6 py-3 rounded-md lg:rounded-lg text-sm transition-all duration-200 backdrop-blur-sm"
+                    <button
+                      type="button"
+                      onClick={handleBrochureDownload}
+                      disabled={brochureLoading}
+                      className="inline-flex items-center gap-2 border border-white/30 text-white hover:border-gold-400 hover:text-gold-400 font-semibold px-6 py-3 rounded-md lg:rounded-lg text-sm transition-all duration-200 backdrop-blur-sm disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      <Download size={14} /> Download Brochure
-                    </a>
+                      <Download size={14} /> {brochureLoading ? "Preparing…" : "Download Brochure"}
+                    </button>
                   </motion.div>
                 )}
               </motion.div>
@@ -222,7 +240,6 @@ const CarouselHero = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
 
         {/* ── Controls ── */}
         <div className="flex items-center justify-between mt-10">
-          {/* Dots */}
           <div className="flex gap-2">
             {slides.map((s, i) => (
               <button
@@ -246,7 +263,6 @@ const CarouselHero = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
             ))}
           </div>
 
-          {/* Arrows */}
           <div className="flex gap-2">
             <motion.button
               type="button" onClick={prev}

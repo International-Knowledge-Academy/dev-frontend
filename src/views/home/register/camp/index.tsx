@@ -1,10 +1,11 @@
 // @ts-nocheck
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Shield, Check, Loader2, ChevronRight, ChevronLeft } from "lucide-react";
 import Navbar from "components/home/Navbar";
 import Footer from "components/home/Footer";
 import useCreateCampRegistration from "hooks/campRegistrations/useCreateCampRegistration";
+import useCamps from "hooks/camps/useCamps";
 import type { CampRegistrationType, CampNationality, GuardianRelationship } from "types/campRegistration";
 import { ARAB_COUNTRIES, HEAR_ABOUT_US_OPTIONS } from "constants/lists";
 
@@ -69,11 +70,17 @@ const StepIndicator = ({ current }) => (
 
 const RegisterCampPage = () => {
   const { createCampRegistration, loading, error, fieldErrors } = useCreateCampRegistration();
+  const { camps: allCamps } = useCamps();
+  const openCamps = useMemo(
+    () => allCamps.filter((c) => c.status === "open"),
+    [allCamps]
+  );
 
   const [step, setStep]           = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [regType, setRegType]     = useState<CampRegistrationType>("self");
 
+  const [selectedCampUid,  setSelectedCampUid]  = useState("");
   const [participant, setParticipant] = useState({
     first_name:  "", last_name: "", dob: "",
     nationality: "" as CampNationality | "",
@@ -85,25 +92,25 @@ const RegisterCampPage = () => {
     whatsapp: "", email: "",
   });
 
-  const [minAge]           = useState("18");
-  const [maxAge]           = useState("22");
-  const [healthNotes,      setHealthNotes]      = useState("");
-  const [howDidYouHear,    setHowDidYouHear]    = useState("");
-  const [referredByCode,   setReferredByCode]   = useState("");
-  const [errors, setErrors]                     = useState<Record<string, string>>({});
+  const [healthNotes,    setHealthNotes]    = useState("");
+  const [howDidYouHear,  setHowDidYouHear]  = useState("");
+  const [referralSource, setReferralSource] = useState("");
+  const [referredByCode, setReferredByCode] = useState("");
+  const [errors, setErrors]                 = useState<Record<string, string>>({});
 
   const updateP = (k: string, v: string) => setParticipant((p) => ({ ...p, [k]: v }));
   const updateG = (k: string, v: string) => setGuardian((g)  => ({ ...g, [k]: v }));
 
   const validateStep1 = () => {
     const e: Record<string, string> = {};
-    if (!participant.first_name.trim())  e.first_name  = "Required";
-    if (!participant.last_name.trim())   e.last_name   = "Required";
-    if (!participant.dob)                e.dob         = "Required";
-    if (!participant.nationality)        e.nationality = "Required";
-    if (!participant.passport_no.trim()) e.passport_no = "Required";
-    if (!participant.whatsapp.trim())    e.whatsapp    = "Required";
-    if (!participant.email.trim())       e.email       = "Required";
+    if (!selectedCampUid)                 e.selectedCampUid = "Please select a club";
+    if (!participant.first_name.trim())   e.first_name  = "Required";
+    if (!participant.last_name.trim())    e.last_name   = "Required";
+    if (!participant.dob)                 e.dob         = "Required";
+    if (!participant.nationality)         e.nationality = "Required";
+    if (!participant.passport_no.trim())  e.passport_no = "Required";
+    if (!participant.whatsapp.trim())     e.whatsapp    = "Required";
+    if (!participant.email.trim())        e.email       = "Required";
     else if (!/\S+@\S+\.\S+/.test(participant.email)) e.email = "Invalid email";
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -127,15 +134,20 @@ const RegisterCampPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateStep2()) return;
+
+    const selectedCamp = openCamps.find((c) => c.uid === selectedCampUid);
+
     const result = await createCampRegistration({
-      participant: { ...participant, nationality: participant.nationality as CampNationality },
+      camp:              selectedCampUid,
+      participant:       { ...participant, nationality: participant.nationality as CampNationality },
       ...(regType === "child" && { guardian: { ...guardian, relationship: guardian.relationship as GuardianRelationship } }),
       registration_type: regType,
-      source: "website",
-      min_age: Number(minAge),
-      max_age: Number(maxAge),
+      source:            "website",
+      ...(selectedCamp?.min_age != null && { min_age: selectedCamp.min_age }),
+      ...(selectedCamp?.max_age != null && { max_age: selectedCamp.max_age }),
       ...(healthNotes.trim()    && { health_notes:              healthNotes.trim() }),
       ...(howDidYouHear.trim()  && { how_did_you_hear_about_us: howDidYouHear.trim() }),
+      ...(referralSource.trim() && { referral_source:           referralSource.trim() }),
       ...(referredByCode.trim() && { referred_by_code:          referredByCode.trim() }),
     });
     if (result) setSubmitted(true);
@@ -143,9 +155,10 @@ const RegisterCampPage = () => {
 
   const reset = () => {
     setSubmitted(false); setStep(1); setErrors({});
+    setSelectedCampUid("");
     setParticipant({ first_name: "", last_name: "", dob: "", nationality: "", passport_no: "", whatsapp: "", email: "" });
     setGuardian({ full_name: "", relationship: "", whatsapp: "", email: "" });
-    setHealthNotes(""); setHowDidYouHear(""); setReferredByCode("");
+    setHealthNotes(""); setHowDidYouHear(""); setReferralSource(""); setReferredByCode("");
   };
 
   const err = (k: string) =>
@@ -228,6 +241,23 @@ const RegisterCampPage = () => {
 
                     {step === 1 && (
                       <motion.div key="s1" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.2 }}>
+                        <div className="grid grid-cols-1 gap-4 mb-6">
+                          {/* Club selector */}
+                          <Field label="Select Club" required>
+                            <select
+                              className={selectCls}
+                              value={selectedCampUid}
+                              onChange={(e) => setSelectedCampUid(e.target.value)}
+                            >
+                              <option value="">Select a club to register for...</option>
+                              {openCamps.map((c) => (
+                                <option key={c.uid} value={c.uid}>{c.name}</option>
+                              ))}
+                            </select>
+                            {err("selectedCampUid")}
+                          </Field>
+                        </div>
+
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                           <Field label="First Name" required>
                             <input className={inputCls} placeholder="Ahmad" value={participant.first_name} onChange={(e) => updateP("first_name", e.target.value)} />
@@ -312,6 +342,10 @@ const RegisterCampPage = () => {
                                 <option key={o.code} value={o.code}>{o.name}</option>
                               ))}
                             </select>
+                          </Field>
+                          <Field label="Referral Source">
+                            <input className={inputCls} placeholder="e.g. Instagram, friend, event..."
+                              value={referralSource} onChange={(e) => setReferralSource(e.target.value)} />
                           </Field>
                           <Field label="Referral Code">
                             <input className={inputCls} placeholder="Enter influencer or referral code (optional)"

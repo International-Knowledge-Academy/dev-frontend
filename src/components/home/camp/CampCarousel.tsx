@@ -187,7 +187,7 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
                   {[
                     { value: "12", label: "Days per programme", icon: Clock  },
                     { value: "20", label: "Seats per club",     icon: Users  },
-                    { value: "4",  label: "Gulf countries",     icon: MapPin },
+                    { value: "22",  label: "Arab countries",     icon: MapPin },
                   ].map(({ value, label, icon: Icon }) => (
                     <div
                       key={label}
@@ -197,23 +197,6 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
                       <span className="text-gold-300 font-bold text-sm">{value}</span>
                       <span className="text-white/60 text-xs">{label}</span>
                     </div>
-                  ))}
-                </motion.div>
-              )}
-
-              {/* Focus area tags — camp slides */}
-              {slide.tags && slide.tags.length > 0 && (
-                <motion.div
-                  variants={fadeUp} initial="hidden" animate="visible" custom={0.19}
-                  className="flex flex-wrap gap-2 mb-7"
-                >
-                  {slide.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white/80"
-                    >
-                      {tag}
-                    </span>
                   ))}
                 </motion.div>
               )}
