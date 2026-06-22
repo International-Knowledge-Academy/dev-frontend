@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Download, Users, Clock, MapPin } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 
 import campImg1 from "assets/img/camp/Gulf Young 1.png";
 import campImg2 from "assets/img/camp/Gulf Young 2.png";
