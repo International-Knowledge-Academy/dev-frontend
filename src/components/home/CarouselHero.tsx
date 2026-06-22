@@ -218,23 +218,6 @@ const CarouselHero = () => {
                 </motion.p>
               )}
 
-              {/* Focus area tags — camp slides */}
-              {slide.tags && slide.tags.length > 0 && (
-                <motion.div
-                  variants={fadeUp} initial="hidden" animate="visible" custom={0.19}
-                  className="flex flex-wrap gap-2 mb-7"
-                >
-                  {slide.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white/80"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </motion.div>
-              )}
-
               {/* CTAs */}
               <motion.div
                 variants={fadeUp} initial="hidden" animate="visible" custom={0.24}
