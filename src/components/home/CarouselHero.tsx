@@ -7,8 +7,10 @@ import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 import campImg1 from "assets/img/camp/Gulf Young 1.png";
 import campImg2 from "assets/img/camp/Gulf Young 2.png";
 import ikaBg from "assets/img/camp/IKA-bg.png";
+import axiosInstance from "api/axiosInstance";
 import useCamps from "hooks/camps/useCamps";
-import usePresignedDownload from "hooks/storage/usePresignedDownload";
+import useSubscribeEmail from "hooks/emails/useSubscribeEmail";
+import LeadCaptureModal from "components/home/LeadCaptureModal";
 
 const CAMP_IMAGES = [campImg1, campImg2];
 
@@ -92,12 +94,34 @@ const CarouselHero = () => {
   ], [activeCamps]);
 
   const slide = slides[index];
-  const { getDownloadUrl, loading: brochureLoading } = usePresignedDownload();
+  const [brochureLoading, setBrochureLoading] = useState(false);
+  const [showLeadModal, setShowLeadModal]     = useState(false);
+  const { subscribe, loading: subscribing }   = useSubscribeEmail();
 
-  const handleBrochureDownload = async () => {
+  const triggerBrochureDownload = async () => {
     if (!slide?.brochure) return;
-    const url = await getDownloadUrl(slide.brochure);
-    if (url) window.open(url, "_blank");
+    setBrochureLoading(true);
+    try {
+      const { data } = await axiosInstance.get(`/camps/${slide.id}/brochure/download`);
+      if (data.download_url) window.open(data.download_url, "_blank");
+    } catch {
+      // silent fail
+    } finally {
+      setBrochureLoading(false);
+    }
+  };
+
+  const handleBrochureClick = () => setShowLeadModal(true);
+
+  const handleLeadSubmit = async (email: string, phone: string) => {
+    setShowLeadModal(false);
+    triggerBrochureDownload();
+    subscribe(email, phone);
+  };
+
+  const handleLeadSkip = () => {
+    setShowLeadModal(false);
+    triggerBrochureDownload();
   };
 
   const goTo = useCallback((next: number, direction: number) => {
@@ -127,6 +151,12 @@ const CarouselHero = () => {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
+      <LeadCaptureModal
+        open={showLeadModal}
+        onSubmit={handleLeadSubmit}
+        onSkip={handleLeadSkip}
+        loading={subscribing}
+      />
 
       <AnimatePresence mode="wait">
         <motion.div
@@ -223,7 +253,7 @@ const CarouselHero = () => {
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                     <button
                       type="button"
-                      onClick={handleBrochureDownload}
+                      onClick={handleBrochureClick}
                       disabled={brochureLoading}
                       className="inline-flex items-center gap-2 border border-white/30 text-white hover:border-gold-400 hover:text-gold-400 font-semibold px-6 py-3 rounded-md lg:rounded-lg text-sm transition-all duration-200 backdrop-blur-sm disabled:opacity-60 disabled:cursor-not-allowed"
                     >

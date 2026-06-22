@@ -2,11 +2,14 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Download, Users, Clock, MapPin } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 
 import campImg1 from "assets/img/camp/Gulf Young 1.png";
 import campImg2 from "assets/img/camp/Gulf Young 2.png";
+import axiosInstance from "api/axiosInstance";
 import useCamps from "hooks/camps/useCamps";
+import useSubscribeEmail from "hooks/emails/useSubscribeEmail";
+import LeadCaptureModal from "components/home/LeadCaptureModal";
 
 const CAMP_IMAGES = [campImg1, campImg2];
 
@@ -36,15 +39,6 @@ const splitTitle = (name: string): [string, string] => {
   return [words.join(" "), last];
 };
 
-/* ── static overview slide ───────────────────────────────────────────────── */
-const OVERVIEW_SLIDE = {
-  id:          "overview",
-  badge:       "IKA · Malaysia 2026",
-  title:       ["Gulf Young", "Leaders Club"] as [string, string],
-  description: "A carefully designed international experience for Gulf youth — combining leadership training, future skills, educational visits, and adventure in Malaysia.",
-  image:       campImg1,
-};
-
 /* ── animation ───────────────────────────────────────────────────────────── */
 const textVariants = {
   enter:  (dir: number) => ({ x: dir > 0 ? 48 : -48, opacity: 0 }),
@@ -58,20 +52,16 @@ const fadeUp = {
 };
 
 /* ── main carousel ───────────────────────────────────────────────────────── */
-const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
+const CampCarousel = () => {
   const [index, setIndex]   = useState(0);
   const [dir, setDir]       = useState(1);
   const [paused, setPaused] = useState(false);
 
   const { camps: allCamps } = useCamps();
-  const activeCamps = useMemo(
-    () => allCamps.filter((c) => c.status === "upcoming" || c.status === "open"),
-    [allCamps]
-  );
-
-  const slides = useMemo(() => [
-    OVERVIEW_SLIDE,
-    ...activeCamps.map((camp, i) => {
+  const slides = useMemo(() => {
+    const open     = allCamps.filter((c) => c.status === "open");
+    const upcoming = allCamps.filter((c) => c.status === "upcoming");
+    return [...open, ...upcoming].map((camp, i) => {
       const badge = [
         camp.min_age != null && camp.max_age != null ? `Ages ${camp.min_age}–${camp.max_age}` : null,
         formatDateRange(camp.start_date, camp.end_date),
@@ -84,9 +74,10 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
         description: camp.description ?? "",
         image:       CAMP_IMAGES[i % CAMP_IMAGES.length],
         tags:        parseHighlights(camp.highlights),
+        brochure:    camp.brochure ?? null,
       };
-    }),
-  ], [activeCamps]);
+    });
+  }, [allCamps]);
 
   const goTo = useCallback((next: number, direction: number) => {
     setDir(direction);
@@ -97,7 +88,8 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
   const next = () => goTo((index + 1) % slides.length, 1);
 
   useEffect(() => {
-    setIndex((i) => Math.min(i, slides.length - 1));
+    if (slides.length === 0) return;
+    setIndex((i) => Math.max(0, Math.min(i, slides.length - 1)));
   }, [slides.length]);
 
   useEffect(() => {
@@ -109,7 +101,39 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
     return () => clearInterval(id);
   }, [paused, slides.length]);
 
+  const [brochureLoading, setBrochureLoading] = useState(false);
+  const [showLeadModal, setShowLeadModal]     = useState(false);
+  const { subscribe, loading: subscribing }   = useSubscribeEmail();
+
+  if (slides.length === 0) return null;
+
   const slide = slides[index];
+
+  const triggerBrochureDownload = async () => {
+    if (!slide?.brochure) return;
+    setBrochureLoading(true);
+    try {
+      const { data } = await axiosInstance.get(`/camps/${slide.id}/brochure/download`);
+      if (data.download_url) window.open(data.download_url, "_blank");
+    } catch {
+      // silent fail
+    } finally {
+      setBrochureLoading(false);
+    }
+  };
+
+  const handleBrochureClick = () => setShowLeadModal(true);
+
+  const handleLeadSubmit = async (email: string, phone: string) => {
+    setShowLeadModal(false);
+    triggerBrochureDownload();
+    subscribe(email, phone);
+  };
+
+  const handleLeadSkip = () => {
+    setShowLeadModal(false);
+    triggerBrochureDownload();
+  };
 
   return (
     <section
@@ -117,6 +141,12 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
+      <LeadCaptureModal
+        open={showLeadModal}
+        onSubmit={handleLeadSubmit}
+        onSkip={handleLeadSkip}
+        loading={subscribing}
+      />
 
       <AnimatePresence mode="wait">
         <motion.div
@@ -178,29 +208,6 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
                 </motion.p>
               )}
 
-              {/* Stats strip — overview slide only */}
-              {slide.id === "overview" && (
-                <motion.div
-                  variants={fadeUp} initial="hidden" animate="visible" custom={0.19}
-                  className="flex flex-wrap gap-3 mb-7"
-                >
-                  {[
-                    { value: "12", label: "Days per programme", icon: Clock  },
-                    { value: "20", label: "Seats per club",     icon: Users  },
-                    { value: "22",  label: "Arab countries",     icon: MapPin },
-                  ].map(({ value, label, icon: Icon }) => (
-                    <div
-                      key={label}
-                      className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-2"
-                    >
-                      <Icon size={13} className="text-gold-400 flex-shrink-0" />
-                      <span className="text-gold-300 font-bold text-sm">{value}</span>
-                      <span className="text-white/60 text-xs">{label}</span>
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-
               {/* CTAs */}
               <motion.div
                 variants={fadeUp} initial="hidden" animate="visible" custom={0.24}
@@ -215,16 +222,16 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
                   </Link>
                 </motion.div>
 
-                {slide.id === "overview" && brochureUrl && brochureUrl !== "#" && (
+                {"brochure" in slide && slide.brochure && (
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                    <a
-                      href={brochureUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 border border-white/30 text-white hover:border-gold-400 hover:text-gold-400 font-semibold px-6 py-3 rounded-md lg:rounded-lg text-sm transition-all duration-200 backdrop-blur-sm"
+                    <button
+                      type="button"
+                      onClick={handleBrochureClick}
+                      disabled={brochureLoading}
+                      className="inline-flex items-center gap-2 border border-white/30 text-white hover:border-gold-400 hover:text-gold-400 font-semibold px-6 py-3 rounded-md lg:rounded-lg text-sm transition-all duration-200 backdrop-blur-sm disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      <Download size={14} /> Download Brochure
-                    </a>
+                      <Download size={14} /> {brochureLoading ? "Preparing…" : "Download Brochure"}
+                    </button>
                   </motion.div>
                 )}
               </motion.div>
