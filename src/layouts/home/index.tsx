@@ -9,11 +9,12 @@ const HomeLayout = () => {
 
   return (
     <AppDataProvider>
-    <div className="min-h-screen flex flex-col">
-      <main className="flex-1">
-        <AnimatePresence mode="popLayout">
+    <div className="min-h-screen flex flex-col w-full overflow-x-hidden" style={{ background: "#0b1228" }}>
+      <main className="flex-1 w-full">
+        <AnimatePresence mode="wait">
           <motion.div
             key={pathname}
+            className="w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{    opacity: 0 }}

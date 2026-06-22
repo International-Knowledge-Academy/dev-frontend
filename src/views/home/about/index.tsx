@@ -9,7 +9,7 @@ import WorldMapSection from "components/home/WorldMapSection";
 
 const AboutPage = () => {
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="w-full flex flex-col">
       <Navbar />
       <AboutHero />
       <History />

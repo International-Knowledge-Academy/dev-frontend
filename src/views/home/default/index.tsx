@@ -1,38 +1,48 @@
 // @ts-nocheck
-import Navbar              from "components/home/Navbar";
-import Hero                from "components/home/Hero";
-import About               from "components/home/About";
-import FounderSpeech       from "components/home/FounderSpeech";
-import Stats               from "components/home/Stats";
-import Programs            from "components/home/Programs";
-import UpcomingPrograms    from "components/home/UpcomingPrograms";
-import Categories          from "components/home/Categories";
-import HowToEnroll         from "components/home/HowToEnroll";
-import HowToBeTrainer      from "components/home/HowToBeTrainer";
-import Features            from "components/home/Features";
-import Locations           from "components/home/Locations";
-import Partnerships        from "components/home/Partnerships";
-import TestimonialsSection from "components/home/TestimonialsSection";
-import WhatsAppFloatButton from "components/home/WhatsAppFloatButton";
-import Footer              from "components/home/Footer";
+import Navbar                from "components/home/Navbar";
+import CarouselHero          from "components/home/CarouselHero";
+import About                 from "components/home/About";
+import FounderSpeech         from "components/home/FounderSpeech";
+import Programs              from "components/home/Programs";
+import UpcomingPrograms      from "components/home/UpcomingPrograms";
+import Categories            from "components/home/Categories";
+import HowToEnroll           from "components/home/HowToEnroll";
+import HowToBeTrainer        from "components/home/HowToBeTrainer";
+import Features              from "components/home/Features";
+import Locations             from "components/home/Locations";
+import Partnerships          from "components/home/Partnerships";
+import TestimonialsSection   from "components/home/TestimonialsSection";
+import WhatsAppFloatButton   from "components/home/WhatsAppFloatButton";
+import Footer                from "components/home/Footer";
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen">
+    <div className="w-full flex flex-col">
       <Navbar />
-      <Hero />
+
+      <CarouselHero />
+
+      {/* ── WHO WE ARE ─────────────────────────── */}
       <About />
       <FounderSpeech />
-      <Stats />
+
+      {/* ── TRAINING PROGRAMMES ────────────────── */}
       <Programs />
       <Categories />
       <UpcomingPrograms />
+
+      {/* ── DIFFERENTIATORS ────────────────────── */}
       <Features />
+
+      {/* ── SOCIAL PROOF ───────────────────────── */}
+      <TestimonialsSection />
+      <Partnerships />
+      <Locations />
+
+      {/* ── PROCESS ────────────────────────────── */}
       <HowToEnroll />
       <HowToBeTrainer />
-      <Locations />
-      <Partnerships />
-      <TestimonialsSection />
+
       <Footer />
       <WhatsAppFloatButton />
     </div>

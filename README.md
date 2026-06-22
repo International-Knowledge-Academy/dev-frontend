@@ -53,6 +53,7 @@ src/
 | `/programs` | Program listings |
 | `/programs/:uid` | Program detail + quotation download |
 | `/contact` | Contact |
+| `/register/club` | Club (camp) registration form |
 
 ### Admin (protected — admin role)
 | Route | Page |
@@ -72,6 +73,11 @@ src/
 | `/admin/feedbacks` | Feedback management |
 | `/admin/contact` | Contact submissions |
 | `/admin/emails` | Mailing list (subscribers) |
+| `/admin/clubs` | Club (camp) management |
+| `/admin/club-registrations` | Club registration submissions |
+| `/admin/club-registrations/:uid` | Registration detail |
+| `/admin/club-registrations/:uid/edit` | Edit registration |
+| `/admin/referral-codes` | Referral code management |
 
 ### Account Manager (protected — manager role)
 | Route | Page |
@@ -90,6 +96,11 @@ src/
 | `/account-manager/feedbacks` | Feedback management |
 | `/account-manager/contact` | Contact submissions |
 | `/account-manager/emails` | Mailing list (subscribers) |
+| `/account-manager/clubs` | Club (camp) management |
+| `/account-manager/club-registrations` | Club registration submissions |
+| `/account-manager/club-registrations/:uid` | Registration detail |
+| `/account-manager/club-registrations/:uid/edit` | Edit registration |
+| `/account-manager/referral-codes` | Referral code management |
 
 ---
 
@@ -99,6 +110,11 @@ src/
 - **Mailing List** — Subscribers collected via the quotation flow are visible in both admin and manager panels at `/emails`.
 - **Location Thumbnails** — Locations support an image thumbnail (uploaded via presigned S3 URL) displayed on the public home page location cards.
 - **Media Uploads** — All image fields use `MediaUploadField` + `usePresignedUpload` for direct S3 upload; the API receives only the file key.
+- **Presigned Downloads** — Files (brochures, CVs, etc.) are fetched on-demand via `usePresignedDownload`, which POSTs to `/storage/presigned-download-url` and opens the returned URL.
+- **Clubs (Camps)** — Full management flow: list, detail, create/edit in both panels. Public registration form at `/register/club` with club selector and referral source field.
+- **Club Registrations** — Submissions tracked with status workflow (pending → interview scheduled → accepted/rejected). Detail pages show full club info alongside participant and guardian details.
+- **Referral Codes** — Influencer referral codes managed in both panels; linked to club registrations.
+- **Dynamic CarouselHero** — Home page hero carousel shows one static corporate slide followed by open then upcoming camp slides pulled from the API. Camp slides include a brochure download button when a brochure file is available.
 - **Role-based panels** — Admin and Account Manager views are always separate files; never shared.
 
 ---

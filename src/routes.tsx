@@ -21,6 +21,9 @@ import PartnershipsPage       from "views/admin/partnerships";
 import CertificatesPage from "views/admin/certificates";
 import FeedbacksPage    from "views/admin/feedbacks";
 import EmailsPage       from "views/admin/emails";
+import CampRegistrationsPage from "views/admin/camp-registrations";
+import CampsPage from "views/admin/camps";
+import ReferralCodesPage from "views/admin/referral-codes";
 
 // Account Manager Imports
 import ManagerDashboard      from "views/account-manager/default";
@@ -38,6 +41,9 @@ import ManagerPartnershipsPage    from "views/account-manager/partnerships";
 import ManagerCertificatesPage   from "views/account-manager/certificates";
 import ManagerFeedbacksPage      from "views/account-manager/feedbacks";
 import ManagerEmailsPage         from "views/account-manager/emails";
+import ManagerCampRegistrationsPage from "views/account-manager/camp-registrations";
+import ManagerReferralCodesPage from "views/account-manager/referral-codes";
+import ManagerCampsPage from "views/account-manager/camps";
 
 // Icon Imports
 import {
@@ -58,6 +64,9 @@ import {
   MdVerified,
   MdRateReview,
   MdEmail,
+  MdOutdoorGrill,
+  MdShare,
+  MdBeachAccess,
 } from "react-icons/md";
 
 const routes = [
@@ -102,6 +111,30 @@ const routes = [
     icon: <MdAssignment className="h-6 w-6" />,
     component: <RegistrationsPage />,
     group: "Manage",
+  },
+  {
+    name: "Club Registrations",
+    layout: "/admin",
+    path: "club-registrations",
+    icon: <MdOutdoorGrill className="h-6 w-6" />,
+    component: <CampRegistrationsPage />,
+    group: "Clubs",
+  },
+  {
+    name: "Referral Codes",
+    layout: "/admin",
+    path: "referral-codes",
+    icon: <MdShare className="h-6 w-6" />,
+    component: <ReferralCodesPage />,
+    group: "Clubs",
+  },
+  {
+    name: "Clubs",
+    layout: "/admin",
+    path: "clubs",
+    icon: <MdBeachAccess className="h-6 w-6" />,
+    component: <CampsPage />,
+    group: "Clubs",
   },
   {
     name: "Payments",
@@ -238,6 +271,30 @@ const routes = [
     icon: <MdAssignment className="h-6 w-6" />,
     component: <ManagerRegistrationsPage />,
     group: "Manage",
+  },
+  {
+    name: "Club Registrations",
+    layout: "/account-manager",
+    path: "club-registrations",
+    icon: <MdOutdoorGrill className="h-6 w-6" />,
+    component: <ManagerCampRegistrationsPage />,
+    group: "Clubs",
+  },
+  {
+    name: "Referral Codes",
+    layout: "/account-manager",
+    path: "referral-codes",
+    icon: <MdShare className="h-6 w-6" />,
+    component: <ManagerReferralCodesPage />,
+    group: "Clubs",
+  },
+  {
+    name: "Clubs",
+    layout: "/account-manager",
+    path: "clubs",
+    icon: <MdBeachAccess className="h-6 w-6" />,
+    component: <ManagerCampsPage />,
+    group: "Clubs",
   },
   {
     name: "Payments",

@@ -296,7 +296,7 @@ const ProgramPage = () => {
   if (loading) return (
     <div className="min-h-screen bg-white flex flex-col">
       <Navbar />
-      <div className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-900 px-6 pt-10 pb-16 overflow-hidden">
+      <div className="w-full relative bg-navy-900 px-6 pt-[80px] sm:pt-[100px] lg:pt-[120px] pb-16 overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.8) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.8) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />
         <div className="max-w-6xl mx-auto animate-pulse">
@@ -419,7 +419,6 @@ const ProgramPage = () => {
   const ModeIcon  = modeIconMap[program.mode]         ?? Monitor;
   const startDate = formatDate(program.start_date);
   const endDate   = formatDate(program.end_date);
-  const objectives = parseLines(program.objectives);
   const audience   = parseLines(program.target_audience);
   const prereqs    = parseLines(program.prerequisites);
 
@@ -428,7 +427,7 @@ const ProgramPage = () => {
       <Navbar />
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="relative mt-[80px] sm:mt-[100px] lg:mt-[120px] bg-navy-900 overflow-hidden">
+      <section className="w-full relative pt-[80px] sm:pt-[100px] lg:pt-[120px] bg-navy-900 overflow-hidden">
 
         {/* Subtle grid */}
         <div
@@ -514,7 +513,7 @@ const ProgramPage = () => {
               transition={{ duration: 0.5, delay: 0.18 }}
               className="text-navy-300 text-base leading-relaxed max-w-2xl mb-8 line-clamp-2"
             >
-              {program.description}
+              {program.description.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim()}
             </motion.p>
           )}
 
@@ -614,19 +613,19 @@ const ProgramPage = () => {
 
               {program.description && (
                 <SectionCard title="About This Program" icon={BookOpen}>
-                  <p className="text-slate-600 leading-relaxed text-sm whitespace-pre-wrap">{program.description}</p>
+                  <div
+                    className="text-slate-600 text-sm leading-relaxed rich-content"
+                    dangerouslySetInnerHTML={{ __html: program.description }}
+                  />
                 </SectionCard>
               )}
 
-              {objectives.length > 0 && (
+              {program.objectives && (
                 <SectionCard title="Program Objectives" icon={CheckCircle2} iconColor="text-emerald-500">
-                  <ul className="space-y-3">
-                    {objectives.map((obj, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <span className="text-slate-600 text-sm leading-relaxed">{obj}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div
+                    className="text-slate-600 text-sm leading-relaxed rich-content"
+                    dangerouslySetInnerHTML={{ __html: program.objectives }}
+                  />
                 </SectionCard>
               )}
 

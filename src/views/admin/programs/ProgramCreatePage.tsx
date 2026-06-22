@@ -10,6 +10,7 @@ import { useToast } from "context/ToastContext";
 import InputField from "components/form/InputField";
 import SelectField from "components/form/SelectField";
 import TextareaField from "components/form/TextareaField";
+import RichTextEditor from "components/form/RichTextEditor";
 import ToggleInput from "components/form/toggle/ToggleInput";
 
 const ThumbnailUpload = ({ value, onChange }) => {
@@ -318,11 +319,10 @@ const ProgramCreatePage = () => {
 
           {/* Description — full width */}
           <div className="md:col-span-2">
-            <TextareaField
+            <RichTextEditor
               label="Description"
               field="description"
               required={true}
-              rows={3}
               placeholder="Detailed description of the program content..."
               formData={form}
               errors={fieldErrors}
@@ -332,11 +332,10 @@ const ProgramCreatePage = () => {
 
           {/* Objectives — full width */}
           <div className="md:col-span-2">
-            <TextareaField
+            <RichTextEditor
               label="Objectives"
               field="objectives"
               required={true}
-              rows={3}
               placeholder="What participants will achieve..."
               formData={form}
               errors={fieldErrors}

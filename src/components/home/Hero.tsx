@@ -16,7 +16,7 @@ const fadeUp = {
 const Hero = () => {
   const navigate = useNavigate();
   return (
-    <section className="block mt-[80px] sm:mt-[100px] lg:mt-[150px]">
+    <section className="block pt-[80px] sm:pt-[100px] lg:pt-[150px]">
 
       <div className="relative min-h-[50vh] sm:min-h-[65vh] lg:min-h-[70vh] mx-3 sm:mx-6 flex items-center overflow-hidden rounded-2xl sm:rounded-3xl max-w-6xl lg:mx-auto bg-navy-900">
 

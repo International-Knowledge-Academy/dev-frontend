@@ -52,6 +52,16 @@ import FeedbackCreatePage from "views/admin/feedbacks/FeedbackCreatePage";
 import FeedbackDetailPage from "views/admin/feedbacks/FeedbackDetailPage";
 import FeedbackEditPage from "views/admin/feedbacks/FeedbackEditPage";
 import EmailsPage from "views/admin/emails";
+import CampRegistrationsPage from "views/admin/camp-registrations";
+import CampRegistrationDetailPage from "views/admin/camp-registrations/CampRegistrationDetailPage";
+import CampRegistrationEditPage from "views/admin/camp-registrations/CampRegistrationEditPage";
+import CampCreatePage from "views/admin/camps/CampCreatePage";
+import CampDetailPage from "views/admin/camps/CampDetailPage";
+import CampEditPage from "views/admin/camps/CampEditPage";
+import ReferralCodesPage from "views/admin/referral-codes";
+import ReferralCodeCreatePage from "views/admin/referral-codes/ReferralCodeCreatePage";
+import ReferralCodeDetailPage from "views/admin/referral-codes/ReferralCodeDetailPage";
+import ReferralCodeEditPage from "views/admin/referral-codes/ReferralCodeEditPage";
 
 export default function Admin(props) {
   const { ...rest } = props;
@@ -180,6 +190,16 @@ export default function Admin(props) {
                 <Route path="/feedbacks/:uid"             element={<FeedbackDetailPage />} />
                 <Route path="/feedbacks/:uid/edit"        element={<FeedbackEditPage />} />
                 <Route path="/emails"                     element={<EmailsPage />} />
+                <Route path="/club-registrations"              element={<CampRegistrationsPage />} />
+                <Route path="/club-registrations/:uid"         element={<CampRegistrationDetailPage />} />
+                <Route path="/club-registrations/:uid/edit"    element={<CampRegistrationEditPage />} />
+                <Route path="/clubs/create"               element={<CampCreatePage />} />
+                <Route path="/clubs/:uid"                 element={<CampDetailPage />} />
+                <Route path="/clubs/:uid/edit"            element={<CampEditPage />} />
+                <Route path="/referral-codes"             element={<ReferralCodesPage />} />
+                <Route path="/referral-codes/create"      element={<ReferralCodeCreatePage />} />
+                <Route path="/referral-codes/:uid"        element={<ReferralCodeDetailPage />} />
+                <Route path="/referral-codes/:uid/edit"   element={<ReferralCodeEditPage />} />
 
                 <Route
                   path="/"

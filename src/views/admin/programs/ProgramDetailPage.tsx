@@ -315,12 +315,18 @@ const ProgramDetailPage = () => {
             <div className="space-y-5">
               {program.description && (
                 <Field label="Description" value={
-                  <span className="whitespace-pre-wrap font-normal text-slate-600">{program.description}</span>
+                  <div
+                    className="font-normal text-slate-600 text-sm leading-relaxed rich-content"
+                    dangerouslySetInnerHTML={{ __html: program.description }}
+                  />
                 } />
               )}
               {program.objectives && (
                 <Field label="Objectives" value={
-                  <span className="whitespace-pre-wrap font-normal text-slate-600">{program.objectives}</span>
+                  <div
+                    className="font-normal text-slate-600 text-sm leading-relaxed rich-content"
+                    dangerouslySetInnerHTML={{ __html: program.objectives }}
+                  />
                 } />
               )}
               {program.target_audience && (

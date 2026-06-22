@@ -130,17 +130,6 @@ const LeadCaptureModal = ({ open, onSubmit, onSkip, loading }: Props) => {
             </button>
           </form>
 
-          {/* Skip */}
-          <div className="text-center mt-4">
-            <button
-              type="button"
-              onClick={handleSkip}
-              className="text-xs text-slate-400 hover:text-slate-600 transition underline underline-offset-2"
-            >
-              Skip, just download the PDF
-            </button>
-          </div>
-
           {/* Privacy note */}
           <p className="text-[10px] text-slate-300 text-center mt-3 leading-relaxed">
             We respect your privacy. No spam, unsubscribe anytime.
