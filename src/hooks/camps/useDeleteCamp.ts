@@ -1,21 +1,21 @@
 import { useState } from "react";
 import axiosInstance from "api/axiosInstance";
 
-const useDeleteCampRegistration = () => {
+const useDeleteCamp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState<string | null>(null);
 
-  const deleteCampRegistration = async (uid: string): Promise<boolean> => {
+  const deleteCamp = async (uid: string): Promise<boolean> => {
     setLoading(true);
     setError(null);
     try {
-      await axiosInstance.delete(`/camps/registrations/${uid}`);
+      await axiosInstance.delete(`/camps/${uid}`);
       return true;
     } catch (err: unknown) {
       setError(
         (err as any)?.response?.data?.detail ??
         (err as any)?.response?.data?.message ??
-        "Failed to delete camp registration."
+        "Failed to delete camp."
       );
       return false;
     } finally {
@@ -23,7 +23,7 @@ const useDeleteCampRegistration = () => {
     }
   };
 
-  return { deleteCampRegistration, loading, error };
+  return { deleteCamp, loading, error };
 };
 
-export default useDeleteCampRegistration;
+export default useDeleteCamp;

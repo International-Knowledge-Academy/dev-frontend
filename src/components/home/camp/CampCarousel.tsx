@@ -1,38 +1,49 @@
 // @ts-nocheck
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Download, Users, Clock, MapPin } from "lucide-react";
 
 import campImg1 from "assets/img/camp/Gulf Young 1.png";
 import campImg2 from "assets/img/camp/Gulf Young 2.png";
+import useCamps from "hooks/camps/useCamps";
 
-/* ── slides ──────────────────────────────────────────────────────────────── */
-const slides = [
-  {
-    id:          "overview",
-    badge:       "IKA · Malaysia 2026",
-    title:       ["Gulf Young", "Leaders Club"],
-    description: "A carefully designed international experience for Gulf youth — combining leadership training, future skills, educational visits, and adventure in Malaysia.",
-    image:       campImg1,
-  },
-  {
-    id:          "youth",
-    badge:       "Ages 16–18  ·  12–23 July 2026",
-    title:       ["Gulf Youth", "Club"],
-    description: "Confidence building, personal development, leadership, and university readiness in an organised, engaging, and internationally oriented environment.",
-    image:       campImg2,
-    tags:        ["Leadership", "Confidence", "Future Skills", "Teamwork", "University Readiness"],
-  },
-  {
-    id:          "leaders",
-    badge:       "Ages 19–22  ·  26 July – 6 Aug 2026",
-    title:       ["Gulf Future", "Leaders Club"],
-    description: "Advanced leadership, career planning, artificial intelligence, entrepreneurship, and building future-focused initiatives and projects.",
-    image:       campImg1,
-    tags:        ["Advanced Leadership", "AI", "Entrepreneurship", "Career Planning", "Innovation"],
-  },
-];
+const CAMP_IMAGES = [campImg1, campImg2];
+
+const formatDateRange = (start: string | null, end: string | null) => {
+  if (!start) return null;
+  const s = new Date(start);
+  const fmtDay  = (d: Date) => d.getDate();
+  const fmtMon  = (d: Date) => d.toLocaleDateString("en-GB", { month: "short" });
+  const fmtYear = (d: Date) => d.getFullYear();
+  if (!end) return `${fmtDay(s)} ${fmtMon(s)} ${fmtYear(s)}`;
+  const e = new Date(end);
+  if (s.getMonth() === e.getMonth() && s.getFullYear() === e.getFullYear()) {
+    return `${fmtDay(s)} – ${fmtDay(e)} ${fmtMon(e)} ${fmtYear(e)}`;
+  }
+  return `${fmtDay(s)} ${fmtMon(s)} – ${fmtDay(e)} ${fmtMon(e)} ${fmtYear(e)}`;
+};
+
+const parseHighlights = (highlights: string | null): string[] => {
+  if (!highlights) return [];
+  return highlights.split(/[,\n]/).map((s) => s.trim()).filter(Boolean);
+};
+
+const splitTitle = (name: string): [string, string] => {
+  const words = name.trim().split(" ");
+  if (words.length === 1) return [words[0], ""];
+  const last = words.pop();
+  return [words.join(" "), last];
+};
+
+/* ── static overview slide ───────────────────────────────────────────────── */
+const OVERVIEW_SLIDE = {
+  id:          "overview",
+  badge:       "IKA · Malaysia 2026",
+  title:       ["Gulf Young", "Leaders Club"] as [string, string],
+  description: "A carefully designed international experience for Gulf youth — combining leadership training, future skills, educational visits, and adventure in Malaysia.",
+  image:       campImg1,
+};
 
 /* ── animation ───────────────────────────────────────────────────────────── */
 const textVariants = {
@@ -52,6 +63,31 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
   const [dir, setDir]       = useState(1);
   const [paused, setPaused] = useState(false);
 
+  const { camps: allCamps } = useCamps();
+  const activeCamps = useMemo(
+    () => allCamps.filter((c) => c.status === "upcoming" || c.status === "open"),
+    [allCamps]
+  );
+
+  const slides = useMemo(() => [
+    OVERVIEW_SLIDE,
+    ...activeCamps.map((camp, i) => {
+      const badge = [
+        camp.min_age != null && camp.max_age != null ? `Ages ${camp.min_age}–${camp.max_age}` : null,
+        formatDateRange(camp.start_date, camp.end_date),
+      ].filter(Boolean).join("  ·  ");
+
+      return {
+        id:          camp.uid,
+        badge:       badge || "IKA · Malaysia 2026",
+        title:       splitTitle(camp.name),
+        description: camp.description ?? "",
+        image:       CAMP_IMAGES[i % CAMP_IMAGES.length],
+        tags:        parseHighlights(camp.highlights),
+      };
+    }),
+  ], [activeCamps]);
+
   const goTo = useCallback((next: number, direction: number) => {
     setDir(direction);
     setIndex(next);
@@ -61,13 +97,17 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
   const next = () => goTo((index + 1) % slides.length, 1);
 
   useEffect(() => {
+    setIndex((i) => Math.min(i, slides.length - 1));
+  }, [slides.length]);
+
+  useEffect(() => {
     if (paused) return;
     const id = setInterval(() => {
       setDir(1);
       setIndex((i) => (i + 1) % slides.length);
     }, 5000);
     return () => clearInterval(id);
-  }, [paused]);
+  }, [paused, slides.length]);
 
   const slide = slides[index];
 
@@ -93,9 +133,7 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
             aria-hidden="true"
             className="w-full h-full object-cover"
           />
-          {/* left-heavy gradient keeps text legible */}
           <div className="absolute inset-0 bg-gradient-to-r from-navy-900/95 via-navy-900/80 to-navy-900/40" />
-          {/* top + bottom fade */}
           <div className="absolute inset-0 bg-gradient-to-t from-navy-900/80 via-transparent to-navy-900/50" />
         </motion.div>
       </AnimatePresence>
@@ -103,7 +141,6 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
       {/* ── Foreground content ── */}
       <div className="relative z-10 flex-1 flex flex-col max-w-6xl mx-auto w-full px-6 sm:px-8 lg:px-10 pt-[110px] sm:pt-[130px] lg:pt-[160px] pb-14 lg:pb-20">
 
-        {/* Slide text */}
         <div className="flex-1 flex items-center">
           <AnimatePresence mode="wait" custom={dir}>
             <motion.div
@@ -127,15 +164,19 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
                 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-[1.05] mb-5"
               >
                 {slide.title[0]}
-                <span className="block text-gold-400">{slide.title[1]}</span>
+                {slide.title[1] && (
+                  <span className="block text-gold-400">{slide.title[1]}</span>
+                )}
               </motion.h2>
 
-              <motion.p
-                variants={fadeUp} initial="hidden" animate="visible" custom={0.14}
-                className="text-white/75 text-base sm:text-lg leading-relaxed max-w-xl mb-6"
-              >
-                {slide.description}
-              </motion.p>
+              {slide.description && (
+                <motion.p
+                  variants={fadeUp} initial="hidden" animate="visible" custom={0.14}
+                  className="text-white/75 text-base sm:text-lg leading-relaxed max-w-xl mb-6"
+                >
+                  {slide.description}
+                </motion.p>
+              )}
 
               {/* Stats strip — overview slide only */}
               {slide.id === "overview" && (
@@ -144,9 +185,9 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
                   className="flex flex-wrap gap-3 mb-7"
                 >
                   {[
-                    { value: "12",    label: "Days per programme", icon: Clock  },
-                    { value: "20",    label: "Seats per club",    icon: Users  },
-                    { value: "4",     label: "Gulf countries",     icon: MapPin },
+                    { value: "12", label: "Days per programme", icon: Clock  },
+                    { value: "20", label: "Seats per club",     icon: Users  },
+                    { value: "4",  label: "Gulf countries",     icon: MapPin },
                   ].map(({ value, label, icon: Icon }) => (
                     <div
                       key={label}
@@ -161,7 +202,7 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
               )}
 
               {/* Focus area tags — camp slides */}
-              {slide.tags && (
+              {slide.tags && slide.tags.length > 0 && (
                 <motion.div
                   variants={fadeUp} initial="hidden" animate="visible" custom={0.19}
                   className="flex flex-wrap gap-2 mb-7"
@@ -184,16 +225,14 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
               >
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                   <Link
-                    to={slide.id === "corporate" ? "/programs" : "/register/club"}
+                    to="/register/club"
                     className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-6 py-3 rounded-md lg:rounded-lg text-sm transition-colors duration-200"
                   >
-                    {slide.id === "corporate"
-                      ? "Explore Our Programs"
-                      : "Register for Club"}
+                    Register for Club
                   </Link>
                 </motion.div>
 
-                {slide.id === "overview" && (
+                {slide.id === "overview" && brochureUrl && brochureUrl !== "#" && (
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                     <a
                       href={brochureUrl}
@@ -212,7 +251,6 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
 
         {/* ── Controls ── */}
         <div className="flex items-center justify-between mt-10">
-          {/* Dots */}
           <div className="flex gap-2">
             {slides.map((s, i) => (
               <button
@@ -236,7 +274,6 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
             ))}
           </div>
 
-          {/* Arrows */}
           <div className="flex gap-2">
             <motion.button
               type="button" onClick={prev}

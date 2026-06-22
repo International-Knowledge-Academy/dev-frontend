@@ -1,7 +1,7 @@
 export type CampNationality =
-  | "AE" | "BH" | "DZ" | "DJ" | "EG" | "IQ" | "JO" | "KM"
-  | "KW" | "LB" | "LY" | "MA" | "MR" | "OM" | "PS" | "QA"
-  | "SA" | "SD" | "SO" | "SY" | "TN" | "YE";
+  | "algeria" | "bahrain" | "egypt" | "iraq" | "jordan"
+  | "kuwait"  | "lebanon" | "morocco" | "oman" | "palestine"
+  | "qatar"   | "saudi arabia" | "syria" | "united arab emirates" | "yemen";
 export type CampRegistrationType   = "self" | "child";
 export type CampRegistrationStatus = "pending" | "interview_scheduled" | "accepted" | "rejected";
 export type CampRegistrationSource = "website" | "whatsapp" | "referral";
@@ -44,8 +44,7 @@ export interface CampRegistration {
   how_did_you_hear_about_us: string;
   referred_by_code:          string;
   referral_code:             ReferralCodeSummary | null;
-  brochure_ar:               string;
-  brochure_en:               string;
+  brochure:                  string | null;
   submitted_at:              string;
 }
 
@@ -58,6 +57,7 @@ export interface PaginatedCampRegistrations {
 
 export interface CampRegistrationsParams {
   page?:              number;
+  search?:            string;
   nationality?:       CampNationality | "";
   registration_type?: CampRegistrationType | "";
   source?:            CampRegistrationSource | "";

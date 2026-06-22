@@ -13,7 +13,7 @@ const useGetCampRegistration = (uid: string | undefined) => {
     setError(null);
     try {
       const { data } = await axiosInstance.get<CampRegistration>(
-        `/registrations/camps/registrations/${uid}`
+        `/camps/registrations/${uid}`
       );
       setRegistration(data);
     } catch (err: unknown) {

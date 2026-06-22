@@ -25,7 +25,7 @@ const useUpdateReferralCode = (): UseUpdateReferralCodeReturn => {
     setError(null);
     setFieldErrors({});
     try {
-      const { data } = await axiosInstance.patch<ReferralCode>(`/registrations/referral-codes/${uid}/`, payload);
+      const { data } = await axiosInstance.patch<ReferralCode>(`/referral-codes/${uid}`, payload);
       return data;
     } catch (err: unknown) {
       const responseData = (err as any)?.response?.data;

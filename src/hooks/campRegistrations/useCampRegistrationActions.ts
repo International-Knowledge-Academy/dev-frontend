@@ -26,7 +26,7 @@ const useCampRegistrationActions = (): UseCampRegistrationActionsReturn => {
     setFieldErrors(null);
     try {
       const { data } = await axiosInstance.post<CampRegistration>(
-        `/registrations/camps/registrations/${uid}/${endpoint}`
+        `/camps/registrations/${uid}/${endpoint}`
       );
       return data;
     } catch (err: unknown) {

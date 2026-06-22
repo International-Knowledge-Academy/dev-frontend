@@ -1,29 +1,30 @@
 import { useState } from "react";
 import axiosInstance from "api/axiosInstance";
+import type { Camp, CreateCampPayload } from "types/camp";
 
-const useDeleteCampRegistration = () => {
+const useUpdateCamp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState<string | null>(null);
 
-  const deleteCampRegistration = async (uid: string): Promise<boolean> => {
+  const updateCamp = async (uid: string, payload: Partial<CreateCampPayload>): Promise<Camp | null> => {
     setLoading(true);
     setError(null);
     try {
-      await axiosInstance.delete(`/camps/registrations/${uid}`);
-      return true;
+      const { data } = await axiosInstance.patch<Camp>(`/camps/${uid}`, payload);
+      return data;
     } catch (err: unknown) {
       setError(
         (err as any)?.response?.data?.detail ??
         (err as any)?.response?.data?.message ??
-        "Failed to delete camp registration."
+        "Failed to update camp."
       );
-      return false;
+      return null;
     } finally {
       setLoading(false);
     }
   };
 
-  return { deleteCampRegistration, loading, error };
+  return { updateCamp, loading, error };
 };
 
-export default useDeleteCampRegistration;
+export default useUpdateCamp;

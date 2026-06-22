@@ -28,10 +28,11 @@ const useCampRegistrations = (initialParams: CampRegistrationsParams = {}): UseC
     setError(null);
     try {
       const { data } = await axiosInstance.get<PaginatedCampRegistrations>(
-        "/registrations/camps/registrations",
+        "/camps/registrations",
         {
           params: {
             ...(params.page              && { page:              params.page }),
+            ...(params.search            && { search:            params.search }),
             ...(params.nationality       && { nationality:       params.nationality }),
             ...(params.registration_type && { registration_type: params.registration_type }),
             ...(params.source            && { source:            params.source }),
@@ -64,7 +65,8 @@ const useCampRegistrations = (initialParams: CampRegistrationsParams = {}): UseC
         "nationality" in updates ||
         "registration_type" in updates ||
         "source" in updates ||
-        "status" in updates
+        "status" in updates ||
+        "search" in updates
           ? 1
           : (updates.page ?? prev.page),
     }));

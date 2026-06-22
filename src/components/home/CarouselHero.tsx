@@ -55,7 +55,7 @@ const fadeUp = {
 };
 
 /* ── main carousel ───────────────────────────────────────────────────────── */
-const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
+const CarouselHero = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
   const [index, setIndex]   = useState(0);
   const [dir, setDir]       = useState(1);
   const [paused, setPaused] = useState(false);
@@ -203,7 +203,7 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
                   </Link>
                 </motion.div>
 
-                {slide.id === "overview" && (
+                {slide.id === "overview" && brochureUrl && brochureUrl !== "#" && (
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                     <a
                       href={brochureUrl}
@@ -272,4 +272,4 @@ const CampCarousel = ({ brochureUrl = "#" }: { brochureUrl?: string }) => {
   );
 };
 
-export default CampCarousel;
+export default CarouselHero;

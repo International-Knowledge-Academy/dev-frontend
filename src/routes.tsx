@@ -22,6 +22,7 @@ import CertificatesPage from "views/admin/certificates";
 import FeedbacksPage    from "views/admin/feedbacks";
 import EmailsPage       from "views/admin/emails";
 import CampRegistrationsPage from "views/admin/camp-registrations";
+import CampsPage from "views/admin/camps";
 import ReferralCodesPage from "views/admin/referral-codes";
 
 // Account Manager Imports
@@ -42,6 +43,7 @@ import ManagerFeedbacksPage      from "views/account-manager/feedbacks";
 import ManagerEmailsPage         from "views/account-manager/emails";
 import ManagerCampRegistrationsPage from "views/account-manager/camp-registrations";
 import ManagerReferralCodesPage from "views/account-manager/referral-codes";
+import ManagerCampsPage from "views/account-manager/camps";
 
 // Icon Imports
 import {
@@ -64,6 +66,7 @@ import {
   MdEmail,
   MdOutdoorGrill,
   MdShare,
+  MdBeachAccess,
 } from "react-icons/md";
 
 const routes = [
@@ -112,10 +115,10 @@ const routes = [
   {
     name: "Club Registrations",
     layout: "/admin",
-    path: "camp-registrations",
+    path: "club-registrations",
     icon: <MdOutdoorGrill className="h-6 w-6" />,
     component: <CampRegistrationsPage />,
-    group: "Manage",
+    group: "Clubs",
   },
   {
     name: "Referral Codes",
@@ -123,7 +126,15 @@ const routes = [
     path: "referral-codes",
     icon: <MdShare className="h-6 w-6" />,
     component: <ReferralCodesPage />,
-    group: "Manage",
+    group: "Clubs",
+  },
+  {
+    name: "Clubs",
+    layout: "/admin",
+    path: "clubs",
+    icon: <MdBeachAccess className="h-6 w-6" />,
+    component: <CampsPage />,
+    group: "Clubs",
   },
   {
     name: "Payments",
@@ -264,10 +275,10 @@ const routes = [
   {
     name: "Club Registrations",
     layout: "/account-manager",
-    path: "camp-registrations",
+    path: "club-registrations",
     icon: <MdOutdoorGrill className="h-6 w-6" />,
     component: <ManagerCampRegistrationsPage />,
-    group: "Manage",
+    group: "Clubs",
   },
   {
     name: "Referral Codes",
@@ -275,7 +286,15 @@ const routes = [
     path: "referral-codes",
     icon: <MdShare className="h-6 w-6" />,
     component: <ManagerReferralCodesPage />,
-    group: "Manage",
+    group: "Clubs",
+  },
+  {
+    name: "Clubs",
+    layout: "/account-manager",
+    path: "clubs",
+    icon: <MdBeachAccess className="h-6 w-6" />,
+    component: <ManagerCampsPage />,
+    group: "Clubs",
   },
   {
     name: "Payments",

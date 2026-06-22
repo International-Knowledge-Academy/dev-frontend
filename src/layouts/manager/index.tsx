@@ -55,8 +55,13 @@ import ManagerFeedbackCreatePage      from "views/account-manager/feedbacks/Feed
 import ManagerFeedbackDetailPage      from "views/account-manager/feedbacks/FeedbackDetailPage";
 import ManagerFeedbackEditPage        from "views/account-manager/feedbacks/FeedbackEditPage";
 import ManagerEmailsPage              from "views/account-manager/emails";
-import ManagerCampRegistrationsPage   from "views/account-manager/camp-registrations";
+import ManagerCampRegistrationsPage      from "views/account-manager/camp-registrations";
 import ManagerCampRegistrationDetailPage from "views/account-manager/camp-registrations/CampRegistrationDetailPage";
+import ManagerCampRegistrationEditPage   from "views/account-manager/camp-registrations/CampRegistrationEditPage";
+import ManagerCampsPage       from "views/account-manager/camps";
+import ManagerCampDetailPage  from "views/account-manager/camps/CampDetailPage";
+import ManagerCampCreatePage  from "views/account-manager/camps/CampCreatePage";
+import ManagerCampEditPage    from "views/account-manager/camps/CampEditPage";
 import ManagerReferralCodesPage          from "views/account-manager/referral-codes";
 import ManagerReferralCodeCreatePage     from "views/account-manager/referral-codes/ReferralCodeCreatePage";
 import ManagerReferralCodeDetailPage     from "views/account-manager/referral-codes/ReferralCodeDetailPage";
@@ -173,8 +178,15 @@ const ManagerLayout = () => {
             <Route path="emails" element={<ManagerEmailsPage />} />
 
             {/* Camp Registrations */}
-            <Route path="camp-registrations"       element={<ManagerCampRegistrationsPage />} />
-            <Route path="camp-registrations/:uid"  element={<ManagerCampRegistrationDetailPage />} />
+            <Route path="club-registrations"            element={<ManagerCampRegistrationsPage />} />
+            <Route path="club-registrations/:uid"       element={<ManagerCampRegistrationDetailPage />} />
+            <Route path="club-registrations/:uid/edit"  element={<ManagerCampRegistrationEditPage />} />
+
+            {/* Clubs */}
+            <Route path="clubs"             element={<ManagerCampsPage />} />
+            <Route path="clubs/create"      element={<ManagerCampCreatePage />} />
+            <Route path="clubs/:uid"        element={<ManagerCampDetailPage />} />
+            <Route path="clubs/:uid/edit"   element={<ManagerCampEditPage />} />
 
             {/* Referral Codes */}
             <Route path="referral-codes"           element={<ManagerReferralCodesPage />} />

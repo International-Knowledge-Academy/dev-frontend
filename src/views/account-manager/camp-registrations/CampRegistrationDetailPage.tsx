@@ -32,7 +32,8 @@ const STATUS_LABELS = {
   accepted:            "Accepted",
   rejected:            "Rejected",
 };
-const NATIONALITY_LABELS = { KW: "Kuwait", OM: "Oman", QA: "Qatar", SA: "Saudi Arabia" };
+import { ARAB_COUNTRIES } from "constants/lists";
+const NATIONALITY_LABELS = Object.fromEntries(ARAB_COUNTRIES.map((c) => [c.code, c.name]));
 
 const InfoRow = ({ icon: Icon, label, value }) => (
   <div className="flex items-start gap-4 py-3.5">
@@ -94,7 +95,7 @@ const CampRegistrationDetailPage = () => {
 
   const handleDelete = async () => {
     const ok = await deleteCampRegistration(uid);
-    if (ok) { addToast("Registration deleted.", "success"); navigate("/account-manager/camp-registrations"); }
+    if (ok) { addToast("Registration deleted.", "success"); navigate("/account-manager/club-registrations"); }
     else     { addToast("Failed to delete.", "error"); }
     setDeleteOpen(false);
   };
@@ -210,7 +211,7 @@ const CampRegistrationDetailPage = () => {
         <div className="px-4 sm:px-6 py-4 border-t border-slate-100 mt-2 flex gap-2">
           <button
             type="button"
-            onClick={() => navigate("/account-manager/camp-registrations")}
+            onClick={() => navigate("/account-manager/club-registrations")}
             className="flex-1 rounded-md lg:rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition"
           >
             Back

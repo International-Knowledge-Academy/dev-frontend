@@ -1,12 +1,15 @@
 // @ts-nocheck
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Tent, Users, Clock, CheckCircle2, XCircle, RefreshCw,
-  Trash2, AlertTriangle, Filter, X, CalendarClock,
+  Tent, Clock, CheckCircle2, XCircle, RefreshCw,
+  Trash2, AlertTriangle, Filter, X, CalendarClock, Search, Pencil,
+  FileText, Upload, Download,
 } from "lucide-react";
 import useCampRegistrations from "hooks/campRegistrations/useCampRegistrations";
 import useDeleteCampRegistration from "hooks/campRegistrations/useDeleteCampRegistration";
+import useCamps from "hooks/camps/useCamps";
+import useCampBrochure from "hooks/camps/useCampBrochure";
 import { useToast } from "context/ToastContext";
 import Loading from "components/loading/Loading";
 import PageHeader from "components/ui/PageHeader";
@@ -35,7 +38,8 @@ const STATUS_LABELS = {
   accepted:             "Accepted",
   rejected:             "Rejected",
 };
-const NATIONALITY_LABELS = { KW: "Kuwait", OM: "Oman", QA: "Qatar", SA: "Saudi Arabia" };
+import { ARAB_COUNTRIES } from "constants/lists";
+const NATIONALITY_LABELS = Object.fromEntries(ARAB_COUNTRIES.map((c) => [c.code, c.name]));
 
 const StatCard = ({ icon: Icon, label, value, accent = false }) => (
   <div className="flex items-center gap-4 bg-white border border-slate-100 rounded-xl px-5 py-4 shadow-sm flex-1 min-w-0">
@@ -54,13 +58,21 @@ const formatDate = (d: string) =>
 
 const CampRegistrationsPage = () => {
   const navigate = useNavigate();
-  const { showToast } = useToast();
+  const { addToast } = useToast();
   const { registrations, count, next, previous, loading, error, params, setParams, refetch } =
     useCampRegistrations();
   const { deleteCampRegistration, loading: deleting } = useDeleteCampRegistration();
+  const { camps, loading: campsLoading } = useCamps();
+  const activeCampUid = camps[0]?.uid;
+  const {
+    hasBrochure, fileName: brochureFileName, downloadUrl: brochureDownloadUrl,
+    loading: brochureLoading, uploading: brochureUploading, progress: brochureProgress,
+    upload: uploadBrochure, update: updateBrochure, remove: removeBrochure,
+  } = useCampBrochure(activeCampUid);
+  const brochureInputRef = useRef(null);
 
-  const [showFilters, setShowFilters]     = useState(false);
-  const [deleteTarget, setDeleteTarget]   = useState<CampRegistration | null>(null);
+  const [showFilters, setShowFilters]   = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<CampRegistration | null>(null);
 
   const activeFilterCount = [params.nationality, params.registration_type, params.source, params.status]
     .filter(Boolean).length;
@@ -71,9 +83,24 @@ const CampRegistrationsPage = () => {
   const handleDelete = async () => {
     if (!deleteTarget) return;
     const ok = await deleteCampRegistration(deleteTarget.uid);
-    if (ok) { showToast("Registration deleted.", "success"); refetch(); }
-    else     { showToast("Failed to delete.", "error"); }
+    if (ok) { addToast("Registration deleted.", "success"); refetch(); }
+    else     { addToast("Failed to delete.", "error"); }
     setDeleteTarget(null);
+  };
+
+  const handleBrochureFile = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = "";
+    const ok = hasBrochure ? await updateBrochure(file) : await uploadBrochure(file);
+    if (ok) addToast("Brochure saved.", "success");
+    else    addToast("Failed to save brochure.", "error");
+  };
+
+  const handleBrochureRemove = async () => {
+    const ok = await removeBrochure();
+    if (ok) addToast("Brochure removed.", "success");
+    else    addToast("Failed to remove brochure.", "error");
   };
 
   const pending   = registrations.filter((r) => r.status === "pending").length;
@@ -90,15 +117,27 @@ const CampRegistrationsPage = () => {
 
       {/* Stats */}
       <div className="flex flex-wrap gap-3 mb-4">
-        <StatCard icon={Tent}         label="Total"     value={count} />
-        <StatCard icon={Clock}        label="Pending"   value={pending} />
+        <StatCard icon={Tent}          label="Total"     value={count} />
+        <StatCard icon={Clock}         label="Pending"   value={pending} />
         <StatCard icon={CalendarClock} label="Interview" value={interview} accent />
-        <StatCard icon={CheckCircle2} label="Accepted"  value={accepted} accent />
+        <StatCard icon={CheckCircle2}  label="Accepted"  value={accepted} accent />
       </div>
 
       {/* Filter bar */}
       <div className="bg-white border border-slate-100 rounded-xl px-4 py-3 mb-4">
         <div className="flex items-center gap-2 flex-wrap">
+          {/* Search */}
+          <div className="relative flex-1 min-w-[180px]">
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Search by name, email..."
+              value={params.search ?? ""}
+              onChange={(e) => setParams({ search: e.target.value })}
+              className="w-full pl-8 pr-3 py-2 text-sm border border-slate-200 rounded-lg outline-none focus:border-navy-400 focus:ring-2 focus:ring-navy-100 transition text-navy-800 placeholder-slate-400"
+            />
+          </div>
+
           <button
             type="button"
             onClick={() => setShowFilters((v) => !v)}
@@ -199,9 +238,9 @@ const CampRegistrationsPage = () => {
                 <table className="min-w-full text-sm">
                   <thead>
                     <tr className="border-b border-slate-100 bg-slate-50/60">
-                      {["Participant", "Type", "Nationality", "Source", "Status", "Submitted", ""].map((h) => (
-                        <th key={h} className="px-5 py-3 text-left text-xs font-bold tracking-widest uppercase text-slate-400 whitespace-nowrap">
-                          {h}
+                      {["Participant", "Type", "Nationality", "Source", "Status", "Submitted", "Edit", "Del"].map((h) => (
+                        <th key={h} className={`px-5 py-3 text-left text-xs font-bold tracking-widest uppercase text-slate-400 whitespace-nowrap ${h === "Edit" || h === "Del" ? "w-10" : ""}`}>
+                          {h === "Edit" || h === "Del" ? "" : h}
                         </th>
                       ))}
                     </tr>
@@ -210,7 +249,7 @@ const CampRegistrationsPage = () => {
                     {registrations.map((reg) => (
                       <tr
                         key={reg.uid}
-                        onClick={() => navigate(`/admin/camp-registrations/${reg.uid}`)}
+                        onClick={() => navigate(`/admin/club-registrations/${reg.uid}`)}
                         className="hover:bg-slate-50 transition cursor-pointer"
                       >
                         <td className="px-5 py-3.5">
@@ -243,6 +282,16 @@ const CampRegistrationsPage = () => {
                         </td>
                         <td className="px-5 py-3.5 text-slate-400 text-xs whitespace-nowrap">
                           {formatDate(reg.submitted_at)}
+                        </td>
+                        <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
+                          <button
+                            type="button"
+                            title="Edit registration"
+                            onClick={() => navigate(`/admin/club-registrations/${reg.uid}/edit`)}
+                            className="p-1.5 rounded-lg text-slate-300 hover:text-navy-600 hover:bg-navy-50 transition"
+                          >
+                            <Pencil size={14} />
+                          </button>
                         </td>
                         <td className="px-5 py-3.5" onClick={(e) => e.stopPropagation()}>
                           <button
