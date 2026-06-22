@@ -38,7 +38,6 @@ const splitTitle = (name: string): [string, string] => {
   return [words.join(" "), last];
 };
 
-/* ── static slides ───────────────────────────────────────────────────────── */
 const CORPORATE_SLIDE = {
   id:          "corporate",
   badge:       "IKA · Corporate Training",
@@ -47,7 +46,6 @@ const CORPORATE_SLIDE = {
   image:       ikaBg,
 };
 
-/* ── animation ───────────────────────────────────────────────────────────── */
 const textVariants = {
   enter:  (dir: number) => ({ x: dir > 0 ? 48 : -48, opacity: 0 }),
   center: { x: 0, opacity: 1, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
