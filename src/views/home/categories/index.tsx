@@ -6,6 +6,7 @@ import Footer from "components/home/Footer";
 import CategoriesHero from "components/categories/CategoriesHero";
 import CategoryCard from "components/categories/CategoryCard";
 import useCategories from "hooks/categories/useCategories";
+import EmptyState from "components/empty/empty";
 
 /* ─── Animation variants ─────────────────────────────────────────────────── */
 
