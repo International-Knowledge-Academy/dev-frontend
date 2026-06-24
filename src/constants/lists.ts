@@ -63,22 +63,13 @@ export const COUNTRIES = [
   { name: "Yemen", code: "yemen" },
 ];
 
-export const ARAB_COUNTRIES = [
-  { name: "Algeria", code: "algeria" },
-  { name: "Bahrain", code: "bahrain" },
-  { name: "Egypt", code: "egypt" },
-  { name: "Iraq", code: "iraq" },
-  { name: "Jordan", code: "jordan" },
-  { name: "Kuwait", code: "kuwait" },
-  { name: "Lebanon", code: "lebanon" },
-  { name: "Morocco", code: "morocco" },
-  { name: "Oman", code: "oman" },
-  { name: "Palestine", code: "palestine" },
-  { name: "Qatar", code: "qatar" },
-  { name: "Saudi Arabia", code: "saudi arabia" },
-  { name: "Syria", code: "syria" },
+export const GULF_COUNTRIES = [
+  { name: "Bahrain",              code: "bahrain" },
+  { name: "Kuwait",               code: "kuwait" },
+  { name: "Oman",                 code: "oman" },
+  { name: "Qatar",                code: "qatar" },
+  { name: "Saudi Arabia",         code: "saudi arabia" },
   { name: "United Arab Emirates", code: "united arab emirates" },
-  { name: "Yemen", code: "yemen" },
 ];
 
 export const HEAR_ABOUT_US_OPTIONS = [

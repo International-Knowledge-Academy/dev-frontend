@@ -10,9 +10,9 @@ import TextareaField from "components/form/TextareaField";
 import SearchableSelect from "components/form/SearchableSelect";
 import Button from "components/ui/buttons/Button";
 import Loading from "components/loading/Loading";
-import { ARAB_COUNTRIES, HEAR_ABOUT_US_OPTIONS } from "constants/lists";
+import { GULF_COUNTRIES, HEAR_ABOUT_US_OPTIONS } from "constants/lists";
 
-const NATIONALITY_OPTIONS = ARAB_COUNTRIES.map((c) => ({ value: c.code, label: c.name }));
+const NATIONALITY_OPTIONS = GULF_COUNTRIES.map((c) => ({ value: c.code, label: c.name }));
 
 const TYPE_OPTIONS = [
   { value: "self",  label: "Self"  },
