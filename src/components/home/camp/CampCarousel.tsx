@@ -111,12 +111,14 @@ const CampCarousel = () => {
 
   const triggerBrochureDownload = async () => {
     if (!slide?.brochure) return;
+    const win = window.open("", "_blank");
     setBrochureLoading(true);
     try {
       const { data } = await axiosInstance.get(`/camps/${slide.id}/brochure/download`);
-      if (data.download_url) window.open(data.download_url, "_blank");
+      if (data.download_url && win) win.location.href = data.download_url;
+      else if (win) win.close();
     } catch {
-      // silent fail
+      if (win) win.close();
     } finally {
       setBrochureLoading(false);
     }
@@ -146,6 +148,7 @@ const CampCarousel = () => {
         onSubmit={handleLeadSubmit}
         onSkip={handleLeadSkip}
         loading={subscribing}
+        requirePhone
       />
 
       <AnimatePresence mode="wait">
