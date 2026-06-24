@@ -43,8 +43,8 @@ const CAMP_STATUS_COLORS = {
 const CAMP_STATUS_LABELS = {
   upcoming: "Upcoming", open: "Open", closed: "Closed", completed: "Completed",
 };
-import { ARAB_COUNTRIES, HEAR_ABOUT_US_OPTIONS } from "constants/lists";
-const NATIONALITY_LABELS    = Object.fromEntries(ARAB_COUNTRIES.map((c) => [c.code, c.name]));
+import { GULF_COUNTRIES, HEAR_ABOUT_US_OPTIONS } from "constants/lists";
+const NATIONALITY_LABELS    = Object.fromEntries(GULF_COUNTRIES.map((c) => [c.code, c.name]));
 const HEAR_ABOUT_US_LABELS  = Object.fromEntries(HEAR_ABOUT_US_OPTIONS.map((o) => [o.code, o.name]));
 
 const InfoRow = ({ icon: Icon, label, value }) => (

@@ -7,9 +7,9 @@ import Footer from "components/home/Footer";
 import useCreateCampRegistration from "hooks/campRegistrations/useCreateCampRegistration";
 import useCamps from "hooks/camps/useCamps";
 import type { CampRegistrationType, CampNationality, GuardianRelationship } from "types/campRegistration";
-import { ARAB_COUNTRIES, HEAR_ABOUT_US_OPTIONS } from "constants/lists";
+import { GULF_COUNTRIES, HEAR_ABOUT_US_OPTIONS } from "constants/lists";
 
-const NATIONALITIES = ARAB_COUNTRIES.map((c) => ({ value: c.code, label: c.name }));
+const NATIONALITIES = GULF_COUNTRIES.map((c) => ({ value: c.code, label: c.name }));
 
 const RELATIONSHIPS = [
   { value: "father",   label: "Father"   },

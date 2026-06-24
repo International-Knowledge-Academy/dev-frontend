@@ -36,8 +36,8 @@ const STATUS_LABELS = {
   accepted:             "Accepted",
   rejected:             "Rejected",
 };
-import { ARAB_COUNTRIES } from "constants/lists";
-const NATIONALITY_LABELS = Object.fromEntries(ARAB_COUNTRIES.map((c) => [c.code, c.name]));
+import { GULF_COUNTRIES } from "constants/lists";
+const NATIONALITY_LABELS = Object.fromEntries(GULF_COUNTRIES.map((c) => [c.code, c.name]));
 
 const StatCard = ({ icon: Icon, label, value, accent = false }) => (
   <div className="flex items-center gap-4 bg-white border border-slate-100 rounded-xl px-5 py-4 shadow-sm flex-1 min-w-0">
