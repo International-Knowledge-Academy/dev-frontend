@@ -3,16 +3,18 @@ import { useState } from "react";
 import { X, Mail, Phone, Download, Loader2 } from "lucide-react";
 
 interface Props {
-  open:      boolean;
-  onSubmit:  (email: string, phone: string) => void;
-  onSkip:    () => void;
-  loading:   boolean;
+  open:          boolean;
+  onSubmit:      (email: string, phone: string) => void;
+  onSkip:        () => void;
+  loading:       boolean;
+  requirePhone?: boolean;
 }
 
-const LeadCaptureModal = ({ open, onSubmit, onSkip, loading }: Props) => {
-  const [email, setEmail]         = useState("");
-  const [phone, setPhone]         = useState("");
+const LeadCaptureModal = ({ open, onSubmit, onSkip, loading, requirePhone = false }: Props) => {
+  const [email, setEmail]           = useState("");
+  const [phone, setPhone]           = useState("");
   const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
 
   if (!open) return null;
 
@@ -20,11 +22,20 @@ const LeadCaptureModal = ({ open, onSubmit, onSkip, loading }: Props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let valid = true;
     if (!isValidEmail) {
       setEmailError("Please enter a valid email address.");
-      return;
+      valid = false;
+    } else {
+      setEmailError("");
     }
-    setEmailError("");
+    if (requirePhone && !phone.trim()) {
+      setPhoneError("Phone / WhatsApp is required.");
+      valid = false;
+    } else {
+      setPhoneError("");
+    }
+    if (!valid) return;
     onSubmit(email.trim(), phone.trim());
   };
 
@@ -32,6 +43,7 @@ const LeadCaptureModal = ({ open, onSubmit, onSkip, loading }: Props) => {
     setEmail("");
     setPhone("");
     setEmailError("");
+    setPhoneError("");
     onSkip();
   };
 
@@ -102,18 +114,28 @@ const LeadCaptureModal = ({ open, onSubmit, onSkip, loading }: Props) => {
             <div>
               <label className="block text-xs font-semibold text-slate-600 mb-1.5">
                 Phone / WhatsApp
-                <span className="ml-1.5 text-[10px] font-normal text-slate-400">(optional)</span>
+                {requirePhone
+                  ? <span className="text-red-400 ml-0.5">*</span>
+                  : <span className="ml-1.5 text-[10px] font-normal text-slate-400">(optional)</span>
+                }
               </label>
               <div className="relative">
                 <Phone size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="tel"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => { setPhone(e.target.value); setPhoneError(""); }}
                   placeholder="+60 12 345 6789"
-                  className="w-full pl-9 pr-4 py-2.5 text-sm rounded-lg border border-slate-200 bg-white text-navy-800 placeholder-slate-400 outline-none focus:border-gold-400 focus:ring-2 focus:ring-gold-100 transition"
+                  className={`w-full pl-9 pr-4 py-2.5 text-sm rounded-lg border bg-white text-navy-800 placeholder-slate-400 outline-none transition
+                    ${phoneError
+                      ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
+                      : "border-slate-200 focus:border-gold-400 focus:ring-2 focus:ring-gold-100"
+                    }`}
                 />
               </div>
+              {phoneError && (
+                <p className="text-xs text-red-500 mt-1">{phoneError}</p>
+              )}
             </div>
 
             {/* Submit */}
