@@ -134,7 +134,6 @@ const CampCarousel = () => {
 
   const handleLeadSkip = () => {
     setShowLeadModal(false);
-    triggerBrochureDownload();
   };
 
   return (

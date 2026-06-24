@@ -123,7 +123,6 @@ const CarouselHero = () => {
 
   const handleLeadSkip = () => {
     setShowLeadModal(false);
-    triggerBrochureDownload();
   };
 
   const goTo = useCallback((next: number, direction: number) => {
