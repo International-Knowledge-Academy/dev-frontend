@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "IKA",
+  "name": "IKA - International Knowledge Academy",
+  "description": "Professional training programs, diplomas, and development courses across multiple fields.",
   "icons": [
     {
       "src": "favicon.ico",
