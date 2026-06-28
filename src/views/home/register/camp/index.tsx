@@ -231,7 +231,7 @@ const RegisterCampPage = () => {
                         regType === t ? "bg-navy-700 text-white" : "text-slate-500 hover:bg-slate-50"
                       }`}>
                       {t === "self" ? <User size={15} /> : <Shield size={15} />}
-                      {t === "self" ? "Self" : "Child / Minor"}
+                      {t === "self" ? "Self" : "On Behalf Of"}
                     </button>
                   ))}
                 </div>
